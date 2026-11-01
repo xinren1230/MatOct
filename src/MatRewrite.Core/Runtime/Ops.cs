@@ -29,6 +29,7 @@ public static class Ops
         Func<double, double, double> fr, Func<Complex, Complex, Complex>? fc, NumKind resultKind = NumKind.Double,
         Func<double, double, bool>? needComplex = null)
     {
+        if (a.ND != null || b.ND != null) return ElementwiseND(a, b, op, fr, fc, resultKind, needComplex);
         var (r, c) = BroadcastDims(a, b, op);
         bool cplx = (a.IsComplex || b.IsComplex) && fc != null;
         int n = r * c;
@@ -63,11 +64,47 @@ public static class Ops
         return res.Narrow();
     }
 
+    static MatrixValue ElementwiseND(MatrixValue a, MatrixValue b, string op,
+        Func<double, double, double> fr, Func<Complex, Complex, Complex>? fc, NumKind resultKind, Func<double, double, bool>? needComplex)
+    {
+        int n = Math.Max(a.NDims, b.NDims);
+        var da = NDArray.Pad(a.Dims, n); var db = NDArray.Pad(b.Dims, n);
+        var d = new int[n];
+        for (int k = 0; k < n; k++)
+        {
+            if (da[k] == db[k] || db[k] == 1) d[k] = da[k];
+            else if (da[k] == 1) d[k] = db[k];
+            else throw new OctaveException($"operator {op}: nonconformant arguments (op1 is {string.Join("x", da)}, op2 is {string.Join("x", db)})");
+        }
+        int total = NDArray.Prod(d);
+        var ia = new int[total]; var ib = new int[total];
+        if (total > 0)
+        {
+            var sub = new int[n]; var sa = new int[n]; var sb = new int[n]; int t = 0;
+            do
+            {
+                for (int k = 0; k < n; k++) { sa[k] = da[k] == 1 ? 0 : sub[k]; sb[k] = db[k] == 1 ? 0 : sub[k]; }
+                ia[t] = NDArray.Linear(sa, da); ib[t] = NDArray.Linear(sb, db); t++;
+            } while (NDArray.Next(sub, d));
+        }
+        bool cplx = (a.IsComplex || b.IsComplex) && fc != null;
+        if (!cplx && needComplex != null && fc != null)
+            for (int k = 0; k < total && !cplx; k++) if (needComplex(a.Re[ia[k]], b.Re[ib[k]])) cplx = true;
+        var res = new MatrixValue(1, total, resultKind, cplx);
+        for (int k = 0; k < total; k++)
+        {
+            if (cplx) { var z = fc!(a.At(ia[k]), b.At(ib[k])); res.Re[k] = z.Real; res.Im![k] = z.Imaginary; }
+            else res.Re[k] = fr(a.Re[ia[k]], b.Re[ib[k]]);
+        }
+        res.SetDims(d);
+        return res.Narrow();
+    }
+
     public static MatrixValue Map(MatrixValue a, Func<double, double> fr, Func<Complex, Complex>? fc = null,
         Func<double, bool>? needComplex = null, NumKind kind = NumKind.Double)
     {
         bool cplx = a.IsComplex || (needComplex != null && fc != null && a.Re.Any(needComplex));
-        var res = new MatrixValue(a.R, a.C, kind, cplx && fc != null);
+        var res = new MatrixValue(a.R, a.C, kind, cplx && fc != null) { ND = a.ND };
         for (int k = 0; k < a.Numel; k++)
         {
             if (cplx && fc != null)
@@ -82,9 +119,44 @@ public static class Ops
     static double B(bool b) => b ? 1 : 0;
     static bool IsInt(double x) => x == Math.Floor(x);
 
+    static string OpClass(MatrixValue m) =>
+        m.IsInteger || m.IsSingle ? m.ClassName + (m.IsScalar ? " scalar" : " matrix")
+        : m.IsChar ? "char matrix" : m.IsLogical ? "bool matrix" : m.IsComplex ? "complex matrix" : m.IsScalar ? "double" : "matrix";
+
+    /// <summary>Result class of an arithmetic operation (Octave rules: int op double -&gt; int, single wins over double).</summary>
+    public static NumKind ArithKind(MatrixValue a, MatrixValue b, string op)
+    {
+        bool ai = a.IsInteger, bi = b.IsInteger;
+        if (ai && bi && a.Kind != b.Kind)
+            throw new OctaveException($"binary operator '{op}' not implemented for '{OpClass(a)}' by '{OpClass(b)}' operations");
+        if ((ai && b.IsComplex) || (bi && a.IsComplex))
+            throw new OctaveException($"binary operator '{op}' not implemented for '{OpClass(a)}' by '{OpClass(b)}' operations");
+        if (ai) return a.Kind;
+        if (bi) return b.Kind;
+        if (a.IsSingle || b.IsSingle) return NumKind.Single;
+        return NumKind.Double;
+    }
+
     public static Value Binary(string op, Value av, Value bv)
     {
         var a = ToMatrix(av, op); var b = ToMatrix(bv, op);
+        if (op is "+" or "-" or ".*" or "./" or ".\\" or ".^" or "*" or "/" or "\\" or "^")
+        {
+            var k = ArithKind(a, b, op);
+            if (k != NumKind.Double)
+            {
+                if (NumTypes.IsInt(k) && op is "*" or "/" or "\\" or "^" && !(a.IsScalar || b.IsScalar))
+                    throw new OctaveException($"binary operator '{op}' not implemented for '{OpClass(a)}' by '{OpClass(b)}' operations");
+                var r = (MatrixValue)BinaryDouble(op, a, b);
+                return r.CastInPlace(k);
+            }
+        }
+        return BinaryDouble(op, a, b);
+    }
+
+
+    static Value BinaryDouble(string op, MatrixValue a, MatrixValue b)
+    {
         switch (op)
         {
             case "+": return Elementwise(a, b, op, (x, y) => x + y, (x, y) => x + y);
@@ -141,8 +213,12 @@ public static class Ops
         var a = ToMatrix(v, op);
         switch (op)
         {
-            case "-": return Map(a, x => -x, z => -z);
-            case "+": return a.AsDouble();
+            case "-":
+            {
+                var r = Map(a, x => -x, z => -z);
+                return a.IsInteger || a.IsSingle ? r.CastInPlace(a.Kind) : r;
+            }
+            case "+": return a.IsChar || a.IsLogical ? a.AsDouble() : a;
             case "!":
                 if (a.IsComplex) throw new OctaveException("logical operation on complex value");
                 return Map(a, x => { if (double.IsNaN(x)) throw new OctaveException("logical: NaN can't be converted to logical value"); return x == 0 ? 1 : 0; }, null, null, NumKind.Logical);
@@ -152,6 +228,7 @@ public static class Ops
 
     public static ArrayValue Transpose(ArrayValue a, bool conj)
     {
+        if (a.ND != null) throw new OctaveException("transpose not defined for N-D objects");
         var lin = new int[a.Numel];
         for (int i = 0; i < a.R; i++)
             for (int j = 0; j < a.C; j++)

@@ -10,7 +10,11 @@ public class OctaveException : Exception
 {
     public string Identifier { get; }
     public OctaveException(string message, string identifier = "") : base(message) { Identifier = identifier; }
+    /// <summary>Call stack captured as the error propagated out of user functions/scripts (innermost first).</summary>
+    public List<StackFrameInfo> Stack { get; } = new();
 }
+
+public sealed record StackFrameInfo(string Name, string File, int Line, int Column);
 
 public abstract class Value
 {
@@ -19,7 +23,10 @@ public abstract class Value
     public int Numel => Rows * Cols;
     public bool IsEmpty => Numel == 0;
     public abstract string ClassName { get; }
-    public string DimString => $"{Rows}x{Cols}";
+    /// <summary>Full dimension vector (at least 2 entries, trailing singletons removed beyond 2).</summary>
+    public virtual int[] Dims => new[] { Rows, Cols };
+    public int NDims => Dims.Length;
+    public string DimString => string.Join("x", Dims);
 }
 
 /// <summary>The magic colon used inside an index expression, e.g. A(:, 1).</summary>
@@ -35,8 +42,30 @@ public sealed class MagicColon : Value
 public abstract class ArrayValue : Value
 {
     public int R, C;
+    /// <summary>N-D dimensions when ndims &gt; 2; otherwise null. Storage is column-major and R x C is the
+    /// folded 2-D view (R = dims[0], C = prod(dims[1..])).</summary>
+    public int[]? ND;
     public override int Rows => R;
     public override int Cols => C;
+    public override int[] Dims => ND != null ? (int[])ND.Clone() : new[] { R, C };
+    /// <summary>Set the shape (number of elements must be unchanged by the caller's contract).</summary>
+    public void SetDims(int[] d)
+    {
+        int n = d.Length;
+        while (n > 2 && d[n - 1] == 1) n--;
+        if (n <= 2)
+        {
+            R = d.Length > 0 ? d[0] : 1;
+            C = d.Length > 1 ? d[1] : 1;
+            ND = null;
+            return;
+        }
+        ND = d.Take(n).ToArray();
+        R = ND[0];
+        int c = 1; for (int k = 1; k < n; k++) c *= ND[k];
+        C = c;
+    }
+    public T WithDims<T>(int[] d) where T : ArrayValue { SetDims(d); return (T)this; }
     /// <summary>Build a new array of the same type from elements at linear indices.</summary>
     public abstract ArrayValue Gather(int[] lin, int r, int c);
     /// <summary>Copy with new size; existing elements kept at their (row,col).</summary>
@@ -46,7 +75,48 @@ public abstract class ArrayValue : Value
     public abstract ArrayValue EmptyLike(int r, int c);
 }
 
-public enum NumKind { Double, Logical, Char }
+public enum NumKind { Double, Logical, Char, Single, Int8, UInt8, Int16, UInt16, Int32, UInt32, Int64, UInt64 }
+
+/// <summary>Numeric class rules: names, ranges, saturation.</summary>
+public static class NumTypes
+{
+    public static bool IsInt(NumKind k) => k >= NumKind.Int8;
+    public static bool IsFloat(NumKind k) => k == NumKind.Double || k == NumKind.Single;
+    public static string Name(NumKind k) => k switch
+    {
+        NumKind.Double => "double", NumKind.Logical => "logical", NumKind.Char => "char", NumKind.Single => "single",
+        NumKind.Int8 => "int8", NumKind.UInt8 => "uint8", NumKind.Int16 => "int16", NumKind.UInt16 => "uint16",
+        NumKind.Int32 => "int32", NumKind.UInt32 => "uint32", NumKind.Int64 => "int64", _ => "uint64"
+    };
+    public static NumKind? FromName(string s) => s switch
+    {
+        "double" => NumKind.Double, "logical" => NumKind.Logical, "char" => NumKind.Char, "single" => NumKind.Single,
+        "int8" => NumKind.Int8, "uint8" => NumKind.UInt8, "int16" => NumKind.Int16, "uint16" => NumKind.UInt16,
+        "int32" => NumKind.Int32, "uint32" => NumKind.UInt32, "int64" => NumKind.Int64, "uint64" => NumKind.UInt64,
+        _ => null
+    };
+    public static (double min, double max) Range(NumKind k) => k switch
+    {
+        NumKind.Int8 => (-128, 127), NumKind.UInt8 => (0, 255), NumKind.Int16 => (-32768, 32767), NumKind.UInt16 => (0, 65535),
+        NumKind.Int32 => (int.MinValue, int.MaxValue), NumKind.UInt32 => (0, uint.MaxValue),
+        NumKind.Int64 => (long.MinValue, long.MaxValue), NumKind.UInt64 => (0, ulong.MaxValue),
+        NumKind.Single => (-float.MaxValue, float.MaxValue),
+        _ => (double.MinValue, double.MaxValue)
+    };
+    /// <summary>Convert a double to the representable value of class k (Octave: round half away, saturate, NaN-&gt;0).</summary>
+    public static double Saturate(NumKind k, double x)
+    {
+        if (IsInt(k))
+        {
+            if (double.IsNaN(x)) return 0;
+            var (lo, hi) = Range(k);
+            x = Math.Round(x, MidpointRounding.AwayFromZero);
+            return x < lo ? lo : x > hi ? hi : x;
+        }
+        if (k == NumKind.Single) return (double)(float)x;
+        return x;
+    }
+}
 
 public sealed class MatrixValue : ArrayValue
 {
@@ -69,7 +139,22 @@ public sealed class MatrixValue : ArrayValue
     public bool IsScalar => R == 1 && C == 1;
     public bool IsVector => (R == 1 || C == 1) && R * C >= 1;
 
-    public override string ClassName => Kind switch { NumKind.Logical => "logical", NumKind.Char => "char", _ => "double" };
+    public override string ClassName => NumTypes.Name(Kind);
+    public bool IsInteger => NumTypes.IsInt(Kind);
+    public bool IsSingle => Kind == NumKind.Single;
+    /// <summary>Convert in place to class k with saturation; returns this.</summary>
+    public MatrixValue CastInPlace(NumKind k)
+    {
+        if (NumTypes.IsInt(k) || k == NumKind.Single)
+        {
+            if (NumTypes.IsInt(k) && Im != null) Im = null;
+            for (int i = 0; i < Re.Length; i++) Re[i] = NumTypes.Saturate(k, Re[i]);
+            if (Im != null) for (int i = 0; i < Im.Length; i++) Im[i] = NumTypes.Saturate(k, Im[i]);
+        }
+        Kind = k;
+        return this;
+    }
+    public MatrixValue CastTo(NumKind k) => Copy().CastInPlace(k);
 
     public static MatrixValue Scalar(double d) => new(1, 1, new[] { d });
     public static MatrixValue Cplx(double re, double im) => new MatrixValue(1, 1, new[] { re }, new[] { im }).Narrow();
@@ -120,10 +205,10 @@ public sealed class MatrixValue : ArrayValue
     public MatrixValue AsDouble()
     {
         if (Kind == NumKind.Double) return this;
-        return new MatrixValue(R, C, Re, Im, NumKind.Double);
+        return new MatrixValue(R, C, Re, Im, NumKind.Double) { ND = ND };
     }
 
-    public MatrixValue Copy() => new(R, C, (double[])Re.Clone(), (double[]?)Im?.Clone(), Kind) { DoubleQuoted = DoubleQuoted };
+    public MatrixValue Copy() => new(R, C, (double[])Re.Clone(), (double[]?)Im?.Clone(), Kind) { DoubleQuoted = DoubleQuoted, ND = ND };
 
     public override ArrayValue Gather(int[] lin, int r, int c)
     {
@@ -178,7 +263,7 @@ public sealed class CellValue : ArrayValue
     }
     public override void SetFrom(int dst, ArrayValue src, int srcIdx) => Data[dst] = ((CellValue)src).Data[srcIdx];
     public override ArrayValue EmptyLike(int r, int c) => new CellValue(r, c);
-    public CellValue Copy() => new(R, C, (Value[])Data.Clone());
+    public CellValue Copy() => new(R, C, (Value[])Data.Clone()) { ND = ND };
 }
 
 /// <summary>Struct array: every element has the same ordered field list.</summary>
@@ -215,7 +300,7 @@ public sealed class StructValue : ArrayValue
     public void Set(string f, Value v, int k = 0) { AddField(f); Elems[k][f] = v; }
     public StructValue Copy()
     {
-        var s = new StructValue(R, C, Fields);
+        var s = new StructValue(R, C, Fields) { ND = ND };
         for (int k = 0; k < Elems.Length; k++) s.Elems[k] = new Dictionary<string, Value>(Elems[k]);
         return s;
     }

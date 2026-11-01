@@ -22,6 +22,8 @@ public static partial class BuiltinLibrary
         RegisterStrings();
         RegisterCellStruct();
         RegisterSystem();
+        RegisterFiles();
+        RegisterGraphics();
         cur = null;
     }
 
@@ -53,23 +55,34 @@ public static partial class BuiltinLibrary
     }
 
     /// <summary>Parse dims args as for zeros(n), zeros(r,c), zeros([r c]).</summary>
-    internal static (int r, int c) Dims(Value[] a, string fn, int start = 0)
+    internal static int[] DimsN(Value[] a, string fn, int start = 0)
     {
         var args = a.Skip(start).Where(v => !IsString(v)).ToArray();
-        if (args.Length == 0) return (1, 1);
+        if (args.Length == 0) return new[] { 1, 1 };
+        int[] d;
         if (args.Length == 1)
         {
             var m = M(args[0], fn);
-            if (m.Numel == 1) { int n = Math.Max(0, (int)m.Re[0]); return (n, n); }
-            if (m.Numel >= 2)
-            {
-                for (int k = 2; k < m.Numel; k++) if (m.Re[k] != 1) throw new OctaveException($"{fn}: N-d arrays are not supported yet");
-                return (Math.Max(0, (int)m.Re[0]), Math.Max(0, (int)m.Re[1]));
-            }
-            return (0, 0);
+            if (m.Numel == 1) { int n = Math.Max(0, (int)m.Re[0]); d = new[] { n, n }; }
+            else d = m.Re.Select(x => Math.Max(0, (int)x)).ToArray();
         }
-        for (int k = 2; k < args.Length; k++) if (D(args[k], fn) != 1) throw new OctaveException($"{fn}: N-d arrays are not supported yet");
-        return (Math.Max(0, I(args[0], fn)), Math.Max(0, I(args[1], fn)));
+        else d = args.Select(x => Math.Max(0, I(x, fn))).ToArray();
+        return NDArray.Normalize(d.Length == 0 ? new[] { 0, 0 } : d.Length == 1 ? new[] { d[0], d[0] } : d);
+    }
+
+    internal static (int r, int c) Dims(Value[] a, string fn, int start = 0)
+    {
+        var d = DimsN(a, fn, start);
+        if (d.Length > 2) throw new OctaveException($"{fn}: N-d arrays are not supported here");
+        return (d[0], d[1]);
+    }
+
+    /// <summary>Fill with N-D dims.</summary>
+    internal static MatrixValue FillN(int[] d, double v, NumKind k = NumKind.Double)
+    {
+        var m = Fill(d[0], NDArray.Prod(d, 1), v, k);
+        m.SetDims(d);
+        return m;
     }
 
     internal static MatrixValue Fill(int r, int c, double v, NumKind k = NumKind.Double)
@@ -80,7 +93,33 @@ public static partial class BuiltinLibrary
     }
 
     /// <summary>Default reduction dimension (1-based): first non-singleton.</summary>
-    internal static int DefDim(ArrayValue m) => m.R != 1 ? 1 : 2;
+    internal static MatrixValue ClassFill(Value[] a, string fn, double v)
+    {
+        var kind = NumKind.Double;
+        if (a.Length > 0 && IsString(a[^1]))
+        {
+            var name = S(a[^1], fn);
+            if (name != "like") kind = NumTypes.FromName(name) ?? throw new OctaveException($"{fn}: invalid class name '{name}'");
+        }
+        var m = FillN(DimsN(a, fn), v);
+        return kind == NumKind.Double ? m : m.CastInPlace(kind);
+    }
+
+    internal static int DefDim(ArrayValue m)
+    {
+        var d = m.Dims;
+        for (int k = 0; k < d.Length; k++) if (d[k] != 1) return k + 1;
+        return 1;
+    }
+
+    /// <summary>(stride, len, outer) decomposition for working along dim (1-based).</summary>
+    internal static (int stride, int len, int outer, int[] outDims) Split(ArrayValue m, int dim)
+    {
+        var d = NDArray.Pad(m.Dims, Math.Max(dim, 2));
+        int stride = NDArray.Prod(d, 0, dim - 1), len = d[dim - 1], outer = NDArray.Prod(d, dim);
+        var od = (int[])d.Clone(); od[dim - 1] = 1;
+        return (stride, len, outer, od);
+    }
 
     internal static int DimArg(Value[] a, int idx, ArrayValue m, string fn)
     {
@@ -91,50 +130,52 @@ public static partial class BuiltinLibrary
     /// <summary>Apply f over each vector along dim; f returns one value.</summary>
     internal static MatrixValue Reduce(MatrixValue m, int dim, Func<double[], double> f, NumKind kind = NumKind.Double)
     {
-        if (m.R == 0 && m.C == 0) return new MatrixValue(1, 1, new[] { f(Array.Empty<double>()) }, null, kind);
-        if (dim == 1)
-        {
-            var r = new MatrixValue(1, m.C, kind);
-            var buf = new double[m.R];
-            for (int j = 0; j < m.C; j++) { Array.Copy(m.Re, j * m.R, buf, 0, m.R); r.Re[j] = f(buf); }
-            return r;
-        }
-        if (dim == 2)
-        {
-            var r = new MatrixValue(m.R, 1, kind);
-            var buf = new double[m.C];
-            for (int i = 0; i < m.R; i++) { for (int j = 0; j < m.C; j++) buf[j] = m.Re[i + j * m.R]; r.Re[i] = f(buf); }
-            return r;
-        }
-        return Ops.Map(m, x => f(new[] { x }), null, null, kind);
+        if (m.R == 0 && m.C == 0 && m.ND == null) return new MatrixValue(1, 1, new[] { f(Array.Empty<double>()) }, null, kind);
+        var (stride, len, outer, od) = Split(m, dim);
+        var r = new MatrixValue(1, stride * outer, kind);
+        var buf = new double[len];
+        for (int o = 0; o < outer; o++)
+            for (int s = 0; s < stride; s++)
+            {
+                int b = s + o * stride * len;
+                for (int k = 0; k < len; k++) buf[k] = m.Re[b + k * stride];
+                r.Re[s + o * stride] = f(buf);
+            }
+        r.SetDims(od);
+        return r;
     }
 
     internal static MatrixValue ReduceC(MatrixValue m, int dim, Func<Complex[], Complex> f)
     {
-        Complex[] Vec(int start, int count, int stride) { var v = new Complex[count]; for (int k = 0; k < count; k++) v[k] = m.At(start + k * stride); return v; }
-        MatrixValue r;
-        if (m.R == 0 && m.C == 0) return MatrixValue.Cplx(f(Array.Empty<Complex>()));
-        if (dim == 1) { r = new MatrixValue(1, m.C, NumKind.Double, true); for (int j = 0; j < m.C; j++) { var z = f(Vec(j * m.R, m.R, 1)); r.Re[j] = z.Real; r.Im![j] = z.Imaginary; } }
-        else if (dim == 2) { r = new MatrixValue(m.R, 1, NumKind.Double, true); for (int i = 0; i < m.R; i++) { var z = f(Vec(i, m.C, m.R)); r.Re[i] = z.Real; r.Im![i] = z.Imaginary; } }
-        else return m;
+        if (m.R == 0 && m.C == 0 && m.ND == null) return MatrixValue.Cplx(f(Array.Empty<Complex>()));
+        var (stride, len, outer, od) = Split(m, dim);
+        var r = new MatrixValue(1, stride * outer, NumKind.Double, true);
+        var buf = new Complex[len];
+        for (int o = 0; o < outer; o++)
+            for (int s = 0; s < stride; s++)
+            {
+                int b = s + o * stride * len;
+                for (int k = 0; k < len; k++) buf[k] = m.At(b + k * stride);
+                var z = f(buf); r.Re[s + o * stride] = z.Real; r.Im![s + o * stride] = z.Imaginary;
+            }
+        r.SetDims(od);
         return r.Narrow();
     }
 
     /// <summary>Apply f to each vector along dim, f returns the same-length vector.</summary>
     internal static MatrixValue AlongDim(MatrixValue m, int dim, Func<double[], double[]> f, NumKind kind = NumKind.Double)
     {
-        var r = new MatrixValue(m.R, m.C, kind);
-        if (dim == 1)
-        {
-            var buf = new double[m.R];
-            for (int j = 0; j < m.C; j++) { Array.Copy(m.Re, j * m.R, buf, 0, m.R); var o = f(buf); Array.Copy(o, 0, r.Re, j * m.R, m.R); }
-        }
-        else if (dim == 2)
-        {
-            var buf = new double[m.C];
-            for (int i = 0; i < m.R; i++) { for (int j = 0; j < m.C; j++) buf[j] = m.Re[i + j * m.R]; var o = f(buf); for (int j = 0; j < m.C; j++) r.Re[i + j * m.R] = o[j]; }
-        }
-        else Array.Copy(m.Re, r.Re, m.Numel);
+        var r = new MatrixValue(m.R, m.C, kind) { ND = m.ND };
+        var (stride, len, outer, _) = Split(m, dim);
+        var buf = new double[len];
+        for (int o = 0; o < outer; o++)
+            for (int s = 0; s < stride; s++)
+            {
+                int b = s + o * stride * len;
+                for (int k = 0; k < len; k++) buf[k] = m.Re[b + k * stride];
+                var res = f(buf);
+                for (int k = 0; k < len; k++) r.Re[b + k * stride] = res[k];
+            }
         return r;
     }
 

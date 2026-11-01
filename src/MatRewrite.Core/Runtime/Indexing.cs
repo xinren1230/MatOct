@@ -51,22 +51,142 @@ public static class Indexing
             : new OctaveException($"{(pos == 0 ? $"index ({idx + 1},_)" : $"index (_,{idx + 1})")}: out of bound {extent} (dimensions are {a.R}x{a.C})", "Octave:index-out-of-bounds");
 
     /// <summary>Normalize >2 subscripts: trailing ones must be 1 or ':'.</summary>
-    static Value[] Normalize(Value[] args)
+    static bool IsOne(Value a) => a is MatrixValue m && m.Numel == 1 && m.Re[0] == 1 && !m.IsLogical;
+
+    /// <summary>Drop trailing subscripts equal to 1 (or ':' over a singleton dim) when they are redundant.</summary>
+    static Value[] Normalize(Value[] args, ArrayValue? a = null)
     {
-        if (args.Length <= 2) return args;
-        for (int k = 2; k < args.Length; k++)
+        int n = args.Length;
+        int nd = a?.NDims ?? 2;
+        while (n > 2 && n > nd && (IsOne(args[n - 1]) || args[n - 1] is MagicColon)) n--;
+        return n == args.Length ? args : args.Take(n).ToArray();
+    }
+
+    /// <summary>Dims of a folded to n subscripts (last absorbs the rest).</summary>
+    static int[] Fold(int[] d, int n)
+    {
+        var r = new int[n];
+        for (int k = 0; k < n; k++)
+            r[k] = k < n - 1 ? (k < d.Length ? d[k] : 1) : NDArray.Prod(d, k);
+        return r;
+    }
+
+    static ArrayValue ReadND(ArrayValue a, Value[] args)
+    {
+        int n = args.Length;
+        var fd = Fold(a.Dims, n);
+        var idx = new int[n][];
+        for (int k = 0; k < n; k++)
         {
-            var a = args[k];
-            bool ok = a is MagicColon || (a is MatrixValue m && m.Numel == 1 && m.Re[0] == 1);
-            if (!ok) throw new OctaveException("N-dimensional arrays are not supported yet (only 2-D)");
+            var ix = Convert(args[k], fd[k], "index", false);
+            foreach (var v in ix.I)
+                if (v >= fd[k])
+                    throw new OctaveException($"index ({string.Join(",", Enumerable.Range(0, n).Select(q => q == k ? (v + 1).ToString() : "_"))}): out of bound; value {v + 1} out of bound {fd[k]}", "Octave:index-out-of-bounds");
+            idx[k] = ix.I;
         }
-        return new[] { args[0], args[1] };
+        var od = idx.Select(x => x.Length).ToArray();
+        int total = NDArray.Prod(od);
+        var lin = new int[total];
+        if (total > 0)
+        {
+            var sub = new int[n]; var src = new int[n]; int t = 0;
+            do
+            {
+                for (int k = 0; k < n; k++) src[k] = idx[k][sub[k]];
+                lin[t++] = NDArray.Linear(src, fd);
+            } while (NDArray.Next(sub, od));
+        }
+        var r = a.Gather(lin, 1, total);
+        r.SetDims(od);
+        return r;
+    }
+
+    static ArrayValue AssignND(ArrayValue a, Value[] args, ArrayValue rhs, NumKind? kind)
+    {
+        int n = args.Length;
+        bool aEmpty = a.Numel == 0;
+        var fd = Fold(a.Dims, n);
+        if (n < a.NDims && !aEmpty) { /* folded assignment: no growth on the folded dim */ }
+        var rd = rhs.Dims.Where(x => x != 1).ToList();
+        var idx = new int[n][];
+        int rk = 0;
+        for (int k = 0; k < n; k++)
+        {
+            int ext = fd[k];
+            if (args[k] is MagicColon && aEmpty)
+            {
+                // take the extent from the next non-singleton rhs dim
+                var rdims = rhs.Dims;
+                ext = rhs.Numel == 1 ? 1 : (k < rdims.Length ? rdims[k] : 1);
+            }
+            idx[k] = Convert(args[k], ext, "index", true).I;
+        }
+        _ = rd; _ = rk;
+        var cnt = idx.Select(x => x.Length).ToArray();
+        int count = NDArray.Prod(cnt);
+        if (rhs.Numel != 1 && rhs.Numel != count)
+            throw new OctaveException($"=: nonconformant arguments (op1 is {string.Join("x", cnt)}, op2 is {rhs.DimString})");
+        var nd = new int[n];
+        for (int k = 0; k < n; k++) nd[k] = Math.Max(fd[k], idx[k].Length == 0 ? 0 : idx[k].Max() + 1);
+        ArrayValue target;
+        if (!nd.SequenceEqual(fd))
+        {
+            if (n < a.NDims && !aEmpty) throw new OctaveException("Octave:index out of bound; resizing a folded N-D array is not allowed", "Octave:index-out-of-bounds");
+            target = NDArray.ResizeND(a, nd);
+        }
+        else { target = Clone(a); }
+        var full = nd;
+        if (count > 0)
+        {
+            var sub = new int[n]; var dst = new int[n]; int t = 0;
+            do
+            {
+                for (int k = 0; k < n; k++) dst[k] = idx[k][sub[k]];
+                target.SetFrom(NDArray.Linear(dst, full), rhs, rhs.Numel == 1 ? 0 : t);
+                t++;
+            } while (NDArray.Next(sub, cnt));
+        }
+        if (n >= a.NDims) target.SetDims(nd); else target.SetDims(a.Dims);
+        if (target is MatrixValue tm && kind != null) tm.CastInPlace(kind.Value);
+        return Narrow(target);
+    }
+
+    static ArrayValue DeleteND(ArrayValue a, Value[] args)
+    {
+        int n = args.Length;
+        var fd = Fold(a.Dims, n);
+        int which = -1;
+        for (int k = 0; k < n; k++)
+            if (!(args[k] is MagicColon || IsFull(args[k], fd[k])))
+            {
+                if (which >= 0) throw new OctaveException("a null assignment can only have one non-colon index");
+                which = k;
+            }
+        if (which < 0) return a.EmptyLike(0, 0);
+        var del = new HashSet<int>(Convert(args[which], fd[which], "index", false).I);
+        var keepK = Enumerable.Range(0, fd[which]).Where(i => !del.Contains(i)).ToArray();
+        var od = (int[])fd.Clone(); od[which] = keepK.Length;
+        int total = NDArray.Prod(od);
+        var lin = new int[total];
+        if (total > 0)
+        {
+            var sub = new int[n]; var src = new int[n]; int t = 0;
+            do
+            {
+                Array.Copy(sub, src, n); src[which] = keepK[sub[which]];
+                lin[t++] = NDArray.Linear(src, fd);
+            } while (NDArray.Next(sub, od));
+        }
+        var r = a.Gather(lin, 1, total);
+        r.SetDims(od);
+        return r;
     }
 
     public static ArrayValue Read(ArrayValue a, Value[] args)
     {
-        args = Normalize(args);
+        args = Normalize(args, a);
         if (args.Length == 0) return a;
+        if (args.Length > 2 || (args.Length == 2 && a.ND != null)) return ReadND(a, args);
         if (args.Length == 1)
         {
             int n = a.Numel;
@@ -101,11 +221,29 @@ public static class Indexing
     /// <summary>A(args) = rhs. 'a' may be null (undefined variable). Returns the new array.</summary>
     public static ArrayValue Assign(ArrayValue? a, Value[] args, ArrayValue rhs)
     {
-        args = Normalize(args);
-        bool deleting = a != null && rhs is MatrixValue dm && dm.R == 0 && dm.C == 0 && !dm.IsChar;
+        args = Normalize(args, a);
+        bool deleting = a != null && rhs is MatrixValue dm && dm.R == 0 && dm.C == 0 && !dm.IsChar && dm.Kind == NumKind.Double;
         if (deleting) return Delete(a!, args);
         a ??= rhs.EmptyLike(0, 0);
+        var kind = ResultKind(a, rhs);
         a = Coerce(a, rhs);
+        if (args.Length > 2 || (args.Length == 2 && a.ND != null)) return AssignND(a, args, rhs, kind);
+        var res = Assign2(a, args, rhs);
+        if (kind != null && res is MatrixValue rm2) rm2.CastInPlace(kind.Value);
+        return res;
+    }
+
+    static NumKind? ResultKind(ArrayValue a, ArrayValue rhs)
+    {
+        if (a is not MatrixValue am || rhs is not MatrixValue rm) return null;
+        if (am.IsInteger) return am.Kind;
+        if (rm.IsInteger) return rm.Kind;
+        if (am.IsSingle || rm.IsSingle) return NumKind.Single;
+        return null;
+    }
+
+    static ArrayValue Assign2(ArrayValue a, Value[] args, ArrayValue rhs)
+    {
         if (args.Length == 1)
         {
             int n = a.Numel;
@@ -181,6 +319,7 @@ public static class Indexing
 
     public static ArrayValue Delete(ArrayValue a, Value[] args)
     {
+        if (args.Length > 2 || (args.Length == 2 && a.ND != null)) return DeleteND(a, args);
         if (args.Length == 1)
         {
             var ix = Convert(args[0], a.Numel, "index", false);

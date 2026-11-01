@@ -1,4 +1,5 @@
 // MatRewrite - GPL-3.0-or-later
+using System.IO;
 using System.Text;
 using MatRewrite.Core.Runtime;
 using MatRewrite.Core.Builtins;
@@ -12,6 +13,14 @@ public static class Program
         Console.OutputEncoding = Encoding.UTF8;
         var stdout = new StreamWriter(Console.OpenStandardOutput(), new UTF8Encoding(false)) { AutoFlush = false };
         var it = new Interpreter(stdout);
+        bool gui = !argv.Contains("--no-gui");
+#if WPF_FIGURES
+        MatRewrite.Plotting.Wpf.WpfBackend? wpf = null;
+        if (gui) { wpf = new MatRewrite.Plotting.Wpf.WpfBackend(); it.Graphics.Backend = wpf; wpf.WindowClosed += f => { try { it.Graphics.Close(f); } catch { } }; }
+        else it.Graphics.Backend = new MatRewrite.Plotting.FileOnlyBackend();
+#else
+        it.Graphics.Backend = new MatRewrite.Plotting.FileOnlyBackend();
+#endif
         var args = argv.ToList();
         string? evalCode = null;
         bool quiet = false;
@@ -30,7 +39,11 @@ public static class Program
                 var file = args[0];
                 var dir = Path.GetDirectoryName(Path.GetFullPath(file));
                 if (dir != null) it.SearchPath.Add(dir);
-                return Run(it, () => it.RunFile(file), stdout);
+                int rc = Run(it, () => it.RunFile(file), stdout);
+#if WPF_FIGURES
+                if (wpf != null && wpf.OpenWindows > 0) { stdout.Flush(); Console.Error.WriteLine("(close all figure windows to exit)"); wpf.WaitForWindows(); }
+#endif
+                return rc;
             }
             if (!quiet)
             {
@@ -49,7 +62,7 @@ public static class Program
         catch (Exception ex)
         {
             o.Flush();
-            Console.Error.WriteLine("error: " + Interpreter.ErrorInfo(ex).msg);
+            Console.Error.Write("error: " + Interpreter.ErrorInfo(ex).msg + "\n" + Interpreter.FormatStack(ex));
             return 1;
         }
     }
@@ -73,7 +86,7 @@ public static class Program
             catch (Exception ex)
             {
                 o.Flush();
-                Console.Error.WriteLine("error: " + Interpreter.ErrorInfo(ex).msg);
+                Console.Error.Write("error: " + Interpreter.ErrorInfo(ex).msg + "\n" + Interpreter.FormatStack(ex));
                 Console.Error.Flush();
             }
         }

@@ -10,6 +10,7 @@ public static class Concat
     static Value Join(List<Value> items, bool horiz)
     {
         if (items.Count == 1) return items[0];
+        if (items.Any(v => v.NDims > 2)) return NDArray.Cat(horiz ? 2 : 1, items);
         if (items.Any(v => v is FunctionHandleValue))
             throw new OctaveException("concatenation of function handles is not allowed; use a cell array");
         bool anyCell = items.Any(v => v is CellValue);
@@ -29,7 +30,9 @@ public static class Concat
             var ms = arrs.Cast<MatrixValue>().ToList();
             bool anyChar = ms.Any(m => m.IsChar);
             bool allLogical = ms.Where(m => m.Numel > 0 || ms.All(x => x.Numel == 0)).All(m => m.IsLogical);
-            kind = anyChar ? NumKind.Char : allLogical ? NumKind.Logical : NumKind.Double;
+            var firstInt = ms.FirstOrDefault(m => m.IsInteger);
+            kind = firstInt != null ? firstInt.Kind : anyChar ? NumKind.Char : allLogical ? NumKind.Logical
+                 : ms.Any(m => m.IsSingle) ? NumKind.Single : NumKind.Double;
             cplx = ms.Any(m => m.IsComplex);
         }
 
@@ -70,7 +73,7 @@ public static class Concat
                 }
             off += horiz ? a.C : a.R;
         }
-        if (target is MatrixValue tm) { tm.Kind = kind; tm.Narrow(); }
+        if (target is MatrixValue tm) { tm.CastInPlace(kind); tm.Narrow(); }
         return target;
     }
 

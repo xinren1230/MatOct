@@ -20,6 +20,13 @@ public static class Display
 
     static void ShowInto(StringBuilder sb, string name, Value v, string ind)
     {
+        if (v is ArrayValue av && av.ND != null)
+        {
+            if (av.Numel == 0 || v is not MatrixValue) { sb.Append($"{ind}{name} = {(v is CellValue ? "{}" : v is StructValue ? "" : "[]")}({av.DimString}){(v is StructValue ? " struct array" : "")}\n"); return; }
+            sb.Append($"{ind}{name} =\n\n");
+            sb.Append(NDPages(av, ind));
+            return;
+        }
         switch (v)
         {
             case MatrixValue m:
@@ -66,6 +73,10 @@ public static class Display
                     foreach (var f in s.Fields) sb.Append($"{ind}    {f}\n");
                     sb.Append('\n');
                 }
+                break;
+            case MapValue mp:
+                sb.Append($"{ind}{name} =\n\n{ind}  containers.Map object with properties:\n\n");
+                sb.Append($"{ind}    Count     : {mp.Count}\n{ind}    KeyType   : {mp.KeyType}\n{ind}    ValueType : {mp.ValueType}\n\n");
                 break;
             case FunctionHandleValue fh:
                 if (fh.IsAnonymous) sb.Append($"{ind}{name} =\n\n{ind}{fh}\n\n");
@@ -117,8 +128,26 @@ public static class Display
     }
 
     /// <summary>Output of disp(x).</summary>
+    static string NDPages(ArrayValue a, string ind)
+    {
+        var sb = new StringBuilder();
+        var d = a.Dims;
+        int pages = NDArray.Prod(d, 2);
+        for (int p = 0; p < pages; p++)
+        {
+            var pg = (MatrixValue)NDArray.Page(a, p);
+            sb.Append($"{ind}ans{NDArray.PageLabel(d, p)} =\n\n");
+            if (pg.IsChar) for (int i = 0; i < pg.R; i++) sb.Append(ind).Append(pg.RowString(i)).Append('\n');
+            else foreach (var line in MatrixLines(pg)) sb.Append(ind).Append(line).Append('\n');
+            if (p < pages - 1) sb.Append('\n');
+        }
+        sb.Append('\n');
+        return sb.ToString();
+    }
+
     public static string Disp(Value v)
     {
+        if (v is MatrixValue nm && nm.ND != null && nm.Numel > 0) return NDPages(nm, "");
         switch (v)
         {
             case MatrixValue m:
@@ -215,6 +244,7 @@ public static class Display
             var (d, sci, _) = RealFormat(new[] { re, im }, true);
             return $"{FormatReal(re, d, sci)} {(im < 0 ? "-" : "+")} {FormatReal(Math.Abs(im), d, sci)}i";
         }
+        if (m.IsInteger) return ((long)re).ToString(Inv);
         if (m.IsLogical || m.IsChar || AllInt(m)) return FmtInt(re);
         var (dec, s2, _) = RealFormat(new[] { re }, true);
         return FormatReal(re, dec, s2);
@@ -252,6 +282,18 @@ public static class Display
                     int k = i + j * m.R;
                     sb.Append("   ").Append(reS[k].PadLeft(wr)).Append(m.Im![k] < 0 ? " - " : " + ").Append(imS[k].PadLeft(wi)).Append('i');
                 }
+                lines.Add(sb.ToString());
+            }
+            return lines;
+        }
+        if (m.IsInteger)
+        {
+            var strs = m.Re.Select(x => ((long)x).ToString(Inv)).ToArray();
+            int iw = strs.Max(x => x.Length);
+            for (int i = 0; i < m.R; i++)
+            {
+                var sb = new StringBuilder();
+                for (int j = 0; j < m.C; j++) sb.Append("  ").Append(strs[i + j * m.R].PadLeft(iw));
                 lines.Add(sb.ToString());
             }
             return lines;

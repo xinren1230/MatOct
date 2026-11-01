@@ -17,9 +17,23 @@ public sealed class UserFunction
     public bool IsScript;
     public Dictionary<string, UserFunction> Siblings = new(); // subfunctions in the same file
     public Dictionary<string, Value> Persistents = new();
+    public UserFunction? Parent;                                // for nested functions
+    public Dictionary<string, UserFunction> Nested = new();
+    public int Line;
 
-    public static UserFunction From(FunctionDef d, string? file) =>
-        new() { Name = d.Name, Params = d.Params, Outputs = d.Outputs, Body = d.Body, File = file };
+    public static UserFunction From(FunctionDef d, string? file, UserFunction? parent = null)
+    {
+        var f = new UserFunction { Name = d.Name, Params = d.Params, Outputs = d.Outputs, Body = d.Body, File = file, Parent = parent, Line = d.Line };
+        foreach (var n in d.Nested) f.Nested[n.Name] = From(n, file, f);
+        return f;
+    }
+
+    /// <summary>Share the file's subfunction table with nested functions too.</summary>
+    public void SetSiblings(Dictionary<string, UserFunction> sibs)
+    {
+        Siblings = sibs;
+        foreach (var n in Nested.Values) n.SetSiblings(sibs);
+    }
 }
 
 public sealed class Scope
@@ -28,6 +42,9 @@ public sealed class Scope
     public Dictionary<string, Dictionary<string, Value>> Redirect = new(); // global / persistent
     public UserFunction? Func;
     public int Nargin = -1, Nargout = -1;
+    public Scope? ParentScope;   // enclosing function's live workspace (nested functions)
+    public int Line;             // current line, for error stack traces
+    public string FrameName = "";
 }
 
 enum Flow { Normal, Break, Continue, Return }
@@ -54,6 +71,8 @@ public sealed partial class Interpreter
     readonly HashSet<string> missingCache = new();
     int depth;
     public const int MaxRecursion = 256;
+    /// <summary>Active function/script frames (innermost last).</summary>
+    public readonly List<Scope> CallStack = new();
 
     public Interpreter(TextWriter? output = null)
     {
@@ -117,15 +136,30 @@ public sealed partial class Interpreter
     public void ClearVar(string name) { Current.Vars.Remove(name); Current.Redirect.Remove(name); }
 
     // ------------------------------------------------------------ variables
-    Value? LookupVar(string name)
+    Value? LookupVar(string name) => LookupIn(Current, name);
+
+    static bool IsOwnName(Scope sc, string name) =>
+        sc.Func != null && (sc.Func.Params.Contains(name) || sc.Func.Outputs.Contains(name));
+
+    static Value? LookupIn(Scope sc, string name)
     {
-        if (Current.Redirect.TryGetValue(name, out var store)) return store.TryGetValue(name, out var gv) ? gv : null;
-        return Current.Vars.TryGetValue(name, out var v) ? v : null;
+        for (var s = sc; s != null; s = s.ParentScope)
+        {
+            if (s.Redirect.TryGetValue(name, out var store)) return store.TryGetValue(name, out var gv) ? gv : null;
+            if (s.Vars.TryGetValue(name, out var v)) return v;
+            if (IsOwnName(s, name)) return null;
+        }
+        return null;
     }
+
     void StoreVar(string name, Value v)
     {
-        if (Current.Redirect.TryGetValue(name, out var store)) store[name] = v;
-        else Current.Vars[name] = v;
+        for (var s = Current; s != null; s = s.ParentScope)
+        {
+            if (s.Redirect.TryGetValue(name, out var store)) { store[name] = v; return; }
+            if (s.Vars.ContainsKey(name) || IsOwnName(s, name) || s.ParentScope == null) { s.Vars[name] = v; return; }
+        }
+        Current.Vars[name] = v;
     }
     public bool IsVariable(string name) => LookupVar(name) != null;
 
@@ -142,6 +176,7 @@ public sealed partial class Interpreter
 
     Flow Exec(Stmt s)
     {
+        if (s.Line > 0) Current.Line = s.Line;
         switch (s)
         {
             case ExprStmt es: ExecExprStmt(es); return Flow.Normal;
@@ -174,7 +209,7 @@ public sealed partial class Interpreter
                 {
                     var (msg, id) = ErrorInfo(ex);
                     LastError = msg;
-                    if (t.CatchVar != null) StoreVar(t.CatchVar, MakeErrorStruct(msg, id));
+                    if (t.CatchVar != null) StoreVar(t.CatchVar, MakeErrorStruct(msg, id, (ex as OctaveException)?.Stack));
                     return ExecBlock(t.CatchBody);
                 }
             case UnwindStmt u:
@@ -205,15 +240,48 @@ public sealed partial class Interpreter
         _ => (ex.Message, "Octave:internal")
     };
 
-    public static StructValue MakeErrorStruct(string msg, string id)
+    public static StructValue MakeErrorStruct(string msg, string id, List<StackFrameInfo>? stack = null)
     {
         var s = new StructValue();
         s.Set("message", MatrixValue.Str(msg));
         s.Set("identifier", MatrixValue.Str(id));
-        var st = new StructValue();
-        st.Set("file", MatrixValue.Str("")); st.Set("name", MatrixValue.Str("")); st.Set("line", MatrixValue.Scalar(0)); st.Set("column", MatrixValue.Scalar(0));
-        s.Set("stack", st);
+        s.Set("stack", StackStruct(stack));
         return s;
+    }
+
+    public static StructValue StackStruct(List<StackFrameInfo>? stack)
+    {
+        int n = stack?.Count ?? 0;
+        var st = new StructValue(Math.Max(n, 1), 1, new List<string> { "file", "name", "line", "column" });
+        if (n == 0)
+        {
+            st = new StructValue();
+            st.Set("file", MatrixValue.Str("")); st.Set("name", MatrixValue.Str("")); st.Set("line", MatrixValue.Scalar(0)); st.Set("column", MatrixValue.Scalar(0));
+            return st;
+        }
+        for (int k = 0; k < n; k++)
+        {
+            var f = stack![k];
+            st.Set("file", MatrixValue.Str(f.File), k); st.Set("name", MatrixValue.Str(f.Name), k);
+            st.Set("line", MatrixValue.Scalar(f.Line), k); st.Set("column", MatrixValue.Scalar(f.Column), k);
+        }
+        return st;
+    }
+
+    /// <summary>Octave-style "called from" trace lines for an error.</summary>
+    public static string FormatStack(Exception ex)
+    {
+        if (ex is not OctaveException oe || oe.Stack.Count == 0) return "";
+        var sb = new System.Text.StringBuilder("error: called from\n");
+        foreach (var f in oe.Stack) sb.Append($"    {f.Name}{(f.Line > 0 ? $" at line {f.Line}" : "")}\n");
+        return sb.ToString();
+    }
+
+    static OctaveException AddFrame(Exception ex, Scope sc)
+    {
+        var oe = ex as OctaveException ?? new OctaveException(ex.Message, "Octave:internal");
+        oe.Stack.Add(new StackFrameInfo(sc.FrameName, sc.Func?.File ?? "", sc.Line, 0));
+        return oe;
     }
 
     void ExecExprStmt(ExprStmt es)
@@ -410,6 +478,14 @@ public sealed partial class Interpreter
             case '(':
             {
                 if (cur is FunctionHandleValue) throw new OctaveException("invalid use of a function handle in indexed assignment");
+                if (cur is MapValue map)
+                {
+                    var ka = EvalArgs(op.Args!);
+                    if (ka.Length != 1) throw new OctaveException("only '()' indexing with exactly one key is supported by containers.Map");
+                    Value? old = map.Has(ka[0]) ? map.Get(ka[0]) : null;
+                    map.Set(ka[0], last ? rhs : AssignChain(old, ops, k + 1, rhs));
+                    return map;
+                }
                 var curArr = cur as ArrayValue;
                 var args = EvalIndexArgs(op.Args!, cur ?? MatrixValue.Empty());
                 if (last)
@@ -508,7 +584,7 @@ public sealed partial class Interpreter
             {
                 if (endStack.Count == 0) throw new OctaveException("'end': nonconformant arguments");
                 var (v, pos, n) = endStack[^1];
-                int val = n == 1 ? v.Numel : pos == 0 ? v.Rows : pos == 1 ? v.Cols : 1;
+                int val; { var vd = v.Dims; if (n == 1) val = v.Numel; else if (pos < n - 1) val = pos < vd.Length ? vd[pos] : 1; else val = NDArray.Prod(vd, pos); }
                 return new List<Value> { MatrixValue.Scalar(val) };
             }
             case PostfixExpr pf:
@@ -633,6 +709,14 @@ public sealed partial class Interpreter
         {
             var v = LookupVar(id.Name);
             if (v != null) cur = new List<Value> { v };
+            else if (id.Name == "containers" && ops.Count > 0 && ops[0].Kind == '.' && ops[0].Field == "Map")
+            {
+                Value[] margs = Array.Empty<Value>();
+                start = 1;
+                if (ops.Count > 1 && ops[1].Kind == '(') { margs = EvalArgs(ops[1].Args!); start = 2; }
+                cur = CallFunction("containers.Map", margs, 1).ToList();
+                if (start == ops.Count) return cur;
+            }
             else if (id.Name == "nargin" && Current.Nargin >= 0 && ops.Count == 0) return new List<Value> { MatrixValue.Scalar(Current.Nargin) };
             else if (id.Name == "nargout" && Current.Nargout >= 0 && ops.Count == 0) return new List<Value> { MatrixValue.Scalar(Current.Nargout) };
             else
@@ -662,6 +746,13 @@ public sealed partial class Interpreter
                         cur = CallHandle(fh, EvalArgs(op.Args!), last ? nargout : 1).ToList();
                         break;
                     }
+                    if (v is MapValue mv0)
+                    {
+                        var ka = EvalArgs(op.Args!);
+                        if (ka.Length != 1) throw new OctaveException("only '()' indexing with exactly one key is supported by containers.Map");
+                        cur = new List<Value> { mv0.Get(ka[0]) };
+                        break;
+                    }
                     if (v is not ArrayValue av) throw new OctaveException($"'{v.ClassName}' object cannot be indexed with (");
                     cur = new List<Value> { Indexing.Read(av, EvalIndexArgs(op.Args!, v)) };
                     break;
@@ -676,6 +767,20 @@ public sealed partial class Interpreter
                 case '.':
                 {
                     var name = FieldName(op);
+                    if (v is MapValue mp)
+                    {
+                        Value[] margs = Array.Empty<Value>();
+                        if (!last && ops[k + 1].Kind == '(' && name is "keys" or "values" or "isKey" or "remove" or "length")
+                        { margs = EvalArgs(ops[k + 1].Args!); k++; }
+                        cur = name switch
+                        {
+                            "Count" => new List<Value> { MatrixValue.Scalar(mp.Count) },
+                            "KeyType" => new List<Value> { MatrixValue.Str(mp.KeyType) },
+                            "ValueType" => new List<Value> { MatrixValue.Str(mp.ValueType) },
+                            _ => CallFunction(name, new Value[] { mp }.Concat(margs).ToArray(), 1).ToList()
+                        };
+                        break;
+                    }
                     if (v is not StructValue sv)
                         throw new OctaveException(v is MatrixValue mm && mm.IsScalar ? "scalar cannot be indexed with ." : v is MatrixValue ? "matrix cannot be indexed with ." : $"'{v.ClassName}' object cannot be indexed with .");
                     if (!sv.HasField(name)) throw new OctaveException($"invalid use of undefined value");
@@ -716,6 +821,10 @@ public sealed partial class Interpreter
 
     UserFunction? ResolveUser(string name, UserFunction? context)
     {
+        for (var c = context; c != null; c = c.Parent)
+        {
+            if (c.Nested.TryGetValue(name, out var nf)) return nf;
+        }
         if (context != null && context.Siblings.TryGetValue(name, out var sib)) return sib;
         if (CommandLineFunctions.TryGetValue(name, out var cl)) return cl;
         return FindOnPath(name);
@@ -749,7 +858,7 @@ public sealed partial class Interpreter
         {
             var defs = unit.Functions.Select(d => UserFunction.From(d, path)).ToList();
             var sibs = defs.ToDictionary(d => d.Name, d => d);
-            foreach (var d in defs) d.Siblings = sibs;
+            foreach (var d in defs) d.SetSiblings(sibs);
             fn = defs[0];
         }
         else
@@ -764,7 +873,16 @@ public sealed partial class Interpreter
     void ExecScript(UserFunction script)
     {
         foreach (var kv in script.Siblings) CommandLineFunctions[kv.Key] = kv.Value;
-        ExecBlock(script.Body);
+        var saveLine = Current.Line; var saveName = Current.FrameName;
+        Current.FrameName = script.Name; Current.Line = 0;
+        try { ExecBlock(script.Body); }
+        catch (Exception ex) when (ex is not ControlException)
+        {
+            var oe = AddFrame(ex, Current);
+            if (!ReferenceEquals(oe, ex)) throw oe;
+            throw;
+        }
+        finally { Current.Line = saveLine; Current.FrameName = saveName; }
     }
 
     public Value[] CallUser(UserFunction f, Value[] args, int nargout)
@@ -779,17 +897,29 @@ public sealed partial class Interpreter
         if (depth >= MaxRecursion)
             throw new OctaveException("max_recursion_depth exceeded", "Octave:recursion-depth");
 
-        var scope = new Scope { Func = f, Nargin = args.Length, Nargout = nargout };
+        var scope = new Scope { Func = f, Nargin = args.Length, Nargout = nargout, FrameName = f.Name, Line = f.Line };
+        if (f.Parent != null)
+        {
+            for (int k = CallStack.Count - 1; k >= 0; k--)
+                if (CallStack[k].Func == f.Parent) { scope.ParentScope = CallStack[k]; break; }
+            if (scope.ParentScope == null && Current.Func == f.Parent) scope.ParentScope = Current;
+        }
         for (int k = 0; k < Math.Min(fixedIn, args.Length); k++)
             if (f.Params[k] != "~") scope.Vars[f.Params[k]] = args[k];
         if (hasVarargin)
             scope.Vars["varargin"] = CellValue.RowOf(args.Skip(fixedIn));
 
         var save = Current; var saveEnd = endStack.ToList();
-        Current = scope; depth++;
+        Current = scope; depth++; CallStack.Add(scope);
         endStack.Clear();
         try { ExecBlock(f.Body); }
-        finally { Current = save; depth--; endStack.Clear(); endStack.AddRange(saveEnd); }
+        catch (Exception ex) when (ex is not ControlException)
+        {
+            var oe = AddFrame(ex, scope);
+            if (!ReferenceEquals(oe, ex)) throw oe;
+            throw;
+        }
+        finally { Current = save; depth--; CallStack.RemoveAt(CallStack.Count - 1); endStack.Clear(); endStack.AddRange(saveEnd); }
 
         var outs = new List<Value>();
         int want = Math.Max(1, nargout);

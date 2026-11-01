@@ -100,19 +100,21 @@ public static partial class BuiltinLibrary
         Reg1("ctranspose", a => Ops.Transpose((ArrayValue)a[0], true));
 
         // constants
-        void Const(string name, double v) => Reg1(name, a => { var (r, c) = Dims(a, name); return Fill(r, c, v); });
+        void Const(string name, double v) => Reg1(name, a => { return FillN(DimsN(a, name), v); });
         Const("pi", Math.PI); Const("e", Math.E); Const("Inf", double.PositiveInfinity); Const("inf", double.PositiveInfinity);
         Const("NaN", double.NaN); Const("nan", double.NaN); Const("NA", double.NaN);
         Reg1("eps", a =>
         {
             if (a.Length == 1 && a[0] is MatrixValue m && !m.IsChar) return Ops.Map(m, x => { x = Math.Abs(x); if (x == 0) return double.Epsilon; return Math.BitIncrement(x) - x; });
-            var (r, c) = Dims(a, "eps"); return Fill(r, c, Math.Pow(2, -52));
+            return FillN(DimsN(a, "eps"), Math.Pow(2, -52));
         });
-        Const("realmax", double.MaxValue); Const("realmin", 2.2250738585072014e-308); Const("intmax", int.MaxValue); Const("intmin", int.MinValue); Const("flintmax", 9007199254740992);
+        Const("realmax", double.MaxValue); Const("realmin", 2.2250738585072014e-308);  Const("flintmax", 9007199254740992);
         Reg1("i", a => MatrixValue.Cplx(0, 1)); Reg1("j", a => MatrixValue.Cplx(0, 1));
         Reg1("I", a => MatrixValue.Cplx(0, 1)); Reg1("J", a => MatrixValue.Cplx(0, 1));
-        Reg1("true", a => { var (r, c) = Dims(a, "true"); return Fill(r, c, 1, NumKind.Logical); });
-        Reg1("false", a => { var (r, c) = Dims(a, "false"); return Fill(r, c, 0, NumKind.Logical); });
+        Reg1("intmax", a => IntLimit(a, "intmax", true));
+        Reg1("intmin", a => IntLimit(a, "intmin", false));
+        Reg1("true", a => { return FillN(DimsN(a, "true"), 1, NumKind.Logical); });
+        Reg1("false", a => { return FillN(DimsN(a, "false"), 0, NumKind.Logical); });
     }
 
     static double Gcd(double a, double b) { a = Math.Abs(a); b = Math.Abs(b); while (b != 0) (a, b) = (b, a % b); return a; }
@@ -122,5 +124,21 @@ public static partial class BuiltinLibrary
         long n = (long)x;
         for (long p = 2; p * p <= n; p++) if (n % p == 0) return false;
         return true;
+    }
+
+    static MatrixValue IntLimit(Value[] a, string fn, bool max)
+    {
+        var k = NumKind.Int32;
+        if (a.Length > 0)
+        {
+            if (a[0] is MatrixValue m && m.IsInteger) k = m.Kind;
+            else
+            {
+                var name = S(a[0], fn);
+                k = NumTypes.FromName(name) is NumKind q && NumTypes.IsInt(q) ? q : throw new OctaveException($"{fn}: invalid class name '{name}'");
+            }
+        }
+        var (lo, hi) = NumTypes.Range(k);
+        return new MatrixValue(1, 1, new[] { max ? hi : lo }, null, k);
     }
 }

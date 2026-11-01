@@ -40,7 +40,11 @@ public sealed record ReturnStmt : Stmt;
 public sealed record GlobalStmt(List<string> Names, List<Expr?> Inits, bool Persistent) : Stmt;
 public sealed record NoopStmt : Stmt;
 
-public sealed record FunctionDef(string Name, List<string> Params, List<string> Outputs, List<Stmt> Body) : Node;
+public sealed record FunctionDef(string Name, List<string> Params, List<string> Outputs, List<Stmt> Body) : Node
+{
+    /// <summary>Nested functions (only when the parent is terminated with end/endfunction).</summary>
+    public List<FunctionDef> Nested { get; init; } = new();
+}
 
 public sealed class ProgramUnit
 {

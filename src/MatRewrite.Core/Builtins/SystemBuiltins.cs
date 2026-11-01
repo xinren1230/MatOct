@@ -151,7 +151,6 @@ public static partial class BuiltinLibrary
         Reg0("fflush", (it, a) => it.Out.Flush());
         Reg1("stdout", a => Num(1));
         Reg1("stderr", a => Num(2));
-        Reg0("drawnow", (it, a) => { });
         Reg("who", (it, a, n) =>
         {
             var names = it.VariableNames.ToList();

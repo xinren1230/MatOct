@@ -39,7 +39,7 @@ public sealed class Parser
         if (IsKw("function")) u.IsFunctionFile = true;
         while (Cur.Kind != TokKind.EOF)
         {
-            if (IsKw("function")) u.Functions.Add(ParseFunction());
+            if (IsKw("function")) { u.Functions.Add(ParseFunction(out var promoted)); u.Functions.AddRange(promoted); }
             else
             {
                 var s = ParseStatement();
@@ -50,7 +50,7 @@ public sealed class Parser
         return u;
     }
 
-    FunctionDef ParseFunction()
+    FunctionDef ParseFunction(out List<FunctionDef> promoted)
     {
         int line = Cur.Line;
         p++; // function
@@ -90,8 +90,25 @@ public sealed class Parser
             }
             p++;
         }
-        var body = ParseBlock(out var term, "end", "endfunction", "function");
-        if (term == "end" || term == "endfunction") p++;
+        var body = new List<Stmt>();
+        var kids = new List<FunctionDef>();
+        var kidPromoted = new List<FunctionDef>();
+        string term;
+        while (true)
+        {
+            body.AddRange(ParseBlock(out term, "end", "endfunction", "function"));
+            if (term != "function") break;
+            kids.Add(ParseFunction(out var kp));
+            kidPromoted.AddRange(kp);
+        }
+        promoted = new List<FunctionDef>();
+        if (term == "end" || term == "endfunction")
+        {
+            p++;
+            return new FunctionDef(name, pars, outs, body) { Line = line, Nested = kids.Concat(kidPromoted).ToList() };
+        }
+        // no 'end': following functions are siblings (subfunctions)
+        promoted.AddRange(kids); promoted.AddRange(kidPromoted);
         return new FunctionDef(name, pars, outs, body) { Line = line };
     }
 

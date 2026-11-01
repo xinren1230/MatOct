@@ -12,5 +12,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\MatRewrite.Core\MatRewrite.Core.csproj" />
+    <ProjectReference Include="..\..\src\MatRewrite.Plotting\MatRewrite.Plotting.csproj" />
   </ItemGroup>
 </Project>

@@ -13,48 +13,52 @@ public static partial class BuiltinLibrary
         Reg("size", (it, a, n) =>
         {
             NArgs(a, 1, 2, "size");
-            var v = a[0];
-            if (a.Length == 2) { int d = I(a[1], "size"); return Out(Num(d == 1 ? v.Rows : d == 2 ? v.Cols : 1)); }
-            if (n <= 1) return Out(MatrixValue.Row(new double[] { v.Rows, v.Cols }));
+            var d = a[0].Dims;
+            if (a.Length == 2)
+            {
+                var q = M(a[1], "size");
+                return Out(MatrixValue.Row(q.Re.Select(x => { int k = (int)x; if (k < 1) throw new OctaveException("size: requested dimension DIM (= " + k + ") out of range"); return k <= d.Length ? (double)d[k - 1] : 1.0; }).ToArray()));
+            }
+            if (n <= 1) return Out(MatrixValue.Row(d.Select(x => (double)x).ToArray()));
             var res = new Value[n];
-            res[0] = Num(v.Rows); res[1] = Num(v.Cols);
-            for (int k = 2; k < n; k++) res[k] = Num(1);
+            for (int k = 0; k < n; k++)
+                res[k] = Num(k < n - 1 ? (k < d.Length ? d[k] : 1) : NDArray.Prod(d, k));
             return res;
         });
         Reg1("numel", a => Num(a[0].Numel));
         Reg1("length", a => Num(a[0].Numel == 0 ? 0 : Math.Max(a[0].Rows, a[0].Cols)));
-        Reg1("ndims", a => Num(2));
+        Reg1("ndims", a => Num(a[0].NDims));
         Reg1("rows", a => Num(a[0].Rows));
         Reg1("columns", a => Num(a[0].Cols));
         Reg1("isempty", a => { NArgs(a, 1, 1, "isempty"); return Bool(a[0].Numel == 0); });
         Reg1("isnull", a => Bool(a[0].Numel == 0));
         Reg1("isscalar", a => Bool(a[0].Rows == 1 && a[0].Cols == 1));
-        Reg1("isvector", a => Bool((a[0].Rows == 1 || a[0].Cols == 1) && a[0].Numel >= 1));
+        Reg1("isvector", a => Bool(a[0].NDims == 2 && (a[0].Rows == 1 || a[0].Cols == 1) && a[0].Numel >= 1));
         Reg1("isrow", a => Bool(a[0].Rows == 1));
         Reg1("iscolumn", a => Bool(a[0].Cols == 1));
-        Reg1("ismatrix", a => Bool(true));
+        Reg1("ismatrix", a => Bool(a[0].NDims == 2));
         Reg1("issquare", a => Bool(a[0].Rows == a[0].Cols));
 
-        Reg1("zeros", a => { var (r, c) = Dims(a, "zeros"); return Fill(r, c, 0); });
-        Reg1("ones", a => { var (r, c) = Dims(a, "ones"); return Fill(r, c, 1); });
-        Reg1("cell", a => { var (r, c) = Dims(a, "cell"); return new CellValue(r, c); });
+        Reg1("zeros", a => ClassFill(a, "zeros", 0));
+        Reg1("ones", a => ClassFill(a, "ones", 1));
+        Reg1("cell", a => { var d = DimsN(a, "cell"); var cv = new CellValue(d[0], NDArray.Prod(d, 1)); cv.SetDims(d); return cv; });
         Reg1("eye", a => { var (r, c) = Dims(a, "eye"); var m = new MatrixValue(r, c); for (int k = 0; k < Math.Min(r, c); k++) m.Re[k + k * r] = 1; return m; });
         RegI("rand", (it, a) =>
         {
             if (a.Length >= 1 && IsString(a[0])) { if (a.Length > 1) it.Rng = new Random((int)D(a[1], "rand")); return Num(0); }
-            var (r, c) = Dims(a, "rand"); var m = new MatrixValue(r, c); for (int k = 0; k < m.Numel; k++) m.Re[k] = it.Rng.NextDouble(); return m;
+            var d = DimsN(a, "rand"); var m = new MatrixValue(d[0], NDArray.Prod(d, 1)); m.SetDims(d); for (int k = 0; k < m.Numel; k++) m.Re[k] = it.Rng.NextDouble(); return m;
         });
         RegI("randn", (it, a) =>
         {
             if (a.Length >= 1 && IsString(a[0])) { if (a.Length > 1) it.Rng = new Random((int)D(a[1], "randn")); return Num(0); }
-            var (r, c) = Dims(a, "randn"); var m = new MatrixValue(r, c);
+            var d = DimsN(a, "randn"); var m = new MatrixValue(d[0], NDArray.Prod(d, 1)); m.SetDims(d);
             for (int k = 0; k < m.Numel; k++) { double u1 = 1 - it.Rng.NextDouble(), u2 = it.Rng.NextDouble(); m.Re[k] = Math.Sqrt(-2 * Math.Log(u1)) * Math.Cos(2 * Math.PI * u2); }
             return m;
         });
         RegI("randi", (it, a) =>
         {
             var lim = M(a[0], "randi"); double lo = lim.Numel > 1 ? lim.Re[0] : 1, hi = lim.Numel > 1 ? lim.Re[1] : lim.Re[0];
-            var (r, c) = Dims(a, "randi", 1); var m = new MatrixValue(r, c);
+            var d = DimsN(a, "randi", 1); var m = new MatrixValue(d[0], NDArray.Prod(d, 1)); m.SetDims(d);
             for (int k = 0; k < m.Numel; k++) m.Re[k] = Math.Floor(lo + it.Rng.NextDouble() * (hi - lo + 1));
             return m;
         });
@@ -93,19 +97,30 @@ public static partial class BuiltinLibrary
         Reg1("reshape", a =>
         {
             var src = A(a[0], "reshape");
-            int r, c;
-            if (a.Length == 2) { var d = M(a[1], "reshape"); r = (int)d.Re[0]; c = (int)d.Re[1]; for (int k = 2; k < d.Numel; k++) c *= (int)d.Re[k]; }
+            int[] d; int hole = -1;
+            if (a.Length == 2) d = M(a[1], "reshape").Re.Select(x => (int)x).ToArray();
             else
             {
-                var rv = M(a[1], "reshape"); var cv = M(a[2], "reshape");
-                for (int k = 3; k < a.Length; k++) if (D(a[k], "reshape") != 1) throw new OctaveException("reshape: N-d arrays are not supported yet");
-                r = rv.Numel == 0 ? -1 : (int)rv.Re[0]; c = cv.Numel == 0 ? -1 : (int)cv.Re[0];
-                if (r < 0) r = c == 0 ? 0 : src.Numel / c;
-                if (c < 0) c = r == 0 ? 0 : src.Numel / r;
+                d = new int[a.Length - 1];
+                for (int k = 1; k < a.Length; k++)
+                {
+                    var v = M(a[k], "reshape");
+                    if (v.Numel == 0) { if (hole >= 0) throw new OctaveException("reshape: only a single dimension can be unknown"); hole = k - 1; d[k - 1] = 1; }
+                    else d[k - 1] = (int)v.Re[0];
+                }
             }
-            if (r * c != src.Numel) throw new OctaveException($"reshape: can't reshape {src.R}x{src.C} array to {r}x{c} array");
-            return src.Gather(Enumerable.Range(0, src.Numel).ToArray(), r, c);
+            if (d.Length < 2) throw new OctaveException("reshape: SIZE must have 2 or more dimensions");
+            if (hole >= 0)
+            {
+                int p = NDArray.Prod(d);
+                if (p == 0 || src.Numel % p != 0) throw new OctaveException($"reshape: SIZE is not divisible by the product of known dimensions (= {p})");
+                d[hole] = src.Numel / p;
+            }
+            return NDArray.Reshape(src, d);
         });
+        Reg1("permute", a => { NArgs(a, 2, 2, "permute"); return NDArray.Permute(A(a[0], "permute"), M(a[1], "permute").Re.Select(x => (int)x - 1).ToArray()); });
+        Reg1("ipermute", a => { NArgs(a, 2, 2, "ipermute"); return NDArray.Permute(A(a[0], "ipermute"), M(a[1], "ipermute").Re.Select(x => (int)x - 1).ToArray(), true); });
+        Reg1("squeeze", a => NDArray.Squeeze(A(a[0], "squeeze")));
         Reg1("diag", a =>
         {
             var m = M(a[0], "diag"); int k = a.Length > 1 ? I(a[1], "diag") : 0;
@@ -131,14 +146,15 @@ public static partial class BuiltinLibrary
         });
         Reg1("horzcat", a => Concat.Horz(a.ToList()));
         Reg1("vertcat", a => Concat.Vert(a.ToList()));
-        Reg1("cat", a => { int d = I(a[0], "cat"); var rest = a.Skip(1).ToList(); return d == 1 ? Concat.Vert(rest) : d == 2 ? Concat.Horz(rest) : throw new OctaveException("cat: N-d arrays are not supported yet"); });
+        Reg1("cat", a => { int d = I(a[0], "cat"); var rest = a.Skip(1).ToList(); if (rest.Count == 0) return MatrixValue.Empty(); return NDArray.Cat(d, rest); });
 
         // reductions
         Reg1("sum", a =>
         {
             var m = M(a[0], "sum"); int d = DimArg(a, 1, m, "sum");
             if (m.IsComplex) return ReduceC(m, d, v => v.Aggregate(Complex.Zero, (x, y) => x + y));
-            return Reduce(m, d, v => { double s = 0; foreach (var x in v) s += x; return s; });
+            var r = Reduce(m, d, v => { double s = 0; foreach (var x in v) s += x; return s; });
+            return m.IsInteger || m.IsSingle ? r.CastInPlace(m.Kind) : r;
         });
         Reg1("prod", a =>
         {
@@ -358,36 +374,64 @@ public static partial class BuiltinLibrary
         });
 
         // types
-        Reg1("double", a => { var m = M(a[0], "double"); return new MatrixValue(m.R, m.C, (double[])m.Re.Clone(), (double[]?)m.Im?.Clone()); });
-        Reg1("single", a => { var m = M(a[0], "single"); return new MatrixValue(m.R, m.C, (double[])m.Re.Clone(), (double[]?)m.Im?.Clone()); });
+        Reg1("double", a => M(a[0], "double").CastTo(NumKind.Double));
+        Reg1("single", a => M(a[0], "single").CastTo(NumKind.Single));
         foreach (var iname in new[] { "int8", "uint8", "int16", "uint16", "int32", "uint32", "int64", "uint64" })
         {
-            string nm = iname;
-            (double lo, double hi) range = nm switch
+            var kind = NumTypes.FromName(iname)!.Value; string nm = iname;
+            Reg1(nm, a =>
             {
-                "int8" => (-128, 127), "uint8" => (0, 255), "int16" => (-32768, 32767), "uint16" => (0, 65535),
-                "int32" => (int.MinValue, int.MaxValue), "uint32" => (0, uint.MaxValue), "int64" => (long.MinValue, long.MaxValue), _ => (0, ulong.MaxValue)
-            };
-            // integer types are emulated as rounded/saturated doubles (phase 2: real integer classes)
-            Reg1(nm, a => Ops.Map(M(a[0], nm).AsDouble(), x => double.IsNaN(x) ? 0 : Math.Clamp(Math.Round(x, MidpointRounding.AwayFromZero), range.lo, range.hi)));
+                if (a.Length == 0) return new MatrixValue(1, 1, kind);
+                var m = M(a[0], nm);
+                if (m.IsComplex) throw new OctaveException($"{nm}: invalid conversion from complex");
+                return m.CastTo(kind);
+            });
         }
+        Reg1("cast", a =>
+        {
+            NArgs(a, 2, 2, "cast");
+            var name = S(a[1], "cast");
+            var k = NumTypes.FromName(name) ?? throw new OctaveException($"cast: TYPE '{name}' is not a built-in type");
+            var m = M(a[0], "cast");
+            if (k == NumKind.Logical) { var r = m.CastTo(NumKind.Double); for (int i = 0; i < r.Numel; i++) r.Re[i] = r.Re[i] != 0 ? 1 : 0; r.Kind = NumKind.Logical; return r; }
+            return m.CastTo(k);
+        });
+        Reg1("idivide", a =>
+        {
+            NArgs(a, 2, 3, "idivide");
+            var x = M(a[0], "idivide"); var y = M(a[1], "idivide");
+            if (!x.IsInteger && !y.IsInteger) throw new OctaveException("idivide: at least one input (A or B) must be an integer type");
+            var op = a.Length > 2 ? S(a[2], "idivide") : "fix";
+            var k = Ops.ArithKind(x, y, "idivide");
+            Func<double, double> rnd = op switch
+            {
+                "fix" => Math.Truncate, "round" => v => Math.Round(v, MidpointRounding.AwayFromZero),
+                "floor" => Math.Floor, "ceil" => Math.Ceiling,
+                _ => throw new OctaveException($"idivide: unrecognized rounding type \"{op}\"")
+            };
+            var r = Ops.Elementwise(x.AsDouble(), y.AsDouble(), "idivide", (p, q) => rnd(p / q), null);
+            return r.CastInPlace(k);
+        });
         Reg1("logical", a =>
         {
             var m = M(a[0], "logical");
             if (m.Re.Any(double.IsNaN)) throw new OctaveException("logical: NaN can't be converted to logical value");
-            var r = new MatrixValue(m.R, m.C, NumKind.Logical); for (int k = 0; k < m.Numel; k++) r.Re[k] = m.Re[k] != 0 ? 1 : 0; return r;
+            var r = new MatrixValue(m.R, m.C, NumKind.Logical) { ND = m.ND }; for (int k = 0; k < m.Numel; k++) r.Re[k] = m.Re[k] != 0 ? 1 : 0; return r;
         });
         Reg1("class", a => Str(a[0].ClassName));
         Reg1("isa", a =>
         {
             string c = S(a[1], "isa"), k = a[0].ClassName;
-            return Bool(c == k || (c == "numeric" && (k == "double")) || (c == "float" && k == "double"));
+            bool num = a[0] is MatrixValue mm && !mm.IsChar && !mm.IsLogical;
+            bool isInt = a[0] is MatrixValue mi && mi.IsInteger;
+            return Bool(c == k || (c == "numeric" && num) || (c == "float" && (k == "double" || k == "single"))
+                || (c == "integer" && isInt));
         });
-        Reg1("isnumeric", a => Bool(a[0] is MatrixValue m && m.Kind == NumKind.Double));
+        Reg1("isnumeric", a => Bool(a[0] is MatrixValue m && !m.IsChar && !m.IsLogical));
         Reg1("isreal", a => Bool(a[0] is MatrixValue m && !m.IsComplex));
         Reg1("iscomplex", a => Bool(a[0] is MatrixValue m && m.IsComplex));
-        Reg1("isfloat", a => Bool(a[0] is MatrixValue m && m.Kind == NumKind.Double));
-        Reg1("isinteger", a => Bool(false));
+        Reg1("isfloat", a => Bool(a[0] is MatrixValue m && (m.Kind == NumKind.Double || m.Kind == NumKind.Single)));
+        Reg1("isinteger", a => Bool(a[0] is MatrixValue m && m.IsInteger));
         Reg1("ischar", a => Bool(a[0] is MatrixValue m && m.IsChar));
         Reg1("islogical", a => Bool(a[0] is MatrixValue m && m.IsLogical));
         Reg1("isbool", a => Bool(a[0] is MatrixValue m && m.IsLogical));
@@ -415,28 +459,33 @@ public static partial class BuiltinLibrary
         if (a.Length >= 2 && a[1].Numel > 0)
         {
             var x = M(a[0], fn); var y = M(a[1], fn);
-            return Out(Ops.Elementwise(x, y, fn, (p, q) => double.IsNaN(p) ? q : double.IsNaN(q) ? p : better(q, p) ? q : p, null));
+            var k = Ops.ArithKind(x, y, fn);
+            var r = Ops.Elementwise(x, y, fn, (p, q) => double.IsNaN(p) ? q : double.IsNaN(q) ? p : better(q, p) ? q : p, null);
+            return Out(k == NumKind.Double ? r : r.CastInPlace(k));
         }
         var m = M(a[0], fn);
         int d = DimArg(a, 2, m, fn);
         if (m.Numel == 0) return Out(new MatrixValue(0, 0), new MatrixValue(0, 0));
         Func<int, double> key = k => m.IsComplex ? m.At(k).Magnitude : m.Re[k];
-        int len = d == 1 ? m.R : m.C, cnt = d == 1 ? m.C : m.R;
-        var val = d == 1 ? new MatrixValue(1, cnt, m.Kind == NumKind.Char ? NumKind.Double : m.Kind, m.IsComplex) : new MatrixValue(cnt, 1, m.Kind == NumKind.Char ? NumKind.Double : m.Kind, m.IsComplex);
-        var idx = new MatrixValue(val.R, val.C);
-        for (int t = 0; t < cnt; t++)
-        {
-            int best = -1;
-            for (int k = 0; k < len; k++)
+        var (stride, len, outer, od) = Split(m, d);
+        var kind = m.Kind is NumKind.Char or NumKind.Logical ? NumKind.Double : m.Kind;
+        var val = new MatrixValue(1, stride * outer, kind, m.IsComplex);
+        var idx = new MatrixValue(1, stride * outer);
+        for (int o = 0; o < outer; o++)
+            for (int s = 0; s < stride; s++)
             {
-                int p = d == 1 ? k + t * m.R : t + k * m.R;
-                if (double.IsNaN(key(p))) continue;
-                if (best < 0 || better(key(p), key(best))) best = p;
+                int b0 = s + o * stride * len, t = s + o * stride, best = -1, bk = 0;
+                for (int k = 0; k < len; k++)
+                {
+                    int p = b0 + k * stride;
+                    if (double.IsNaN(key(p))) continue;
+                    if (best < 0 || better(key(p), key(best))) { best = p; bk = k; }
+                }
+                if (best < 0) { best = b0; bk = 0; }
+                val.Re[t] = m.Re[best]; if (m.Im != null) val.Im![t] = m.Im[best];
+                idx.Re[t] = bk + 1;
             }
-            if (best < 0) { best = d == 1 ? t * m.R : t; }
-            val.Re[t] = m.Re[best]; if (m.Im != null) val.Im![t] = m.Im[best];
-            idx.Re[t] = (d == 1 ? best - t * m.R : (best - t) / m.R) + 1;
-        }
+        val.SetDims(od); idx.SetDims(od);
         return Out(val.Narrow(), idx);
     }
 

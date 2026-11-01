@@ -1,15 +1,19 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
-  <ItemGroup>
-    <ProjectReference Include="..\MatRewrite.Core\MatRewrite.Core.csproj" />
-  </ItemGroup>
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
+    <NoWarn>$(NoWarn);NU1701</NoWarn>
     <TargetFramework>net9.0-windows</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AssemblyName>MatRewriteIde</AssemblyName>
   </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MatRewrite.Core\MatRewrite.Core.csproj" />
+    <ProjectReference Include="..\MatRewrite.Plotting.Wpf\MatRewrite.Plotting.Wpf.csproj" />
+  </ItemGroup>
 
 </Project>

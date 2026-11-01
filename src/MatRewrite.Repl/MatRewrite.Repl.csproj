@@ -2,14 +2,26 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MatRewrite.Core\MatRewrite.Core.csproj" />
+    <ProjectReference Include="..\MatRewrite.Plotting\MatRewrite.Plotting.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
+    <NoWarn>$(NoWarn);NU1701</NoWarn>
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <AssemblyName>matrw</AssemblyName>
   </PropertyGroup>
+
+  <!-- On Windows, figures open as WPF windows. -->
+  <PropertyGroup Condition="'$(OS)' == 'Windows_NT'">
+    <TargetFramework>net9.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <DefineConstants>$(DefineConstants);WPF_FIGURES</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup Condition="'$(OS)' == 'Windows_NT'">
+    <ProjectReference Include="..\MatRewrite.Plotting.Wpf\MatRewrite.Plotting.Wpf.csproj" />
+  </ItemGroup>
 
 </Project>
