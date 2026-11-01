@@ -30,9 +30,46 @@ public abstract class GObject
 {
     public double Handle { get; internal set; }
     public string DisplayName = "";
+    /// <summary>Generic property bag: every property set by the user plus properties without a typed field.</summary>
+    public readonly Dictionary<string, Runtime.Value> Props = new(StringComparer.OrdinalIgnoreCase);
+    public bool Deleted;
+    /// <summary>addlistener callbacks per property.</summary>
+    public Dictionary<string, List<Runtime.Value>>? Listeners;
+    public HashSet<string>? Firing;
 }
 
-public abstract class Series : GObject { public Axes Parent = null!; }
+/// <summary>The root object (handle 0).</summary>
+public sealed class RootObject : GObject { public readonly List<GObject> Others = new(); }
+
+/// <summary>Axes title / xlabel / ylabel / zlabel text object (string mapped to the axes field).</summary>
+public sealed class LabelObject : GObject
+{
+    public Axes Axes = null!;
+    public string Which = "title";
+    public string Text
+    {
+        get => Which switch { "title" => Axes.Title, "xlabel" => Axes.XLabel, "ylabel" => Axes.YLabel, _ => Axes.ZLabel };
+        set { switch (Which) { case "title": Axes.Title = value; break; case "xlabel": Axes.XLabel = value; break; case "ylabel": Axes.YLabel = value; break; default: Axes.ZLabel = value; break; } }
+    }
+}
+
+/// <summary>Object without a dedicated renderer (hggroup, uicontrol, legend, colorbar ...).</summary>
+public sealed class GenericObject : Series
+{
+    public string Type = "hggroup";
+    public GObject? Owner; // parent when it is not an axes (e.g. a figure)
+}
+
+/// <summary>patch: one or more filled polygons (columns of X/Y, or faces/vertices).</summary>
+public sealed class PatchSeries : Series
+{
+    public List<(double[] x, double[] y)> Polys = new();
+    public Rgb? FaceColor = new(0, 0, 0);
+    public Rgb? EdgeColor = new(0, 0, 0);
+    public double FaceAlpha = 1, LineWidth = 0.5;
+}
+
+public abstract class Series : GObject { public Axes Parent = null!; public Series? Group; }
 
 public sealed class LineSeries : Series
 {
@@ -174,6 +211,7 @@ public sealed class Axes : GObject
     public bool Is3D => !(Az == 0 && El == 90);
     public string Lighting = "flat"; // none | flat | gouraud (lighting command)
     public readonly List<Series> Children = new();
+    public LabelObject? TitleObj, XLabelObj, YLabelObj, ZLabelObj;
     public bool Hold, Grid, MinorGrid, Box = true, Visible = true;
     public bool LegendVisible;
     public string[]? LegendLabels;
@@ -203,6 +241,7 @@ public sealed class Figure : GObject
     public int Width = 560, Height = 420;
     public bool NumberTitle = true;
     public readonly List<Annotation> Annotations = new();
+    public readonly List<GObject> Others = new(); // non-axes children (uicontrol, uimenu, legend ...)
     public string WindowTitle => NumberTitle ? (Name == "" ? $"Figure {Handle}" : $"Figure {Handle}: {Name}") : Name;
 }
 

@@ -26,6 +26,10 @@ public static class Ops
         return (r, c);
     }
 
+    static Complex CMulMixed(Complex x, Complex y)
+        => y.Imaginary == 0 ? new Complex(x.Real * y.Real, x.Imaginary * y.Real)
+         : x.Imaginary == 0 ? new Complex(x.Real * y.Real, x.Real * y.Imaginary) : x * y;
+
     public static MatrixValue Elementwise(MatrixValue a, MatrixValue b, string op,
         Func<double, double, double> fr, Func<Complex, Complex, Complex>? fc, NumKind resultKind = NumKind.Double,
         Func<double, double, bool>? needComplex = null)
@@ -170,12 +174,12 @@ public static class Ops
         {
             case "+": return Elementwise(a, b, op, (x, y) => x + y, (x, y) => x + y);
             case "-": return Elementwise(a, b, op, (x, y) => x - y, (x, y) => x - y);
-            case ".*": return Elementwise(a, b, op, (x, y) => x * y, (x, y) => x * y);
-            case "./": return Elementwise(a, b, op, (x, y) => x / y, CDiv);
+            case ".*": return Elementwise(a, b, op, (x, y) => x * y, CMulMixed);
+            case "./": return Elementwise(a, b, op, (x, y) => x / y, (x, y) => y.Imaginary == 0 ? new Complex(x.Real / y.Real, x.Imaginary / y.Real) : CDiv(x, y));
             case ".\\": return Elementwise(b, a, op, (x, y) => x / y, CDiv);
             case ".^": return Power(a, b);
-            case "*": return MTimes(a, b);
-            case "/": return MRDivide(a, b);
+            case "*": if ((a.IsComplex || b.IsComplex) && (a.IsScalar || b.IsScalar)) return BinaryDouble(".*", a, b); return MTimes(a, b);
+            case "/": if ((a.IsComplex || b.IsComplex) && b.IsScalar) return BinaryDouble("./", a, b); return MRDivide(a, b);
             case "\\": return MLDivide(a, b);
             case "^": return MPower(a, b);
             case "==": return Elementwise(a, b, op, (x, y) => B(x == y), (x, y) => x == y ? 1 : 0, NumKind.Logical);

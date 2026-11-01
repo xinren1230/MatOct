@@ -29,7 +29,7 @@ public static partial class BuiltinLibrary
         Reg1("length", a => Num(a[0].Numel == 0 ? 0 : Math.Max(a[0].Rows, a[0].Cols)));
         Reg1("ndims", a => Num(a[0].NDims));
         Reg1("rows", a => Num(a[0].Rows));
-        Reg1("columns", a => Num(a[0].Cols));
+        Reg1("columns", a => Num(a[0] is ArrayValue av && av.ND != null ? av.Dims[1] : a[0].Cols));
         Reg1("isempty", a => { NArgs(a, 1, 1, "isempty"); return Bool(a[0].Numel == 0); });
         Reg1("isnull", a => Bool(a[0].Numel == 0));
         Reg1("isscalar", a => Bool(a[0].Rows == 1 && a[0].Cols == 1));
@@ -41,7 +41,7 @@ public static partial class BuiltinLibrary
 
         Reg1("zeros", a => ClassFill(a, "zeros", 0));
         Reg1("ones", a => ClassFill(a, "ones", 1));
-        Reg1("cell", a => { var d = DimsN(a, "cell"); var cv = new CellValue(d[0], NDArray.Prod(d, 1)); cv.SetDims(d); return cv; });
+        Reg1("cell", a => { if (a.Length == 0) return new CellValue(0, 0); var d = DimsN(a, "cell"); var cv = new CellValue(d[0], NDArray.Prod(d, 1)); cv.SetDims(d); return cv; });
         Reg1("eye", a => { var (r, c) = Dims(a, "eye"); var m = new MatrixValue(r, c); for (int k = 0; k < Math.Min(r, c); k++) m.Re[k + k * r] = 1; return m; });
         RegI("rand", (it, a) =>
         {
@@ -84,15 +84,30 @@ public static partial class BuiltinLibrary
         });
         Reg1("repmat", a =>
         {
+            if (a.Length < 2) throw new OctaveException("Invalid call to repmat");
             var src = A(a[0], "repmat");
-            int rm, cm;
-            if (a.Length == 2) { var d = M(a[1], "repmat"); rm = (int)d.Re[0]; cm = d.Numel > 1 ? (int)d.Re[1] : rm; }
-            else { rm = I(a[1], "repmat"); cm = I(a[2], "repmat"); }
-            rm = Math.Max(rm, 0); cm = Math.Max(cm, 0);
-            int R = src.R * rm, C = src.C * cm;
-            var lin = new int[R * C];
-            for (int j = 0; j < C; j++) for (int i = 0; i < R; i++) lin[i + j * R] = (i % src.R) + (j % src.C) * src.R;
-            return src.Gather(lin, R, C);
+            int[] reps;
+            if (a.Length == 2) { var d = M(a[1], "repmat"); if (d.Numel == 0) throw new OctaveException("repmat: invalid dimensions"); reps = d.Numel == 1 ? new[] { (int)d.Re[0], (int)d.Re[0] } : d.Re.Select(x => (int)x).ToArray(); }
+            else reps = a.Skip(1).Select(v => { var m = M(v, "repmat"); return m.Numel == 0 ? 1 : (int)m.Re[0]; }).ToArray();
+            reps = reps.Select(r => Math.Max(r, 0)).ToArray();
+            var sd = src.Dims;
+            int nd = Math.Max(sd.Length, reps.Length);
+            var sdp = new int[nd]; var rp = new int[nd]; var od = new int[nd];
+            for (int k = 0; k < nd; k++) { sdp[k] = k < sd.Length ? sd[k] : 1; rp[k] = k < reps.Length ? reps[k] : 1; od[k] = sdp[k] * rp[k]; }
+            long total = 1; foreach (var x in od) total *= x;
+            var lin = new int[total];
+            var sub = new int[nd];
+            for (long t = 0; t < total; t++)
+            {
+                long rem = t; int si = 0, mul = 1;
+                for (int k = 0; k < nd; k++) { int s0 = (int)(rem % od[k]); rem /= od[k]; si += (s0 % sdp[k]) * mul; mul *= sdp[k]; }
+                lin[t] = si;
+            }
+            int R = od[0], C = nd > 1 ? od[1] : 1;
+            if (nd <= 2 || od.Skip(2).All(x => x == 1)) return src.Gather(lin, R, C);
+            var res = src.Gather(lin, R, (int)(total / Math.Max(R, 1) == 0 ? 0 : total / Math.Max(R, 1)));
+            res.SetDims(od);
+            return res;
         });
         Reg1("reshape", a =>
         {
@@ -259,7 +274,7 @@ public static partial class BuiltinLibrary
             var hits = new List<int>();
             for (int k = 0; k < m.Numel; k++) if (m.Re[k] != 0 || (m.Im != null && m.Im[k] != 0)) hits.Add(k);
             if (hits.Count > limit) hits = last ? hits.Skip(hits.Count - limit).ToList() : hits.Take(limit).ToList();
-            bool row = m.R == 1 && m.C != 1;
+            bool row = m.R == 1 && m.C != 1 && m.ND == null;
             MatrixValue Mk(IEnumerable<double> xs) { var arr = xs.ToArray(); return row ? new MatrixValue(1, arr.Length, arr) : new MatrixValue(arr.Length, m.Numel == 0 && m.R == 0 && m.C == 0 ? 0 : 1, arr); }
             if (n <= 1) return Out(Mk(hits.Select(k => k + 1.0)));
             var r = Mk(hits.Select(k => (double)(k % m.R + 1)));
@@ -450,7 +465,7 @@ public static partial class BuiltinLibrary
     static Value CharPred(Value v, Func<char, bool> f)
     {
         var m = M(v, "ischar");
-        var r = new MatrixValue(m.R, m.C, NumKind.Logical);
+        var r = new MatrixValue(m.R, m.C, NumKind.Logical) { ND = (int[]?)m.ND?.Clone() };
         if (m.IsChar) for (int k = 0; k < m.Numel; k++) r.Re[k] = f((char)(int)m.Re[k]) ? 1 : 0;
         return r;
     }

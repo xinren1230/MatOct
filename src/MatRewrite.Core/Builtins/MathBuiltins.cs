@@ -14,7 +14,7 @@ public static partial class BuiltinLibrary
         {
             NArgs(a, 1, 1, name);
             var m = M(a[0], name);
-            var r = new MatrixValue(m.R, m.C, NumKind.Logical);
+            var r = new MatrixValue(m.R, m.C, NumKind.Logical) { ND = (int[]?)m.ND?.Clone() };
             for (int k = 0; k < m.Numel; k++) r.Re[k] = f(m.Re[k], m.Im?[k] ?? 0) ? 1 : 0;
             return r;
         });
@@ -22,12 +22,25 @@ public static partial class BuiltinLibrary
     static void Binary2(string name, Func<double, double, double> f, Func<Complex, Complex, Complex>? fc = null)
         => Reg1(name, a => { NArgs(a, 2, 2, name); return Ops.Elementwise(M(a[0], name), M(a[1], name), name, f, fc); });
 
+    static Complex CTanh(Complex z)
+    {
+        double tx = Math.Tanh(z.Real), ty = Math.Tan(z.Imaginary);
+        if (double.IsInfinity(ty)) return new Complex(tx == 0 ? 0 : 1 / tx, 0);
+        return new Complex(tx, ty) / new Complex(1, tx * ty);
+    }
+    static Complex CAtanh(Complex z)
+    {
+        if (z.Imaginary == 0 && Math.Abs(z.Real) == 1) return new Complex(z.Real * double.PositiveInfinity, 0);
+        var r = 0.5 * (Complex.Log(1 + z) - Complex.Log(1 - z));
+        if (z.Imaginary == 0 && Math.Abs(z.Real) > 1) r = new Complex(r.Real, z.Real > 0 ? Math.PI / 2 : -Math.PI / 2);
+        return r;
+    }
     static double RoundHalfAway(double x) => Math.Round(x, MidpointRounding.AwayFromZero);
 
     static void RegisterMath()
     {
         Unary("abs", Math.Abs);
-        Reg1("abs", a => { NArgs(a, 1, 1, "abs"); var m = M(a[0], "abs"); if (!m.IsComplex) return Ops.Map(m, Math.Abs); var r = new MatrixValue(m.R, m.C); for (int k = 0; k < m.Numel; k++) r.Re[k] = m.At(k).Magnitude; return r; });
+        Reg1("abs", a => { NArgs(a, 1, 1, "abs"); var m = M(a[0], "abs"); if (!m.IsComplex) return Ops.Map(m, Math.Abs); var r = new MatrixValue(m.R, m.C) { ND = (int[]?)m.ND?.Clone() }; for (int k = 0; k < m.Numel; k++) r.Re[k] = m.At(k).Magnitude; return r; });
         Unary("sqrt", Math.Sqrt, Complex.Sqrt, x => x < 0);
         Unary("exp", Math.Exp, Complex.Exp);
         Unary("log", Math.Log, Complex.Log, x => x < 0);
@@ -43,8 +56,10 @@ public static partial class BuiltinLibrary
         Unary("atan", Math.Atan, Complex.Atan);
         Unary("sinh", Math.Sinh, Complex.Sinh);
         Unary("cosh", Math.Cosh, Complex.Cosh);
-        Unary("tanh", Math.Tanh, Complex.Tanh);
-        Unary("asinh", Math.Asinh); Unary("acosh", Math.Acosh); Unary("atanh", Math.Atanh);
+        Unary("tanh", Math.Tanh, CTanh);
+        Unary("asinh", Math.Asinh, z => Complex.Log(z + Complex.Sqrt(z * z + 1)));
+        Unary("acosh", Math.Acosh, z => Complex.Log(z + Complex.Sqrt(z + 1) * Complex.Sqrt(z - 1)), x => x < 1);
+        Unary("atanh", Math.Atanh, CAtanh, x => Math.Abs(x) > 1);
         Unary("floor", Math.Floor, z => new Complex(Math.Floor(z.Real), Math.Floor(z.Imaginary)));
         Unary("ceil", Math.Ceiling, z => new Complex(Math.Ceiling(z.Real), Math.Ceiling(z.Imaginary)));
         Unary("round", RoundHalfAway, z => new Complex(RoundHalfAway(z.Real), RoundHalfAway(z.Imaginary)));
@@ -55,10 +70,10 @@ public static partial class BuiltinLibrary
         Unary("erf", MathNet.Numerics.SpecialFunctions.Erf);
         Unary("erfc", MathNet.Numerics.SpecialFunctions.Erfc);
         Unary("factorial", x => x < 0 || x != Math.Floor(x) ? throw new OctaveException("factorial: all N must be real non-negative integers") : Math.Round(MathNet.Numerics.SpecialFunctions.Gamma(x + 1)));
-        Reg1("real", a => { var m = M(a[0], "real"); return new MatrixValue(m.R, m.C, (double[])m.Re.Clone()); });
-        Reg1("imag", a => { var m = M(a[0], "imag"); return new MatrixValue(m.R, m.C, m.Im == null ? new double[m.Numel] : (double[])m.Im.Clone()); });
+        Reg1("real", a => { var m = M(a[0], "real"); return new MatrixValue(m.R, m.C, (double[])m.Re.Clone()) { ND = (int[]?)m.ND?.Clone() }; });
+        Reg1("imag", a => { var m = M(a[0], "imag"); return new MatrixValue(m.R, m.C, m.Im == null ? new double[m.Numel] : (double[])m.Im.Clone()) { ND = (int[]?)m.ND?.Clone() }; });
         Reg1("conj", a => { var m = M(a[0], "conj").Copy(); m.Kind = NumKind.Double; if (m.Im != null) for (int k = 0; k < m.Numel; k++) m.Im[k] = -m.Im[k]; return m; });
-        BuiltinFn angle = (it, a, n) => { var m = M(a[0], "angle"); var r = new MatrixValue(m.R, m.C); for (int k = 0; k < m.Numel; k++) r.Re[k] = Math.Atan2(m.Im?[k] ?? 0, m.Re[k]); return Out(r); };
+        BuiltinFn angle = (it, a, n) => { var m = M(a[0], "angle"); var r = new MatrixValue(m.R, m.C) { ND = (int[]?)m.ND?.Clone() }; for (int k = 0; k < m.Numel; k++) r.Re[k] = Math.Atan2(m.Im?[k] ?? 0, m.Re[k]); return Out(r); };
         Reg("angle", angle); Reg("arg", angle);
         Reg1("complex", a => { var re = M(a[0], "complex"); var im = a.Length > 1 ? M(a[1], "complex") : Fill(re.R, re.C, 0);
             var r = Ops.Elementwise(re, im, "complex", (x, y) => x, null); r.Im = new double[r.Numel];

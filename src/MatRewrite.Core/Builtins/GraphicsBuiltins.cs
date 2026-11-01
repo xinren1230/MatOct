@@ -17,9 +17,22 @@ namespace MatRewrite.Core.Builtins
         /// <summary>Register a graphics builtin: the backend is refreshed after the call.</summary>
         static void RegG(string name, BuiltinFn f) => Reg(name, (it, a, n) =>
         {
-            try { return f(it, a, n); }
+            try
+            {
+                if (AxesArgFns.Contains(name) && a.Length > 1 && a[0] is MatrixValue hm && hm.Numel == 1 && !IsString(a[0])
+                    && it.Graphics.Lookup(hm[0]) is Axes hax)
+                {
+                    it.Graphics.Current = hax.Figure; hax.Figure.CurrentAxes = hax;
+                    a = a[1..];
+                }
+                return f(it, a, n);
+            }
             finally { it.Graphics.Flush(); }
         });
+
+        static readonly HashSet<string> AxesArgFns = new() { "surf", "mesh", "surfc", "meshc", "meshz", "surfl", "plot", "plot3", "bar", "barh",
+            "contour", "contourf", "contour3", "scatter", "scatter3", "image", "imagesc", "pcolor", "stairs", "stem", "stem3", "area", "fill",
+            "errorbar", "quiver", "quiver3", "semilogx", "semilogy", "loglog", "hist", "pie", "pie3", "polar", "rose", "comet", "feather", "compass", "waterfall", "ribbon", "light" };
 
         static Value H(GObject o) => Num(o.Handle);
 
@@ -71,7 +84,7 @@ namespace MatRewrite.Core.Builtins
             RegG("ishandle", (it, a, n) =>
             {
                 var m = M(a[0], "ishandle");
-                var r = new MatrixValue(m.R, m.C, NumKind.Logical);
+                var r = new MatrixValue(m.R, m.C, NumKind.Logical) { ND = (int[]?)m.ND?.Clone() };
                 for (int i = 0; i < m.Numel; i++) r.Re[i] = it.Graphics.Lookup(m.Re[i]) != null ? 1 : 0;
                 return Out(r);
             });
@@ -461,6 +474,7 @@ namespace MatRewrite.Core.Builtins
                         else Acc(eb.X, eb.Y.Select((v, i) => v - eb.L[i]).Concat(eb.Y.Select((v, i) => v + eb.U[i])));
                         break;
                     case TextSeries ts: Acc(new[] { ts.X }, new[] { ts.Y }); break;
+                    case PatchSeries ps: foreach (var (px, py) in ps.Polys) Acc(px, py); break;
                 }
             if (x0 > x1) { x0 = 0; x1 = 1; }
             if (y0 > y1) { y0 = 0; y1 = 1; }
@@ -707,12 +721,17 @@ namespace MatRewrite.Core.Builtins
                     case (Axes ax, "ydir"): ax.YDirReverse = S(v, fn) == "reverse"; break;
                     case (Axes ax, "nextplot"): ax.Hold = S(v, fn) == "add"; break;
                     case (_, "fontsize"): case (_, "fontname"): case (_, "fontweight"): case (_, "interpreter"): break;
-                    default: throw new OctaveException($"{fn}: unknown property '{p}' for {o.GetType().Name.Replace("Series", "").ToLowerInvariant()} object");
+                    default:
+                        if (!SetGeneric(it, o, p, v, fn)) throw new OctaveException($"{fn}: unknown {TypeOf(o)} property {p}");
+                        break;
                 }
+                if (!(p is "parent" or "children" or "type")) o.Props[p] = v;
+                FireListeners(it, o, p);
             }
             switch (o)
             {
-                case Series s: it.Graphics.Touch(s.Parent.Figure); break;
+                case Series s when s.Parent != null: it.Graphics.Touch(s.Parent.Figure); break;
+                case LabelObject lo: it.Graphics.Touch(lo.Axes.Figure); break;
                 case Axes ax: it.Graphics.Touch(ax.Figure); break;
                 case Figure f: it.Graphics.Touch(f); break;
             }

@@ -58,7 +58,8 @@ public static class Indexing
     {
         int n = args.Length;
         int nd = a?.NDims ?? 2;
-        while (n > 2 && n > nd && (IsOne(args[n - 1]) || args[n - 1] is MagicColon)) n--;
+        bool canDropColon = a != null && a.Numel > 0;
+        while (n > 2 && n > nd && (IsOne(args[n - 1]) || (canDropColon && args[n - 1] is MagicColon))) n--;
         return n == args.Length ? args : args.Take(n).ToArray();
     }
 
@@ -201,12 +202,14 @@ public static class Indexing
                 else if (a.R == 1 && args[0] is MatrixValue lm && (lm.R == 1 || lm.C == 1)) { r = 1; c = ix.I.Length; }
                 else { r = ix.I.Length; c = 1; }
             }
-            else if ((ix.R == 1 || ix.C == 1) && (a.R == 1 || a.C == 1) && !(a.R == 1 && a.C == 1))
+            else if ((ix.R == 1 || ix.C == 1) && !(args[0] is MatrixValue ndm && ndm.ND != null) && (a.R == 1 || a.C == 1) && !(a.R == 1 && a.C == 1))
             {
                 if (a.R == 1) { r = 1; c = ix.I.Length; } else { r = ix.I.Length; c = 1; }
             }
             else { r = ix.R; c = ix.C; }
-            return a.Gather(ix.I, r, c);
+            var gres = a.Gather(ix.I, r, c);
+            if (!ix.Colon && !ix.Logical && args[0] is MatrixValue ixm && ixm.ND != null) gres.SetDims((int[])ixm.Dims.Clone());
+            return gres;
         }
         var ri = Convert(args[0], a.R, "index", false);
         var ci = Convert(args[1], a.C, "index", false);
@@ -225,6 +228,7 @@ public static class Indexing
         bool deleting = a != null && rhs is MatrixValue dm && dm.R == 0 && dm.C == 0 && !dm.IsChar && dm.Kind == NumKind.Double;
         if (deleting) return Delete(a!, args);
         a ??= rhs.EmptyLike(0, 0);
+        if (a is CellValue && rhs is MatrixValue && !deleting) rhs = new CellValue(1, 1, new Value[] { rhs });
         var kind = ResultKind(a, rhs);
         a = Coerce(a, rhs);
         if (args.Length > 2 || (args.Length == 2 && a.ND != null)) return AssignND(a, args, rhs, kind);
@@ -325,6 +329,7 @@ public static class Indexing
             var ix = Convert(args[0], a.Numel, "index", false);
             var del = new HashSet<int>(ix.I);
             var keep = Enumerable.Range(0, a.Numel).Where(k => !del.Contains(k)).ToArray();
+            if (!ix.Colon && del.Count == 0) return Clone(a);
             if (ix.Colon) return a.Gather(Array.Empty<int>(), 0, 0);
             if (a.C == 1 && a.R != 1) return a.Gather(keep, keep.Length, 1);
             return a.Gather(keep, 1, keep.Length);

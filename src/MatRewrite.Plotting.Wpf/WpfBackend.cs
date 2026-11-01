@@ -22,7 +22,40 @@ public sealed class FigureWindow : Window
         Figure = f;
         Content = grid;
         Width = f.Width; Height = f.Height;
+        // Phase 6: forward UI events to the interpreter thread (run at drawnow/pause).
+        SizeChanged += (_, e) =>
+        {
+            if (!e.PreviousSize.IsEmpty && e.PreviousSize.Width > 0)
+            {
+                Figure.Width = (int)ActualWidth; Figure.Height = (int)ActualHeight;
+                if (HasCallback(Figure, "sizechangedfcn")) RaiseCb(Figure.Handle, "sizechangedfcn");
+            }
+        };
+        PreviewMouseDown += (_, _) =>
+        {
+            var tgt = Figure.CurrentAxes ?? Figure.Axes.LastOrDefault();
+            if (tgt != null && HasCallback(tgt, "buttondownfcn")) RaiseCb(tgt.Handle, "buttondownfcn");
+            else if (HasCallback(Figure, "buttondownfcn")) RaiseCb(Figure.Handle, "buttondownfcn");
+        };
+        Closing += (_, e) =>
+        {
+            if (AllowClose || !HasCallback(Figure, "closerequestfcn", "closereq")) return;
+            e.Cancel = true;
+            RaiseCb(Figure.Handle, "closerequestfcn");
+        };
         Refresh();
+    }
+
+    /// <summary>Set by the backend for programmatic closes (delete/close from the interpreter).</summary>
+    public bool AllowClose;
+    public static Action<double, string>? CallbackSink;
+    static void RaiseCb(double h, string prop) => CallbackSink?.Invoke(h, prop);
+    static bool HasCallback(GObject o, string prop, string? defaultName = null)
+    {
+        if (!o.Props.TryGetValue(prop, out var v)) return false;
+        if (v is MatRewrite.Core.Runtime.MatrixValue m && m.IsEmpty) return false;
+        if (defaultName != null && v is MatRewrite.Core.Runtime.MatrixValue s && s.IsChar && s.AsString() == defaultName) return false;
+        return true;
     }
 
     public void Refresh()
@@ -164,6 +197,7 @@ public sealed class WpfBackend : IGraphicsBackend
     {
         FigureWindow? w;
         lock (windows) { if (!windows.Remove(f, out w)) return; }
+        w.AllowClose = true;
         w.Close();
     });
 

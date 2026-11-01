@@ -42,7 +42,7 @@ public class GraphicsTests : IDisposable
     [Fact] public void HoldAccumulates() => Assert.Equal("2", Run("plot(1:3); hold on; plot(3:-1:1); disp(numel(get(gca,'children')))"));
     [Fact] public void HoldOffReplaces() => Assert.Equal("1", Run("plot(1:3); hold off; plot(3:-1:1); disp(numel(get(gca,'children')))"));
     [Fact] public void IsHold() => Assert.Equal("0\n1", Run("figure; disp(ishold); hold on; disp(ishold)"));
-    [Fact] public void Labels() => Assert.Equal("T|X|Y", Run("plot(1:3); title('T'); xlabel('X'); ylabel('Y'); printf('%s|%s|%s', get(gca,'title'), get(gca,'xlabel'), get(gca,'ylabel'))"));
+    [Fact] public void Labels() => Assert.Equal("T|X|Y", Run("plot(1:3); title('T'); xlabel('X'); ylabel('Y'); printf('%s|%s|%s', get(get(gca,'title'),'string'), get(get(gca,'xlabel'),'string'), get(get(gca,'ylabel'),'string'))"));
     [Fact] public void AxisLimits() => Assert.Equal("[0 10 -1 1]", Run("plot(1:3); axis([0 10 -1 1]); disp(mat2str(axis))"));
     [Fact] public void XlimYlim() => Assert.Equal("[2 5]\n[-3 3]", Run("plot(1:10); xlim([2 5]); ylim([-3 3]); disp(mat2str(xlim)); disp(mat2str(ylim))"));
     [Fact] public void SubplotDistinctAxes() => Assert.Equal("0\n1", Run("a = subplot(2,1,1); b = subplot(2,1,2); disp(a == b); c = subplot(2,1,1); disp(c == a)"));

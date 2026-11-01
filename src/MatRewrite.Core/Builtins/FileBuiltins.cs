@@ -237,7 +237,7 @@ public static partial class BuiltinLibrary
         Reg("load", (it, a, n) => Load(it, a, n));
 
         // ---------------------------------------------------------- containers.Map
-        RegisterMap();
+        if (Environment.GetEnvironmentVariable("MATRW_NO_CMAP") != "1") RegisterMap();
     }
 
     static void WriteTo(Interpreter it, Value fidv, string s, string fn)
@@ -835,52 +835,79 @@ public static partial class BuiltinLibrary
     // ---------------------------------------------------------------- containers.Map
     static void RegisterMap()
     {
-        Reg1("containers.Map", a =>
+        Reg("containers.Map", (it, a, n) =>
         {
-            int k = 0;
-            string kt = "char", vt = "any";
-            bool uniform = true;
-            Value? keys = null, vals = null;
-            if (a.Length >= 1 && !(IsString(a[0]) && S(a[0], "containers.Map") is "KeyType" or "ValueType" or "UniformValues"))
+            const string fn = "containers.Map";
+            string Cls(Value v) => v.ClassName;
+            bool IsNumLike(Value v) => v is MatrixValue m && !m.IsChar;
+            if (a.Length == 0) return Out(new MapValue());
+            bool uvForm = a.Length == 4 && IsString(a[2]) && S(a[2], fn).Equals("UniformValues", StringComparison.OrdinalIgnoreCase);
+            if (a.Length == 2 || uvForm)
             {
-                keys = a[0];
-                if (a.Length < 2) throw new OctaveException("Map: the number of keys and values must match");
-                vals = a[1]; k = 2;
-            }
-            for (; k + 1 < a.Length; k += 2)
-            {
-                var key = S(a[k], "containers.Map");
-                switch (key)
+                List<Value> keys, vals;
+                if (a[0] is CellValue kc) keys = kc.Data.ToList();
+                else if (IsNumLike(a[0])) { var km = (MatrixValue)a[0]; keys = Enumerable.Range(0, km.Numel).Select(q => (Value)Indexing.Read(km, new Value[] { Num(q + 1) })).ToList(); }
+                else keys = new List<Value> { a[0] };
+                if (a[1] is CellValue vc) vals = vc.Data.ToList();
+                else if (IsNumLike(a[1]) && keys.Count != 1) { var vm = (MatrixValue)a[1]; vals = Enumerable.Range(0, vm.Numel).Select(q => (Value)Indexing.Read(vm, new Value[] { Num(q + 1) })).ToList(); }
+                else vals = new List<Value> { a[1] };
+                if (keys.Count != vals.Count) throw new OctaveException("containers.Map: the number of keys and values must match");
+                var kts = keys.Select(Cls).Distinct().ToList();
+                string kt;
+                if (kts.Count == 1)
                 {
-                    case "KeyType": kt = S(a[k + 1], "containers.Map"); break;
-                    case "ValueType": vt = S(a[k + 1], "containers.Map"); break;
-                    case "UniformValues": uniform = D(a[k + 1], "containers.Map") != 0; break;
-                    default: throw new OctaveException($"Map: invalid option '{key}'");
+                    kt = kts[0];
+                    if (kt != "char")
+                    {
+                        if (!keys.All(k => k is MatrixValue km2 && !km2.IsComplex && km2.Numel == 1 && !km2.IsChar))
+                            throw new OctaveException("containers.Map: keys must be real scalar numeric values or char vectors");
+                        if (kt is "logical" or "int8" or "uint8" or "int16" or "uint16") kt = "double";
+                    }
                 }
+                else
+                {
+                    var numericTypes = new[] { "double", "single", "int8", "uint8", "int16", "uint16", "int32", "uint32", "int64", "uint64", "logical" };
+                    if (!kts.All(t => numericTypes.Contains(t))) throw new OctaveException("containers.Map: when using multiple key types, all types must be numeric");
+                    it.Warning("containers.Map: all keys will be converted to double");
+                    kt = "double";
+                }
+                var vts = vals.Select(Cls).Distinct().ToList();
+                string vt = vts.Count == 1 && vals.Count > 0 && (vals[0] is MatrixValue v0 && (v0.IsChar || vals.All(v => v is ArrayValue av && av.Numel == 1))) ? vts[0] : "any";
+                if (uvForm)
+                {
+                    if (!(a[3] is MatrixValue um && um.Numel == 1 && !um.IsChar))
+                        throw new OctaveException("containers.Map: 'UniformValues' must be a logical scalar");
+                    if (um.Re[0] != 0)
+                    {
+                        if (vts.Count > 1 || (vt == "any" && vals.Count > 0 && vals[0] is MatrixValue rv && !rv.IsComplex))
+                            throw new OctaveException("containers.Map: when 'UniformValues' is true, all values must be scalars of the same data type");
+                    }
+                    else vt = "any";
+                }
+                var map = new MapValue(kt, vt);
+                for (int q = 0; q < keys.Count; q++) map.SetRaw(keys[q], vals[q]);
+                return Out(map);
             }
-            _ = uniform;
-            if (keys != null && kt == "char")
+            if (a.Length == 4)
             {
-                bool numeric = keys is MatrixValue km && !km.IsChar || keys is CellValue kc && kc.Data.Length > 0 && kc.Data.All(x => x is MatrixValue xm && !xm.IsChar);
-                if (numeric) kt = "double";
+                string kt = "char", vt = "any";
+                for (int q = 0; q < 4; q += 2)
+                {
+                    switch (S(a[q], fn).ToLowerInvariant())
+                    {
+                        case "keytype": kt = S(a[q + 1], fn); break;
+                        case "valuetype": vt = S(a[q + 1], fn); break;
+                        default: throw new OctaveException("containers.Map: missing parameter name 'KeyType' or 'ValueType'");
+                    }
+                }
+                return Out(new MapValue(kt, vt));
             }
-            var map = new MapValue(kt, vt);
-            if (keys != null)
-            {
-                var kl = map.Expand(keys).ToList();
-                List<Value> vl;
-                if (kl.Count == 1 && !(vals is CellValue vc0 && keys is CellValue)) vl = new List<Value> { vals! };
-                else if (vals is CellValue vc) vl = vc.Data.ToList();
-                else if (vals is MatrixValue vm && vm.Numel == kl.Count) vl = vm.Re.Select(x => (Value)Num(x)).ToList();
-                else throw new OctaveException("Map: the number of keys and values must match");
-                if (vl.Count != kl.Count) throw new OctaveException("Map: the number of keys and values must match");
-                for (int i = 0; i < kl.Count; i++) map.Set(kl[i], vl[i]);
-            }
-            return map;
+            throw new OctaveException("containers.Map: incorrect number of inputs specified");
         });
         Reg1("isKey", a =>
         {
             var m = a[0] as MapValue ?? throw new OctaveException("isKey: first argument must be a containers.Map");
+            if (a.Length != 2) throw new OctaveException("containers.Map: input argument 'KeySet' is missing");
             if (a[1] is CellValue c)
             {
                 var r = new MatrixValue(c.R, c.C, NumKind.Logical);
@@ -893,6 +920,7 @@ public static partial class BuiltinLibrary
         Reg1("values", a =>
         {
             var m = a[0] as MapValue ?? throw new OctaveException("values: argument must be a containers.Map");
+            if (a.Length > 1 && a[1] is not CellValue) throw new OctaveException("containers.Map: input argument 'keySet' must be a cell");
             return a.Length > 1 ? m.Values(a[1]) : m.Values();
         });
         Reg1("remove", a =>

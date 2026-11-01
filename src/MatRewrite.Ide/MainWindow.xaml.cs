@@ -81,6 +81,7 @@ public partial class MainWindow : Window
         writer = new UiWriter(this);
         it = new Interpreter(writer);
         figures = new WpfBackend(Dispatcher);
+        FigureWindow.CallbackSink = it.Graphics.RaiseCallback;
         it.Graphics.Backend = figures;
         it.InputReader = ReadInputLine;
         it.Paused += info => Dispatcher.Invoke(() => OnPaused(info));

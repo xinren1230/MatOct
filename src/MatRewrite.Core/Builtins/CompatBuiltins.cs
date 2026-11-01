@@ -154,12 +154,17 @@ public static partial class BuiltinLibrary
         Reg("subsref_paren__", (it, a, n) =>
         {
             var save = it.Current; var sc = new Scope();
-            sc.Vars["x__"] = a[0]; sc.Vars["i__"] = a[1]; sc.Vars["j__"] = a[2];
+            sc.Vars["x__"] = a[0];
+            var parts = new List<string>();
+            for (int k = 1; k < a.Length; k++)
+            {
+                if (IsString(a[k]) && S(a[k], "subsref") == ":") { parts.Add(":"); continue; }
+                sc.Vars[$"i{k}__"] = a[k]; parts.Add($"i{k}__");
+            }
             it.Current = sc;
             try
             {
-                var ci = IsString(a[1]) ? ":" : "i__"; var cj = IsString(a[2]) ? ":" : "j__";
-                it.EvalInCurrentScope($"r__ = x__({ci}, {cj});");
+                it.EvalInCurrentScope($"r__ = x__({string.Join(", ", parts)});");
                 return Out(sc.Vars["r__"]);
             }
             finally { it.Current = save; }
@@ -246,7 +251,7 @@ public static partial class BuiltinLibrary
         {
             var m = M(a[0], "isargout");
             int no = Math.Max(1, it.Current.Nargout);
-            var r = new MatrixValue(m.R, m.C, NumKind.Logical);
+            var r = new MatrixValue(m.R, m.C, NumKind.Logical) { ND = (int[]?)m.ND?.Clone() };
             for (int k = 0; k < m.Numel; k++) r.Re[k] = m.Re[k] >= 1 && m.Re[k] <= no ? 1 : 0;
             return Out(r);
         });

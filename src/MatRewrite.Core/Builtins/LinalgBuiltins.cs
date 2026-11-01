@@ -37,6 +37,33 @@ public static partial class BuiltinLibrary
         Reg1("rank", a => { var m = M(a[0], "rank"); if (m.Numel == 0) return Num(0); return Num(Ops.ToMathNet(m).Rank()); });
         Reg1("norm", a =>
         {
+            if (a.Length >= 2 && IsString(a[^1]) && S(a[^1], "norm").ToLowerInvariant() is "rows" or "columns" or "cols")
+            {
+                bool rows = S(a[^1], "norm").ToLowerInvariant() == "rows";
+                var x = M(a[0], "norm");
+                double pn = 2;
+                if (a.Length == 3)
+                {
+                    if (IsString(a[1])) { var ps = S(a[1], "norm").ToLowerInvariant(); pn = ps == "inf" ? double.PositiveInfinity : ps == "-inf" ? double.NegativeInfinity : ps == "fro" ? 2 : throw new OctaveException("norm: unrecognized option: " + ps); }
+                    else pn = D(a[1], "norm");
+                }
+                int cnt = rows ? x.R : x.C, len = rows ? x.C : x.R;
+                var r = rows ? new MatrixValue(cnt, 1) : new MatrixValue(1, cnt);
+                for (int i = 0; i < cnt; i++)
+                {
+                    var v = new double[len];
+                    for (int j = 0; j < len; j++) { int k = rows ? i + j * x.R : j + i * x.R; v[j] = x.Im == null ? Math.Abs(x.Re[k]) : System.Numerics.Complex.Abs(new System.Numerics.Complex(x.Re[k], x.Im[k])); }
+                    double s;
+                    if (double.IsPositiveInfinity(pn)) s = len == 0 ? 0 : v.Max();
+                    else if (double.IsNegativeInfinity(pn)) s = len == 0 ? 0 : v.Min();
+                    else if (pn == 0) s = v.Count(t => t != 0);
+                    else if (pn == 2) { double sc = len == 0 ? 0 : v.Max(); s = sc == 0 || double.IsInfinity(sc) ? sc : sc * Math.Sqrt(v.Sum(t => (t / sc) * (t / sc))); }
+                    else if (pn == 1) s = v.Sum();
+                    else s = Math.Pow(v.Sum(t => Math.Pow(t, pn)), 1 / pn);
+                    r.Re[i] = s;
+                }
+                return r;
+            }
             var m = M(a[0], "norm");
             if (m.Numel == 0) return Num(0);
             string p = a.Length > 1 ? (IsString(a[1]) ? S(a[1], "norm") : D(a[1], "norm").ToString(System.Globalization.CultureInfo.InvariantCulture)) : "2";

@@ -11,6 +11,8 @@ public static partial class BuiltinLibrary
         {
             if (a.Length == 1 && a[0] is ObjectValue sob) return ObjectToStruct(sob);
             if (a.Length == 0) return new StructValue();
+            if (a.Length == 1 && a[0] is StructValue sv1) return sv1;
+            if (a.Length == 1 && a[0] is MatrixValue em1 && em1.Numel == 0 && !em1.IsChar) return new StructValue(em1.R, em1.C, new List<string>());
             if (a.Length % 2 != 0) throw new OctaveException("struct: additional arguments must occur as \"field\", VALUE pairs");
             // cell values create struct arrays (non-1x1 cells); 1x1 cells are unwrapped
             int R = 1, C = 1;
@@ -148,12 +150,28 @@ public static partial class BuiltinLibrary
                 "ndims" => v => 2,
                 "isreal" => v => v is MatrixValue m && !m.IsComplex ? 1 : 0,
                 "islogical" => v => v is MatrixValue m && m.IsLogical ? 1 : 0,
-                "isclass" => null,
                 _ => null
             };
+            if (name == "isclass" && inputs.Count == 2)
+            {
+                string cls = S(inputs[1], fn);
+                var r = new MatrixValue(c0.R, c0.C, NumKind.Logical); if (c0.ND != null) r.SetDims(c0.Dims);
+                for (int k = 0; k < c0.Numel; k++) r.Re[k] = S(it.CallFunction("class", new[] { c0.Data[k] }, 1)[0], fn) == cls ? 1 : 0;
+                return Out(r);
+            }
+            if (name == "size" && inputs.Count == 2)
+            {
+                int d = (int)D(inputs[1], fn);
+                if (d < 1) throw new OctaveException("cellfun: K must be a positive integer");
+                var r = new MatrixValue(c0.R, c0.C); if (c0.ND != null) r.SetDims(c0.Dims);
+                for (int k = 0; k < c0.Numel; k++) { var dd = c0.Data[k].Dims; r.Re[k] = d <= dd.Length ? dd[d - 1] : 1; }
+                return Out(r);
+            }
+            if (inputs.Count > 1) quick = null;
             if (quick != null)
             {
                 var r = new MatrixValue(c0.R, c0.C, name is "isempty" or "isreal" or "islogical" ? NumKind.Logical : NumKind.Double);
+                if (c0.ND != null) r.SetDims(c0.Dims);
                 for (int k = 0; k < c0.Numel; k++) r.Re[k] = quick(c0.Data[k]);
                 return Out(r);
             }
@@ -164,15 +182,17 @@ public static partial class BuiltinLibrary
 
         var arrs = inputs.Select(v => v as ArrayValue ?? throw new OctaveException($"{fn}: invalid argument")).ToList();
         if (isCell && arrs.Any(x => x is not CellValue)) throw new OctaveException("cellfun: C must be a cell array");
-        int R = arrs[0].R, C = arrs[0].C;
-        foreach (var x in arrs) if (x.R != R || x.C != C) throw new OctaveException($"{fn}: all the input arguments must have the same size and shape");
+        var lead = arrs.FirstOrDefault(x => x.Numel != 1) ?? arrs[0];
+        int R = lead.R, C = lead.C;
+        var dims0 = lead.Dims;
+        foreach (var x in arrs) if (x.Numel != 1 && !x.Dims.SequenceEqual(dims0)) throw new OctaveException($"{fn}: all the input arguments must have the same size and shape");
         int nout = Math.Max(nargout, 1);
-        int n = R * C;
+        int n = lead.Numel;
         var results = new Value[nout][];
         for (int o = 0; o < nout; o++) results[o] = new Value[n];
         for (int k = 0; k < n; k++)
         {
-            var args = arrs.Select(x => isCell ? ((CellValue)x).Data[k] : x.Gather(new[] { k }, 1, 1)).ToArray();
+            var args = arrs.Select(x => isCell ? ((CellValue)x).Data[x.Numel == 1 ? 0 : k] : x.Gather(new[] { x.Numel == 1 ? 0 : k }, 1, 1)).ToArray();
             Value[] r;
             try { r = it.CallCallable(func, args, nargout == 0 ? (uniform ? 1 : 1) : nout); }
             catch (OctaveException ex) when (errHandler != null && ex is not InterruptException)
@@ -187,7 +207,7 @@ public static partial class BuiltinLibrary
         var outs = new Value[nout];
         for (int o = 0; o < nout; o++)
         {
-            if (!uniform) { outs[o] = new CellValue(R, C, results[o]); continue; }
+            if (!uniform) { var cv = new CellValue(R, C, results[o]); if (dims0.Length > 2) cv.SetDims(dims0); outs[o] = cv; continue; }
             var m = new MatrixValue(R, C);
             bool allLogical = n > 0, anyComplex = false;
             for (int k = 0; k < n; k++)
@@ -198,7 +218,9 @@ public static partial class BuiltinLibrary
                 if (rv.IsComplex) { anyComplex = true; m.Im ??= new double[n]; m.Im[k] = rv.Im![0]; }
                 m.Re[k] = rv.Re[0];
             }
+            if (dims0.Length > 2) m.SetDims(dims0);
             if (allLogical) m.Kind = NumKind.Logical;
+            else if (n > 0 && results[o].All(v => ((MatrixValue)v).Kind == ((MatrixValue)results[o][0]).Kind) && ((MatrixValue)results[o][0]).Kind != NumKind.Char) m.Kind = ((MatrixValue)results[o][0]).Kind;
             else if (n > 0 && results[o].All(v => ((MatrixValue)v).IsChar)) m.Kind = NumKind.Char;
             outs[o] = anyComplex ? m.Narrow() : m;
         }

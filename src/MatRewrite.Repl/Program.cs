@@ -18,7 +18,7 @@ public static class Program
         bool gui = !argv.Contains("--no-gui");
 #if WPF_FIGURES
         MatRewrite.Plotting.Wpf.WpfBackend? wpf = null;
-        if (gui) { wpf = new MatRewrite.Plotting.Wpf.WpfBackend(); it.Graphics.Backend = wpf; wpf.WindowClosed += f => { try { it.Graphics.Close(f); } catch { } }; }
+        if (gui) { wpf = new MatRewrite.Plotting.Wpf.WpfBackend(); MatRewrite.Plotting.Wpf.FigureWindow.CallbackSink = it.Graphics.RaiseCallback; it.Graphics.Backend = wpf; wpf.WindowClosed += f => { try { it.Graphics.Close(f); } catch { } }; }
         else it.Graphics.Backend = new MatRewrite.Plotting.FileOnlyBackend();
 #else
         it.Graphics.Backend = new MatRewrite.Plotting.FileOnlyBackend();
@@ -32,6 +32,14 @@ public static class Program
             if (args[k] is "--eval" or "-e" && k + 1 < args.Count) { evalCode = args[k + 1]; args.RemoveRange(k, 2); k--; }
             else if (args[k] is "-q" or "--quiet" or "--no-gui") { quiet = true; args.RemoveAt(k); k--; }
             else if (args[k] is "-p" or "--path" && k + 1 < args.Count) { it.SearchPath.Add(Path.GetFullPath(args[k + 1])); args.RemoveRange(k, 2); k--; }
+            else if (args[k] == "--lib" && k + 1 < args.Count)
+            {
+                var lib = Path.GetFullPath(args[k + 1]);
+                foreach (var d in new[] { lib }.Concat(Directory.GetDirectories(lib, "*", SearchOption.AllDirectories))
+                    .Where(d => !d.Split(Path.DirectorySeparatorChar).Any(x => x == "private" || x.StartsWith("@") || x.StartsWith("+") || x == "deprecated")))
+                    it.SearchPath.Add(d);
+                it.PreferBuiltins = true; args.RemoveRange(k, 2); k--;
+            }
             else if (args[k] is "-h" or "--help") { Console.WriteLine("usage: matrw [-q] [-p DIR] [--eval CODE] [script.m]"); return 0; }
         }
         try

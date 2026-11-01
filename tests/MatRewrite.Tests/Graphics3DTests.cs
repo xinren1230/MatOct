@@ -37,7 +37,7 @@ public class Graphics3DTests : IDisposable
     [Fact] public void SurfType() => Assert.Equal("surface 17", Run(Peaks + "h = surf(X,Y,Z); printf('%s %d', get(h,'type'), rows(get(h,'zdata')))"));
     [Fact] public void MeshAndShading() => Assert.Equal("", Run(Peaks + "mesh(Z); figure; surf(Z); shading flat; shading interp"));
     [Fact] public void Plot3ZData() => Assert.Equal("[3 2 1]", Run("h = plot3(1:3, 1:3, [3 2 1], 'r-o'); disp(mat2str(get(h,'zdata')))"));
-    [Fact] public void ZlabelZlim() => Assert.Equal("Z|[-5 5]", Run("plot3(1:3,1:3,1:3); zlabel('Z'); zlim([-5 5]); printf('%s|%s', get(gca,'zlabel'), mat2str(zlim))"));
+    [Fact] public void ZlabelZlim() => Assert.Equal("Z|[-5 5]", Run("plot3(1:3,1:3,1:3); zlabel('Z'); zlim([-5 5]); printf('%s|%s', get(get(gca,'zlabel'),'string'), mat2str(zlim))"));
     [Fact] public void ZlimAuto() => Assert.Equal("[0 10]", Run("plot3([0 1],[0 1],[0.5 9.5]); disp(mat2str(zlim))"));
     [Fact] public void PlotAfterSurfIs2D() => Assert.Equal("0 90", Run(Peaks + "surf(Z); plot(1:3); printf('%g %g', view)"));
 
@@ -62,9 +62,9 @@ public class Graphics3DTests : IDisposable
     [Fact] public void LogScales() => Assert.Equal("log linear|linear log|log log", Run("semilogx(1:10); a=get(gca,'xscale'); b=get(gca,'yscale'); semilogy(1:10); c=get(gca,'xscale'); d=get(gca,'yscale'); loglog(1:10,1:10); printf('%s %s|%s %s|%s %s', a,b,c,d,get(gca,'xscale'),get(gca,'yscale'))"));
     [Fact] public void LogLimitsAreDecades() => Assert.Equal("[1 1000]", Run("loglog([2 300],[1 2]); disp(mat2str(xlim))"));
     [Fact] public void SetXScale() => Assert.Equal("log", Run("plot(1:10); set(gca,'xscale','log'); disp(get(gca,'xscale'))"));
-    [Fact] public void ErrorbarLimits() => Assert.Equal("errorbar 1", Run("h = errorbar(1:3, [1 2 3], [0.5 0.5 0.5]); yl = ylim; printf('%s %d', get(h,'type'), yl(1) <= 0.5)"));
+    [Fact] public void ErrorbarLimits() => Assert.Equal("hggroup 1", Run("h = errorbar(1:3, [1 2 3], [0.5 0.5 0.5]); yl = ylim; printf('%s %d', get(h,'type'), yl(1) <= 0.5)"));
     [Fact] public void TextObject() => Assert.Equal("text hello [2 3 0]", Run("plot(1:5); h = text(2, 3, 'hello'); printf('%s %s %s', get(h,'type'), get(h,'string'), mat2str(get(h,'position')))"));
-    [Fact] public void AnnotationTypes() => Assert.Equal("annotation", Run("plot(1:3); annotation('arrow',[0.1 0.4],[0.1 0.4]); annotation('textbox',[0.5 0.5 0.2 0.1],'String','hi'); h = annotation('line',[0 1],[0 1]); disp(get(h,'type'))"));
+    [Fact] public void AnnotationTypes() => Assert.Equal("hggroup", Run("plot(1:3); annotation('arrow',[0.1 0.4],[0.1 0.4]); annotation('textbox',[0.5 0.5 0.2 0.1],'String','hi'); h = annotation('line',[0 1],[0 1]); disp(get(h,'type'))"));
     [Fact] public void AnnotationBadType() => Assert.Contains("unknown annotation type", Assert.Throws<OctaveException>(() => Run("annotation('blob')")).Message);
 
     [Fact]

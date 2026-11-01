@@ -329,7 +329,7 @@ public sealed partial class Interpreter
 
     void ExecAssign(AssignStmt a)
     {
-        if (a.Targets.Count == 1)
+        if (a.Targets.Count == 1 && !(a.Targets[0] is IndexExpr { Brace: true, Target: IdentExpr, Args.Count: 1 } bt && bt.Args[0] is not (NumberExpr or EndExpr) && ExpandCsListTargets(a.Targets).Count != 1))
         {
             var vals = EvalMulti(a.Value, 1);
             if (vals.Count == 0) throw new OctaveException("value on right hand side of assignment is undefined");
@@ -337,23 +337,67 @@ public sealed partial class Interpreter
             if (a.Print) Out.Write(Display.Show(name, LookupVar(name)!));
             return;
         }
-        int nout = a.Targets.Count;
+        var targets = ExpandCsListTargets(a.Targets);
+        int nout = targets.Count;
         var results = EvalMulti(a.Value, nout);
         for (int k = 0; k < nout; k++)
         {
-            if (a.Targets[k] is TildeExpr) continue;
+            if (targets[k] is TildeExpr) continue;
             if (k >= results.Count)
             {
                 if (k == 0) throw new OctaveException("value on right hand side of assignment is undefined");
                 throw new OctaveException($"element number {k + 1} undefined in return list");
             }
-            var name = AssignTo(a.Targets[k], results[k]);
+            var name = AssignTo(targets[k], results[k]);
             if (a.Print) Out.Write(Display.Show(name, LookupVar(name)!));
         }
     }
 
+    /// <summary>[c{:}] = f() / [c{1:3}] = f(): one output per addressed cell element.</summary>
+    List<Expr> ExpandCsListTargets(List<Expr> targets)
+    {
+        if (!targets.Any(t => t is IndexExpr { Brace: true, Target: IdentExpr, Args.Count: 1 })) return targets;
+        var r = new List<Expr>();
+        foreach (var t in targets)
+        {
+            if (t is IndexExpr { Brace: true, Target: IdentExpr id, Args.Count: 1 } ix)
+            {
+                var cur = LookupRaw(Current, id.Name);   // raw: must not clear the in-place ownership flag
+                double[]? idx = null;
+                if (ix.Args[0] is ColonExpr) { if (cur is ArrayValue av) idx = Enumerable.Range(1, av.Numel).Select(i => (double)i).ToArray(); }
+                else if (ix.Args[0] is not (NumberExpr or EndExpr))
+                {
+                    var iv = EvalIndexArgs(ix.Args, cur ?? new CellValue(0, 0))[0] as MatrixValue;
+                    if (iv != null && !iv.IsChar)
+                        idx = iv.Kind == NumKind.Logical ? Enumerable.Range(0, iv.Numel).Where(i => iv.Re[i] != 0).Select(i => (double)(i + 1)).ToArray() : iv.Re.ToArray();
+                }
+                if (idx != null && idx.Length != 1)
+                {
+                    foreach (var d in idx) r.Add(new IndexExpr(ix.Target, new List<Expr> { new NumberExpr(d, false, d.ToString(System.Globalization.CultureInfo.InvariantCulture)) }, true) { Line = ix.Line });
+                    continue;
+                }
+            }
+            r.Add(t);
+        }
+        return r;
+    }
+
     Flow ExecFor(ForStmt f)
     {
+        if (f.Var is MatrixExpr mvx && mvx.Rows.Count == 1 && mvx.Rows[0].Count == 2)
+        {
+            if (Eval(f.Range) is not StructValue fs) throw new OctaveException("in statement 'for [X, Y] = VAL', VAL must be a structure");
+            foreach (var key in fs.Fields.ToList())
+            {
+                Value val = fs.Numel == 1 ? fs.Get(key) : new CellValue(fs.R, fs.C, fs.Elems.Select(e => e[key]).ToArray());
+                AssignTo(mvx.Rows[0][0], val);
+                AssignTo(mvx.Rows[0][1], MatrixValue.Str(key));
+                CheckInterrupt(); var fl = ExecBlock(f.Body);
+                if (fl == Flow.Break) break;
+                if (fl == Flow.Return) return fl;
+            }
+            return Flow.Normal;
+        }
         if (f.Range is RangeExpr re)
         {
             var (start, step, n) = RangeParams(re);
@@ -641,7 +685,9 @@ public sealed partial class Interpreter
     }
 
     // ------------------------------------------------------------ expressions
-    public Value Eval(Expr e)
+    public Value Eval(Expr e) => UseCompiler ? Compiled(e)(this) : EvalTree(e);
+
+    internal Value EvalTree(Expr e)
     {
         switch (e)
         {
@@ -957,6 +1003,7 @@ public sealed partial class Interpreter
                     break;
                 case '{':
                 {
+                    if (v is MapValue) throw new OctaveException("containers.Map: only '()' indexing is supported by containers.Map");
                     if (v is not CellValue cv)
                         throw new OctaveException(v is FunctionHandleValue ? "'{' undefined for arguments of type 'function_handle'" : $"'{{' undefined for arguments of type '{v.ClassName}'; matrix cannot be indexed with {{");
                     var sub = (CellValue)Indexing.Read(cv, EvalIndexArgs(op.Args!, v));
@@ -973,10 +1020,11 @@ public sealed partial class Interpreter
                         { margs = EvalArgs(ops[k + 1].Args!); k++; }
                         cur = name switch
                         {
-                            "Count" => new List<Value> { MatrixValue.Scalar(mp.Count) },
+                            "Count" => new List<Value> { MatrixValue.Scalar(mp.Count).CastInPlace(NumKind.UInt64) },
                             "KeyType" => new List<Value> { MatrixValue.Str(mp.KeyType) },
                             "ValueType" => new List<Value> { MatrixValue.Str(mp.ValueType) },
-                            _ => CallFunction(name, new Value[] { mp }.Concat(margs).ToArray(), 1).ToList()
+                            "keys" or "values" or "isKey" or "remove" or "length" => CallFunction(name, new Value[] { mp }.Concat(margs).ToArray(), 1).ToList(),
+                            _ => throw new OctaveException($"containers.Map: unknown property '{name}'")
                         };
                         break;
                     }

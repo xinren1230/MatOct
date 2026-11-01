@@ -189,7 +189,7 @@ public sealed class Lexer
             {
                 case "(": brackets.Push('('); break;
                 case "[": brackets.Push('['); break;
-                case "{": brackets.Push('{'); break;
+                case "{": brackets.Push(LastEndsValue() && !(space && InMatrix) ? '(' : '{'); break;
                 case ")": case "]": case "}":
                     if (brackets.Count > 0) brackets.Pop();
                     // remove a trailing ';' or ',' row separator before closing bracket

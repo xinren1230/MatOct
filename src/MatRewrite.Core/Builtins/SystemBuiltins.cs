@@ -159,7 +159,7 @@ public static partial class BuiltinLibrary
         {
             if (a.Length == 0) { it.InputReader(""); return; }
             var until = DateTime.UtcNow.AddSeconds(Math.Max(0, D(a[0], "pause")));
-            while (DateTime.UtcNow < until) { it.CheckInterrupt(); Thread.Sleep(Math.Max(1, Math.Min(20, (int)(until - DateTime.UtcNow).TotalMilliseconds))); }
+            while (DateTime.UtcNow < until) { it.CheckInterrupt(); if (!it.Graphics.PendingCallbacks.IsEmpty) DrainCallbacks(it); Thread.Sleep(Math.Max(1, Math.Min(20, (int)(until - DateTime.UtcNow).TotalMilliseconds))); }
             it.CheckInterrupt();
         });
         Reg0("format", (it, a) => Display.LongFormat = a.Length > 0 && S(a[0], "format").Equals("long", StringComparison.OrdinalIgnoreCase));
