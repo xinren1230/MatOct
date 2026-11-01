@@ -30,7 +30,7 @@ public sealed class Lexer
     static readonly HashSet<string> CommandWords = new()
     {
         "format","clc","clear","close","hold","more","pkg","warning","help","which","cd","figure","addpath","rmpath",
-        "type","echo","clearvars","dbstop","dbclear","dbstep","dbcont","dbquit","dbstatus","dbstack","keyboard","run","disp","load","save","grid","axis","box","colormap","colorbar","print","drawnow","clf","cla","legend","mkdir","rmdir","delete","graphics_toolkit","diary","beep_on_error","page_screen_output","shading","rotate3d"
+        "type","echo","clearvars","dbstop","dbclear","dbstep","dbcont","dbquit","dbstatus","dbstack","keyboard","run","disp","load","save","grid","axis","box","colormap","colorbar","print","drawnow","clf","cla","legend","mkdir","rmdir","delete","graphics_toolkit","diary","beep_on_error","page_screen_output","shading","rotate3d","lighting","camlight","material","checkcode","mlint"
     };
 
     readonly string src;
@@ -173,8 +173,10 @@ public sealed class Lexer
             string[] ops3 = { ".^'", "!==" };
             string? op = null;
             string two = pos + 1 < src.Length ? src.Substring(pos, 2) : c.ToString();
-            string[] ops2 = { "==", "~=", "!=", "<=", ">=", "&&", "||", ".*", "./", ".\\", ".^", ".'", "+=", "-=", "*=", "/=", "^=", "++", "--" };
-            if (ops2.Contains(two))
+            string[] ops2 = { "==", "~=", "!=", "<=", ">=", "&&", "||", ".*", "./", ".\\", ".^", ".'", "+=", "-=", "*=", "/=", "^=", "|=", "&=", "++", "--" };
+            string three = pos + 2 < src.Length ? src.Substring(pos, 3) : "";
+            if (three is ".*=" or "./=" or ".^=") op = three;
+            else if (ops2.Contains(two))
             {
                 op = two;
                 if ((op == "++" || op == "--")) op = null; // treat as two unary/binary ops

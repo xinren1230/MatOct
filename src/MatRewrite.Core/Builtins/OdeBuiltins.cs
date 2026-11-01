@@ -134,6 +134,21 @@ public static partial class BuiltinLibrary
         }
         h = Math.Min(h, hmax);
         int nsteps = 0, nfail = 0;
+        // ---- Events option: [value, isterminal, direction] = events(t, y)
+        Value? evFn = opts != null && opts.HasField("Events") && !opts.Elems[0]["Events"].IsEmptyValue() ? opts.Elems[0]["Events"] : null;
+        var te = new List<double>(); var ye = new List<double[]>(); var ie = new List<int>();
+        bool terminated = false;
+        (double[] v, double[] term, double[] dirn) Ev(double tt, double[] yy)
+        {
+            var args = new List<Value> { MatrixValue.Scalar(tt), new MatrixValue(neq, 1, (double[])yy.Clone()) };
+            args.AddRange(extra);
+            var r = it.CallCallable(evFn!, args.ToArray(), 3);
+            if (r.Length < 3) throw new OctaveException($"{fn}: Events function must return [value, isterminal, direction]");
+            var v = M(r[0], fn).Re.ToArray();
+            double[] Pad(Value x) { var m = M(x, fn).Re; return Enumerable.Range(0, v.Length).Select(i => m.Length == 0 ? 0 : m[Math.Min(i, m.Length - 1)]).ToArray(); }
+            return (v, Pad(r[1]), Pad(r[2]));
+        }
+        double[]? evPrev = evFn != null ? Ev(t, y).v : null;
         while (dir * (tf - t) > 1e-14 * Math.Max(1, Math.Abs(tf)))
         {
             it.CheckInterrupt();
@@ -157,6 +172,53 @@ public static partial class BuiltinLibrary
             {
                 double tn = t + dir * h;
                 double[] fn1 = low || stages < 7 ? F(tn, yn) : k[stages - 1];
+                if (evFn != null)
+                {
+                    var (vn, term, dirs) = Ev(tn, yn);
+                    double tStop = double.NaN; double[]? yStop = null;
+                    var found = new List<(double t, double[] y, int i, bool term)>();
+                    for (int q = 0; q < vn.Length && q < evPrev!.Length; q++)
+                    {
+                        double va = evPrev[q], vb = vn[q];
+                        bool cross = (va < 0 && vb >= 0 && dirs[q] >= 0) || (va > 0 && vb <= 0 && dirs[q] <= 0);
+                        if (!cross) continue;
+                        // Illinois (regula falsi) on the Hermite interpolant, in units of the step fraction
+                        double a0 = 0, b0 = 1, fa = va, fb = vb; int side = 0; double th = 1;
+                        for (int itr = 0; itr < 60; itr++)
+                        {
+                            th = fb - fa == 0 ? (a0 + b0) / 2 : (a0 * fb - b0 * fa) / (fb - fa);
+                            if (!(th > a0 && th < b0)) th = (a0 + b0) / 2;
+                            double fm = Ev(t + dir * h * th, Hermite(y, yn, k[0], fn1, h * dir, th)).v[q];
+                            if (Math.Abs(b0 - a0) * h < 4 * double.Epsilon * Math.Max(1, Math.Abs(t)) || fm == 0) break;
+                            if (Math.Sign(fm) == Math.Sign(fb)) { b0 = th; fb = fm; if (side == -1) fa /= 2; side = -1; }
+                            else { a0 = th; fa = fm; if (side == 1) fb /= 2; side = 1; }
+                            if (Math.Abs(b0 - a0) < 1e-12) break;
+                        }
+                        found.Add((t + dir * h * th, Hermite(y, yn, k[0], fn1, h * dir, th), q, term[q] != 0));
+                    }
+                    found.Sort((p1, p2) => (dir * p1.t).CompareTo(dir * p2.t));
+                    foreach (var ev in found)
+                    {
+                        te.Add(ev.t); ye.Add(ev.y); ie.Add(ev.i + 1);
+                        if (ev.term) { tStop = ev.t; yStop = ev.y; break; }
+                    }
+                    evPrev = vn;
+                    if (yStop != null)
+                    {
+                        double hs = Math.Abs(tStop - t);
+                        var fstop = F(tStop, yStop);
+                        for (int r = 1; r < refine; r++)
+                        {
+                            double th = (double)r / refine;
+                            if (h * th >= hs) break;
+                            ys.Add(Hermite(y, yn, k[0], fn1, h * dir, th)); ts.Add(t + dir * h * th); fs.Add(null!);
+                        }
+                        t = tStop; y = yStop; k[0] = fstop;
+                        ts.Add(t); ys.Add((double[])y.Clone()); fs.Add(fstop);
+                        nsteps++; terminated = true;
+                        break;
+                    }
+                }
                 // dense refinement with cubic Hermite interpolation
                 for (int r = 1; r < refine; r++)
                 {
@@ -184,7 +246,7 @@ public static partial class BuiltinLibrary
             var nodes = new List<(double t, double[] y, double[] f)>();
             for (int i = 0; i < ts.Count; i++) if (fs[i] != null) nodes.Add((ts[i], ys[i], fs[i]));
             int seg = 0;
-            foreach (var tq in tspan)
+            foreach (var tq in tspan.Where(x => !terminated || dir * (x - t) < 0).Concat(terminated ? new[] { t } : Array.Empty<double>()))
             {
                 while (seg < nodes.Count - 2 && dir * (tq - nodes[seg + 1].t) > 0) seg++;
                 if (nodes.Count == 1) { outT.Add(tq); outY.Add(nodes[0].y); continue; }
@@ -201,7 +263,11 @@ public static partial class BuiltinLibrary
         if (nargout <= 1)
         {
             var st = new StructValue();
-            st.Set("ie", MatrixValue.Empty()); st.Set("xe", MatrixValue.Empty()); st.Set("ye", MatrixValue.Empty());
+            st.Set("ie", new MatrixValue(1, ie.Count, ie.Select(x => (double)x).ToArray()));
+            st.Set("xe", new MatrixValue(1, te.Count, te.ToArray()));
+            var yeT = new MatrixValue(neq, ye.Count);
+            for (int i = 0; i < ye.Count; i++) for (int j = 0; j < neq; j++) yeT.Re[i * neq + j] = ye[i][j];
+            st.Set("ye", yeT);
             st.Set("solver", Str(fn));
             st.Set("x", new MatrixValue(1, outT.Count, outT.ToArray()));
             var yt = new MatrixValue(neq, outT.Count);
@@ -211,7 +277,11 @@ public static partial class BuiltinLibrary
             st.Set("stats", stats);
             return Out(st);
         }
-        return new Value[] { tm, ym };
+        var teM = new MatrixValue(te.Count, 1, te.ToArray());
+        var yeM = new MatrixValue(ye.Count, neq);
+        for (int i = 0; i < ye.Count; i++) for (int j = 0; j < neq; j++) yeM.Re[j * ye.Count + i] = ye[i][j];
+        var ieM = new MatrixValue(ie.Count, 1, ie.Select(x => (double)x).ToArray());
+        return new Value[] { tm, ym, teM, yeM, ieM };
     }
 
     static double[] Hermite(double[] y0, double[] y1, double[] f0, double[] f1, double h, double th)

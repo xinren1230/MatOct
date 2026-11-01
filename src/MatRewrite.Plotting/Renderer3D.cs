@@ -11,13 +11,19 @@ namespace MatRewrite.Plotting;
 /// </summary>
 public static class Renderer3D
 {
-    public static bool Handles(Axes ax) => ax.Is3D || ax.Children.Any(c => c is SurfaceSeries);
+    public static bool Handles(Axes ax) => ax.Is3D || ax.Children.Any(c => c is SurfaceSeries || c is ContourSeries { Contour3: true } || c is ContourSeries { ZPlane: not null });
+
+    /// <summary>Above this many quads per surface the grid is decimated for interactive speed.</summary>
+    public static int MaxQuads = 90_000;
 
     static SKColor Sk(Rgb c) => new((byte)Math.Round(c.R * 255), (byte)Math.Round(c.G * 255), (byte)Math.Round(c.B * 255));
     static SKColor Sk(SP.Color c) => new(c.R, c.G, c.B, c.A);
 
     abstract record Prim(double Depth);
-    sealed record Quad(double Depth, SKPoint[] P, SKColor Fill, bool HasFill, SKColor Edge, bool HasEdge) : Prim(Depth);
+    sealed record Quad(double Depth, SKPoint[] P, SKColor Fill, bool HasFill, SKColor Edge, bool HasEdge) : Prim(Depth)
+    {
+        public SKColor[]? Vertex; // gouraud vertex colours
+    }
     sealed record Seg(double Depth, SKPoint A, SKPoint B, SKColor Color, float Width, LineStyle Style) : Prim(Depth);
     sealed record Mark(double Depth, SKPoint P, SKColor Color, float Size, Marker M) : Prim(Depth);
     sealed record Txt(double Depth, SKPoint P, SKColor Color, float Size, string Text, string Align) : Prim(Depth);
@@ -161,8 +167,43 @@ public static class Renderer3D
         var prims = new List<Prim>();
         double cmin = double.PositiveInfinity, cmax = double.NegativeInfinity;
         foreach (var sf in ax.Children.OfType<SurfaceSeries>()) foreach (var v in sf.C) if (double.IsFinite(v)) { cmin = Math.Min(cmin, v); cmax = Math.Max(cmax, v); }
+        if (!double.IsFinite(cmin))
+            foreach (var cs in ax.Children.OfType<ContourSeries>()) foreach (var v in cs.Levels) { cmin = Math.Min(cmin, v); cmax = Math.Max(cmax, v); }
         if (ax.CLim != null) { cmin = ax.CLim[0]; cmax = ax.CLim[1]; }
-        SKColor CM(double v) => Sk(cmap.GetColor(cmax > cmin ? Math.Clamp((v - cmin) / (cmax - cmin), 0, 1) : 0.5));
+        // colormap lookup table (256 entries) avoids per-quad colormap evaluation
+        var lut = new SKColor[256];
+        for (int k = 0; k < 256; k++) lut[k] = Sk(cmap.GetColor(k / 255.0));
+        SKColor CM(double v) => cmax > cmin ? lut[(int)Math.Round(Math.Clamp((v - cmin) / (cmax - cmin), 0, 1) * 255)] : lut[128];
+
+        // lights: directions in normalized (projected-space) coordinates
+        var lights = ax.Children.OfType<LightObject>().Where(l => l.Visible).Select(l =>
+        {
+            double laz, lel;
+            if (l.CameraRelative) { laz = ax.Az + l.Az; lel = ax.El + l.El; } else { laz = l.Az; lel = l.El; }
+            double ar = laz * Math.PI / 180, er = lel * Math.PI / 180;
+            // same convention as the view direction (ce*sa, -ce*ca, se)
+            return (x: Math.Cos(er) * Math.Sin(ar), y: -Math.Cos(er) * Math.Cos(ar), z: Math.Sin(er), c: l.Color);
+        }).ToList();
+        double vx = ce * sa, vy = -ce * ca, vz = se;
+        (double nx, double ny, double nz) Norm3(double x, double y, double z) =>
+            (2 * (x - xl[0]) / (xl[1] - xl[0]) - 1, 2 * (y - yl[0]) / (yl[1] - yl[0]) - 1, (2 * (z - zl[0]) / (zl[1] - zl[0]) - 1) * (flat ? 1 : 0.8));
+        SKColor Shade(SKColor c, double nx, double ny, double nz)
+        {
+            double len = Math.Sqrt(nx * nx + ny * ny + nz * nz);
+            if (len < 1e-15) return c;
+            nx /= len; ny /= len; nz /= len;
+            if (nx * vx + ny * vy + nz * vz < 0) { nx = -nx; ny = -ny; nz = -nz; } // two-sided
+            double r = 0.3 * c.Red, g = 0.3 * c.Green, b = 0.3 * c.Blue;
+            foreach (var L in lights)
+            {
+                double diff = Math.Max(0, nx * L.x + ny * L.y + nz * L.z);
+                // Blinn-Phong specular
+                double hx = L.x + vx, hy = L.y + vy, hz = L.z + vz, hl = Math.Sqrt(hx * hx + hy * hy + hz * hz);
+                double spec = hl > 0 ? Math.Pow(Math.Max(0, (nx * hx + ny * hy + nz * hz) / hl), 10) * 0.1 * 255 : 0;
+                r += 0.6 * diff * c.Red * L.c.R + spec; g += 0.6 * diff * c.Green * L.c.G + spec; b += 0.6 * diff * c.Blue * L.c.B + spec;
+            }
+            return new SKColor((byte)Math.Clamp(r, 0, 255), (byte)Math.Clamp(g, 0, 255), (byte)Math.Clamp(b, 0, 255), c.Alpha);
+        }
         foreach (var s in ax.Children)
         {
             switch (s)
@@ -170,20 +211,89 @@ public static class Renderer3D
                 case SurfaceSeries sf:
                 {
                     int R = sf.Z.GetLength(0), C = sf.Z.GetLength(1);
-                    for (int i = 0; i + 1 < R; i++)
-                        for (int j = 0; j + 1 < C; j++)
+                    // decimate very large grids (keeps first/last rows and columns)
+                    int stride = 1;
+                    while ((long)((R - 1) / stride) * ((C - 1) / stride) > MaxQuads) stride++;
+                    int[] ri = Enumerable.Range(0, (R - 1) / stride + 1).Select(i => i * stride).ToList().Append(R - 1).Distinct().ToArray();
+                    int[] cj = Enumerable.Range(0, (C - 1) / stride + 1).Select(j => j * stride).ToList().Append(C - 1).Distinct().ToArray();
+                    int nr = ri.Length, nc = cj.Length;
+                    // project every vertex once
+                    var P = new SKPoint[nr, nc]; var Dp = new double[nr, nc]; var ok = new bool[nr, nc];
+                    for (int a = 0; a < nr; a++)
+                        for (int b = 0; b < nc; b++)
                         {
-                            var idx = new[] { (i, j), (i, j + 1), (i + 1, j + 1), (i + 1, j) };
-                            if (idx.Any(q => !double.IsFinite(sf.Z[q.Item1, q.Item2]))) continue;
-                            double dsum = 0; var pts = new SKPoint[4];
-                            for (int q = 0; q < 4; q++) { pts[q] = Scr(sf.X[idx[q].Item1, idx[q].Item2], sf.Y[idx[q].Item1, idx[q].Item2], flat ? zl[0] : sf.Z[idx[q].Item1, idx[q].Item2], out var d); dsum += d; }
-                            double cval = sf.Shading == "faceted" || sf.Mesh ? sf.C[i, j] : (sf.C[i, j] + sf.C[i, j + 1] + sf.C[i + 1, j + 1] + sf.C[i + 1, j]) / 4;
+                            int i = ri[a], j = cj[b];
+                            ok[a, b] = double.IsFinite(sf.Z[i, j]);
+                            if (ok[a, b]) P[a, b] = Scr(sf.X[i, j], sf.Y[i, j], flat ? zl[0] : sf.Z[i, j], out Dp[a, b]);
+                        }
+                    bool lit = lights.Count > 0 && sf.FaceLighting != "none" && ax.Lighting != "none" && !sf.Mesh && !flat;
+                    bool gouraud = lit && sf.FaceLighting == "gouraud";
+                    byte alpha = (byte)Math.Round(sf.FaceAlpha * 255);
+                    // vertex normals for gouraud shading
+                    (double, double, double) VNormal(int a, int b)
+                    {
+                        int a0 = Math.Max(a - 1, 0), a1 = Math.Min(a + 1, nr - 1), b0 = Math.Max(b - 1, 0), b1 = Math.Min(b + 1, nc - 1);
+                        var pA0 = Norm3(sf.X[ri[a0], cj[b]], sf.Y[ri[a0], cj[b]], sf.Z[ri[a0], cj[b]]); var pA1 = Norm3(sf.X[ri[a1], cj[b]], sf.Y[ri[a1], cj[b]], sf.Z[ri[a1], cj[b]]);
+                        var pB0 = Norm3(sf.X[ri[a], cj[b0]], sf.Y[ri[a], cj[b0]], sf.Z[ri[a], cj[b0]]); var pB1 = Norm3(sf.X[ri[a], cj[b1]], sf.Y[ri[a], cj[b1]], sf.Z[ri[a], cj[b1]]);
+                        double ux = pA1.nx - pA0.nx, uy = pA1.ny - pA0.ny, uz = pA1.nz - pA0.nz, wx = pB1.nx - pB0.nx, wy = pB1.ny - pB0.ny, wz = pB1.nz - pB0.nz;
+                        return (uy * wz - uz * wy, uz * wx - ux * wz, ux * wy - uy * wx);
+                    }
+                    for (int a = 0; a + 1 < nr; a++)
+                        for (int b = 0; b + 1 < nc; b++)
+                        {
+                            if (!(ok[a, b] && ok[a, b + 1] && ok[a + 1, b + 1] && ok[a + 1, b])) continue;
+                            int i = ri[a], j = cj[b], i1 = ri[a + 1], j1 = cj[b + 1];
+                            var pts = new[] { P[a, b], P[a, b + 1], P[a + 1, b + 1], P[a + 1, b] };
+                            double depth = (Dp[a, b] + Dp[a, b + 1] + Dp[a + 1, b + 1] + Dp[a + 1, b]) / 4;
+                            double cval = sf.Shading == "faceted" || sf.Mesh ? sf.C[i, j] : (sf.C[i, j] + sf.C[i, j1] + sf.C[i1, j1] + sf.C[i1, j]) / 4;
                             var col = CM(cval);
                             if (sf.Mesh)
-                                prims.Add(new Quad(dsum / 4, pts, sf.FaceColor is { } fc ? Sk(fc) : SKColors.White, true, sf.EdgeColor is { } ec ? Sk(ec) : col, true));
-                            else
-                                prims.Add(new Quad(dsum / 4, pts, sf.FaceColor is { } fc2 ? Sk(fc2) : col, true, sf.EdgeColor is { } ec2 ? Sk(ec2) : SKColors.Black, sf.Shading == "faceted"));
+                            {
+                                prims.Add(new Quad(depth, pts, sf.FaceColor is { } fc ? Sk(fc) : SKColors.White, true, sf.EdgeColor is { } ec ? Sk(ec) : col, true));
+                                continue;
+                            }
+                            var face = sf.FaceColor is { } fc2 ? Sk(fc2) : col;
+                            SKColor[]? vcols = null;
+                            if (lit)
+                            {
+                                if (gouraud)
+                                {
+                                    var corners = new[] { (a, b), (a, b + 1), (a + 1, b + 1), (a + 1, b) };
+                                    vcols = new SKColor[4];
+                                    for (int q = 0; q < 4; q++)
+                                    {
+                                        var (qa, qb) = corners[q];
+                                        var baseCol = sf.FaceColor is { } fc3 ? Sk(fc3) : sf.Shading == "interp" ? CM(sf.C[ri[qa], cj[qb]]) : face;
+                                        var nrm = VNormal(qa, qb);
+                                        vcols[q] = Shade(baseCol, nrm.Item1, nrm.Item2, nrm.Item3).WithAlpha(alpha);
+                                    }
+                                }
+                                else
+                                {
+                                    var p0 = Norm3(sf.X[i, j], sf.Y[i, j], sf.Z[i, j]); var p1 = Norm3(sf.X[i, j1], sf.Y[i, j1], sf.Z[i, j1]); var p3 = Norm3(sf.X[i1, j], sf.Y[i1, j], sf.Z[i1, j]);
+                                    double ux = p1.nx - p0.nx, uy = p1.ny - p0.ny, uz = p1.nz - p0.nz, wx = p3.nx - p0.nx, wy = p3.ny - p0.ny, wz = p3.nz - p0.nz;
+                                    face = Shade(face, uy * wz - uz * wy, uz * wx - ux * wz, ux * wy - uy * wx);
+                                }
+                            }
+                            var edgeCol = sf.EdgeColor is { } ec2 ? Sk(ec2) : SKColors.Black;
+                            if (sf.EdgeAlpha < 1) edgeCol = edgeCol.WithAlpha((byte)Math.Round(sf.EdgeAlpha * 255));
+                            prims.Add(new Quad(depth, pts, face.WithAlpha(alpha), sf.FaceAlpha > 0, edgeCol, sf.Shading == "faceted" && stride == 1) { Vertex = vcols });
                         }
+                    break;
+                }
+                case ContourSeries cs when cs.Contour3 || cs.ZPlane != null:
+                {
+                    foreach (var (level, lx, ly) in cs.Lines)
+                    {
+                        var col = cs.LineColor is { } lc ? Sk(lc) : CM(level);
+                        double zz = cs.Contour3 ? level : cs.ZPlane!.Value;
+                        for (int k = 0; k + 1 < lx.Length; k++)
+                        {
+                            if (!double.IsFinite(lx[k]) || !double.IsFinite(lx[k + 1])) continue;
+                            var p = Scr(lx[k], ly[k], zz, out var d1); var q = Scr(lx[k + 1], ly[k + 1], zz, out var d2);
+                            prims.Add(new Seg((d1 + d2) / 2 + 1e-6, p, q, col, (float)Math.Max(1, cs.LineWidth * 1.5), LineStyle.Solid));
+                        }
+                    }
                     break;
                 }
                 case LineSeries l:
@@ -216,17 +326,34 @@ public static class Renderer3D
         using var edge = new SKPaint { IsStroke = true, StrokeWidth = 0.6f, IsAntialias = true };
         using var line = new SKPaint { IsStroke = true, IsAntialias = true, StrokeCap = SKStrokeCap.Round };
         using var txt = new SKPaint { IsAntialias = true };
-        foreach (var p in prims.OrderBy(p => p.Depth))
+        bool big = prims.Count > 20_000;
+        if (big) { fill.IsAntialias = false; edge.IsAntialias = false; }
+        var keys = new double[prims.Count];
+        for (int k = 0; k < keys.Length; k++) keys[k] = prims[k].Depth;
+        var order = prims.ToArray();
+        Array.Sort(keys, order); // stable enough for painter's algorithm
+        using var quadPath = new SKPath();
+        foreach (var p in order)
         {
             switch (p)
             {
                 case Quad q:
                 {
-                    using var path = new SKPath();
+                    var path = quadPath;
+                    path.Rewind();
                     path.AddPoly(q.P, true);
+                    if (q.Vertex != null && q.HasFill)
+                    {
+                        var tri = new[] { q.P[0], q.P[1], q.P[2], q.P[0], q.P[2], q.P[3] };
+                        var tc = new[] { q.Vertex[0], q.Vertex[1], q.Vertex[2], q.Vertex[0], q.Vertex[2], q.Vertex[3] };
+                        fill.Color = SKColors.White;
+                        cv.DrawVertices(SKVertexMode.Triangles, tri, tc, fill);
+                        if (q.HasEdge) { edge.Color = q.Edge; cv.DrawPath(path, edge); }
+                        break;
+                    }
                     if (q.HasFill) { fill.Color = q.Fill; cv.DrawPath(path, fill); }
                     if (q.HasEdge) { edge.Color = q.Edge; cv.DrawPath(path, edge); }
-                    else if (q.HasFill) { edge.Color = q.Fill; edge.StrokeWidth = 0.5f; cv.DrawPath(path, edge); edge.StrokeWidth = 0.6f; }
+                    else if (q.HasFill && q.Fill.Alpha == 255) { edge.Color = q.Fill; edge.StrokeWidth = 0.5f; cv.DrawPath(path, edge); edge.StrokeWidth = 0.6f; }
                     break;
                 }
                 case Seg sgm:

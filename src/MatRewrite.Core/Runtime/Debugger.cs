@@ -55,6 +55,48 @@ public sealed partial class Interpreter
 
     public static string BreakKey(string nameOrFile) => Path.GetFileNameWithoutExtension(nameOrFile);
 
+    /// <summary>Conditions for conditional breakpoints, keyed "stem:line" (case-insensitive).</summary>
+    public readonly Dictionary<string, string> BreakConditions = new(StringComparer.OrdinalIgnoreCase);
+    static string CondKey(string stem, int line) => stem + ":" + line;
+    public string? GetBreakCondition(string nameOrFile, int line) => BreakConditions.TryGetValue(CondKey(BreakKey(nameOrFile), line), out var c) ? c : null;
+
+    public void SetBreakpoint(string nameOrFile, int line, string? condition)
+    {
+        SetBreakpoint(nameOrFile, line);
+        var ck = CondKey(BreakKey(nameOrFile), line);
+        if (string.IsNullOrWhiteSpace(condition)) BreakConditions.Remove(ck);
+        else { Parser.ParseProgram(condition); BreakConditions[ck] = condition.Trim(); }
+    }
+
+    /// <summary>Snapshot of the call stack, innermost first: (frame name, file, line). Base workspace is "base".</summary>
+    public List<(string Name, string? File, int Line)> StackFrames(int topLine = -1)
+    {
+        var res = new List<(string, string?, int)>();
+        for (int k = CallStack.Count - 1; k >= 0; k--)
+        {
+            var f = CallStack[k];
+            res.Add((f.FrameName == "" ? "base" : f.FrameName, f.Func?.File, k == CallStack.Count - 1 && topLine > 0 ? topLine : f.Line));
+        }
+        if (CallStack.Count == 0 || CallStack[0] != Base) res.Add(("base", CallStack.Count == 0 ? CurrentFile : null, CallStack.Count == 0 && topLine > 0 ? topLine : Base.Line));
+        return res;
+    }
+
+    bool ConditionHolds(string cond)
+    {
+        try
+        {
+            var unit = Parser.ParseProgram(cond);
+            if (unit.Statements.Count == 1 && unit.Statements[0] is ExprStmt es) return Ops.IsTrue(Eval(es.Expr));
+            return true;
+        }
+        catch (InterruptException) { throw; }
+        catch (Exception ex)
+        {
+            Out.WriteLine($"warning: breakpoint condition '{cond}' failed: {ErrorInfo(ex).msg}");
+            return true;   // Octave stops when the condition errors
+        }
+    }
+
     public void SetBreakpoint(string nameOrFile, int line)
     {
         var k = BreakKey(nameOrFile);
@@ -65,8 +107,16 @@ public sealed partial class Interpreter
     public void ClearBreakpoint(string nameOrFile, int? line = null)
     {
         var k = BreakKey(nameOrFile);
-        if (line == null) Breakpoints.Remove(k);
-        else if (Breakpoints.TryGetValue(k, out var s)) { s.Remove(line.Value); if (s.Count == 0) Breakpoints.Remove(k); }
+        if (line == null)
+        {
+            Breakpoints.Remove(k);
+            foreach (var ck in BreakConditions.Keys.Where(c => c.StartsWith(k + ":", StringComparison.OrdinalIgnoreCase)).ToList()) BreakConditions.Remove(ck);
+        }
+        else
+        {
+            BreakConditions.Remove(CondKey(k, line.Value));
+            if (Breakpoints.TryGetValue(k, out var s)) { s.Remove(line.Value); if (s.Count == 0) Breakpoints.Remove(k); }
+        }
     }
 
     void PushFile(string? f) => fileStack.Add(f);
@@ -92,7 +142,10 @@ public sealed partial class Interpreter
             reason = "step";
         }
         if (!stop && file != null && Breakpoints.Count > 0 && Breakpoints.TryGetValue(BreakKey(file), out var set) && set.Contains(s.Line))
-            stop = true;
+        {
+            var cond = BreakConditions.Count > 0 ? GetBreakCondition(file, s.Line) : null;
+            stop = cond == null || ConditionHolds(cond);
+        }
         if (stop) Pause(new PauseInfo(file, Current.FrameName, s.Line, reason));
     }
 

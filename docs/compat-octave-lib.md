@@ -1,0 +1,3998 @@
+# GNU Octave compatibility report
+
+Mode: Octave m-file library on path (/workspace/octave-src/scripts)
+
+Files: 864, blocks passed 6315, failed 3955, skipped 489, pass rate 61.5% (52 s)
+
+| Area | Files | Pass | Fail | Skip | Rate |
+|---|---:|---:|---:|---:|---:|
+| +containers | 1 | 21 | 24 | 0 | 46.7% |
+| +matlab | 4 | 1 | 47 | 0 | 2.1% |
+| @ftp | 14 | 14 | 0 | 0 | 100.0% |
+| audio | 32 | 65 | 4 | 28 | 94.2% |
+| elfun | 27 | 81 | 2 | 0 | 97.6% |
+| general | 67 | 994 | 547 | 15 | 64.5% |
+| geometry | 15 | 119 | 8 | 31 | 93.7% |
+| gui | 26 | 58 | 33 | 8 | 63.7% |
+| help | 16 | 23 | 25 | 1 | 47.9% |
+| image | 50 | 429 | 116 | 24 | 78.7% |
+| io | 7 | 30 | 12 | 3 | 71.4% |
+| java | 4 | 14 | 1 | 14 | 93.3% |
+| legacy | 9 | 96 | 48 | 0 | 66.7% |
+| linear-algebra | 36 | 421 | 124 | 1 | 77.2% |
+| miscellaneous | 92 | 382 | 252 | 18 | 60.3% |
+| ode | 9 | 107 | 53 | 90 | 66.9% |
+| optimization | 14 | 82 | 63 | 5 | 56.6% |
+| path | 4 | 3 | 4 | 0 | 42.9% |
+| plot | 197 | 426 | 625 | 13 | 40.5% |
+| polynomial | 27 | 178 | 114 | 0 | 61.0% |
+| prefs | 6 | 18 | 6 | 0 | 75.0% |
+| profiler | 3 | 10 | 1 | 0 | 90.9% |
+| set | 9 | 220 | 101 | 2 | 68.5% |
+| signal | 21 | 427 | 78 | 9 | 84.6% |
+| sparse | 29 | 172 | 125 | 198 | 57.9% |
+| specfun | 21 | 199 | 238 | 0 | 45.5% |
+| special-matrix | 11 | 184 | 9 | 0 | 95.3% |
+| statistics | 49 | 963 | 707 | 0 | 57.7% |
+| strings | 34 | 301 | 198 | 26 | 60.3% |
+| testfun | 13 | 127 | 145 | 2 | 46.7% |
+| time | 14 | 140 | 237 | 1 | 37.1% |
+| web | 3 | 10 | 8 | 0 | 55.6% |
+
+## Failures
+
+- +containers/Map.m:629 [test] specified key type does not match the type of this container
+- +containers/Map.m:644 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- +containers/Map.m:690 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- +containers/Map.m:742 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- +containers/Map.m:770 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- +containers/Map.m:883 [test] Unable to cast object of type 'MatRewrite.Core.Runtime.MapValue' to type 'MatRewrite.Core.Runtime.ArrayValue'.
+- +containers/Map.m:921 [test] element number 2 undefined in return list
+- +containers/Map.m:931 [error] expected an error but none was raised
+- +containers/Map.m:934 [error] expected an error but none was raised
+- +containers/Map.m:935 [error] error 'specified key type does not match the type of this container' does not match <keys must be real .* values>
+- +containers/Map.m:936 [error] error 'specified key type does not match the type of this container' does not match <keys must be .* scalar .* values>
+- +containers/Map.m:937 [warning] expected a warning but none was issued
+- +containers/Map.m:939 [error] error 'specified key type does not match the type of this container' does not match <when using multiple key types, all types must be numeric>
+- +containers/Map.m:941 [error] expected an error but none was raised
+- +containers/Map.m:943 [error] error 'containers.Map: wrong type argument 'cell array'' does not match <'UniformValues' must be a logical scalar>
+- +containers/Map.m:945 [error] expected an error but none was raised
+- +containers/Map.m:947 [error] error 'Map: invalid option 'vtype'' does not match <missing parameter name 'KeyType'>
+- +containers/Map.m:949 [error] error 'specified key type does not match the type of this container' does not match <'keySet' must be a cell>
+- +containers/Map.m:955 [error] error 'specified key type does not match the type of this container' does not match <input argument 'KeySet' is missing>
+- +containers/Map.m:958 [error] error ''foobar' undefined' does not match <unknown property 'foobar'>
+- +containers/Map.m:964 [error] error 'the given key is not present in the container' does not match <specified key .b. does not exist>
+- +containers/Map.m:967 [test] value on right hand side of assignment is undefined
+- +containers/Map.m:977 [error] error ''{' undefined for arguments of type 'containers.Map'; matrix cannot be indexed with {' does not match <only '\(\)' indexing is supported>
+- +containers/Map.m:982 [error] expected an error but none was raised
+- +matlab/+lang/makeUniqueStrings.m:177 [test] 'matlab' undefined
+- +matlab/+lang/makeUniqueStrings.m:184 [test] 'matlab' undefined
+- +matlab/+lang/makeUniqueStrings.m:198 [test] 'matlab' undefined
+- +matlab/+lang/makeUniqueStrings.m:208 [test] 'matlab' undefined
+- +matlab/+lang/makeUniqueStrings.m:215 [test] 'matlab' undefined
+- +matlab/+lang/makeUniqueStrings.m:220 [error] error ''matlab' undefined' does not match <cannot create unique elements within MAXLENGTH>
+- +matlab/+lang/makeUniqueStrings.m:223 [test] 'matlab' undefined
+- +matlab/+lang/makeUniqueStrings.m:231 [error] error ''matlab' undefined' does not match <Invalid call>
+- +matlab/+lang/makeUniqueStrings.m:232 [error] error ''matlab' undefined' does not match <STR must be a string or cellstr>
+- +matlab/+lang/makeUniqueStrings.m:233 [error] error ''matlab' undefined' does not match <STR and EX logical array must have the same length>
+- +matlab/+lang/makeUniqueStrings.m:235 [error] error ''matlab' undefined' does not match <invalid array of indices EX>
+- +matlab/+lang/makeUniqueStrings.m:236 [error] error ''matlab' undefined' does not match <MAXLENGTH must be a positive integer>
+- +matlab/+lang/makeValidName.m:76 [test] 'matlab' undefined
+- +matlab/+lang/makeValidName.m:81 [test] 'matlab' undefined
+- +matlab/+lang/makeValidName.m:86 [test] 'matlab' undefined
+- +matlab/+lang/makeValidName.m:92 [test] 'matlab' undefined
+- +matlab/+lang/makeValidName.m:102 [test] 'matlab' undefined
+- +matlab/+lang/makeValidName.m:109 [test] 'matlab' undefined
+- +matlab/+lang/makeValidName.m:115 [test] 'matlab' undefined
+- +matlab/+lang/makeValidName.m:122 [assert] 'matlab' undefined
+- +matlab/+lang/makeValidName.m:123 [assert] 'matlab' undefined
+- +matlab/+lang/makeValidName.m:127 [error] error ''matlab' undefined' does not match <Invalid call>
+- +matlab/+lang/makeValidName.m:128 [error] error ''matlab' undefined' does not match <STR must be a string or cellstr>
+- +matlab/+lang/makeValidName.m:129 [error] error ''matlab' undefined' does not match <options must occur in pairs>
+- +matlab/+lang/makeValidName.m:130 [error] error ''matlab' undefined' does not match <option argument must be a string>
+- +matlab/+lang/makeValidName.m:132 [error] error ''matlab' undefined' does not match <'ReplacementStyle' value must be a string>
+- +matlab/+lang/makeValidName.m:134 [error] error ''matlab' undefined' does not match <invalid 'ReplacementStyle' value 'foobar'>
+- +matlab/+lang/makeValidName.m:136 [error] error ''matlab' undefined' does not match <invalid 'Prefix' value '1_'>
+- +matlab/+lang/makeValidName.m:138 [error] error ''matlab' undefined' does not match <unknown property 'foobar'>
+- +matlab/+net/base64decode.m:55 [assert] 'matlab' undefined
+- +matlab/+net/base64decode.m:56 [assert] 'matlab' undefined
+- +matlab/+net/base64decode.m:57 [assert] 'matlab' undefined
+- +matlab/+net/base64decode.m:58 [assert] 'matlab' undefined
+- +matlab/+net/base64decode.m:59 [assert] 'matlab' undefined
+- +matlab/+net/base64decode.m:62 [error] error ''matlab' undefined' does not match <Invalid call>
+- +matlab/+net/base64decode.m:63 [error] error ''matlab' undefined' does not match <character vector>
+- +matlab/+net/base64decode.m:64 [error] error ''matlab' undefined' does not match <character vector>
+- +matlab/+net/base64decode.m:65 [error] error ''matlab' undefined' does not match <character vector>
+- +matlab/+net/base64encode.m:58 [assert] 'matlab' undefined
+- +matlab/+net/base64encode.m:59 [assert] 'matlab' undefined
+- +matlab/+net/base64encode.m:60 [assert] 'matlab' undefined
+- +matlab/+net/base64encode.m:61 [assert] 'matlab' undefined
+- +matlab/+net/base64encode.m:62 [assert] 'matlab' undefined
+- +matlab/+net/base64encode.m:65 [error] error ''matlab' undefined' does not match <Invalid call>
+- +matlab/+net/base64encode.m:66 [error] error ''matlab' undefined' does not match <numeric or character vector>
+- +matlab/+net/base64encode.m:67 [error] error ''matlab' undefined' does not match <numeric or character vector>
+- +matlab/+net/base64encode.m:68 [error] error ''matlab' undefined' does not match <consist of integers>
+- audio/lin2mu.m:86 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- audio/lin2mu.m:93 [assert] invalid conversion from empty value to real scalar
+- audio/lin2mu.m:103 [error] error 'double: wrong type argument 'cell array'' does not match <invalid conversion>
+- audio/mu2lin.m:115 [assert] invalid conversion from empty value to real scalar
+- elfun/cosd.m:56 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- elfun/sind.m:71 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/accumarray.m:393 [assert] Invalid call to accumarray
+- general/accumarray.m:396 [assert] Invalid call to accumarray
+- general/accumarray.m:399 [assert] accumarray: wrong type argument 'cell array'
+- general/accumarray.m:402 [assert] Invalid call to accumarray
+- general/accumarray.m:405 [assert] Invalid call to accumarray
+- general/accumarray.m:407 [assert] Invalid call to accumarray
+- general/accumarray.m:409 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/accumarray.m:410 [assert] Invalid call to accumarray
+- general/accumarray.m:415 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/accumarray.m:416 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/accumarray.m:418 [test] Invalid call to accumarray
+- general/accumarray.m:422 [test] Invalid call to accumarray
+- general/accumarray.m:434 [test] accumarray: wrong type argument 'cell array'
+- general/accumarray.m:441 [test] accumarray: wrong type argument 'cell array'
+- general/accumarray.m:452 [test] parse error near line 3, column 16: unexpected ','
+- general/accumarray.m:463 [assert] Sequence contains no elements
+- general/accumarray.m:465 [error] expected an error but none was raised
+- general/accumdim.m:168 [assert] '__accumdim_sum__' undefined
+- general/accumdim.m:169 [assert] '__accumdim_sum__' undefined
+- general/accumdim.m:171 [assert] binary operator '==' not implemented for 'function handle' operations
+- general/accumdim.m:173 [assert] binary operator '==' not implemented for 'function handle' operations
+- general/accumdim.m:177 [assert] '__accumdim_sum__' undefined
+- general/accumdim.m:178 [assert] '__accumdim_sum__' undefined
+- general/accumdim.m:179 [assert] '__accumdim_sum__' undefined
+- general/bincoeff.m:118 [assert] cellfun: all the input arguments must have the same size and shape
+- general/bitcmp.m:92 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/bitcmp.m:124 [test] bitcmp: K must be in the range [1,53]
+- general/bitcmp.m:134 [assert] 'sizeof' undefined
+- general/bitcmp.m:135 [assert] 'sizeof' undefined
+- general/bitcmp.m:136 [assert] 'sizeof' undefined
+- general/bitcmp.m:137 [assert] 'sizeof' undefined
+- general/bitget.m:102 [test] 'typecast' undefined
+- general/bitget.m:113 [test] 'typecast' undefined
+- general/bitget.m:124 [error] error 'bitget: N must be in the range [1,53]' does not match <N must be in the range \[1,24\]>
+- general/bitget.m:125 [error] expected an error but none was raised
+- general/bitget.m:126 [error] error ''typecast' undefined' does not match <N must be in the range \[1,8\]>
+- general/bitget.m:128 [error] error ''typecast' undefined' does not match <N must be in the range \[1,16\]>
+- general/bitget.m:130 [error] error ''typecast' undefined' does not match <N must be in the range \[1,32\]>
+- general/bitget.m:132 [error] error ''typecast' undefined' does not match <N must be in the range \[1,64\]>
+- general/bitset.m:123 [test] cellfun: all the input arguments must have the same size and shape
+- general/bitset.m:135 [assert] cellfun: all the input arguments must have the same size and shape
+- general/bitset.m:137 [assert] cellfun: all the input arguments must have the same size and shape
+- general/bitset.m:140 [assert] cellfun: all the input arguments must have the same size and shape
+- general/bitset.m:141 [assert] cellfun: all the input arguments must have the same size and shape
+- general/bitset.m:142 [assert] cellfun: all the input arguments must have the same size and shape
+- general/bitset.m:143 [assert] cellfun: all the input arguments must have the same size and shape
+- general/bitset.m:149 [error] error 'cellfun: all the input arguments must have the same size and shape' does not match <must be the same size or scalar>
+- general/bitset.m:150 [error] error 'cellfun: all the input arguments must have the same size and shape' does not match <must be the same size or scalar>
+- general/bitset.m:154 [error] error 'bitset: N must be in the range [1,53]' does not match <N must be in the range \[1,24\]>
+- general/bitset.m:155 [error] expected an error but none was raised
+- general/blkdiag.m:214 [error] error 'vertical dimensions mismatch (1x2 vs 1x3)' does not match <arguments must be two-dimensional>
+- general/cart2pol.m:129 [test] cellfun: all the input arguments must have the same size and shape
+- general/cart2pol.m:136 [test] cellfun: all the input arguments must have the same size and shape
+- general/cart2pol.m:143 [test] cellfun: all the input arguments must have the same size and shape
+- general/cart2pol.m:150 [test] cellfun: all the input arguments must have the same size and shape
+- general/cart2pol.m:159 [test] cellfun: all the input arguments must have the same size and shape
+- general/cart2pol.m:168 [test] cellfun: all the input arguments must have the same size and shape
+- general/cart2pol.m:177 [test] cellfun: all the input arguments must have the same size and shape
+- general/cart2pol.m:206 [test] cellfun: all the input arguments must have the same size and shape
+- general/cart2pol.m:218 [test] cellfun: all the input arguments must have the same size and shape
+- general/cart2pol.m:237 [error] error 'cellfun: all the input arguments must have the same size and shape' does not match <must be the same size or scalars>
+- general/cart2pol.m:238 [error] error 'cellfun: all the input arguments must have the same size and shape' does not match <must be the same size or scalars>
+- general/cart2pol.m:239 [error] error 'cellfun: all the input arguments must have the same size and shape' does not match <must be the same size or scalars>
+- general/cart2pol.m:243 [error] error 'cellfun: all the input arguments must have the same size and shape' does not match <must be the same size or scalars>
+- general/cart2pol.m:244 [error] error 'cellfun: all the input arguments must have the same size and shape' does not match <must be the same size or scalars>
+- general/cart2sph.m:107 [test] cellfun: all the input arguments must have the same size and shape
+- general/cart2sph.m:116 [test] cellfun: all the input arguments must have the same size and shape
+- general/cart2sph.m:125 [test] cellfun: all the input arguments must have the same size and shape
+- general/cart2sph.m:134 [test] cellfun: all the input arguments must have the same size and shape
+- general/cart2sph.m:143 [test] cellfun: all the input arguments must have the same size and shape
+- general/cart2sph.m:152 [test] cellfun: all the input arguments must have the same size and shape
+- general/cart2sph.m:175 [test] cellfun: all the input arguments must have the same size and shape
+- general/cart2sph.m:197 [error] error 'cellfun: all the input arguments must have the same size and shape' does not match <must be the same size or scalars>
+- general/cart2sph.m:198 [error] error 'cellfun: all the input arguments must have the same size and shape' does not match <must be the same size or scalars>
+- general/cart2sph.m:199 [error] error 'cellfun: all the input arguments must have the same size and shape' does not match <must be the same size or scalars>
+- general/cell2mat.m:101 [assert] cell2mat: C must be a cell array
+- general/cell2mat.m:102 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/cell2mat.m:110 [test] 'mat2cell' undefined
+- general/cell2mat.m:114 [test] 'mat2cell' undefined
+- general/cell2mat.m:118 [test] 'mat2cell' undefined
+- general/cell2mat.m:135 [error] error 'concatenation operator not implemented for 'struct' by 'matrix' operations' does not match <mixed cells, structs, and matrices>
+- general/cell2mat.m:136 [error] expected an error but none was raised
+- general/cell2mat.m:137 [error] expected an error but none was raised
+- general/cell2mat.m:138 [error] error 'vertical dimensions mismatch (1x1 vs 1x2)' does not match <dimension mismatch>
+- general/cell2mat.m:139 [error] error 'vertical dimensions mismatch (1x7 vs 1x6)' does not match <dimension mismatch>
+- general/circshift.m:146 [error] expected an error but none was raised
+- general/circshift.m:147 [error] expected an error but none was raised
+- general/circshift.m:148 [error] expected an error but none was raised
+- general/circshift.m:149 [error] expected an error but none was raised
+- general/common_size.m:86 [test] cellfun: all the input arguments must have the same size and shape
+- general/common_size.m:94 [test] cellfun: all the input arguments must have the same size and shape
+- general/cplxpair.m:146 [assert] invalid conversion from empty value to real scalar
+- general/cplxpair.m:147 [assert] sparse: dimension mismatch
+- general/cplxpair.m:171 [assert] sparse: dimension mismatch
+- general/cplxpair.m:173 [error] error 'sparse: dimension mismatch' does not match <could not pair>
+- general/cplxpair.m:175 [error] error 'sparse: dimension mismatch' does not match <could not pair>
+- general/cumtrapz.m:148 [assert] operator .*: nonconformant arguments (op1 is 1x3, op2 is 2x2)
+- general/cumtrapz.m:158 [assert] operator .*: nonconformant arguments (op1 is 1x5x1, op2 is 1x2x2)
+- general/dblquad.m:88 [assert] 'quadcc' undefined
+- general/dblquad.m:90 [assert] operator *: nonconformant arguments (op1 is 9x2, op2 is 1x15)
+- general/dblquad.m:92 [assert] parse error near line 110, column 20: expected ')' but found '_000'
+- general/dblquad.m:94 [assert] parse error near line 152, column 20: expected ')' but found '_000'
+- general/deal.m:110 [error] error 'deal: nargin > 1 and nargin != nargout' does not match <Invalid call>
+- general/del2.m:172 [test] conversion to cell array from double not possible; use '{' instead of '('
+- general/del2.m:180 [test] conversion to cell array from double not possible; use '{' instead of '('
+- general/del2.m:188 [test] conversion to cell array from double not possible; use '{' instead of '('
+- general/del2.m:200 [test] conversion to cell array from double not possible; use '{' instead of '('
+- general/del2.m:212 [test] conversion to cell array from double not possible; use '{' instead of '('
+- general/del2.m:221 [test] conversion to cell array from double not possible; use '{' instead of '('
+- general/del2.m:230 [test] conversion to cell array from double not possible; use '{' instead of '('
+- general/del2.m:239 [test] conversion to cell array from double not possible; use '{' instead of '('
+- general/del2.m:252 [test] conversion to cell array from double not possible; use '{' instead of '('
+- general/del2.m:267 [test] conversion to cell array from double not possible; use '{' instead of '('
+- general/del2.m:282 [test] conversion to cell array from double not possible; use '{' instead of '('
+- general/del2.m:293 [test] conversion to cell array from double not possible; use '{' instead of '('
+- general/del2.m:304 [test] conversion to cell array from double not possible; use '{' instead of '('
+- general/del2.m:315 [test] conversion to cell array from double not possible; use '{' instead of '('
+- general/del2.m:331 [test] conversion to cell array from double not possible; use '{' instead of '('
+- general/del2.m:339 [error] error 'conversion to cell array from double not possible; use '{' instead of '('' does not match <in spacing vector 1>
+- general/del2.m:340 [error] error 'conversion to cell array from double not possible; use '{' instead of '('' does not match <in spacing vector 2>
+- general/del2.m:341 [error] error 'conversion to cell array from double not possible; use '{' instead of '('' does not match <must be a scalar or vector>
+- general/flip.m:85 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/flip.m:93 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/flip.m:100 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/flip.m:111 [error] expected an error but none was raised
+- general/fliplr.m:61 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/fliplr.m:69 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/fliplr.m:77 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/gradient.m:277 [test] assert (cond) failed
+- general/gradient.m:305 [test] assert (cond) failed
+- general/gradient.m:333 [test] 'mat2cell' undefined
+- general/gradient.m:340 [test] 'mat2cell' undefined
+- general/idivide.m:190 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/idivide.m:191 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/idivide.m:195 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/idivide.m:196 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/idivide.m:203 [error] error 'idivide: wrong type argument 'cell array'' does not match <at least one input>
+- general/idivide.m:204 [error] error 'binary operator 'idivide' not implemented for 'int8 scalar' by 'uint8 scalar' operations' does not match <A \(int8\) must match.* B \(uint8\)>
+- general/int2str.m:112 [error] error 'int2str: wrong type argument 'cell array'' does not match <N must be a numeric>
+- general/integral.m:247 [test] 'quadcc' undefined
+- general/integral.m:254 [test] 'quadcc' undefined
+- general/integral.m:258 [test] 'quadcc' undefined
+- general/integral.m:262 [test] operator *: nonconformant arguments (op1 is 11x2, op2 is 1x15)
+- general/integral.m:266 [test] operator *: nonconformant arguments (op1 is 9x2, op2 is 1x15)
+- general/integral.m:271 [test] 'quadcc' undefined
+- general/integral.m:281 [test] 'quadcc' undefined
+- general/integral.m:288 [test] 'quadcc' undefined
+- general/integral.m:293 [assert] 'quadcc' undefined
+- general/integral.m:294 [assert] '__inline_ctor__' undefined
+- general/integral.m:295 [assert] 'quadcc' undefined
+- general/integral.m:296 [assert] 'quadcc' undefined
+- general/integral.m:297 [assert] 'quadcc' undefined
+- general/integral.m:298 [assert] 'quadcc' undefined
+- general/integral.m:299 [assert] 'quadcc' undefined
+- general/integral.m:302 [assert] 'quadcc' undefined
+- general/integral.m:303 [assert] 'quadcc' undefined
+- general/integral.m:306 [assert] operator *: nonconformant arguments (op1 is 15x2, op2 is 1x15)
+- general/integral.m:308 [assert] operator *: nonconformant arguments (op1 is 15x2, op2 is 1x15)
+- general/integral.m:309 [assert] operator *: nonconformant arguments (op1 is 9x2, op2 is 1x15)
+- general/integral.m:313 [assert] operator *: nonconformant arguments (op1 is 9x2, op2 is 1x15)
+- general/integral.m:317 [assert] operator *: nonconformant arguments (op1 is 9x2, op2 is 1x15)
+- general/integral.m:321 [assert] operator *: nonconformant arguments (op1 is 15x2, op2 is 1x15)
+- general/integral.m:325 [test] 'quadcc' undefined
+- general/integral2.m:293 [assert] Index was out of range. Must be non-negative and less than the size of the collection. (Parameter 'index')
+- general/integral2.m:294 [assert] Index was out of range. Must be non-negative and less than the size of the collection. (Parameter 'index')
+- general/integral2.m:295 [assert] 'quadcc' undefined
+- general/integral2.m:296 [assert] Index was out of range. Must be non-negative and less than the size of the collection. (Parameter 'index')
+- general/integral2.m:301 [assert] Index was out of range. Must be non-negative and less than the size of the collection. (Parameter 'index')
+- general/integral2.m:306 [assert] Index was out of range. Must be non-negative and less than the size of the collection. (Parameter 'index')
+- general/integral2.m:307 [assert] Index was out of range. Must be non-negative and less than the size of the collection. (Parameter 'index')
+- general/integral2.m:308 [assert] Index was out of range. Must be non-negative and less than the size of the collection. (Parameter 'index')
+- general/integral2.m:314 [assert] Index was out of range. Must be non-negative and less than the size of the collection. (Parameter 'index')
+- general/integral2.m:315 [assert] Index was out of range. Must be non-negative and less than the size of the collection. (Parameter 'index')
+- general/integral2.m:316 [assert] Index was out of range. Must be non-negative and less than the size of the collection. (Parameter 'index')
+- general/integral2.m:318 [assert] Index was out of range. Must be non-negative and less than the size of the collection. (Parameter 'index')
+- general/integral2.m:320 [assert] Index was out of range. Must be non-negative and less than the size of the collection. (Parameter 'index')
+- general/integral2.m:323 [assert] Index was out of range. Must be non-negative and less than the size of the collection. (Parameter 'index')
+- general/integral2.m:326 [assert] 'quadcc' undefined
+- general/integral2.m:328 [assert] 'quadcc' undefined
+- general/integral2.m:330 [assert] 'quadcc' undefined
+- general/integral2.m:333 [assert] 'quadcc' undefined
+- general/integral2.m:334 [assert] 'quadcc' undefined
+- general/integral2.m:338 [assert] 'quadcc' undefined
+- general/integral2.m:373 [warning] 'quadcc' undefined
+- general/integral3.m:326 [assert] 'quadcc' undefined
+- general/integral3.m:327 [assert] 'quadcc' undefined
+- general/integral3.m:328 [assert] 'quadcc' undefined
+- general/integral3.m:329 [assert] 'quadcc' undefined
+- general/integral3.m:332 [test] 'quadcc' undefined
+- general/integral3.m:339 [assert] 'quadcc' undefined
+- general/integral3.m:340 [assert] 'quadcc' undefined
+- general/integral3.m:341 [assert] 'quadcc' undefined
+- general/integral3.m:346 [test] 'quadcc' undefined
+- general/interp1.m:505 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:512 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:514 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:519 [assert] ppval: first argument must be a pp-form structure
+- general/interp1.m:521 [error] expected an error but none was raised
+- general/interp1.m:525 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:532 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:534 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:539 [assert] ppval: first argument must be a pp-form structure
+- general/interp1.m:541 [assert] ASSERT errors: dimensions mismatch
+- general/interp1.m:543 [error] expected an error but none was raised
+- general/interp1.m:548 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:555 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:557 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:564 [assert] ppval: first argument must be a pp-form structure
+- general/interp1.m:566 [error] expected an error but none was raised
+- general/interp1.m:570 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:577 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:579 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:584 [assert] ppval: first argument must be a pp-form structure
+- general/interp1.m:586 [assert] ASSERT errors: dimensions mismatch
+- general/interp1.m:588 [error] expected an error but none was raised
+- general/interp1.m:593 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:600 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:602 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:607 [assert] ppval: first argument must be a pp-form structure
+- general/interp1.m:609 [error] expected an error but none was raised
+- general/interp1.m:613 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:620 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:622 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:627 [assert] ppval: first argument must be a pp-form structure
+- general/interp1.m:629 [assert] ASSERT errors: dimensions mismatch
+- general/interp1.m:631 [error] expected an error but none was raised
+- general/interp1.m:636 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:643 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:645 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:650 [assert] ppval: first argument must be a pp-form structure
+- general/interp1.m:652 [error] expected an error but none was raised
+- general/interp1.m:656 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:663 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:665 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:670 [assert] ppval: first argument must be a pp-form structure
+- general/interp1.m:674 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:675 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:676 [error] expected an error but none was raised
+- general/interp1.m:681 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:688 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:690 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:695 [assert] ppval: first argument must be a pp-form structure
+- general/interp1.m:697 [error] expected an error but none was raised
+- general/interp1.m:701 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:708 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:710 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:715 [assert] ppval: first argument must be a pp-form structure
+- general/interp1.m:717 [assert] ASSERT errors: dimensions mismatch
+- general/interp1.m:719 [error] expected an error but none was raised
+- general/interp1.m:724 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:731 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:733 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:738 [assert] ppval: first argument must be a pp-form structure
+- general/interp1.m:740 [error] expected an error but none was raised
+- general/interp1.m:744 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:751 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:753 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:758 [assert] ppval: first argument must be a pp-form structure
+- general/interp1.m:760 [assert] ASSERT errors: dimensions mismatch
+- general/interp1.m:762 [error] expected an error but none was raised
+- general/interp1.m:767 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:774 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:776 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:781 [assert] ppval: first argument must be a pp-form structure
+- general/interp1.m:783 [error] expected an error but none was raised
+- general/interp1.m:787 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:794 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:796 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:801 [assert] ppval: first argument must be a pp-form structure
+- general/interp1.m:805 [error] expected an error but none was raised
+- general/interp1.m:814 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:819 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:820 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:821 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:827 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:828 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:829 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:830 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:835 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:837 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:838 [assert] Invalid call to interp1
+- general/interp1.m:841 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:842 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:847 [error] expected an error but none was raised
+- general/interp1.m:848 [error] expected an error but none was raised
+- general/interp1.m:849 [error] expected an error but none was raised
+- general/interp1.m:850 [error] expected an error but none was raised
+- general/interp1.m:851 [error] expected an error but none was raised
+- general/interp1.m:852 [error] expected an error but none was raised
+- general/interp1.m:853 [warning] expected a warning but none was issued
+- general/interp1.m:854 [error] expected an error but none was raised
+- general/interp1.m:855 [error] expected an error but none was raised
+- general/interp1.m:856 [error] expected an error but none was raised
+- general/interp1.m:857 [error] expected an error but none was raised
+- general/interp1.m:858 [error] expected an error but none was raised
+- general/interp2.m:576 [test] 'sub2ind' undefined
+- general/interp2.m:643 [test] interp2: XI, YI must have uniform spacing ('meshgrid' format)
+- general/interp2.m:648 [test] =: nonconformant arguments (op1 is 1x1, op2 is 4x4)
+- general/interp2.m:672 [test] 'sub2ind' undefined
+- general/interp2.m:684 [test] 'sub2ind' undefined
+- general/interp2.m:695 [test] 'sub2ind' undefined
+- general/interp2.m:699 [test] 'sub2ind' undefined
+- general/interp2.m:703 [test] 'sub2ind' undefined
+- general/interp2.m:719 [test] 'sub2ind' undefined
+- general/interp2.m:726 [test] 'sub2ind' undefined
+- general/interp2.m:731 [assert] 'sub2ind' undefined
+- general/interp2.m:732 [assert] 'sub2ind' undefined
+- general/interp2.m:735 [assert] 'sub2ind' undefined
+- general/interp2.m:742 [assert] 'sub2ind' undefined
+- general/interp2.m:743 [assert] 'sub2ind' undefined
+- general/interp2.m:744 [assert] '__pchip_deriv__' undefined
+- general/interp2.m:746 [assert] interp2: XI, YI must have uniform spacing ('meshgrid' format)
+- general/interp2.m:747 [assert] 'sub2ind' undefined
+- general/interp2.m:749 [assert] '__pchip_deriv__' undefined
+- general/interp2.m:753 [assert] interp2: XI, YI must have uniform spacing ('meshgrid' format)
+- general/interp2.m:755 [assert] 'sub2ind' undefined
+- general/interp2.m:756 [assert] '__pchip_deriv__' undefined
+- general/interp2.m:758 [assert] interp2: XI, YI must have uniform spacing ('meshgrid' format)
+- general/interp2.m:759 [assert] 'sub2ind' undefined
+- general/interp2.m:760 [assert] '__pchip_deriv__' undefined
+- general/interp2.m:762 [test] interp2: XI, YI must have uniform spacing ('meshgrid' format)
+- general/interp2.m:778 [warning] 'sub2ind' undefined
+- general/interp2.m:793 [warning] 'sub2ind' undefined
+- general/interp3.m:203 [test] interp3: XI, YI, and ZI dimensions must be equal
+- general/interp3.m:215 [test] interp3: XI, YI, and ZI dimensions must be equal
+- general/interp3.m:225 [test] Invalid call to ceil
+- general/interp3.m:233 [test] Invalid call to ceil
+- general/interp3.m:241 [test] 'sub2ind' undefined
+- general/interp3.m:249 [test] 'sub2ind' undefined
+- general/interp3.m:257 [test] Invalid call to ceil
+- general/interp3.m:285 [assert] '__lin_interpn__' undefined
+- general/interp3.m:286 [assert] '__lin_interpn__' undefined
+- general/interp3.m:287 [assert] conversion to cell array from char not possible; use '{' instead of '('
+- general/interp3.m:289 [test] interp3: V must be a 3-D array of values
+- general/interp3.m:303 [warning] '__lin_interpn__' undefined
+- general/interpn.m:309 [test] operator +: nonconformant arguments (op1 is 3x3, op2 is 3x9)
+- general/interpn.m:320 [test] operator +: nonconformant arguments (op1 is 3x4, op2 is 3x20)
+- general/interpn.m:328 [test] operator +: nonconformant arguments (op1 is 3x4, op2 is 3x20)
+- general/interpn.m:335 [test] operator +: nonconformant arguments (op1 is 3x3, op2 is 3x9)
+- general/interpn.m:340 [test] 'sub2ind' undefined
+- general/interpn.m:344 [test] '__lin_interpn__' undefined
+- general/interpn.m:400 [warning] '__lin_interpn__' undefined
+- general/interpn.m:401 [error] error 'validatestring: 'foobar' does not match any valid string' does not match <'foobar' does not match any of>
+- general/interpn.m:404 [error] error 'Invalid call to ceil' does not match <incorrect dimensions for input X1>
+- general/interpn.m:406 [error] error 'Invalid call to ceil' does not match <incorrect dimensions for input X2>
+- general/interpn.m:408 [error] error 'Invalid call to ceil' does not match <incorrect dimensions for input Y2>
+- general/isequal.m:353 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/isequal.m:399 [assert] struct: additional arguments must occur as "field", VALUE pairs
+- general/isequal.m:400 [assert] struct: additional arguments must occur as "field", VALUE pairs
+- general/isequal.m:459 [test] conversion to cell array from char not possible; use '{' instead of '('
+- general/isequal.m:499 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/isequal.m:530 [assert] Arithmetic operation resulted in an overflow.
+- general/isequal.m:531 [assert] Arithmetic operation resulted in an overflow.
+- general/isequal.m:532 [assert] Arithmetic operation resulted in an overflow.
+- general/isequal.m:533 [assert] Arithmetic operation resulted in an overflow.
+- general/isequal.m:534 [assert] Arithmetic operation resulted in an overflow.
+- general/isequal.m:535 [assert] Arithmetic operation resulted in an overflow.
+- general/isequal.m:563 [error] expected an error but none was raised
+- general/isequal.m:564 [error] expected an error but none was raised
+- general/isequaln.m:302 [assert] cellfun: C must be a cell array
+- general/isequaln.m:304 [assert] cellfun: C must be a cell array
+- general/isequaln.m:306 [assert] cellfun: C must be a cell array
+- general/isequaln.m:309 [assert] cellfun: C must be a cell array
+- general/isequaln.m:311 [assert] cellfun: C must be a cell array
+- general/isequaln.m:313 [assert] cellfun: C must be a cell array
+- general/isequaln.m:318 [assert] cellfun: C must be a cell array
+- general/isuniform.m:99 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/isuniform.m:107 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/isuniform.m:116 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/logspace.m:100 [test] assert (cond) failed
+- general/logspace.m:119 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/logspace.m:120 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/logspace.m:137 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/logspace.m:138 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/logspace.m:139 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/logspace.m:143 [error] expected an error but none was raised
+- general/logspace.m:144 [error] expected an error but none was raised
+- general/logspace.m:145 [error] expected an error but none was raised
+- general/nextpow2.m:86 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/nextpow2.m:87 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/nextpow2.m:88 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/nextpow2.m:91 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/nextpow2.m:105 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/nextpow2.m:116 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/nextpow2.m:117 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/nextpow2.m:137 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/num2str.m:210 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/num2str.m:222 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/num2str.m:223 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/num2str.m:224 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/num2str.m:229 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/num2str.m:230 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/num2str.m:231 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/num2str.m:232 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/num2str.m:233 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/num2str.m:234 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/num2str.m:242 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/num2str.m:250 [test] assert (cond) failed
+- general/num2str.m:262 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/num2str.m:267 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/num2str.m:274 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/num2str.m:278 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/num2str.m:282 [error] error 'num2str: wrong type argument 'cell array'' does not match <X must be a numeric>
+- general/num2str.m:283 [error] error 'num2str: wrong type argument 'cell array'' does not match <PRECISION must be a scalar integer .= 0>
+- general/num2str.m:284 [error] expected an error but none was raised
+- general/num2str.m:285 [error] expected an error but none was raised
+- general/num2str.m:286 [error] expected an error but none was raised
+- general/num2str.m:287 [error] error 'num2str: wrong type argument 'cell array'' does not match <PRECISION must be a scalar integer .= 0>
+- general/num2str.m:288 [error] expected an error but none was raised
+- general/num2str.m:289 [error] expected an error but none was raised
+- general/num2str.m:290 [error] expected an error but none was raised
+- general/pol2cart.m:129 [test] cellfun: all the input arguments must have the same size and shape
+- general/pol2cart.m:136 [test] cellfun: all the input arguments must have the same size and shape
+- general/pol2cart.m:143 [test] cellfun: all the input arguments must have the same size and shape
+- general/pol2cart.m:152 [test] cellfun: all the input arguments must have the same size and shape
+- general/pol2cart.m:162 [test] cellfun: all the input arguments must have the same size and shape
+- general/pol2cart.m:171 [test] cellfun: all the input arguments must have the same size and shape
+- general/pol2cart.m:180 [test] cellfun: all the input arguments must have the same size and shape
+- general/pol2cart.m:209 [test] cellfun: all the input arguments must have the same size and shape
+- general/pol2cart.m:221 [test] cellfun: all the input arguments must have the same size and shape
+- general/pol2cart.m:242 [error] error 'cellfun: all the input arguments must have the same size and shape' does not match <must be the same size or scalars>
+- general/pol2cart.m:243 [error] error 'cellfun: all the input arguments must have the same size and shape' does not match <must be the same size or scalars>
+- general/pol2cart.m:244 [error] error 'cellfun: all the input arguments must have the same size and shape' does not match <must be the same size or scalars>
+- general/pol2cart.m:248 [error] error 'cellfun: all the input arguments must have the same size and shape' does not match <must be the same size or scalars>
+- general/pol2cart.m:249 [error] error 'cellfun: all the input arguments must have the same size and shape' does not match <must be the same size or scalars>
+- general/quad2d.m:455 [assert] Index was out of range. Must be non-negative and less than the size of the collection. (Parameter 'index')
+- general/quad2d.m:459 [assert] Index was out of range. Must be non-negative and less than the size of the collection. (Parameter 'index')
+- general/quad2d.m:460 [assert] Index was out of range. Must be non-negative and less than the size of the collection. (Parameter 'index')
+- general/quad2d.m:461 [assert] Index was out of range. Must be non-negative and less than the size of the collection. (Parameter 'index')
+- general/quad2d.m:466 [assert] Index was out of range. Must be non-negative and less than the size of the collection. (Parameter 'index')
+- general/quad2d.m:467 [assert] Index was out of range. Must be non-negative and less than the size of the collection. (Parameter 'index')
+- general/quad2d.m:468 [assert] Index was out of range. Must be non-negative and less than the size of the collection. (Parameter 'index')
+- general/quad2d.m:470 [assert] Index was out of range. Must be non-negative and less than the size of the collection. (Parameter 'index')
+- general/quad2d.m:471 [assert] Index was out of range. Must be non-negative and less than the size of the collection. (Parameter 'index')
+- general/quad2d.m:473 [assert] Index was out of range. Must be non-negative and less than the size of the collection. (Parameter 'index')
+- general/quad2d.m:476 [assert] Index was out of range. Must be non-negative and less than the size of the collection. (Parameter 'index')
+- general/quad2d.m:478 [assert] Index was out of range. Must be non-negative and less than the size of the collection. (Parameter 'index')
+- general/quad2d.m:524 [warning] Index was out of range. Must be non-negative and less than the size of the collection. (Parameter 'index')
+- general/quadgk.m:622 [assert] operator *: nonconformant arguments (op1 is 9x2, op2 is 1x15)
+- general/quadgk.m:623 [test] '__inline_ctor__' undefined
+- general/quadgk.m:626 [assert] operator *: nonconformant arguments (op1 is 9x2, op2 is 1x15)
+- general/quadgk.m:627 [assert] operator *: nonconformant arguments (op1 is 15x2, op2 is 1x15)
+- general/quadgk.m:629 [assert] operator *: nonconformant arguments (op1 is 9x2, op2 is 1x15)
+- general/quadgk.m:630 [assert] operator *: nonconformant arguments (op1 is 9x2, op2 is 1x15)
+- general/quadgk.m:632 [assert] operator *: nonconformant arguments (op1 is 9x2, op2 is 1x15)
+- general/quadgk.m:633 [assert] operator *: nonconformant arguments (op1 is 9x2, op2 is 1x15)
+- general/quadgk.m:634 [assert] operator *: nonconformant arguments (op1 is 9x2, op2 is 1x15)
+- general/quadgk.m:635 [assert] operator *: nonconformant arguments (op1 is 15x2, op2 is 1x15)
+- general/quadgk.m:636 [assert] operator *: nonconformant arguments (op1 is 9x2, op2 is 1x15)
+- general/quadgk.m:637 [assert] operator *: nonconformant arguments (op1 is 9x2, op2 is 1x15)
+- general/quadgk.m:640 [assert] operator *: nonconformant arguments (op1 is 9x2, op2 is 1x15)
+- general/quadgk.m:643 [assert] operator *: nonconformant arguments (op1 is 9x2, op2 is 1x15)
+- general/quadgk.m:645 [assert] operator *: nonconformant arguments (op1 is 9x2, op2 is 1x15)
+- general/quadgk.m:646 [assert] operator *: nonconformant arguments (op1 is 9x2, op2 is 1x15)
+- general/quadgk.m:647 [test] operator *: nonconformant arguments (op1 is 9x2, op2 is 1x15)
+- general/quadgk.m:652 [assert] operator *: nonconformant arguments (op1 is 9x2, op2 is 1x15)
+- general/quadgk.m:656 [assert] operator *: nonconformant arguments (op1 is 9x2, op2 is 1x15)
+- general/quadgk.m:660 [warning] operator *: nonconformant arguments (op1 is 9x2, op2 is 1x15)
+- general/quadl.m:180 [assert] parse error near line 110, column 20: expected ')' but found '_000'
+- general/quadl.m:183 [assert] parse error near line 110, column 20: expected ')' but found '_000'
+- general/quadl.m:187 [assert] parse error near line 110, column 20: expected ')' but found '_000'
+- general/quadl.m:191 [test] parse error near line 110, column 20: expected ')' but found '_000'
+- general/quadl.m:198 [test] parse error near line 110, column 20: expected ')' but found '_000'
+- general/quadl.m:204 [error] error 'parse error near line 110, column 20: expected ')' but found '_000'' does not match <Invalid call>
+- general/quadl.m:205 [error] error 'parse error near line 110, column 20: expected ')' but found '_000'' does not match <Invalid call>
+- general/quadl.m:206 [error] error 'parse error near line 110, column 20: expected ')' but found '_000'' does not match <Invalid call>
+- general/quadl.m:207 [error] error 'parse error near line 110, column 20: expected ')' but found '_000'' does not match <TOL must be a scalar>
+- general/quadl.m:208 [error] error 'parse error near line 110, column 20: expected ')' but found '_000'' does not match <TOL must be .* .=0>
+- general/quadv.m:209 [assert] parse error near line 152, column 20: expected ')' but found '_000'
+- general/quadv.m:210 [assert] parse error near line 152, column 20: expected ')' but found '_000'
+- general/quadv.m:213 [assert] parse error near line 152, column 20: expected ')' but found '_000'
+- general/quadv.m:216 [assert] parse error near line 152, column 20: expected ')' but found '_000'
+- general/quadv.m:219 [assert] parse error near line 152, column 20: expected ')' but found '_000'
+- general/quadv.m:223 [assert] parse error near line 152, column 20: expected ')' but found '_000'
+- general/quadv.m:226 [error] error 'parse error near line 152, column 20: expected ')' but found '_000'' does not match <Invalid call>
+- general/quadv.m:227 [error] error 'parse error near line 152, column 20: expected ')' but found '_000'' does not match <Invalid call>
+- general/quadv.m:228 [error] error 'parse error near line 152, column 20: expected ')' but found '_000'' does not match <Invalid call>
+- general/quadv.m:229 [error] error 'parse error near line 152, column 20: expected ')' but found '_000'' does not match <TOL must be a scalar>
+- general/quadv.m:230 [error] error 'parse error near line 152, column 20: expected ')' but found '_000'' does not match <TOL must be .* .=0>
+- general/rat.m:305 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/repelem.m:339 [assert] conversion to cell array from double not possible; use '{' instead of '('
+- general/repelem.m:340 [assert] conversion to cell array from double not possible; use '{' instead of '('
+- general/repelem.m:341 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/repelem.m:363 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/repelem.m:401 [assert] conversion to cell array from double not possible; use '{' instead of '('
+- general/repelem.m:406 [assert] conversion to cell array from double not possible; use '{' instead of '('
+- general/repelem.m:408 [assert] conversion to cell array from double not possible; use '{' instead of '('
+- general/repelem.m:410 [assert] conversion to cell array from double not possible; use '{' instead of '('
+- general/repelem.m:412 [assert] conversion to cell array from double not possible; use '{' instead of '('
+- general/repelem.m:423 [assert] conversion to cell array from double not possible; use '{' instead of '('
+- general/repmat.m:150 [assert] repmat: argument must be a scalar, not empty
+- general/repmat.m:151 [assert] repmat: argument must be a scalar, not empty
+- general/repmat.m:152 [assert] repmat: argument must be a scalar, not empty
+- general/repmat.m:153 [assert] repmat: argument must be a scalar, not empty
+- general/repmat.m:157 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/repmat.m:158 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/repmat.m:159 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/repmat.m:160 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/repmat.m:194 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/repmat.m:195 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/repmat.m:196 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/repmat.m:210 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/repmat.m:224 [error] expected an error but none was raised
+- general/rng.m:236 [test] assert (cond) failed
+- general/rng.m:267 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/rot90.m:111 [test] transpose not defined for N-D objects
+- general/rot90.m:120 [test] transpose not defined for N-D objects
+- general/rot90.m:131 [test] transpose not defined for N-D objects
+- general/rot90.m:144 [error] expected an error but none was raised
+- general/rot90.m:145 [error] expected an error but none was raised
+- general/rot90.m:146 [error] expected an error but none was raised
+- general/sph2cart.m:109 [test] cellfun: all the input arguments must have the same size and shape
+- general/sph2cart.m:118 [test] cellfun: all the input arguments must have the same size and shape
+- general/sph2cart.m:127 [test] cellfun: all the input arguments must have the same size and shape
+- general/sph2cart.m:136 [test] cellfun: all the input arguments must have the same size and shape
+- general/sph2cart.m:145 [test] cellfun: all the input arguments must have the same size and shape
+- general/sph2cart.m:154 [test] cellfun: all the input arguments must have the same size and shape
+- general/sph2cart.m:175 [test] cellfun: all the input arguments must have the same size and shape
+- general/sph2cart.m:198 [error] error 'cellfun: all the input arguments must have the same size and shape' does not match <must be the same size or scalars>
+- general/sph2cart.m:199 [error] error 'cellfun: all the input arguments must have the same size and shape' does not match <must be the same size or scalars>
+- general/sph2cart.m:200 [error] error 'cellfun: all the input arguments must have the same size and shape' does not match <must be the same size or scalars>
+- general/structfun.m:132 [test] regexp: unknown option "matches"
+- general/structfun.m:146 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/structfun.m:158 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/structfun.m:181 [test] assert (cond) failed
+- general/structfun.m:197 [test] assert (cond) failed
+- general/trapz.m:135 [assert] Invalid call to trapz
+- general/trapz.m:136 [assert] Invalid call to trapz
+- general/trapz.m:142 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/trapz.m:143 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/trapz.m:144 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/trapz.m:145 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/trapz.m:146 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/trapz.m:147 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/trapz.m:149 [assert] Invalid call to trapz
+- general/trapz.m:150 [assert] Invalid call to trapz
+- general/trapz.m:151 [assert] Invalid call to trapz
+- general/trapz.m:152 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/trapz.m:153 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/trapz.m:157 [error] expected an error but none was raised
+- general/trapz.m:158 [error] expected an error but none was raised
+- general/trapz.m:159 [error] expected an error but none was raised
+- general/trapz.m:160 [error] error 'Invalid call to trapz' does not match <length of X and length of Y.*must match>
+- general/trapz.m:161 [error] error 'Invalid call to trapz' does not match <X and Y must have same shape>
+- general/triplequad.m:90 [assert] 'quadcc' undefined
+- general/xor.m:92 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/xor.m:103 [error] error 'operator xor: nonconformant arguments (op1 is 3x2, op2 is 2x3)' does not match <X and Y must be of compatible size>
+- geometry/dsearchn.m:74 [assert] '__dsearchn__' undefined
+- geometry/dsearchn.m:75 [assert] '__dsearchn__' undefined
+- geometry/dsearchn.m:76 [assert] '__dsearchn__' undefined
+- geometry/dsearchn.m:77 [assert] '__dsearchn__' undefined
+- geometry/dsearchn.m:78 [assert] '__dsearchn__' undefined
+- geometry/dsearchn.m:79 [assert] '__dsearchn__' undefined
+- geometry/tsearchn.m:118 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- geometry/voronoi.m:230 [error] error 'voronoi: X and Y must be vectors of the same length' does not match <HAX argument must be an axes object>
+- gui/getappdata.m:80 [test] parse error near line 57, column 40: expected ')' but found ','
+- gui/getappdata.m:96 [error] error 'getappdata: H must be a scalar or vector of graphic handles' does not match <NAME must be a string>
+- gui/getappdata.m:97 [error] error 'getappdata: H must be a scalar or vector of graphic handles' does not match <Only one handle H may be used when fetching appdata>
+- gui/getpixelposition.m:98 [test] figure: unknown property 'menubar' for figure object
+- gui/getpixelposition.m:110 [test] getpixelposition: H must be a scalar graphics handle
+- gui/getpixelposition.m:114 [test] '__get_position__' undefined
+- gui/guidata.m:69 [error] error 'ishandle: wrong type argument 'cell array'' does not match <H must be a valid object handle>
+- gui/guidata.m:70 [error] error 'guidata: H must be a valid object handle' does not match <no ancestor figure of H found>
+- gui/inputdlg.m:267 [error] error 'cellfun: C must be a cell array' does not match <ROWSCOLS vector does not match size of PROMPT>
+- gui/inputdlg.m:269 [error] error 'cellfun: C must be a cell array' does not match <ROWSCOLS matrix does not match size of PROMPT>
+- gui/inputdlg.m:271 [error] error 'cellfun: C must be a cell array' does not match <invalid form of ROWSCOLS argument>
+- gui/isappdata.m:59 [test] parse error near line 57, column 40: expected ')' but found ','
+- gui/isappdata.m:72 [error] error 'isappdata: H must be a scalar or vector of graphic handles' does not match <NAME must be a string>
+- gui/listfonts.m:73 [error] error 'ishandle: wrong type argument 'struct'' does not match <H must be a handle to a graphics object>
+- gui/movegui.m:210 [test] get: unknown property 'units'
+- gui/movegui.m:231 [error] error 'get: unknown property 'units'' does not match <invalid position>
+- gui/movegui.m:238 [error] error 'get: unknown property 'units'' does not match <invalid position>
+- gui/rmappdata.m:68 [test] setappdata: H must be a scalar or vector of graphic handles
+- gui/rmappdata.m:73 [test] setappdata: H must be a scalar or vector of graphic handles
+- gui/rmappdata.m:81 [error] error 'parse error near line 57, column 40: expected ')' but found ','' does not match <Invalid call>
+- gui/rmappdata.m:82 [error] error 'parse error near line 57, column 40: expected ')' but found ','' does not match <Invalid call>
+- gui/rmappdata.m:83 [error] error 'parse error near line 57, column 40: expected ')' but found ','' does not match <H must be a scalar .* graphic handle>
+- gui/rmappdata.m:84 [error] error 'parse error near line 57, column 40: expected ')' but found ','' does not match <NAME must be a string>
+- gui/rmappdata.m:85 [error] error 'parse error near line 57, column 40: expected ')' but found ','' does not match <appdata 'foobar' is not present>
+- gui/setappdata.m:95 [test] parse error near line 57, column 40: expected ')' but found ','
+- gui/setappdata.m:104 [test] parse error near line 57, column 40: expected ')' but found ','
+- gui/setappdata.m:115 [test] parse error near line 57, column 40: expected ')' but found ','
+- gui/setappdata.m:135 [error] error 'setappdata: H must be a scalar or vector of graphic handles' does not match <NAME/VALUE arguments must occur in pairs>
+- gui/setappdata.m:136 [error] error 'setappdata: H must be a scalar or vector of graphic handles' does not match <only 3 arguments possible>
+- gui/setappdata.m:137 [error] error 'setappdata: H must be a scalar or vector of graphic handles' does not match <number of NAME and VALUE arguments must match>
+- gui/setappdata.m:139 [error] error 'setappdata: H must be a scalar or vector of graphic handles' does not match <NAME must be a string>
+- gui/uicontrol.m:148 [warning] '__go_uicontrol__' undefined
+- gui/uifigure.m:86 [test] '__go_figure__' undefined
+- help/__gripe_missing_component__.m:68 [error] error ''missing_component_hook' undefined' does not match <abc: .*>
+- help/__gripe_missing_component__.m:69 [error] error ''missing_component_hook' undefined' does not match <abc: .*>
+- help/__gripe_missing_component__.m:70 [error] error ''missing_component_hook' undefined' does not match <abc: .*>
+- help/__gripe_missing_component__.m:71 [error] error ''missing_component_hook' undefined' does not match <abc: .*>
+- help/__unimplemented__.m:1317 [test] 'texi_macros_file' undefined
+- help/__unimplemented__.m:1321 [test] 'texi_macros_file' undefined
+- help/get_first_help_sentence.m:189 [assert] 'get_help_text' undefined
+- help/get_first_help_sentence.m:192 [assert] 'get_help_text' undefined
+- help/help.m:223 [assert] 'get_help_text' undefined
+- help/help.m:224 [assert] '__operators__' undefined
+- help/help.m:229 [error] error ''get_help_text' undefined' does not match <'_! UNLIKELY_FCN! _' not found>
+- help/type.m:139 [test] value on right hand side of assignment is undefined
+- help/type.m:145 [test] '__which__' undefined
+- help/type.m:150 [test] '__which__' undefined
+- help/type.m:154 [assert] '__operators__' undefined
+- help/type.m:156 [assert] '__operators__' undefined
+- help/type.m:157 [assert] '__operators__' undefined
+- help/type.m:160 [error] error ''__operators__' undefined' does not match <'__NO_NAME__' undefined>
+- help/which.m:100 [test] '__which__' undefined
+- help/which.m:103 [test] '__which__' undefined
+- help/which.m:106 [assert] '__which__' undefined
+- help/which.m:107 [test] '__which__' undefined
+- help/which.m:112 [assert] '__which__' undefined
+- help/which.m:114 [test] '__which__' undefined
+- help/which.m:126 [warning] '__which__' undefined
+- image/cmunique.m:120 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- image/cmunique.m:126 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- image/cmunique.m:132 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- image/cmunique.m:138 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- image/cmunique.m:144 [test] index (301): out of bound 300 (dimensions are 300x1)
+- image/cmunique.m:152 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- image/cmunique.m:161 [test] index (300): out of bound 299 (dimensions are 299x1)
+- image/colorcube.m:113 [assert] 'cbrt' undefined
+- image/colorcube.m:114 [assert] 'cbrt' undefined
+- image/colorcube.m:126 [test] 'cbrt' undefined
+- image/colormap.m:187 [test] get: unknown property 'colormap'
+- image/colormap.m:205 [test] colormap: MAP must be an N x 3 matrix of RGB values
+- image/colormap.m:226 [error] error 'colormap: MAP must be an N x 3 matrix of RGB values' does not match <target argument must be a figure or axes handle>
+- image/colormap.m:227 [error] error 'colormap: MAP must be an N x 3 matrix of RGB values' does not match <Invalid call>
+- image/colormap.m:228 [error] error 'colormap: invalid MAP name 'invalid_map_name'' does not match <failed to set MAP .invalid_map_name.>
+- image/colormap.m:229 [error] error 'colormap: invalid argument' does not match <MAP must be a real-valued N x 3>
+- image/colormap.m:230 [error] expected an error but none was raised
+- image/colormap.m:231 [error] error 'colormap: MAP must be an N x 3 matrix of RGB values' does not match <MAP must be a real-valued N x 3>
+- image/colormap.m:232 [error] error 'colormap: MAP must be an N x 3 matrix of RGB values' does not match <MAP must be a real-valued N x 3>
+- image/cool.m:76 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- image/cool.m:90 [error] expected an error but none was raised
+- image/cool.m:91 [error] expected an error but none was raised
+- image/cool.m:92 [error] error 'cool: wrong type argument' does not match <N must be a scalar integer>
+- image/dither.m:410 [test] 'ind2sub' undefined
+- image/dither.m:414 [test] invalid conversion from empty value to real scalar
+- image/dither.m:418 [test] invalid conversion from empty value to real scalar
+- image/dither.m:422 [test] invalid conversion from empty value to real scalar
+- image/dither.m:426 [test] invalid conversion from empty value to real scalar
+- image/frame2im.m:89 [test] reshape: can't reshape 10x80x3 array to 10x60x4x3 array
+- image/frame2im.m:100 [test] reshape: can't reshape 10x80x2 array to 10x40x4x2 array
+- image/gray.m:75 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- image/gray.m:89 [error] expected an error but none was raised
+- image/gray.m:90 [error] expected an error but none was raised
+- image/gray.m:91 [error] error 'gray: wrong type argument' does not match <N must be a scalar integer>
+- image/hot.m:91 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- image/hot.m:94 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- image/hot.m:95 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- image/hot.m:96 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- image/hot.m:97 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- image/hot.m:98 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- image/hot.m:99 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- image/hot.m:104 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       0        0.25       Abs err 0.25 exceeds tol 2.220446049250313E-16
+- image/hot.m:119 [error] expected an error but none was raised
+- image/hot.m:120 [error] expected an error but none was raised
+- image/hot.m:121 [error] error 'hot: wrong type argument' does not match <N must be a scalar integer>
+- image/hsv2rgb.m:160 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- image/hsv2rgb.m:171 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- image/hsv2rgb.m:192 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       1.1920928955078125E-07        0       Abs err 1.1920928955078125E-07 exceeds tol 4.440892098500626E-16
+- image/im2frame.m:94 [test] reshape: can't reshape 10x240 array to 1x4 array
+- image/im2frame.m:102 [test] reshape: can't reshape 10x80 array to 1x4 array
+- image/image.m:238 [test] cellfun: C must be a cell array
+- image/image.m:264 [error] error 'cellfun: C must be a cell array' does not match <IMG data can not be complex>
+- image/imformats.m:336 [test] invalid number of output arguments for expression X.name (struct array)
+- image/imshow.m:277 [test] value on right hand side of assignment is undefined
+- image/ind2rgb.m:116 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- image/ind2rgb.m:150 [warning] expected a warning but none was issued
+- image/ind2rgb.m:151 [warning] expected a warning but none was issued
+- image/ind2rgb.m:152 [warning] expected a warning but none was issued
+- image/ind2rgb.m:153 [warning] expected a warning but none was issued
+- image/ind2rgb.m:154 [warning] expected a warning but none was issued
+- image/jet.m:116 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- image/jet.m:119 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- image/jet.m:120 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- image/jet.m:121 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- image/jet.m:122 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- image/jet.m:123 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- image/jet.m:128 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (7)       0.2142857142857142        0.25       Abs err 0.03571428571428581 exceeds tol 2.220446049250313E-16
+- image/jet.m:136 [error] expected an error but none was raised
+- image/jet.m:137 [error] expected an error but none was raised
+- image/jet.m:138 [error] error 'jet: wrong type argument' does not match <N must be a scalar integer>
+- image/lines.m:82 [assert] get: argument must be a scalar, not empty
+- image/lines.m:83 [assert] get: argument must be a scalar, not empty
+- image/lines.m:93 [test] get: argument must be a scalar, not empty
+- image/movie.m:249 [error] error 'ishandle: wrong type argument 'cell array'' does not match <MOV must be a frame struct array>
+- image/movie.m:250 [error] error 'ishandle: wrong type argument 'struct'' does not match <MOV must contain at least two frames>
+- image/movie.m:252 [error] error 'ishandle: wrong type argument 'struct'' does not match <N must be a nonzero integer>
+- image/movie.m:254 [error] error 'ishandle: wrong type argument 'struct'' does not match <N must be a nonzero integer>
+- image/movie.m:256 [error] error 'ishandle: wrong type argument 'struct'' does not match <All elements N\(2:end\) must be valid indices into the MOV struct>
+- image/movie.m:258 [error] error 'ishandle: wrong type argument 'struct'' does not match <All elements N\(2:end\) must be valid indices into the MOV struct>
+- image/movie.m:260 [error] error 'ishandle: wrong type argument 'struct'' does not match <FPS must be a numeric scalar . 0>
+- image/movie.m:262 [error] error 'ishandle: wrong type argument 'struct'' does not match <FPS must be a numeric scalar . 0>
+- image/movie.m:264 [error] error 'ishandle: wrong type argument 'struct'' does not match <FPS must be a numeric scalar . 0>
+- image/movie.m:266 [error] error 'get: unknown property 'currentaxes'' does not match <empty image data at frame 1>
+- image/movie.m:273 [error] error 'ishandle: wrong type argument 'struct'' does not match <empty image data at frame 2>
+- image/rgb2gray.m:115 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- image/rgb2gray.m:126 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- image/rgb2gray.m:132 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- image/rgb2gray.m:137 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- image/rgb2gray.m:142 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- image/rgb2gray.m:147 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- image/rgb2hsv.m:111 [assert] subscript indices must be either positive integers or logicals
+- image/rgb2hsv.m:112 [assert] subscript indices must be either positive integers or logicals
+- image/rgb2hsv.m:113 [assert] subscript indices must be either positive integers or logicals
+- image/rgb2hsv.m:137 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- image/rgb2hsv.m:148 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- image/rgb2ind.m:114 [test] reshape: can't reshape 100x3 array to 10x10 array
+- image/rgb2ind.m:124 [test] reshape: can't reshape 1000x3 array to 10x10x1x10 array
+- image/rgb2ind.m:132 [test] assert (cond) failed
+- image/turbo.m:331 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- image/turbo.m:332 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- image/turbo.m:334 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- image/turbo.m:335 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- image/turbo.m:343 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- image/turbo.m:344 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- image/turbo.m:345 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- image/turbo.m:346 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- image/turbo.m:347 [assert] ASSERT errors: dimensions mismatch
+- image/viridis.m:331 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- image/viridis.m:332 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- image/viridis.m:334 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- image/viridis.m:335 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- image/viridis.m:343 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- image/viridis.m:344 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- image/viridis.m:345 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- image/viridis.m:346 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- image/viridis.m:347 [assert] ASSERT errors: dimensions mismatch
+- io/beep.m:43 [error] expected an error but none was raised
+- io/fileread.m:105 [error] error 'fileread: argument must be a string' does not match <FILENAME argument must be a string>
+- io/fileread.m:106 [error] error 'fileread: cannot open file filename' does not match <parameter "Encoding" missing value>
+- io/fileread.m:107 [error] error 'fileread: cannot open file filename' does not match <Unknown option "UnknownParam">
+- io/importdata.m:552 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- io/importdata.m:565 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- io/importdata.m:617 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- io/importdata.m:629 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- io/importdata.m:641 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- io/importdata.m:679 [warning] expected a warning but none was issued
+- io/is_valid_file_id.m:54 [assert] assert (cond) failed
+- io/is_valid_file_id.m:55 [test] 'fid' undefined
+- java/javaaddpath.m:184 [error] error ''tilde_expand' undefined' does not match <CLSPATH does not exist>
+- legacy/caxis.m:107 [test] set: unknown property 'clim' for axes object
+- legacy/strmatch.m:137 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- legacy/strmatch.m:139 [assert] vertical dimensions mismatch (1x9 vs 1x11)
+- legacy/strmatch.m:140 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- legacy/strmatch.m:154 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- legacy/strread.m:897 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- legacy/strread.m:902 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- legacy/strread.m:908 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- legacy/strread.m:919 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- legacy/strread.m:924 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- legacy/strread.m:937 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- legacy/strread.m:955 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- legacy/strread.m:965 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- legacy/strread.m:970 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- legacy/strread.m:976 [test] parse error near line 580, column 91: expected ')' but found ','
+- legacy/strread.m:987 [test] textscan: unrecognized option 'treatasempty'
+- legacy/strread.m:993 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- legacy/strread.m:1001 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- legacy/strread.m:1009 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- legacy/strread.m:1020 [test] ASSERT errors: dimensions mismatch
+- legacy/strread.m:1038 [test] ASSERT errors: dimensions mismatch
+- legacy/strread.m:1056 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- legacy/strread.m:1061 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- legacy/strread.m:1066 [test] parse error near line 580, column 91: expected ')' but found ','
+- legacy/strread.m:1078 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- legacy/strread.m:1110 [error] expected an error but none was raised
+- legacy/strread.m:1111 [error] expected an error but none was raised
+- legacy/strread.m:1112 [error] expected an error but none was raised
+- legacy/strread.m:1113 [error] expected an error but none was raised
+- legacy/strread.m:1114 [error] expected an error but none was raised
+- legacy/strread.m:1115 [error] expected an error but none was raised
+- legacy/strread.m:1116 [error] expected an error but none was raised
+- legacy/strread.m:1117 [error] expected an error but none was raised
+- legacy/strread.m:1118 [error] expected an error but none was raised
+- legacy/strread.m:1119 [error] expected an error but none was raised
+- legacy/strread.m:1120 [error] expected an error but none was raised
+- legacy/strread.m:1121 [error] expected an error but none was raised
+- legacy/strread.m:1122 [error] expected an error but none was raised
+- legacy/strread.m:1123 [error] expected an error but none was raised
+- legacy/strread.m:1126 [error] expected an error but none was raised
+- legacy/strread.m:1139 [warning] index (3): out of bound 1 (dimensions are 1x1)
+- legacy/textread.m:338 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (2)       0.13        0.02606153496311192       Abs err 0.10393846503688808 exceeds tol 0.01
+- legacy/textread.m:347 [test] value on right hand side of assignment is undefined
+- legacy/textread.m:359 [test] value on right hand side of assignment is undefined
+- legacy/textread.m:443 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- legacy/vectorize.m:71 [test] 'functions' undefined
+- legacy/vectorize.m:77 [test] 'functions' undefined
+- legacy/vectorize.m:83 [test] 'functions' undefined
+- linear-algebra/commutation_matrix.m:107 [test] 'vec' undefined
+- linear-algebra/commutation_matrix.m:114 [test] 'vec' undefined
+- linear-algebra/cond.m:88 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       0.0195971567839821        0.01746       Abs err 0.002137156783982099 exceeds tol 1E-06
+- linear-algebra/cond.m:101 [error] expected an error but none was raised
+- linear-algebra/cond.m:102 [error] error 'An algorithm failed to converge.' does not match <A must not contain Inf or NaN value>
+- linear-algebra/cond.m:103 [error] error 'An algorithm failed to converge.' does not match <A must not contain Inf or NaN value>
+- linear-algebra/condeig.m:122 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (2)       1        1.015       Abs err 0.014999999999999902 exceeds tol 0.001
+- linear-algebra/condeig.m:128 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (2)       1        1.0182       Abs err 0.018199999999999994 exceeds tol 0.001
+- linear-algebra/condeig.m:138 [assert] element number 2 undefined in return list
+- linear-algebra/condest.m:339 [test] 'sub2ind' undefined
+- linear-algebra/condest.m:346 [test] 'sub2ind' undefined
+- linear-algebra/condest.m:353 [test] 'sub2ind' undefined
+- linear-algebra/condest.m:361 [test] 'sub2ind' undefined
+- linear-algebra/condest.m:370 [test] 'sub2ind' undefined
+- linear-algebra/condest.m:388 [test] 'sub2ind' undefined
+- linear-algebra/cross.m:155 [test] cross: both X and Y must have 3 elements
+- linear-algebra/cross.m:162 [test] cross: both X and Y must have 3 elements
+- linear-algebra/cross.m:188 [error] error 'cross: both X and Y must have 3 elements' does not match <must have at least one dimension with 3 elements>
+- linear-algebra/cross.m:189 [error] error 'cross: both X and Y must have 3 elements' does not match <must have at least one dimension with 3 elements>
+- linear-algebra/cross.m:190 [error] error 'cross: both X and Y must have 3 elements' does not match <must have at least one dimension with 3 elements>
+- linear-algebra/cross.m:191 [error] error 'cross: both X and Y must have 3 elements' does not match <X and Y must have three elements in dimension DIM>
+- linear-algebra/cross.m:192 [error] expected an error but none was raised
+- linear-algebra/cross.m:193 [error] expected an error but none was raised
+- linear-algebra/cross.m:194 [error] error 'cross: both X and Y must have 3 elements' does not match <X and Y must have three elements in dimension DIM>
+- linear-algebra/cross.m:195 [error] expected an error but none was raised
+- linear-algebra/cross.m:196 [error] expected an error but none was raised
+- linear-algebra/cross.m:197 [error] expected an error but none was raised
+- linear-algebra/cross.m:198 [error] expected an error but none was raised
+- linear-algebra/cross.m:199 [error] expected an error but none was raised
+- linear-algebra/cross.m:200 [error] expected an error but none was raised
+- linear-algebra/cross.m:201 [error] expected an error but none was raised
+- linear-algebra/cross.m:202 [error] expected an error but none was raised
+- linear-algebra/cross.m:203 [error] error 'cross: both X and Y must have 3 elements' does not match <X and Y must have the same dimensions>
+- linear-algebra/cross.m:204 [warning] expected a warning but none was issued
+- linear-algebra/cross.m:205 [warning] expected a warning but none was issued
+- linear-algebra/cross.m:207 [test] expected error <X and Y must have the same dimensions> but got <cross: both X and Y must have 3 elements>
+- linear-algebra/duplication_matrix.m:94 [test] 'vec' undefined
+- linear-algebra/duplication_matrix.m:103 [test] 'vec' undefined
+- linear-algebra/duplication_matrix.m:112 [test] 'vec' undefined
+- linear-algebra/expm.m:154 [assert] Invalid call to expm
+- linear-algebra/expm.m:155 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- linear-algebra/expm.m:162 [error] error 'expm: wrong type argument 'cell array'' does not match <expm: A must be a square matrix>
+- linear-algebra/funm.m:841 [assert] 'schur' undefined
+- linear-algebra/funm.m:842 [assert] 'schur' undefined
+- linear-algebra/funm.m:843 [assert] 'schur' undefined
+- linear-algebra/funm.m:844 [assert] 'schur' undefined
+- linear-algebra/funm.m:847 [assert] 'schur' undefined
+- linear-algebra/funm.m:848 [assert] 'schur' undefined
+- linear-algebra/funm.m:851 [test] 'schur' undefined
+- linear-algebra/funm.m:861 [test] 'schur' undefined
+- linear-algebra/funm.m:866 [test] 'schur' undefined
+- linear-algebra/funm.m:872 [test] 'schur' undefined
+- linear-algebra/funm.m:883 [test] 'schur' undefined
+- linear-algebra/funm.m:895 [test] 'schur' undefined
+- linear-algebra/funm.m:901 [test] 'schur' undefined
+- linear-algebra/funm.m:907 [test] 'schur' undefined
+- linear-algebra/funm.m:915 [test] 'schur' undefined
+- linear-algebra/funm.m:924 [test] 'schur' undefined
+- linear-algebra/funm.m:930 [test] 'schur' undefined
+- linear-algebra/funm.m:936 [test] 'schur' undefined
+- linear-algebra/funm.m:942 [test] 'schur' undefined
+- linear-algebra/funm.m:982 [test] 'schur' undefined
+- linear-algebra/gls.m:221 [test] matrix power with non-integer exponent is not implemented yet
+- linear-algebra/isdefinite.m:85 [test] chol: input matrix must be positive definite
+- linear-algebra/isdefinite.m:89 [test] element number 2 undefined in return list
+- linear-algebra/isdefinite.m:93 [test] element number 2 undefined in return list
+- linear-algebra/isdefinite.m:98 [test] chol: input matrix must be positive definite
+- linear-algebra/ishermitian.m:122 [assert] assert (cond) failed
+- linear-algebra/issymmetric.m:129 [assert] assert (cond) failed
+- linear-algebra/linsolve.m:150 [test] 'matrix_type' undefined
+- linear-algebra/linsolve.m:160 [test] 'rcond' undefined
+- linear-algebra/linsolve.m:175 [test] 'rcond' undefined
+- linear-algebra/logm.m:184 [assert] 'schur' undefined
+- linear-algebra/logm.m:185 [test] 'schur' undefined
+- linear-algebra/logm.m:188 [assert] 'schur' undefined
+- linear-algebra/logm.m:193 [test] '__octave_config_info__' undefined
+- linear-algebra/logm.m:206 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- linear-algebra/lscov.m:139 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       -3482258.634591639        -3482258.63459582       Abs err 4.181172698736191E-06 exceeds tol 3E-06
+- linear-algebra/lscov.m:203 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       1.247211912395362        0       Abs err 1.247211912395362 exceeds tol 0.2
+- linear-algebra/normest1.m:301 [test] 'sub2ind' undefined
+- linear-algebra/normest1.m:308 [test] 'sub2ind' undefined
+- linear-algebra/normest1.m:319 [test] 'sub2ind' undefined
+- linear-algebra/normest1.m:327 [test] 'sub2ind' undefined
+- linear-algebra/normest1.m:332 [test] 'sub2ind' undefined
+- linear-algebra/normest1.m:337 [test] 'sub2ind' undefined
+- linear-algebra/normest1.m:347 [test] 'sub2ind' undefined
+- linear-algebra/normest1.m:358 [test] 'sub2ind' undefined
+- linear-algebra/normest1.m:375 [test] 'sub2ind' undefined
+- linear-algebra/normest1.m:385 [error] error 'normest1: X0 must have 5 columns' does not match <X0 must have 2 columns>
+- linear-algebra/null.m:82 [test] Invalid call to null
+- linear-algebra/null.m:100 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       -0.7071067811865475        -0.7071067690849304       Abs err 1.2101617041793133E-08 exceeds tol 2.220446049250313E-16
+- linear-algebra/null.m:110 [test] parse error near line 4, column 9: unexpected ','
+- linear-algebra/null.m:122 [assert] Invalid call to null
+- linear-algebra/null.m:126 [error] expected an error but none was raised
+- linear-algebra/ols.m:229 [test] element number 2 undefined in return list
+- linear-algebra/ols.m:235 [test] element number 2 undefined in return list
+- linear-algebra/ols.m:243 [test] element number 2 undefined in return list
+- linear-algebra/ols.m:250 [test] element number 2 undefined in return list
+- linear-algebra/ordeig.m:121 [test] 'schur' undefined
+- linear-algebra/ordeig.m:127 [test] 'qz' undefined
+- linear-algebra/planerot.m:79 [test] 'givens' undefined
+- linear-algebra/qzhess.m:111 [test] 'givens' undefined
+- linear-algebra/qzhess.m:132 [test] 'givens' undefined
+- linear-algebra/rank.m:157 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- linear-algebra/rref.m:99 [test] parse error near line 87, column 17: unexpected '=='
+- linear-algebra/rref.m:105 [test] parse error near line 87, column 17: unexpected '=='
+- linear-algebra/rref.m:112 [test] parse error near line 87, column 17: unexpected '=='
+- linear-algebra/rref.m:119 [test] parse error near line 87, column 17: unexpected '=='
+- linear-algebra/rref.m:126 [test] parse error near line 87, column 17: unexpected '=='
+- linear-algebra/rref.m:136 [error] error 'parse error near line 87, column 17: unexpected '=='' does not match <Invalid call>
+- linear-algebra/tensorprod.m:414 [error] expected an error but none was raised
+- linear-algebra/tensorprod.m:421 [error] error 'Array dimensions exceeded supported range.' does not match <value for NumDimensionsA must be a positive integer>
+- linear-algebra/tensorprod.m:423 [error] expected an error but none was raised
+- linear-algebra/tensorprod.m:429 [error] error 'tensorprod: an equal number of dimensions must be matched for A and B' does not match <DIMA must be a numeric vector of integers or \[\]>
+- linear-algebra/tensorprod.m:432 [error] error 'tensorprod: an equal number of dimensions must be matched for A and B' does not match <DIMB must be a numeric vector of integers or \[\]>
+- linear-algebra/tensorprod.m:446 [error] error 'out of memory or dimension too large for Octave's index type' does not match <dimensions must be positive integers>
+- linear-algebra/trace.m:55 [assert] trace: A must be a square matrix
+- linear-algebra/trace.m:56 [assert] trace: A must be a square matrix
+- linear-algebra/trace.m:58 [assert] trace: A must be a square matrix
+- linear-algebra/trace.m:59 [assert] trace: A must be a square matrix
+- linear-algebra/trace.m:62 [error] error 'trace: A must be a square matrix' does not match <only valid on 2-D objects>
+- linear-algebra/vecnorm.m:84 [test] ASSERT errors: dimensions mismatch
+- linear-algebra/vecnorm.m:92 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       1        2.2361       Abs err 1.2361 exceeds tol 0.0001
+- linear-algebra/vecnorm.m:95 [test] ASSERT errors: dimensions mismatch
+- miscellaneous/cast.m:147 [assert] Invalid call to cast
+- miscellaneous/cast.m:148 [assert] Invalid call to cast
+- miscellaneous/cast.m:149 [assert] Invalid call to cast
+- miscellaneous/cast.m:150 [assert] Invalid call to cast
+- miscellaneous/cast.m:151 [assert] Invalid call to cast
+- miscellaneous/cast.m:152 [assert] Invalid call to cast
+- miscellaneous/cast.m:153 [assert] Invalid call to cast
+- miscellaneous/cast.m:154 [assert] Invalid call to cast
+- miscellaneous/cast.m:155 [assert] Invalid call to cast
+- miscellaneous/cast.m:156 [assert] Invalid call to cast
+- miscellaneous/cast.m:157 [assert] Invalid call to cast
+- miscellaneous/cast.m:163 [error] error 'cast: argument must be a string' does not match <TYPE must be a string>
+- miscellaneous/cast.m:164 [error] error 'cast: wrong type argument 'cell array'' does not match <type conversion from .* not supported>
+- miscellaneous/cast.m:165 [error] error 'cast: wrong type argument 'struct'' does not match <type conversion from .* not supported>
+- miscellaneous/cast.m:166 [error] error 'cast: TYPE 'foobar' is not a built-in type' does not match <type conversion to .* not supported>
+- miscellaneous/cast.m:167 [error] error 'cast: TYPE 'cell' is not a built-in type' does not match <type conversion to .* not supported>
+- miscellaneous/cast.m:168 [error] error 'Invalid call to cast' does not match <type conversion to .* not supported>
+- miscellaneous/cast.m:169 [error] error 'Invalid call to cast' does not match <type conversion to .* not supported>
+- miscellaneous/citation.m:58 [error] error ''user_config_dir' undefined' does not match <citation: package .* is not installed>
+- miscellaneous/clearvars.m:221 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- miscellaneous/clearvars.m:225 [error] expected an error but none was raised
+- miscellaneous/clearvars.m:226 [error] expected an error but none was raised
+- miscellaneous/computer.m:145 [assert] '__octave_config_info__' undefined
+- miscellaneous/computer.m:148 [error] expected an error but none was raised
+- miscellaneous/computer.m:149 [error] expected an error but none was raised
+- miscellaneous/copyfile.m:181 [test] 'stat' undefined
+- miscellaneous/copyfile.m:210 [error] error ''stat' undefined' does not match <F2 must be a directory>
+- miscellaneous/copyfile.m:219 [test] 'status' undefined
+- miscellaneous/delete.m:96 [test] delete: argument must be a string
+- miscellaneous/delete.m:109 [error] error 'delete: argument must be a string' does not match <first argument must be a filename>
+- miscellaneous/dir.m:198 [test] 'chdir' undefined
+- miscellaneous/dir.m:234 [test] 'chdir' undefined
+- miscellaneous/dir.m:267 [test] '__wglob__' undefined
+- miscellaneous/dir.m:283 [warning] '__wglob__' undefined
+- miscellaneous/edit.m:582 [test] parse error near line 8, column 11: unexpected 'home'
+- miscellaneous/fieldnames.m:89 [test] fieldnames: Invalid input argument
+- miscellaneous/fileattrib.m:176 [test] 'P_tmpdir' undefined
+- miscellaneous/fileparts.m:95 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- miscellaneous/fileparts.m:125 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- miscellaneous/fileparts.m:169 [error] error 'fileparts: argument must be a string' does not match <FILENAME must be a single string>
+- miscellaneous/fileparts.m:170 [error] expected an error but none was raised
+- miscellaneous/fullfile.m:155 [assert] fullfile: argument must be a string
+- miscellaneous/fullfile.m:156 [assert] fullfile: argument must be a string
+- miscellaneous/fullfile.m:160 [assert] fullfile: argument must be a string
+- miscellaneous/fullfile.m:184 [error] error 'fullfile: argument must be a string' does not match <strings or cell strings>
+- miscellaneous/fullfile.m:185 [error] error 'fullfile: argument must be a string' does not match <strings or cell strings>
+- miscellaneous/fullfile.m:186 [error] error 'fullfile: argument must be a string' does not match <same size>
+- miscellaneous/getfield.m:64 [test] getfield: argument must be a string
+- miscellaneous/getfield.m:70 [error] error 'getfield: wrong type argument' does not match <Invalid call>
+- miscellaneous/getfield.m:71 [error] error 'getfield: wrong type argument' does not match <invalid index>
+- miscellaneous/inputParser.m:729 [test] parse error near line 209, column 13: invalid property declaration
+- miscellaneous/inputParser.m:739 [test] parse error near line 209, column 13: invalid property declaration
+- miscellaneous/inputParser.m:747 [test] parse error near line 209, column 13: invalid property declaration
+- miscellaneous/inputParser.m:755 [test] parse error near line 209, column 13: invalid property declaration
+- miscellaneous/inputParser.m:764 [test] parse error near line 209, column 13: invalid property declaration
+- miscellaneous/inputParser.m:773 [test] parse error near line 209, column 13: invalid property declaration
+- miscellaneous/inputParser.m:782 [test] parse error near line 209, column 13: invalid property declaration
+- miscellaneous/inputParser.m:789 [error] error 'parse error near line 209, column 13: invalid property declaration' does not match <not enough input arguments>
+- miscellaneous/inputParser.m:794 [error] error 'parse error near line 209, column 13: invalid property declaration' does not match <failed validation of >
+- miscellaneous/inputParser.m:799 [error] error 'parse error near line 209, column 13: invalid property declaration' does not match <is not a declared parameter or switch>
+- miscellaneous/inputParser.m:804 [error] error 'parse error near line 209, column 13: invalid property declaration' does not match <failed validation of >
+- miscellaneous/inputParser.m:809 [error] error 'parse error near line 209, column 13: invalid property declaration' does not match <'arg' matches more than one Parameter: 'arg123', 'arg456'>
+- miscellaneous/inputParser.m:817 [error] error 'parse error near line 209, column 13: invalid property declaration' does not match <'arg7' matches more than one Switch: 'arg789', 'arg790'>
+- miscellaneous/inputParser.m:836 [test] parse error near line 209, column 13: invalid property declaration
+- miscellaneous/inputParser.m:845 [test] parse error near line 209, column 13: invalid property declaration
+- miscellaneous/inputParser.m:853 [test] parse error near line 209, column 13: invalid property declaration
+- miscellaneous/inputParser.m:859 [test] parse error near line 209, column 13: invalid property declaration
+- miscellaneous/inputParser.m:867 [test] parse error near line 209, column 13: invalid property declaration
+- miscellaneous/inputParser.m:887 [test] parse error near line 209, column 13: invalid property declaration
+- miscellaneous/inputParser.m:894 [test] parse error near line 209, column 13: invalid property declaration
+- miscellaneous/inputParser.m:901 [test] parse error near line 209, column 13: invalid property declaration
+- miscellaneous/inputParser.m:909 [test] parse error near line 209, column 13: invalid property declaration
+- miscellaneous/inputParser.m:919 [test] parse error near line 209, column 13: invalid property declaration
+- miscellaneous/inputParser.m:926 [test] parse error near line 209, column 13: invalid property declaration
+- miscellaneous/inputParser.m:937 [test] parse error near line 209, column 13: invalid property declaration
+- miscellaneous/inputParser.m:977 [test] parse error near line 209, column 13: invalid property declaration
+- miscellaneous/inputParser.m:986 [test] parse error near line 209, column 13: invalid property declaration
+- miscellaneous/inputParser.m:994 [test] parse error near line 209, column 13: invalid property declaration
+- miscellaneous/inputParser.m:1003 [test] parse error near line 209, column 13: invalid property declaration
+- miscellaneous/inputParser.m:1013 [error] error 'parse error near line 209, column 13: invalid property declaration' does not match <failed validation of 'a'.*ischar>
+- miscellaneous/inputParser.m:1018 [test] parse error near line 209, column 13: invalid property declaration
+- miscellaneous/inputParser.m:1027 [test] parse error near line 209, column 13: invalid property declaration
+- miscellaneous/inputParser.m:1037 [test] parse error near line 209, column 13: invalid property declaration
+- miscellaneous/inputParser.m:1047 [test] parse error near line 209, column 13: invalid property declaration
+- miscellaneous/inputParser.m:1056 [test] parse error near line 209, column 13: invalid property declaration
+- miscellaneous/inputParser.m:1063 [test] parse error near line 209, column 13: invalid property declaration
+- miscellaneous/inputParser.m:1075 [test] parse error near line 209, column 13: invalid property declaration
+- miscellaneous/inputParser.m:1083 [test] parse error near line 209, column 13: invalid property declaration
+- miscellaneous/isfile.m:56 [shared] '__which__' undefined
+- miscellaneous/isfile.m:59 [assert] assert (cond) failed
+- miscellaneous/isfile.m:61 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- miscellaneous/isfile.m:62 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- miscellaneous/isfile.m:80 [error] expected an error but none was raised
+- miscellaneous/isfile.m:81 [error] expected an error but none was raised
+- miscellaneous/isfolder.m:58 [assert] '__which__' undefined
+- miscellaneous/isfolder.m:59 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- miscellaneous/isfolder.m:60 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- miscellaneous/isfolder.m:79 [error] expected an error but none was raised
+- miscellaneous/isfolder.m:80 [error] expected an error but none was raised
+- miscellaneous/ismethod.m:59 [assert] parse error near line 209, column 13: invalid property declaration
+- miscellaneous/jupyter_notebook.m:709 [error] error 'parse error near line 145, column 13: invalid property declaration' does not match <Invalid call>
+- miscellaneous/jupyter_notebook.m:710 [error] error 'parse error near line 145, column 13: invalid property declaration' does not match <NOTEBOOK_FILENAME must be a string>
+- miscellaneous/jupyter_notebook.m:711 [error] error 'parse error near line 145, column 13: invalid property declaration' does not match <NOTEBOOK_FILENAME must be a string>
+- miscellaneous/jupyter_notebook.m:712 [error] error 'parse error near line 145, column 13: invalid property declaration' does not match <OPTIONS must be a struct>
+- miscellaneous/license.m:153 [assert] 'user_config_dir' undefined
+- miscellaneous/license.m:156 [test] 'user_config_dir' undefined
+- miscellaneous/license.m:169 [assert] 'user_config_dir' undefined
+- miscellaneous/license.m:170 [assert] 'user_config_dir' undefined
+- miscellaneous/license.m:177 [assert] 'user_config_dir' undefined
+- miscellaneous/license.m:179 [test] 'user_config_dir' undefined
+- miscellaneous/license.m:186 [error] error ''user_config_dir' undefined' does not match <TOGGLE must be enable or disable>
+- miscellaneous/ls.m:133 [test] 'page_screen_output' undefined
+- miscellaneous/ls.m:138 [test] 'tilde_expand' undefined
+- miscellaneous/memoize.m:80 [test] 'matlab' undefined
+- miscellaneous/memoize.m:88 [test] 'matlab' undefined
+- miscellaneous/memoize.m:97 [test] 'matlab' undefined
+- miscellaneous/methods.m:132 [test] parse error near line 209, column 13: invalid property declaration
+- miscellaneous/methods.m:140 [assert] parse error near line 209, column 13: invalid property declaration
+- miscellaneous/methods.m:146 [test] parse error near line 209, column 13: invalid property declaration
+- miscellaneous/methods.m:152 [test] methods: invalid class name
+- miscellaneous/methods.m:181 [error] error 'methods: invalid class name' does not match <invalid option>
+- miscellaneous/methods.m:182 [error] error 'methods: invalid class name' does not match <class 'foobar' not found>
+- miscellaneous/methods.m:183 [error] error 'methods: argument must be a string' does not match <invalid input argument>
+- miscellaneous/mkdir.m:106 [test] 'confirm_recursive_rmdir' undefined
+- miscellaneous/mkdir.m:119 [test] assert (cond) failed
+- miscellaneous/movefile.m:199 [test] 'stat' undefined
+- miscellaneous/movefile.m:229 [error] error ''stat' undefined' does not match <F2 must be a directory>
+- miscellaneous/movefile.m:238 [test] 'status' undefined
+- miscellaneous/movefile.m:250 [error] error ''stat' undefined' does not match <no files to move>
+- miscellaneous/nargchk.m:73 [shared] 'resize' undefined
+- miscellaneous/nargchk.m:85 [assert] 'resize' undefined
+- miscellaneous/nargchk.m:86 [assert] 'resize' undefined
+- miscellaneous/nargchk.m:87 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- miscellaneous/nargchk.m:88 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- miscellaneous/nargoutchk.m:112 [shared] 'resize' undefined
+- miscellaneous/nargoutchk.m:124 [assert] 'resize' undefined
+- miscellaneous/nargoutchk.m:125 [assert] 'resize' undefined
+- miscellaneous/nargoutchk.m:126 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- miscellaneous/nargoutchk.m:127 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- miscellaneous/news.m:47 [error] error ''user_config_dir' undefined' does not match <news: package .* is not installed>
+- miscellaneous/nthargout.m:136 [assert] 'ind2sub' undefined
+- miscellaneous/nthargout.m:142 [error] error 'Invalid call to sin' does not match <N .* must be positive integers>
+- miscellaneous/nthargout.m:143 [error] error 'expected a function handle or function name' does not match <N .* must be positive integers>
+- miscellaneous/nthargout.m:144 [error] error 'Invalid call to sin' does not match <N .* must be positive integers>
+- miscellaneous/nthargout.m:145 [error] error 'expected a function handle or function name' does not match <N .* must be positive integers>
+- miscellaneous/nthargout.m:146 [error] error 'Invalid call to nthargout' does not match <too many output arguments: 2>
+- miscellaneous/orderfields.m:169 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- miscellaneous/orderfields.m:182 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- miscellaneous/orderfields.m:188 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- miscellaneous/orderfields.m:207 [test] 'resize' undefined
+- miscellaneous/orderfields.m:217 [error] error 'orderfields: wrong type argument' does not match <S1 must be a struct>
+- miscellaneous/orderfields.m:218 [error] expected an error but none was raised
+- miscellaneous/orderfields.m:222 [error] expected an error but none was raised
+- miscellaneous/orderfields.m:225 [error] expected an error but none was raised
+- miscellaneous/orderfields.m:228 [error] expected an error but none was raised
+- miscellaneous/orderfields.m:231 [error] expected an error but none was raised
+- miscellaneous/parseparams.m:116 [test] parse error near line 100, column 75: expected ')' but found ','
+- miscellaneous/parseparams.m:120 [test] parse error near line 100, column 75: expected ')' but found ','
+- miscellaneous/parseparams.m:124 [test] parse error near line 100, column 75: expected ')' but found ','
+- miscellaneous/parseparams.m:128 [test] parse error near line 100, column 75: expected ')' but found ','
+- miscellaneous/parseparams.m:132 [test] parse error near line 100, column 75: expected ')' but found ','
+- miscellaneous/parseparams.m:138 [error] error 'parse error near line 100, column 75: expected ')' but found ','' does not match <needs odd number of arguments>
+- miscellaneous/parseparams.m:139 [error] error 'parse error near line 100, column 75: expected ')' but found ','' does not match <must be given as name-value pairs>
+- miscellaneous/parseparams.m:140 [error] error 'parse error near line 100, column 75: expected ')' but found ','' does not match <unrecognized option: color>
+- miscellaneous/perl.m:72 [error] error ''file_in_loadpath' undefined' does not match <SCRIPTFILE .* not found>
+- miscellaneous/publish.m:1137 [error] error 'exist: argument must be a string' does not match <NAME must be a string>
+- miscellaneous/publish.m:1139 [error] error 'publish: FILE does not exist' does not match <only script files can be published>
+- miscellaneous/python.m:95 [error] error ''file_in_loadpath' undefined' does not match <SCRIPTFILE .* not found>
+- miscellaneous/run.m:121 [test] 'is_same_file' undefined
+- miscellaneous/setfield.m:144 [test] setfield: argument must be a string
+- miscellaneous/setfield.m:151 [error] error 'setfield: wrong type argument' does not match <Invalid call>
+- miscellaneous/setfield.m:152 [error] error 'setfield: wrong type argument' does not match <Invalid call>
+- miscellaneous/setfield.m:153 [error] error 'setfield: wrong type argument' does not match <invalid index>
+- miscellaneous/substruct.m:83 [test] cellfun: C must be a cell array
+- miscellaneous/swapbytes.m:71 [assert] 'typecast' undefined
+- miscellaneous/swapbytes.m:72 [test] 'typecast' undefined
+- miscellaneous/symvar.m:61 [assert] '__inline_ctor__' undefined
+- miscellaneous/symvar.m:62 [assert] '__inline_ctor__' undefined
+- miscellaneous/symvar.m:63 [assert] '__inline_ctor__' undefined
+- miscellaneous/tar.m:108 [test] 'chdir' undefined
+- miscellaneous/unix.m:61 [test] 'system' undefined
+- miscellaneous/unpack.m:400 [error] error ''glob' undefined' does not match <FILE "_%NOT_A_FILENAME%_" not found>
+- miscellaneous/unpack.m:401 [error] error ''glob' undefined' does not match <FILE "_%NOT_A_FILENAME%_" not found>
+- miscellaneous/unpack.m:402 [error] error ''glob' undefined' does not match <FILE "_%NOT_A_FILENAME%_" not found>
+- miscellaneous/unpack.m:403 [error] error ''glob' undefined' does not match <FILETYPE must be a string>
+- miscellaneous/unpack.m:409 [error] error ''glob' undefined' does not match <FILETYPE must be given for a directory>
+- miscellaneous/unpack.m:415 [error] error ''glob' undefined' does not match <FILETYPE must be "gz" for a directory>
+- miscellaneous/validateattributes.m:432 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:433 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:434 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:435 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:436 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:437 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:438 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:439 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:440 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:441 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:442 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:443 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:444 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:445 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:446 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:447 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:448 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:449 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:450 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:451 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:452 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:453 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:454 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:455 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:456 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:457 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:458 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:459 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:460 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:461 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:462 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:463 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:464 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:465 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:466 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:467 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:468 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:469 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:470 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:471 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:472 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:473 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:474 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:475 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:476 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:477 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:478 [error] expected an error but none was raised
+- miscellaneous/ver.m:119 [test] '__octave_config_info__' undefined
+- miscellaneous/ver.m:131 [test] 'user_config_dir' undefined
+- miscellaneous/ver.m:142 [test] 'user_config_dir' undefined
+- miscellaneous/verLessThan.m:80 [assert] '__octave_config_info__' undefined
+- miscellaneous/verLessThan.m:81 [assert] '__octave_config_info__' undefined
+- miscellaneous/verLessThan.m:82 [assert] '__octave_config_info__' undefined
+- miscellaneous/verLessThan.m:83 [assert] '__octave_config_info__' undefined
+- miscellaneous/verLessThan.m:89 [error] error ''__octave_config_info__' undefined' does not match <package "no-such-package" is not installed>
+- miscellaneous/verLessThan.m:91 [error] error ''__octave_config_info__' undefined' does not match <compare_versions: version numbers V1 and V2 must be strings>
+- miscellaneous/version.m:126 [test] '__octave_config_info__' undefined
+- miscellaneous/version.m:131 [assert] '__octave_config_info__' undefined
+- miscellaneous/version.m:133 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- miscellaneous/version.m:134 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- miscellaneous/version.m:139 [error] expected an error but none was raised
+- miscellaneous/version.m:141 [error] expected an error but none was raised
+- miscellaneous/version.m:142 [error] expected an error but none was raised
+- miscellaneous/what.m:192 [test] 'readdir' undefined
+- miscellaneous/zip.m:98 [test] value on right hand side of assignment is undefined
+- ode/decic.m:205 [test] invalid assignment target
+- ode/decic.m:210 [test] invalid assignment target
+- ode/ode23.m:401 [test] assert (cond) failed
+- ode/ode23.m:462 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       1.8858951968958593E-06        0       Abs err 1.8858951968958593E-06 exceeds tol 1E-06
+- ode/ode23.m:470 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (2)       0.3237325815578595        2       Abs err 1.6762674184421404 exceeds tol 0.1
+- ode/ode23.m:486 [test] assert (cond) failed
+- ode/ode23.m:541 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- ode/ode23.m:551 [error] error 'ode23: wrong type argument 'cell array'' does not match <TRANGE must be a numeric>
+- ode/ode23.m:552 [error] error 'ode23: invalid time span, TRANGE(1) == TRANGE(2)' does not match <TRANGE must be a .* vector>
+- ode/ode23.m:555 [error] error 'ode23: wrong type argument 'cell array'' does not match <INIT must be a numeric>
+- ode/ode23.m:556 [error] error 'ode23: function must return a vector of length 6 (got 2)' does not match <INIT must be a .* vector>
+- ode/ode23.m:557 [error] error 'expected a function handle or function name' does not match <FCN must be a valid function handle>
+- ode/ode23s.m:346 [test] invalid assignment target
+- ode/ode23s.m:350 [test] invalid assignment target
+- ode/ode23s.m:432 [test] invalid assignment target
+- ode/ode23s.m:435 [test] invalid assignment target
+- ode/ode23s.m:443 [test] invalid assignment target
+- ode/ode23s.m:447 [test] invalid assignment target
+- ode/ode23s.m:450 [test] Invalid call to numel
+- ode/ode23s.m:454 [test] invalid assignment target
+- ode/ode23s.m:458 [test] invalid assignment target
+- ode/ode23s.m:462 [test] invalid assignment target
+- ode/ode23s.m:466 [test] invalid assignment target
+- ode/ode23s.m:470 [test] invalid assignment target
+- ode/ode23s.m:474 [test] invalid assignment target
+- ode/ode23s.m:478 [test] invalid assignment target
+- ode/ode23s.m:482 [test] invalid assignment target
+- ode/ode23s.m:486 [test] invalid assignment target
+- ode/ode23s.m:492 [test] invalid assignment target
+- ode/ode23s.m:499 [test] invalid assignment target
+- ode/ode23s.m:504 [test] invalid assignment target
+- ode/ode23s.m:508 [test] invalid assignment target
+- ode/ode23s.m:512 [test] invalid assignment target
+- ode/ode23s.m:516 [test] invalid assignment target
+- ode/ode23s.m:520 [test] invalid assignment target
+- ode/ode23s.m:524 [test] invalid assignment target
+- ode/ode23s.m:550 [test] invalid assignment target
+- ode/ode45.m:403 [test] assert (cond) failed
+- ode/ode45.m:481 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (2)       0.32327536496080506        2       Abs err 1.6767246350391949 exceeds tol 0.5
+- ode/ode45.m:497 [test] assert (cond) failed
+- ode/ode45.m:510 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (2)       2.4929810584549656        2.49611       Abs err 0.0031289415450341806 exceeds tol 0.002
+- ode/ode45.m:515 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (2)       2.4929810584549656        2.49611       Abs err 0.0031289415450341806 exceeds tol 0.002
+- ode/ode45.m:553 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- ode/ode45.m:562 [error] error 'ode45: wrong type argument 'cell array'' does not match <TRANGE must be a numeric>
+- ode/ode45.m:563 [error] error 'ode45: invalid time span, TRANGE(1) == TRANGE(2)' does not match <TRANGE must be a .* vector>
+- ode/ode45.m:566 [error] error 'ode45: wrong type argument 'cell array'' does not match <INIT must be a numeric>
+- ode/ode45.m:567 [error] error 'ode45: function must return a vector of length 6 (got 2)' does not match <INIT must be a .* vector>
+- ode/ode45.m:568 [error] error 'expected a function handle or function name' does not match <FCN must be a valid function handle>
+- ode/odeget.m:88 [error] error 'odeget: ODE_OPT must be a valid ODE_OPT structure' does not match <Invalid call>
+- ode/odeget.m:91 [error] expected an error but none was raised
+- ode/odeset.m:283 [error] error 'odeset: FIELD/VALUE arguments must occur in pairs' does not match <argument 'opt1' is not a declared parameter>
+- ode/odeset.m:285 [error] error 'odeset: FIELD/VALUE arguments must occur in pairs' does not match <argument 'opt1' is not a declared parameter>
+- ode/odeset.m:287 [error] expected an error but none was raised
+- optimization/fminbnd.m:341 [shared] invalid assignment target
+- optimization/fminbnd.m:343 [assert] Invalid call to optimget
+- optimization/fminbnd.m:344 [assert] Invalid call to optimget
+- optimization/fminbnd.m:345 [assert] Invalid call to optimget
+- optimization/fminbnd.m:346 [assert] Invalid call to optimget
+- optimization/fminsearch.m:543 [assert] invalid assignment target
+- optimization/fminsearch.m:548 [test] invalid assignment target
+- optimization/fminsearch.m:554 [test] invalid assignment target
+- optimization/fminsearch.m:570 [test] invalid assignment target
+- optimization/fminsearch.m:585 [error] error 'invalid assignment target' does not match <non-real value encountered>
+- optimization/fminsearch.m:587 [error] error 'invalid assignment target' does not match <NaN value encountered>
+- optimization/fminsearch.m:589 [error] error 'invalid assignment target' does not match <Inf value encountered>
+- optimization/fminsearch.m:603 [test] expected error <Invalid call> but got <invalid assignment target>
+- optimization/fminunc.m:459 [test] 'cholupdate' undefined
+- optimization/fminunc.m:465 [test] 'cholupdate' undefined
+- optimization/fminunc.m:473 [assert] invalid assignment target
+- optimization/fminunc.m:474 [error] error 'invalid assignment target' does not match <non-real value>
+- optimization/fminunc.m:475 [error] error 'invalid assignment target' does not match <NaN value>
+- optimization/fminunc.m:476 [error] error 'invalid assignment target' does not match <Inf value>
+- optimization/fsolve.m:594 [test] assert (cond) failed
+- optimization/fsolve.m:615 [test] assert (cond) failed
+- optimization/fsolve.m:634 [test] assert (cond) failed
+- optimization/fsolve.m:653 [test] invalid assignment target
+- optimization/fsolve.m:664 [test] assert (cond) failed
+- optimization/fsolve.m:684 [test] invalid assignment target
+- optimization/fzero.m:537 [shared] invalid assignment target
+- optimization/fzero.m:539 [assert] Invalid call to optimget
+- optimization/fzero.m:540 [assert] Invalid call to optimget
+- optimization/fzero.m:546 [shared] invalid assignment target
+- optimization/fzero.m:548 [test] Invalid call to optimget
+- optimization/fzero.m:553 [test] Invalid call to optimset
+- optimization/fzero.m:572 [test] Invalid call to optimset
+- optimization/fzero.m:580 [test] Invalid call to optimset
+- optimization/fzero.m:587 [test] Invalid call to optimget
+- optimization/fzero.m:592 [test] Invalid call to optimget
+- optimization/humps.m:99 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- optimization/lsqnonneg.m:231 [test] 'qrinsert' undefined
+- optimization/lsqnonneg.m:236 [test] 'qrinsert' undefined
+- optimization/lsqnonneg.m:244 [test] 'qrinsert' undefined
+- optimization/lsqnonneg.m:252 [test] 'qrinsert' undefined
+- optimization/optimget.m:85 [shared] invalid assignment target
+- optimization/optimget.m:87 [assert] Invalid call to optimget
+- optimization/optimget.m:88 [assert] Invalid call to optimget
+- optimization/optimget.m:89 [assert] Invalid call to optimget
+- optimization/optimget.m:90 [assert] Invalid call to optimget
+- optimization/optimget.m:91 [assert] Invalid call to optimget
+- optimization/optimget.m:98 [warning] Invalid call to optimget
+- optimization/optimget.m:99 [error] error 'Invalid call to optimget' does not match <ambiguous option: 'Max'>
+- optimization/optimset.m:229 [assert] assert (cond) failed
+- optimization/optimset.m:230 [assert] invalid assignment target
+- optimization/optimset.m:231 [assert] invalid assignment target
+- optimization/optimset.m:232 [test] invalid assignment target
+- optimization/optimset.m:242 [test] invalid assignment target
+- optimization/optimset.m:249 [warning] invalid assignment target
+- optimization/optimset.m:250 [error] error 'invalid assignment target' does not match <ambiguous option: 'Max'>
+- optimization/pqpnonneg.m:235 [test] 'cholinsert' undefined
+- optimization/pqpnonneg.m:241 [test] 'cholinsert' undefined
+- optimization/pqpnonneg.m:254 [test] 'cholinsert' undefined
+- optimization/pqpnonneg.m:261 [test] 'cholinsert' undefined
+- optimization/pqpnonneg.m:268 [test] 'cholinsert' undefined
+- optimization/qp.m:478 [test] chol: input matrix must be positive definite
+- optimization/qp.m:485 [test] chol: input matrix must be positive definite
+- optimization/sqp.m:781 [test] element number 2 undefined in return list
+- path/matlabroot.m:42 [assert] 'OCTAVE_HOME' undefined
+- path/pathdef.m:100 [test] 'canonicalize_file_name' undefined
+- path/pathdef.m:119 [test] 'canonicalize_file_name' undefined
+- path/savepath.m:211 [test] 'confirm_recursive_rmdir' undefined
+- plot/appearance/annotation.m:1479 [test] get: argument must be a scalar, not empty
+- plot/appearance/annotation.m:1495 [test] get: unknown property 'children'
+- plot/appearance/annotation.m:1511 [test] get: unknown property 'children'
+- plot/appearance/annotation.m:1529 [test] get: argument must be a scalar, not empty
+- plot/appearance/annotation.m:1552 [test] set: unknown property 'units' for annotation object
+- plot/appearance/annotation.m:1569 [test] get: unknown property 'parent'
+- plot/appearance/annotation.m:1583 [error] error 'annotation: wrong type argument 'cell array'' does not match <Invalid call to annotation>
+- plot/appearance/annotation.m:1584 [error] error 'annotation: wrong type argument 'cell array'' does not match <X and Y must be 2-element vectors>
+- plot/appearance/annotation.m:1585 [error] error 'annotation: wrong type argument 'cell array'' does not match <X and Y must be 2-element vectors>
+- plot/appearance/annotation.m:1587 [error] expected an error but none was raised
+- plot/appearance/annotation.m:1588 [error] error 'annotation: X and Y must be 2-element vectors' does not match <Invalid call to annotation>
+- plot/appearance/annotation.m:1589 [error] error 'annotation: X and Y must be 2-element vectors' does not match <POS must be a 4-element vector>
+- plot/appearance/annotation.m:1590 [error] error 'annotation: X and Y must be 2-element vectors' does not match <POS must be a 4-element vector>
+- plot/appearance/annotation.m:1591 [error] error 'annotation: unknown annotation type 'foo'' does not match <unknown annotation TYPE foo>
+- plot/appearance/annotation.m:1592 [warning] expected a warning but none was issued
+- plot/appearance/annotation.m:1599 [error] error 'annotation: unknown annotation type 'foo'' does not match <unknown annotation TYPE foo>
+- plot/appearance/axis.m:607 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- plot/appearance/axis.m:621 [test] peaks: X and Y must be the same size
+- plot/appearance/axis.m:647 [error] expected an error but none was raised
+- plot/appearance/axis.m:655 [error] expected an error but none was raised
+- plot/appearance/axis.m:663 [error] error 'axis: argument must be a string' does not match <expecting no args, or a numeric vector with .* elements>
+- plot/appearance/camlookat.m:178 [test] get: unknown property 'nextplot'
+- plot/appearance/camlookat.m:189 [test] get: unknown property 'cameratarget'
+- plot/appearance/camlookat.m:215 [test] get: unknown property 'nextplot'
+- plot/appearance/camlookat.m:231 [test] get: unknown property 'dataaspectratio'
+- plot/appearance/camlookat.m:260 [test] surf: X must have length columns(Z)
+- plot/appearance/camlookat.m:284 [test] get: unknown property 'dataaspectratio'
+- plot/appearance/camlookat.m:314 [error] error 'surf: X must have length columns(Z)' does not match <children of the same axes>
+- plot/appearance/camorbit.m:202 [test] get: unknown property 'nextplot'
+- plot/appearance/camorbit.m:216 [test] get: unknown property 'nextplot'
+- plot/appearance/camorbit.m:232 [test] get: unknown property 'nextplot'
+- plot/appearance/camorbit.m:248 [test] get: unknown property 'nextplot'
+- plot/appearance/camorbit.m:268 [test] get: unknown property 'tag'
+- plot/appearance/campos.m:129 [test] delete: argument must be a string
+- plot/appearance/campos.m:145 [test] delete: argument must be a string
+- plot/appearance/campos.m:165 [test] delete: argument must be a string
+- plot/appearance/campos.m:185 [error] error 'delete: argument must be a string' does not match <invalid value>
+- plot/appearance/camroll.m:113 [test] get: unknown property 'nextplot'
+- plot/appearance/camroll.m:126 [test] get: argument must be a scalar, not empty
+- plot/appearance/camroll.m:153 [test] get: unknown property 'tag'
+- plot/appearance/camtarget.m:141 [test] delete: argument must be a string
+- plot/appearance/camtarget.m:156 [test] delete: argument must be a string
+- plot/appearance/camtarget.m:176 [test] delete: argument must be a string
+- plot/appearance/camtarget.m:196 [error] error 'delete: argument must be a string' does not match <invalid value>
+- plot/appearance/camup.m:137 [test] get: unknown property 'nextplot'
+- plot/appearance/camup.m:152 [test] get: unknown property 'nextplot'
+- plot/appearance/camup.m:172 [test] get: unknown property 'nextplot'
+- plot/appearance/camup.m:192 [error] error 'delete: argument must be a string' does not match <invalid value>
+- plot/appearance/camva.m:120 [test] get: unknown property 'nextplot'
+- plot/appearance/camva.m:135 [test] get: unknown property 'nextplot'
+- plot/appearance/camva.m:155 [test] get: unknown property 'nextplot'
+- plot/appearance/camva.m:175 [error] error 'delete: argument must be a string' does not match <invalid value>
+- plot/appearance/camzoom.m:100 [test] get: unknown property 'nextplot'
+- plot/appearance/camzoom.m:114 [test] get: unknown property 'nextplot'
+- plot/appearance/camzoom.m:129 [test] set: unknown property 'cameraposition' for axes object
+- plot/appearance/camzoom.m:147 [test] get: unknown property 'tag'
+- plot/appearance/clim.m:104 [test] set: unknown property 'clim' for axes object
+- plot/appearance/datetick.m:101 [test] get: argument must be a scalar, not empty
+- plot/appearance/grid.m:205 [test] get: argument must be a scalar, not empty
+- plot/appearance/grid.m:264 [test] get: argument must be a scalar, not empty
+- plot/appearance/legend.m:2183 [test] get: argument must be a scalar, not empty
+- plot/appearance/legend.m:2197 [test] get: argument must be a scalar, not empty
+- plot/appearance/legend.m:2212 [test] get: argument must be a scalar, not empty
+- plot/appearance/legend.m:2227 [test] get: argument must be a scalar, not empty
+- plot/appearance/legend.m:2242 [test] get: argument must be a scalar, not empty
+- plot/appearance/lighting.m:184 [test] get: argument must be a scalar, not empty
+- plot/appearance/lighting.m:229 [error] expected an error but none was raised
+- plot/appearance/lighting.m:230 [error] error 'lighting: argument must be a string' does not match <MODE must be a string>
+- plot/appearance/lighting.m:231 [error] error 'lighting: argument must be a string' does not match <MODE must be a string>
+- plot/appearance/lighting.m:232 [error] error 'lighting: invalid lighting mode 'foo'' does not match <Invalid MODE "foo">
+- plot/appearance/lighting.m:233 [error] expected an error but none was raised
+- plot/appearance/material.m:227 [test] '__go_patch__' undefined
+- plot/appearance/material.m:301 [test] value on right hand side of assignment is undefined
+- plot/appearance/material.m:307 [test] value on right hand side of assignment is undefined
+- plot/appearance/material.m:312 [error] expected an error but none was raised
+- plot/appearance/material.m:313 [error] expected an error but none was raised
+- plot/appearance/material.m:314 [error] error 'value on right hand side of assignment is undefined' does not match <Invalid call to material>
+- plot/appearance/material.m:315 [error] error 'value on right hand side of assignment is undefined' does not match <Invalid call to material>
+- plot/appearance/material.m:316 [error] error 'value on right hand side of assignment is undefined' does not match <Invalid call to material>
+- plot/appearance/material.m:317 [error] error 'value on right hand side of assignment is undefined' does not match <Invalid call to material>
+- plot/appearance/material.m:319 [error] expected an error but none was raised
+- plot/appearance/material.m:320 [error] expected an error but none was raised
+- plot/appearance/material.m:321 [error] expected an error but none was raised
+- plot/appearance/material.m:322 [error] expected an error but none was raised
+- plot/appearance/material.m:323 [error] expected an error but none was raised
+- plot/appearance/material.m:325 [error] expected an error but none was raised
+- plot/appearance/orient.m:125 [test] parse error near line 12, column 19: unexpected 'portrait'
+- plot/appearance/orient.m:168 [error] error 'get: unknown property 'paperunits'' does not match <unknown ORIENTATION 'foobar'>
+- plot/appearance/private/__gnuplot_legend__.m:1800 [test] legend: argument must be a string
+- plot/appearance/private/__gnuplot_legend__.m:1816 [test] get: unknown property 'nextplot'
+- plot/appearance/private/__gnuplot_legend__.m:1833 [test] value on right hand side of assignment is undefined
+- plot/appearance/private/__gnuplot_legend__.m:1853 [test] value on right hand side of assignment is undefined
+- plot/appearance/rticklabels.m:171 [test] get: unknown property 'nextplot'
+- plot/appearance/rticklabels.m:210 [test] expected error <Invalid call> but got <get: unknown property 'tag'>
+- plot/appearance/rticklabels.m:222 [test] expected error <cannot set and return labels simultaneously> but got <get: unknown property 'tag'>
+- plot/appearance/rticklabels.m:237 [test] expected error <rticklabels can only be used on a polar plot> but got <get: unknown property 'tag'>
+- plot/appearance/rticks.m:119 [test] get: unknown property 'nextplot'
+- plot/appearance/rticks.m:134 [test] get: unknown property 'nextplot'
+- plot/appearance/shading.m:265 [test] get: argument must be a scalar, not empty
+- plot/appearance/shading.m:312 [error] expected an error but none was raised
+- plot/appearance/shading.m:313 [error] error 'shading: argument must be a string' does not match <MODE must be a valid string>
+- plot/appearance/shading.m:314 [error] error 'shading: argument must be a string' does not match <MODE must be a valid string>
+- plot/appearance/shading.m:315 [error] error 'shading: unknown argument 'foo'' does not match <Invalid MODE "foo">
+- plot/appearance/text.m:346 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- plot/appearance/text.m:390 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- plot/appearance/text.m:431 [test] text: invalid number of PROPERTY/VALUE arguments
+- plot/appearance/text.m:441 [test] Invalid call to text
+- plot/appearance/text.m:450 [test] text: argument must be a string
+- plot/appearance/text.m:460 [error] expected an error but none was raised
+- plot/appearance/text.m:461 [error] expected an error but none was raised
+- plot/appearance/text.m:462 [error] error 'text: invalid number of PROPERTY/VALUE arguments' does not match <Invalid call to text>
+- plot/appearance/text.m:463 [error] expected an error but none was raised
+- plot/appearance/text.m:464 [error] expected an error but none was raised
+- plot/appearance/text.m:465 [error] expected an error but none was raised
+- plot/appearance/thetaticklabels.m:163 [test] get: unknown property 'nextplot'
+- plot/appearance/thetaticklabels.m:202 [test] expected error <Invalid call> but got <get: unknown property 'tag'>
+- plot/appearance/thetaticklabels.m:214 [test] expected error <cannot set and return labels simultaneously> but got <get: unknown property 'tag'>
+- plot/appearance/thetaticklabels.m:229 [test] expected error <function can only be used on a polar plot> but got <get: unknown property 'tag'>
+- plot/appearance/thetaticks.m:123 [test] get: unknown property 'nextplot'
+- plot/appearance/thetaticks.m:138 [test] get: unknown property 'nextplot'
+- plot/appearance/title.m:86 [test] get: invalid graphics handle
+- plot/appearance/title.m:96 [test] get: invalid graphics handle
+- plot/appearance/title.m:106 [test] set: unknown property 'titlefontsizemultiplier' for axes object
+- plot/appearance/title.m:117 [test] get: invalid graphics handle
+- plot/appearance/title.m:129 [test] value on right hand side of assignment is undefined
+- plot/appearance/title.m:141 [test] value on right hand side of assignment is undefined
+- plot/appearance/view.m:124 [test] view: VIEW must be [AZ EL], 2, or 3
+- plot/appearance/view.m:140 [test] Invalid call to line
+- plot/appearance/view.m:153 [test] view: VIEW must be [AZ EL], 2, or 3
+- plot/appearance/view.m:164 [test] view: VIEW must be [AZ EL], 2, or 3
+- plot/appearance/view.m:193 [test] view: VIEW must be [AZ EL], 2, or 3
+- plot/appearance/view.m:218 [error] expected an error but none was raised
+- plot/appearance/view.m:219 [error] error 'view: VIEW must be [AZ EL], 2, or 3' does not match <cannot simultaneously get and set>
+- plot/appearance/whitebg.m:234 [test] get: unknown root property
+- plot/appearance/xlabel.m:70 [test] value on right hand side of assignment is undefined
+- plot/appearance/xlabel.m:83 [test] set: unknown property 'labelfontsizemultiplier' for axes object
+- plot/appearance/xlim.m:122 [test] indexing produces no results / value undefined
+- plot/appearance/xlim.m:135 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (2)       1.2000000000000002        1.4       Abs err 0.19999999999999973 exceeds tol 2.220446049250313E-16
+- plot/appearance/xlim.m:146 [test] expected error <unrecognized argument "foobar"> but got none
+- plot/appearance/xtickangle.m:82 [test] get: argument must be a scalar, not empty
+- plot/appearance/xtickangle.m:100 [error] error 'ishandle: wrong type argument 'cell array'' does not match <ANGLE must be .* numeric>
+- plot/appearance/xticklabels.m:145 [test] set: unknown property 'xticklabelmode' for axes object
+- plot/appearance/xticks.m:121 [test] set: unknown property 'xtickmode' for axes object
+- plot/appearance/ylabel.m:72 [test] value on right hand side of assignment is undefined
+- plot/appearance/ylabel.m:85 [test] set: unknown property 'labelfontsizemultiplier' for axes object
+- plot/appearance/ylim.m:122 [test] indexing produces no results / value undefined
+- plot/appearance/ylim.m:136 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (2)       1.2000000000000002        1.4       Abs err 0.19999999999999973 exceeds tol 2.220446049250313E-16
+- plot/appearance/ytickangle.m:82 [test] get: argument must be a scalar, not empty
+- plot/appearance/ytickangle.m:100 [error] error 'ishandle: wrong type argument 'cell array'' does not match <ANGLE must be .* numeric>
+- plot/appearance/yticklabels.m:145 [test] set: unknown property 'yticklabelmode' for axes object
+- plot/appearance/yticks.m:123 [test] set: unknown property 'ytickmode' for axes object
+- plot/appearance/zlabel.m:70 [test] get: argument must be a scalar, not empty
+- plot/appearance/zlabel.m:89 [test] set: unknown property 'labelfontsizemultiplier' for axes object
+- plot/appearance/zlim.m:122 [test] indexing produces no results / value undefined
+- plot/appearance/zlim.m:136 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (2)       1.2000000000000002        1.4       Abs err 0.19999999999999973 exceeds tol 2.220446049250313E-16
+- plot/appearance/ztickangle.m:82 [test] get: argument must be a scalar, not empty
+- plot/appearance/ztickangle.m:100 [error] error 'ishandle: wrong type argument 'cell array'' does not match <ANGLE must be .* numeric>
+- plot/appearance/zticklabels.m:145 [test] set: unknown property 'zticklabelmode' for axes object
+- plot/appearance/zticks.m:121 [test] set: unknown property 'ztickmode' for axes object
+- plot/draw/area.m:281 [error] error 'ishandle: wrong type argument 'cell array'' does not match <X and Y must be real vectors or matrices>
+- plot/draw/area.m:282 [error] error 'cellfun: C must be a cell array' does not match <X and Y must be real vectors or matrices>
+- plot/draw/area.m:283 [error] error 'cellfun: C must be a cell array' does not match <X and Y must be real vectors or matrices>
+- plot/draw/area.m:284 [error] error 'cellfun: C must be a cell array' does not match <X and Y must be real vectors or matrices>
+- plot/draw/area.m:285 [error] error 'cellfun: C must be a cell array' does not match <LVL must be a real scalar>
+- plot/draw/area.m:286 [error] error 'cellfun: C must be a cell array' does not match <LVL must be a real scalar>
+- plot/draw/bar.m:154 [test] get: argument must be a scalar, not empty
+- plot/draw/bar.m:159 [test] get: argument must be a scalar, not empty
+- plot/draw/bar.m:164 [test] get: argument must be a scalar, not empty
+- plot/draw/bar.m:169 [test] get: argument must be a scalar, not empty
+- plot/draw/bar.m:174 [test] get: argument must be a scalar, not empty
+- plot/draw/bar.m:180 [test] get: argument must be a scalar, not empty
+- plot/draw/bar.m:190 [test] get: argument must be a scalar, not empty
+- plot/draw/bar.m:196 [test] get: argument must be a scalar, not empty
+- plot/draw/bar.m:205 [test] get: argument must be a scalar, not empty
+- plot/draw/bar.m:210 [test] get: argument must be a scalar, not empty
+- plot/draw/bar.m:219 [test] get: argument must be a scalar, not empty
+- plot/draw/bar.m:224 [test] get: argument must be a scalar, not empty
+- plot/draw/bar.m:234 [test] get: argument must be a scalar, not empty
+- plot/draw/bar.m:296 [test] get: argument must be a scalar, not empty
+- plot/draw/bar.m:348 [test] get: argument must be a scalar, not empty
+- plot/draw/bar.m:372 [test] get: argument must be a scalar, not empty
+- plot/draw/bar.m:393 [test] get: argument must be a scalar, not empty
+- plot/draw/bar.m:428 [test] get: argument must be a scalar, not empty
+- plot/draw/bar.m:465 [test] get: argument must be a scalar, not empty
+- plot/draw/bar.m:506 [test] get: argument must be a scalar, not empty
+- plot/draw/bar.m:544 [test] get: argument must be a scalar, not empty
+- plot/draw/bar.m:575 [test] get: argument must be a scalar, not empty
+- plot/draw/bar.m:599 [test] get: argument must be a scalar, not empty
+- plot/draw/bar.m:640 [test] get: argument must be a scalar, not empty
+- plot/draw/bar.m:674 [test] get: argument must be a scalar, not empty
+- plot/draw/bar.m:704 [test] get: argument must be a scalar, not empty
+- plot/draw/bar.m:752 [test] get: argument must be a scalar, not empty
+- plot/draw/bar.m:788 [test] get: argument must be a scalar, not empty
+- plot/draw/bar.m:816 [test] get: argument must be a scalar, not empty
+- plot/draw/bar.m:842 [test] get: argument must be a scalar, not empty
+- plot/draw/bar.m:869 [test] get: argument must be a scalar, not empty
+- plot/draw/bar.m:899 [test] get: argument must be a scalar, not empty
+- plot/draw/bar.m:929 [test] get: argument must be a scalar, not empty
+- plot/draw/bar.m:941 [error] expected an error but none was raised
+- plot/draw/bar.m:942 [error] expected an error but none was raised
+- plot/draw/bar.m:943 [error] expected an error but none was raised
+- plot/draw/barh.m:109 [test] get: argument must be a scalar, not empty
+- plot/draw/barh.m:114 [test] get: argument must be a scalar, not empty
+- plot/draw/barh.m:119 [test] get: argument must be a scalar, not empty
+- plot/draw/barh.m:124 [test] get: argument must be a scalar, not empty
+- plot/draw/barh.m:129 [test] get: argument must be a scalar, not empty
+- plot/draw/barh.m:135 [test] get: argument must be a scalar, not empty
+- plot/draw/barh.m:145 [test] get: argument must be a scalar, not empty
+- plot/draw/barh.m:151 [test] get: argument must be a scalar, not empty
+- plot/draw/barh.m:160 [test] get: argument must be a scalar, not empty
+- plot/draw/barh.m:165 [test] get: argument must be a scalar, not empty
+- plot/draw/barh.m:174 [test] get: argument must be a scalar, not empty
+- plot/draw/barh.m:179 [test] get: argument must be a scalar, not empty
+- plot/draw/barh.m:190 [test] get: argument must be a scalar, not empty
+- plot/draw/barh.m:238 [test] get: argument must be a scalar, not empty
+- plot/draw/barh.m:257 [test] get: argument must be a scalar, not empty
+- plot/draw/barh.m:276 [test] get: argument must be a scalar, not empty
+- plot/draw/barh.m:328 [test] get: argument must be a scalar, not empty
+- plot/draw/barh.m:352 [test] get: argument must be a scalar, not empty
+- plot/draw/barh.m:373 [test] get: argument must be a scalar, not empty
+- plot/draw/barh.m:408 [test] get: argument must be a scalar, not empty
+- plot/draw/barh.m:445 [test] get: argument must be a scalar, not empty
+- plot/draw/barh.m:486 [test] get: argument must be a scalar, not empty
+- plot/draw/barh.m:524 [test] get: argument must be a scalar, not empty
+- plot/draw/barh.m:555 [test] get: argument must be a scalar, not empty
+- plot/draw/barh.m:579 [test] get: argument must be a scalar, not empty
+- plot/draw/barh.m:619 [test] get: argument must be a scalar, not empty
+- plot/draw/barh.m:653 [test] get: argument must be a scalar, not empty
+- plot/draw/barh.m:683 [test] get: argument must be a scalar, not empty
+- plot/draw/barh.m:719 [test] get: argument must be a scalar, not empty
+- plot/draw/barh.m:767 [test] get: argument must be a scalar, not empty
+- plot/draw/barh.m:795 [test] get: argument must be a scalar, not empty
+- plot/draw/barh.m:821 [test] get: argument must be a scalar, not empty
+- plot/draw/barh.m:848 [test] get: argument must be a scalar, not empty
+- plot/draw/barh.m:878 [test] get: argument must be a scalar, not empty
+- plot/draw/barh.m:908 [test] get: argument must be a scalar, not empty
+- plot/draw/barh.m:920 [error] expected an error but none was raised
+- plot/draw/barh.m:921 [error] expected an error but none was raised
+- plot/draw/barh.m:922 [error] expected an error but none was raised
+- plot/draw/camlight.m:266 [test] get: unknown property 'nextplot'
+- plot/draw/camlight.m:288 [test] get: unknown property 'nextplot'
+- plot/draw/camlight.m:306 [test] get: unknown property 'nextplot'
+- plot/draw/camlight.m:322 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- plot/draw/camlight.m:336 [error] expected an error but none was raised
+- plot/draw/camlight.m:337 [error] expected an error but none was raised
+- plot/draw/camlight.m:338 [error] error 'camlight: wrong type argument 'cell array'' does not match <Invalid call>
+- plot/draw/camlight.m:339 [error] expected an error but none was raised
+- plot/draw/camlight.m:340 [error] error 'camlight: invalid argument 'foobar'' does not match <invalid light position 'foobar'>
+- plot/draw/camlight.m:341 [error] error 'camlight: invalid argument 'foobar'' does not match <invalid light position 'foobar'>
+- plot/draw/colorbar.m:1000 [test] 'lasterror' undefined
+- plot/draw/colorbar.m:1014 [error] expected an error but none was raised
+- plot/draw/colorbar.m:1015 [error] expected an error but none was raised
+- plot/draw/colorbar.m:1016 [error] expected an error but none was raised
+- plot/draw/colorbar.m:1017 [error] expected an error but none was raised
+- plot/draw/colorbar.m:1018 [error] expected an error but none was raised
+- plot/draw/colorbar.m:1019 [error] expected an error but none was raised
+- plot/draw/colorbar.m:1020 [error] expected an error but none was raised
+- plot/draw/contour.m:112 [test] set: unknown property 'levellist' for contour object
+- plot/draw/contour.m:126 [test] set: unknown property 'levelstep' for contour object
+- plot/draw/contourc.m:169 [test] '__contourc__' undefined
+- plot/draw/contourc.m:182 [error] error 'contourc: wrong type argument 'cell array'' does not match <X, Y, and Z must be .* numeric>
+- plot/draw/contourc.m:183 [error] error 'contourc: wrong type argument 'cell array'' does not match <X, Y, and Z must be .* numeric>
+- plot/draw/contourc.m:184 [error] error 'contourc: wrong type argument 'cell array'' does not match <X, Y, and Z must be .* numeric>
+- plot/draw/contourc.m:185 [error] expected an error but none was raised
+- plot/draw/contourc.m:186 [error] error 'contourc: Z must be a 2-D matrix of at least 2x2' does not match <X, Y, and Z must be .* matrices>
+- plot/draw/contourc.m:187 [error] error 'contourc: Z must be a 2-D matrix of at least 2x2' does not match <X, Y, and Z must be .* matrices>
+- plot/draw/contourc.m:188 [error] error 'contourc: Z must be a 2-D matrix of at least 2x2' does not match <X, Y, and Z must be real>
+- plot/draw/contourc.m:189 [error] error 'contourc: Z must be a 2-D matrix of at least 2x2' does not match <X, Y, and Z must be real>
+- plot/draw/contourc.m:190 [error] error 'contourc: Z must be a 2-D matrix of at least 2x2' does not match <X, Y, and Z must be real>
+- plot/draw/contourc.m:191 [error] error 'contourc: Z must be a 2-D matrix of at least 2x2' does not match <Z data must have at least 2 rows>
+- plot/draw/contourc.m:192 [error] error 'contourc: Z must be a 2-D matrix of at least 2x2' does not match <Z data must have at least .* 2 columns>
+- plot/draw/ellipsoid.m:99 [test] get: unknown property 'tag'
+- plot/draw/errorbar.m:238 [shared] get: argument must be a scalar, not empty
+- plot/draw/errorbar.m:244 [error] error 'errorbar: wrong type argument 'cell array'' does not match <data argument 1 must be numeric>
+- plot/draw/errorbar.m:245 [error] error 'errorbar: wrong type argument 'cell array'' does not match <data argument 2 must be numeric>
+- plot/draw/errorbar.m:246 [error] error 'errorbar: X, Y, and error arrays must have the same size' does not match <size of argument 2 does not match others>
+- plot/draw/errorbar.m:247 [error] error 'errorbar: X, Y, and error arrays must have the same size' does not match <size of argument 3 does not match others>
+- plot/draw/errorbar.m:248 [error] error 'Invalid call to errorbar' does not match <too many arguments to plot>
+- plot/draw/errorbar.m:250 [error] expected an error but none was raised
+- plot/draw/errorbar.m:251 [error] error 'Invalid call to errorbar' does not match <6 columns only valid for xyerr and boxxy>
+- plot/draw/errorbar.m:252 [error] error 'Invalid call to errorbar' does not match <error plot requires 2, 3, 4, or 6 arguments>
+- plot/draw/ezplot.m:118 [test] ishandle: wrong type argument 'function_handle'
+- plot/draw/fplot.m:271 [test] '__inline_ctor__' undefined
+- plot/draw/fplot.m:278 [test] ishandle: wrong type argument 'function_handle'
+- plot/draw/fplot.m:286 [test] ishandle: wrong type argument 'function_handle'
+- plot/draw/fplot.m:294 [test] ishandle: wrong type argument 'function_handle'
+- plot/draw/fplot.m:305 [test] ishandle: wrong type argument 'function_handle'
+- plot/draw/fplot.m:320 [error] error 'ishandle: wrong type argument 'function_handle'' does not match <LIMITS must be a real vector>
+- plot/draw/fplot.m:321 [error] error 'ishandle: wrong type argument 'function_handle'' does not match <LIMITS must be a real vector with 2 or 4>
+- plot/draw/fplot.m:322 [error] error 'ishandle: wrong type argument 'function_handle'' does not match <LIMITS must be a real vector with 2 or 4>
+- plot/draw/fplot.m:323 [error] error 'ishandle: wrong type argument 'function_handle'' does not match <bad input in position 2>
+- plot/draw/fplot.m:324 [error] error 'ishandle: wrong type argument 'function_handle'' does not match <bad input in position 3>
+- plot/draw/fplot.m:325 [warning] ishandle: wrong type argument 'function_handle'
+- plot/draw/fplot.m:328 [error] error 'ishandle: wrong type argument 'function_handle'' does not match <invalid function FCN>
+- plot/draw/hist.m:274 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- plot/draw/hist.m:278 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- plot/draw/hist.m:290 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- plot/draw/hist.m:303 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- plot/draw/hist.m:307 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- plot/draw/hist.m:312 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- plot/draw/hist.m:349 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- plot/draw/hist.m:352 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- plot/draw/hist.m:361 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       2.933333333333333        2.933333396911621       Abs err 6.35782879676583E-08 exceeds tol 4.440892098500626E-16
+- plot/draw/hist.m:379 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- plot/draw/hist.m:402 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- plot/draw/hist.m:409 [test] assert (cond) failed
+- plot/draw/hist.m:434 [test] get: argument must be a scalar, not empty
+- plot/draw/hist.m:446 [test] get: argument must be a scalar, not empty
+- plot/draw/hist.m:461 [error] expected an error but none was raised
+- plot/draw/hist.m:462 [error] error 'hist: wrong type argument 'cell array'' does not match <bin specification must be a numeric>
+- plot/draw/hist.m:464 [test] value on right hand side of assignment is undefined
+- plot/draw/hist.m:472 [error] expected an error but none was raised
+- plot/draw/hist.m:473 [error] error 'hist: wrong type argument 'cell array'' does not match <NORM must be a numeric constant>
+- plot/draw/hist.m:474 [error] expected an error but none was raised
+- plot/draw/hist.m:475 [error] expected an error but none was raised
+- plot/draw/isocaps.m:439 [test] index (_,_,2): out of bound; value 2 out of bound 1
+- plot/draw/isocaps.m:447 [test] index (_,_,2): out of bound; value 2 out of bound 1
+- plot/draw/isocaps.m:454 [test] parse error near line 38, column 21: expected ')' but found '_000'
+- plot/draw/isocaps.m:463 [test] parse error near line 38, column 21: expected ')' but found '_000'
+- plot/draw/isocaps.m:470 [test] index (_,_,2): out of bound; value 2 out of bound 1
+- plot/draw/isocaps.m:476 [test] index (_,_,2): out of bound; value 2 out of bound 1
+- plot/draw/isocaps.m:484 [test] index (_,_,2): out of bound; value 2 out of bound 1
+- plot/draw/isocaps.m:491 [test] index (3): out of bound 2 (dimensions are 1x2)
+- plot/draw/isocaps.m:498 [test] index (3): out of bound 2 (dimensions are 1x2)
+- plot/draw/isocaps.m:505 [test] index (_,_,2): out of bound; value 2 out of bound 1
+- plot/draw/isocaps.m:513 [test] index (_,_,2): out of bound; value 2 out of bound 1
+- plot/draw/isocaps.m:521 [test] index (_,_,2): out of bound; value 2 out of bound 1
+- plot/draw/isocaps.m:529 [test] index (_,_,2): out of bound; value 2 out of bound 1
+- plot/draw/isocaps.m:538 [test] index (_,_,4): out of bound; value 4 out of bound 1
+- plot/draw/isocaps.m:561 [error] error 'isocaps: X must match the size of V' does not match <Y must match the size of V>
+- plot/draw/isocaps.m:564 [error] error 'isocaps: X must match the size of V' does not match <Z must match the size of V>
+- plot/draw/isocolors.m:180 [test] isosurface: X must match the size of V
+- plot/draw/isocolors.m:193 [error] error 'ishandle: wrong type argument 'cell array'' does not match <last argument must be a vertex list>
+- plot/draw/isonormals.m:173 [shared] isosurface: X must match the size of V
+- plot/draw/isonormals.m:178 [test] isonormals: input must be a list of vertices or a patch handle
+- plot/draw/isonormals.m:182 [test] isonormals: input must be a list of vertices or a patch handle
+- plot/draw/isonormals.m:187 [test] isosurface: X must match the size of V
+- plot/draw/isonormals.m:202 [error] error 'ishandle: wrong type argument 'cell array'' does not match <must be a list of vertices>
+- plot/draw/isonormals.m:206 [error] error 'isonormals: input must be a list of vertices or a patch handle' does not match <X, Y, Z have unequal dimensions>
+- plot/draw/isonormals.m:207 [error] error 'isonormals: input must be a list of vertices or a patch handle' does not match <X, Y, Z have unequal dimensions>
+- plot/draw/isonormals.m:208 [error] error 'isonormals: input must be a list of vertices or a patch handle' does not match <X, Y, Z have unequal dimensions>
+- plot/draw/isonormals.m:209 [error] error 'isonormals: input must be a list of vertices or a patch handle' does not match <X, Y, Z have unequal dimensions>
+- plot/draw/isonormals.m:210 [error] error 'isonormals: input must be a list of vertices or a patch handle' does not match <X, Y, Z have unequal dimensions>
+- plot/draw/isonormals.m:211 [error] error 'isonormals: input must be a list of vertices or a patch handle' does not match <VAL dimensions must match those of X, Y, and Z>
+- plot/draw/isosurface.m:451 [test] isosurface: X must match the size of V
+- plot/draw/isosurface.m:459 [test] isosurface: X must match the size of V
+- plot/draw/isosurface.m:467 [test] isosurface: X must match the size of V
+- plot/draw/isosurface.m:477 [test] isosurface: X must match the size of V
+- plot/draw/isosurface.m:487 [test] parse error near line 38, column 21: expected ')' but found '_000'
+- plot/draw/isosurface.m:495 [test] isosurface: X must match the size of V
+- plot/draw/isosurface.m:503 [test] isosurface: X must match the size of V
+- plot/draw/isosurface.m:513 [test] isosurface: X must match the size of V
+- plot/draw/isosurface.m:523 [test] __marching_cube__: XX, YY, ZZ, v must be 3-D matrices
+- plot/draw/isosurface.m:529 [test] isosurface: COL must match the size of V
+- plot/draw/isosurface.m:536 [test] isosurface: X must match the size of V
+- plot/draw/isosurface.m:544 [test] isosurface: X must match the size of V
+- plot/draw/isosurface.m:554 [test] isosurface: X must match the size of V
+- plot/draw/isosurface.m:578 [error] error 'isosurface: X must match the size of V' does not match <Y must match the size of V>
+- plot/draw/isosurface.m:581 [error] error 'isosurface: X must match the size of V' does not match <Z must match the size of V>
+- plot/draw/isosurface.m:596 [error] error 'isosurface: X must match the size of V' does not match <ISOVAL must be a scalar>
+- plot/draw/isosurface.m:597 [error] error 'isosurface: X must match the size of V' does not match <COL must match the size of V>
+- plot/draw/isosurface.m:598 [error] error 'isosurface: X must match the size of V' does not match <COL must be passed to return C>
+- plot/draw/isosurface.m:599 [warning] isosurface: X must match the size of V
+- plot/draw/light.m:581 [test] get: unknown property 'children'
+- plot/draw/light.m:593 [test] light: invalid number of PROPERTY/VALUE arguments
+- plot/draw/lightangle.m:146 [test] get: unknown property 'nextplot'
+- plot/draw/line.m:123 [test] Invalid call to line
+- plot/draw/loglog.m:103 [test] get: unknown property 'ytick'
+- plot/draw/ostreamtube.m:368 [error] error 'ostreamtube: SCALE must be a real scalar > 0' does not match <N must be greater than 2>
+- plot/draw/patch.m:275 [test] '__go_patch__' undefined
+- plot/draw/patch.m:306 [test] '__go_patch__' undefined
+- plot/draw/polar.m:465 [test] get: unknown property 'tag'
+- plot/draw/polar.m:485 [test] get: unknown property 'tag'
+- plot/draw/polar.m:502 [test] get: unknown property 'tag'
+- plot/draw/polar.m:530 [test] get: unknown property 'tag'
+- plot/draw/polar.m:546 [test] get: unknown property 'tag'
+- plot/draw/polar.m:617 [test] get: unknown property 'tag'
+- plot/draw/polar.m:646 [test] get: unknown property 'tag'
+- plot/draw/polar.m:659 [test] get: unknown property 'tag'
+- plot/draw/polar.m:689 [test] expected error <FMT argument must be a string> but got <get: unknown property 'tag'>
+- plot/draw/private/__calc_isovalue_from_data__.m:67 [assert] '__calc_isovalue_from_data__' undefined
+- plot/draw/quiver.m:132 [test] get: unknown property 'tag'
+- plot/draw/quiver.m:181 [test] get: unknown property 'tag'
+- plot/draw/quiver.m:237 [test] get: unknown property 'tag'
+- plot/draw/quiver.m:270 [test] get: unknown property 'tag'
+- plot/draw/quiver.m:321 [test] get: unknown property 'tag'
+- plot/draw/quiver.m:355 [test] get: unknown property 'tag'
+- plot/draw/quiver.m:414 [test] get: unknown property 'tag'
+- plot/draw/quiver.m:445 [test] get: unknown property 'tag'
+- plot/draw/quiver.m:480 [test] get: unknown property 'tag'
+- plot/draw/quiver.m:508 [test] get: unknown property 'tag'
+- plot/draw/quiver.m:540 [test] get: unknown property 'nextplot'
+- plot/draw/quiver3.m:129 [test] get: unknown property 'tag'
+- plot/draw/quiver3.m:184 [test] get: unknown property 'tag'
+- plot/draw/reducepatch.m:373 [shared] isosurface: X must match the size of V
+- plot/draw/reducepatch.m:381 [test] reducepatch: If first argument is a matrix containing FACES, second argument must be a matrix containing VERTICES
+- plot/draw/reducepatch.m:388 [test] reducepatch: VERTICES must be an Mx3 matrix
+- plot/draw/reducepatch.m:395 [test] reducepatch: VERTICES must be an Mx3 matrix
+- plot/draw/reducepatch.m:402 [test] reducepatch: VERTICES must be an Mx3 matrix
+- plot/draw/reducepatch.m:410 [test] Invalid call to __patch__
+- plot/draw/reducepatch.m:421 [test] reducepatch: VERTICES must be an Mx3 matrix
+- plot/draw/reducepatch.m:428 [test] reducepatch: VERTICES must be an Mx3 matrix
+- plot/draw/reducepatch.m:435 [test] reducepatch: If first argument is a matrix containing FACES, second argument must be a matrix containing VERTICES
+- plot/draw/reducepatch.m:451 [error] error 'reducepatch: VERTICES must be an Mx3 matrix' does not match <REDUCTION_FACTOR must be a positive scalar>
+- plot/draw/reducepatch.m:452 [error] error 'reducepatch: VERTICES must be an Mx3 matrix' does not match <REDUCTION_FACTOR must be a positive scalar>
+- plot/draw/reducepatch.m:454 [error] error 'reducepatch: VERTICES must be an Mx3 matrix' does not match <reducepatch: Currently patches must consist of triangles only>
+- plot/draw/reducepatch.m:459 [error] error 'reducepatch: VERTICES must be an Mx3 matrix' does not match <reducepatch: not enough VERTICES for given FACES>
+- plot/draw/reducevolume.m:210 [test] reducevolume: X must match the size of data V
+- plot/draw/reducevolume.m:228 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- plot/draw/reducevolume.m:240 [test] reducevolume: X must match the size of data V
+- plot/draw/reducevolume.m:252 [test] reducevolume: X must match the size of data V
+- plot/draw/reducevolume.m:281 [error] error 'reducevolume: data must be a non-singleton 3-dimensional matrix' does not match <X must match the size of data V>
+- plot/draw/reducevolume.m:284 [error] error 'reducevolume: data must be a non-singleton 3-dimensional matrix' does not match <Y must match the size of data V>
+- plot/draw/reducevolume.m:287 [error] error 'reducevolume: data must be a non-singleton 3-dimensional matrix' does not match <Z must match the size of data V>
+- plot/draw/reducevolume.m:290 [error] error 'reducevolume: data must be a non-singleton 3-dimensional matrix' does not match <reduction value R is too high>
+- plot/draw/reducevolume.m:291 [error] error 'reducevolume: data must be a non-singleton 3-dimensional matrix' does not match <reduction value R is too high>
+- plot/draw/semilogx.m:116 [test] get: unknown property 'xtick'
+- plot/draw/semilogy.m:116 [test] get: unknown property 'ytick'
+- plot/draw/shrinkfaces.m:222 [shared] ishandle: wrong type argument 'struct'
+- plot/draw/shrinkfaces.m:231 [assert] matrix cannot be indexed with .
+- plot/draw/shrinkfaces.m:237 [error] error 'ishandle: wrong type argument 'struct'' does not match <scale factor must be a positive scalar>
+- plot/draw/shrinkfaces.m:238 [error] error 'ishandle: wrong type argument 'struct'' does not match <scale factor must be a positive scalar>
+- plot/draw/smooth3.m:187 [test] 'convn' undefined
+- plot/draw/smooth3.m:193 [test] 'convn' undefined
+- plot/draw/smooth3.m:205 [test] 'convn' undefined
+- plot/draw/smooth3.m:211 [test] 'convn' undefined
+- plot/draw/smooth3.m:217 [test] 'convn' undefined
+- plot/draw/smooth3.m:223 [test] 'convn' undefined
+- plot/draw/smooth3.m:229 [test] 'convn' undefined
+- plot/draw/smooth3.m:235 [test] 'convn' undefined
+- plot/draw/smooth3.m:241 [test] 'convn' undefined
+- plot/draw/smooth3.m:247 [test] 'convn' undefined
+- plot/draw/smooth3.m:254 [test] 'convn' undefined
+- plot/draw/smooth3.m:268 [error] error 'smooth3: SZ of the convolution kernel must consist of positive odd integers' does not match <STD_DEV must be a real>
+- plot/draw/smooth3.m:269 [error] error 'smooth3: SZ of the convolution kernel must consist of positive odd integers' does not match <STD_DEV .* must be .* 3-element>
+- plot/draw/stairs.m:319 [shared] get: argument must be a scalar, not empty
+- plot/draw/stairs.m:324 [error] error 'get: unknown property 'nextplot'' does not match <Y must be a numeric 2-D vector>
+- plot/draw/stairs.m:325 [error] error 'get: unknown property 'nextplot'' does not match <Y must be a numeric 2-D vector>
+- plot/draw/stairs.m:326 [error] error 'ishandle: wrong type argument 'cell array'' does not match <X and Y must be numeric 2-D vector>
+- plot/draw/stairs.m:327 [error] error 'get: unknown property 'nextplot'' does not match <X and Y must be numeric 2-D vector>
+- plot/draw/stairs.m:328 [error] error 'get: unknown property 'nextplot'' does not match <X and Y must be numeric 2-D vector>
+- plot/draw/stairs.m:329 [error] error 'get: unknown property 'nextplot'' does not match <X and Y must be numeric 2-D vector>
+- plot/draw/stairs.m:330 [error] error 'get: unknown property 'nextplot'' does not match <X and Y sizes must match>
+- plot/draw/stem.m:212 [test] 'nargin' undefined
+- plot/draw/stem.m:229 [error] error ''nargin' undefined' does not match <can not define Z for 2-D stem plot>
+- plot/draw/stem.m:230 [error] error ''nargin' undefined' does not match <Y must be a vector or 2-D array>
+- plot/draw/stem.m:231 [error] error 'ishandle: wrong type argument 'cell array'' does not match <X and Y must be numeric>
+- plot/draw/stem.m:232 [error] error ''nargin' undefined' does not match <X and Y must be numeric>
+- plot/draw/stem.m:233 [error] error ''nargin' undefined' does not match <inconsistent sizes for X and Y>
+- plot/draw/stem.m:234 [error] error ''nargin' undefined' does not match <inconsistent sizes for X and Y>
+- plot/draw/stem.m:235 [error] error ''nargin' undefined' does not match <inconsistent sizes for X and Y>
+- plot/draw/stem.m:236 [error] error ''nargin' undefined' does not match <No value specified for property "FOO">
+- plot/draw/stem3.m:94 [error] error ''nargin' undefined' does not match <must define X, Y, and Z>
+- plot/draw/stem3.m:95 [error] error 'ishandle: wrong type argument 'cell array'' does not match <X, Y, and Z must be numeric>
+- plot/draw/stem3.m:96 [error] error ''nargin' undefined' does not match <X, Y, and Z must be numeric>
+- plot/draw/stem3.m:97 [error] error ''nargin' undefined' does not match <X, Y, and Z must be numeric>
+- plot/draw/stem3.m:98 [error] error ''nargin' undefined' does not match <inconsistent sizes for X, Y, and Z>
+- plot/draw/stem3.m:99 [error] error ''nargin' undefined' does not match <inconsistent sizes for X, Y, and Z>
+- plot/draw/stem3.m:100 [error] error ''nargin' undefined' does not match <inconsistent sizes for X, Y, and Z>
+- plot/draw/stem3.m:101 [error] error ''nargin' undefined' does not match <No value specified for property "FOO">
+- plot/draw/stemleaf.m:339 [test] vertical dimensions mismatch (1x31 vs 1x1)
+- plot/draw/stemleaf.m:386 [test] vertical dimensions mismatch (1x36 vs 1x1)
+- plot/draw/stemleaf.m:414 [test] vertical dimensions mismatch (1x36 vs 1x1)
+- plot/draw/stemleaf.m:443 [test] vertical dimensions mismatch (1x35 vs 1x1)
+- plot/draw/stemleaf.m:471 [test] vertical dimensions mismatch (1x35 vs 1x1)
+- plot/draw/stemleaf.m:500 [test] vertical dimensions mismatch (1x35 vs 1x1)
+- plot/draw/stemleaf.m:524 [test] vertical dimensions mismatch (1x37 vs 1x1)
+- plot/draw/stemleaf.m:548 [test] vertical dimensions mismatch (1x39 vs 1x1)
+- plot/draw/stemleaf.m:591 [warning] vertical dimensions mismatch (1x13 vs 1x1)
+- plot/draw/stream2.m:203 [test] parse error near line 102, column 24: unexpected '_000'
+- plot/draw/stream2.m:208 [error] error 'parse error near line 102, column 24: unexpected '_000'' does not match <Invalid call>
+- plot/draw/stream2.m:209 [error] error 'parse error near line 102, column 24: unexpected '_000'' does not match <Invalid call>
+- plot/draw/stream2.m:210 [error] error 'parse error near line 102, column 24: unexpected '_000'' does not match <Invalid call>
+- plot/draw/stream2.m:211 [error] error 'parse error near line 102, column 24: unexpected '_000'' does not match <Invalid call>
+- plot/draw/stream2.m:212 [error] error 'parse error near line 102, column 24: unexpected '_000'' does not match <OPTIONS must be a 1- or 2-element>
+- plot/draw/stream2.m:213 [error] error 'parse error near line 102, column 24: unexpected '_000'' does not match <STEPSIZE must be a real scalar != 0>
+- plot/draw/stream2.m:214 [error] error 'parse error near line 102, column 24: unexpected '_000'' does not match <STEPSIZE must be a real scalar != 0>
+- plot/draw/stream2.m:215 [error] error 'parse error near line 102, column 24: unexpected '_000'' does not match <MAX_VERTICES must be an integer>
+- plot/draw/stream2.m:216 [error] error 'parse error near line 102, column 24: unexpected '_000'' does not match <MAX_VERTICES must be an integer>
+- plot/draw/stream2.m:217 [error] error 'parse error near line 102, column 24: unexpected '_000'' does not match <matrix dimensions must match>
+- plot/draw/stream2.m:218 [error] error 'parse error near line 102, column 24: unexpected '_000'' does not match <matrix dimensions must match>
+- plot/draw/stream2.m:219 [error] error 'parse error near line 102, column 24: unexpected '_000'' does not match <matrix dimensions must match>
+- plot/draw/stream2.m:220 [error] error 'parse error near line 102, column 24: unexpected '_000'' does not match <matrix dimensions must match>
+- plot/draw/stream2.m:221 [error] error 'parse error near line 102, column 24: unexpected '_000'' does not match <all inputs must be real-valued>
+- plot/draw/stream2.m:222 [error] error 'parse error near line 102, column 24: unexpected '_000'' does not match <all inputs must be real-valued>
+- plot/draw/stream2.m:223 [error] error 'parse error near line 102, column 24: unexpected '_000'' does not match <all inputs must be real-valued>
+- plot/draw/stream2.m:224 [error] error 'parse error near line 102, column 24: unexpected '_000'' does not match <all inputs must be real-valued>
+- plot/draw/stream2.m:225 [error] error 'parse error near line 102, column 24: unexpected '_000'' does not match <non-monotonically increasing or NaN values found in mesh>
+- plot/draw/stream2.m:227 [error] error 'parse error near line 102, column 24: unexpected '_000'' does not match <non-monotonically increasing or NaN values found in mesh>
+- plot/draw/stream3.m:226 [test] parse error near line 103, column 24: unexpected '_000'
+- plot/draw/stream3.m:232 [error] error 'parse error near line 103, column 24: unexpected '_000'' does not match <Invalid call>
+- plot/draw/stream3.m:233 [error] error 'parse error near line 103, column 24: unexpected '_000'' does not match <Invalid call>
+- plot/draw/stream3.m:234 [error] error 'parse error near line 103, column 24: unexpected '_000'' does not match <Invalid call>
+- plot/draw/stream3.m:235 [error] error 'parse error near line 103, column 24: unexpected '_000'' does not match <Invalid call>
+- plot/draw/stream3.m:236 [error] error 'parse error near line 103, column 24: unexpected '_000'' does not match <Invalid call>
+- plot/draw/stream3.m:237 [error] error 'parse error near line 103, column 24: unexpected '_000'' does not match <Invalid call>
+- plot/draw/stream3.m:238 [error] error 'parse error near line 103, column 24: unexpected '_000'' does not match <Invalid call>
+- plot/draw/stream3.m:239 [error] error 'parse error near line 103, column 24: unexpected '_000'' does not match <OPTIONS must be a 1- or 2-element>
+- plot/draw/stream3.m:240 [error] error 'parse error near line 103, column 24: unexpected '_000'' does not match <STEPSIZE must be a real scalar != 0>
+- plot/draw/stream3.m:241 [error] error 'parse error near line 103, column 24: unexpected '_000'' does not match <STEPSIZE must be a real scalar != 0>
+- plot/draw/stream3.m:242 [error] error 'parse error near line 103, column 24: unexpected '_000'' does not match <MAX_VERTICES must be an integer>
+- plot/draw/stream3.m:243 [error] error 'parse error near line 103, column 24: unexpected '_000'' does not match <MAX_VERTICES must be an integer>
+- plot/draw/stream3.m:244 [error] error 'parse error near line 103, column 24: unexpected '_000'' does not match <matrix dimensions must match>
+- plot/draw/stream3.m:245 [error] error 'parse error near line 103, column 24: unexpected '_000'' does not match <matrix dimensions must match>
+- plot/draw/stream3.m:246 [error] error 'parse error near line 103, column 24: unexpected '_000'' does not match <matrix dimensions must match>
+- plot/draw/stream3.m:247 [error] error 'parse error near line 103, column 24: unexpected '_000'' does not match <matrix dimensions must match>
+- plot/draw/stream3.m:248 [error] error 'parse error near line 103, column 24: unexpected '_000'' does not match <matrix dimensions must match>
+- plot/draw/stream3.m:249 [error] error 'parse error near line 103, column 24: unexpected '_000'' does not match <matrix dimensions must match>
+- plot/draw/stream3.m:250 [error] error 'parse error near line 103, column 24: unexpected '_000'' does not match <all inputs must be real-valued>
+- plot/draw/stream3.m:251 [error] error 'parse error near line 103, column 24: unexpected '_000'' does not match <all inputs must be real-valued>
+- plot/draw/stream3.m:252 [error] error 'parse error near line 103, column 24: unexpected '_000'' does not match <all inputs must be real-valued>
+- plot/draw/stream3.m:253 [error] error 'parse error near line 103, column 24: unexpected '_000'' does not match <all inputs must be real-valued>
+- plot/draw/stream3.m:254 [error] error 'parse error near line 103, column 24: unexpected '_000'' does not match <all inputs must be real-valued>
+- plot/draw/stream3.m:255 [error] error 'parse error near line 103, column 24: unexpected '_000'' does not match <all inputs must be real-valued>
+- plot/draw/stream3.m:256 [error] error 'parse error near line 103, column 24: unexpected '_000'' does not match <non-monotonically increasing or NaN values found in mesh>
+- plot/draw/stream3.m:258 [error] error 'parse error near line 103, column 24: unexpected '_000'' does not match <non-monotonically increasing or NaN values found in mesh>
+- plot/draw/streamline.m:171 [error] error 'get: argument must be a scalar, not empty' does not match <Invalid call to streamline>
+- plot/draw/streamribbon.m:443 [error] error 'ishandle: wrong type argument 'cell array'' does not match <ANLR_ROT must have same length as XYZ>
+- plot/draw/streamtube.m:378 [error] error 'streamtube: SCALE must be a real scalar > 0' does not match <N must be greater than 2>
+- plot/draw/streamtube.m:380 [error] error 'ishandle: wrong type argument 'cell array'' does not match <DIA must have same length then XYZ>
+- plot/draw/surface.m:206 [test] cellfun: C must be a cell array
+- plot/draw/xline.m:717 [test] get: unknown property 'tag'
+- plot/draw/xline.m:728 [test] get: unknown property 'tag'
+- plot/draw/xline.m:741 [test] get: unknown property 'tag'
+- plot/draw/xline.m:753 [test] get: unknown property 'tag'
+- plot/draw/xline.m:775 [test] get: unknown property 'tag'
+- plot/draw/yline.m:678 [test] get: unknown property 'tag'
+- plot/draw/yline.m:689 [test] get: unknown property 'tag'
+- plot/draw/yline.m:702 [test] get: unknown property 'tag'
+- plot/draw/yline.m:714 [test] get: unknown property 'tag'
+- plot/draw/yline.m:736 [test] get: unknown property 'tag'
+- plot/util/__next_line_color__.m:72 [test] get: argument must be a scalar, not empty
+- plot/util/__next_line_style__.m:69 [test] get: argument must be a scalar, not empty
+- plot/util/__pltopt__.m:283 [test] abc: unrecognized format character: 'l'
+- plot/util/__pltopt__.m:299 [test] __do_errplot__: unrecognized format character: '~'
+- plot/util/ancestor.m:91 [test] Invalid call to line
+- plot/util/ancestor.m:101 [test] get: unknown property 'tag'
+- plot/util/axes.m:249 [test] get: argument must be a scalar, not empty
+- plot/util/axes.m:321 [error] error 'get: argument must be a scalar, not empty' does not match <H must be a scalar handle>
+- plot/util/axes.m:322 [error] error 'get: argument must be a scalar, not empty' does not match <H must be a handle to an axes or container>
+- plot/util/cla.m:94 [test] plot: vector lengths must match
+- plot/util/clf.m:119 [test] Invalid call to line
+- plot/util/clf.m:139 [test] set: unknown property 'papertype' for figure object
+- plot/util/close.m:171 [test] figure: unknown property 'closerequestfcn' for figure object
+- plot/util/close.m:186 [error] error 'close: wrong type argument 'cell array'' does not match <first argument must be "all", a figure handle>
+- plot/util/close.m:188 [error] expected an error but none was raised
+- plot/util/close.m:189 [error] expected an error but none was raised
+- plot/util/colstyle.m:78 [test] r
+- plot/util/copyobj.m:228 [test] get: argument must be a scalar, not empty
+- plot/util/figure.m:130 [test] get: unknown property 'visible'
+- plot/util/figure.m:144 [error] error 'figure: N must be a positive integer' does not match <N must be figure handle or figure number>
+- plot/util/figure.m:145 [error] expected an error but none was raised
+- plot/util/findall.m:58 [test] '__go_uitoolbar__' undefined
+- plot/util/findobj.m:315 [test] '__get__' undefined
+- plot/util/findobj.m:324 [test] set: unknown property 'tag' for line object
+- plot/util/findobj.m:335 [test] Invalid call to line
+- plot/util/findobj.m:348 [test] get: unknown property 'children'
+- plot/util/findobj.m:368 [test] '__get__' undefined
+- plot/util/findobj.m:381 [test] '__get__' undefined
+- plot/util/findobj.m:394 [test] set: unknown property 'userdata' for axes object
+- plot/util/findobj.m:412 [test] get: argument must be a scalar, not empty
+- plot/util/findobj.m:425 [test] set: unknown property 'tag' for figure object
+- plot/util/findobj.m:439 [test] get: unknown property 'children'
+- plot/util/findobj.m:452 [test] findobj: invalid graphics handles in input HLIST
+- plot/util/findobj.m:461 [test] findobj: invalid graphics handles in input HLIST
+- plot/util/findobj.m:470 [test] figure: unknown property 'tag' for figure object
+- plot/util/gca.m:68 [test] get: argument must be a scalar, not empty
+- plot/util/gnuplot_binary.m:68 [test] '__octave_config_info__' undefined
+- plot/util/hggroup.m:68 [test] '__go_hggroup__' undefined
+- plot/util/hgload.m:114 [test] 'ftmp' undefined
+- plot/util/hgload.m:138 [error] error ''file_in_loadpath' undefined' does not match <unable to locate file>
+- plot/util/hgload.m:139 [error] error ''file_in_loadpath' undefined' does not match <unable to locate file>
+- plot/util/hold.m:171 [test] get: unknown property 'nextplot'
+- plot/util/hold.m:187 [test] get: unknown property 'nextplot'
+- plot/util/isaxes.m:50 [test] get: argument must be a scalar, not empty
+- plot/util/isaxes.m:60 [test] get: argument must be a scalar, not empty
+- plot/util/isfigure.m:60 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- plot/util/isgraphics.m:57 [test] assert (cond) failed
+- plot/util/isgraphics.m:103 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- plot/util/isgraphics.m:110 [error] expected an error but none was raised
+- plot/util/isgraphics.m:111 [error] expected an error but none was raised
+- plot/util/ishandle.m:53 [test] Invalid call to line
+- plot/util/ishandle.m:68 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- plot/util/ishold.m:69 [test] get: unknown property 'currentaxes'
+- plot/util/isprop.m:75 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- plot/util/isprop.m:76 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- plot/util/isprop.m:77 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- plot/util/isprop.m:79 [test] assert (cond) failed
+- plot/util/isprop.m:85 [error] expected an error but none was raised
+- plot/util/isprop.m:86 [error] expected an error but none was raised
+- plot/util/linkaxes.m:122 [test] get: argument must be a scalar, not empty
+- plot/util/linkprop.m:146 [test] addlistener: usage addlistener(obj, 'Event', callback)
+- plot/util/linkprop.m:182 [error] error 'linkprop: invalid graphic handle in input H' does not match <PROP must be a string or cell string array>
+- plot/util/meshgrid.m:104 [test] assert (cond) failed
+- plot/util/meshgrid.m:135 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- plot/util/meshgrid.m:148 [error] expected an error but none was raised
+- plot/util/meshgrid.m:149 [error] expected an error but none was raised
+- plot/util/ndgrid.m:101 [test] assert (cond) failed
+- plot/util/newplot.m:242 [test] get: unknown property 'nextplot'
+- plot/util/newplot.m:254 [test] get: argument must be a scalar, not empty
+- plot/util/newplot.m:267 [test] get: argument must be a scalar, not empty
+- plot/util/openfig.m:130 [test] get: property name required
+- plot/util/openfig.m:148 [error] error ''file_in_loadpath' undefined' does not match <cannot find file>
+- plot/util/openfig.m:149 [error] error ''file_in_loadpath' undefined' does not match <cannot find file>
+- plot/util/openfig.m:150 [error] error 'get: property name required' does not match <input argument 3 must be a string>
+- plot/util/openfig.m:160 [error] error 'get: property name required' does not match <unknown option 'foobar'>
+- plot/util/print.m:851 [error] error 'get: unknown property 'nextplot'' does not match <a graphics handle>
+- plot/util/printd.m:105 [test] 'mkstemp' undefined
+- plot/util/rotate.m:178 [shared] Invalid call to line
+- plot/util/rotate.m:188 [error] error 'rotate: H must be an array of one or more graphics handles' does not match <all handles must be children of the same axes object>
+- plot/util/rotate.m:189 [error] error 'rotate: H must be an array of one or more graphics handles' does not match <invalid DIRECTION>
+- plot/util/rotate.m:190 [error] error 'rotate: H must be an array of one or more graphics handles' does not match <invalid rotation angle>
+- plot/util/rotate.m:191 [error] error 'rotate: H must be an array of one or more graphics handles' does not match <invalid ORIGIN>
+- plot/util/rotate.m:194 [error] error 'rotate: H must be an array of one or more graphics handles' does not match <expecting image, line, patch, or surface objects>
+- plot/util/saveas.m:158 [error] error 'saveas: invalid figure handle' does not match <Invalid call>
+- plot/util/saveas.m:159 [error] error 'saveas: invalid figure handle' does not match <H must be a graphics handle>
+- plot/util/saveas.m:160 [error] error 'saveas: invalid figure handle' does not match <FILENAME must be a string>
+- plot/util/saveas.m:161 [error] error 'saveas: invalid figure handle' does not match <FMT must be a string>
+- plot/util/savefig.m:103 [test] get: property name required
+- plot/util/savefig.m:135 [warning] get: property name required
+- plot/util/struct2hdl.m:793 [test] get: argument must be a scalar, not empty
+- plot/util/subplot.m:621 [test] delete: argument must be a string
+- plot/util/subplot.m:636 [test] delete: argument must be a string
+- plot/util/subplot.m:652 [test] delete: argument must be a string
+- plot/util/subplot.m:664 [test] delete: argument must be a string
+- polynomial/conv.m:84 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- polynomial/conv.m:109 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- polynomial/conv.m:115 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- polynomial/conv.m:124 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- polynomial/conv.m:125 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- polynomial/conv.m:127 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- polynomial/conv.m:128 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- polynomial/conv.m:133 [error] expected an error but none was raised
+- polynomial/conv.m:134 [error] expected an error but none was raised
+- polynomial/conv.m:135 [error] expected an error but none was raised
+- polynomial/deconv.m:107 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- polynomial/deconv.m:112 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- polynomial/deconv.m:117 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- polynomial/deconv.m:121 [error] expected an error but none was raised
+- polynomial/deconv.m:122 [error] expected an error but none was raised
+- polynomial/deconv.m:123 [error] expected an error but none was raised
+- polynomial/deconv.m:131 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (3)       -2.8944367876387964E+32        -2.89443678763879E+32       Abs err 6.485183463413514E+17 exceeds tol 6.426940729917318E+17
+- polynomial/deconv.m:145 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- polynomial/padecoef.m:114 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (2)       1        2       Abs err 1 exceeds tol 2.220446049250313E-16
+- polynomial/padecoef.m:121 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (2)       1        2       Abs err 1 exceeds tol 2.220446049250313E-16
+- polynomial/padecoef.m:128 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (2)       -2        -6       Abs err 4 exceeds tol 2.220446049250313E-16
+- polynomial/padecoef.m:137 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (2)       -0.5        -1.5       Abs err 1 exceeds tol 2.220446049250313E-16
+- polynomial/padecoef.m:146 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (2)       0.6627        2.6508       Abs err 1.9880999999999998 exceeds tol 2.220446049250313E-16
+- polynomial/padecoef.m:155 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (2)       7.000000000000001        56.0000000044623       Abs err 49.0000000044623 exceeds tol 0.01
+- polynomial/pchip.m:152 [assert] '__pchip_deriv__' undefined
+- polynomial/pchip.m:153 [assert] '__pchip_deriv__' undefined
+- polynomial/pchip.m:154 [assert] '__pchip_deriv__' undefined
+- polynomial/pchip.m:155 [assert] '__pchip_deriv__' undefined
+- polynomial/pchip.m:156 [assert] '__pchip_deriv__' undefined
+- polynomial/pchip.m:157 [assert] '__pchip_deriv__' undefined
+- polynomial/pchip.m:158 [assert] '__pchip_deriv__' undefined
+- polynomial/pchip.m:159 [assert] '__pchip_deriv__' undefined
+- polynomial/pchip.m:160 [assert] '__pchip_deriv__' undefined
+- polynomial/pchip.m:161 [assert] '__pchip_deriv__' undefined
+- polynomial/pchip.m:162 [test] '__pchip_deriv__' undefined
+- polynomial/pchip.m:169 [assert] matrix cannot be indexed with .
+- polynomial/pchip.m:170 [assert] matrix cannot be indexed with .
+- polynomial/pchip.m:171 [assert] matrix cannot be indexed with .
+- polynomial/pchip.m:172 [assert] matrix cannot be indexed with .
+- polynomial/pchip.m:173 [assert] ppval: first argument must be a pp-form structure
+- polynomial/pchip.m:174 [assert] index (_,_,2): out of bound; value 2 out of bound 1
+- polynomial/pchip.m:175 [assert] ASSERT errors: dimensions mismatch
+- polynomial/pchip.m:176 [assert] index (1,_): out of bound 0 (dimensions are 0x0)
+- polynomial/pchip.m:177 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- polynomial/pchip.m:178 [assert] index (1,_,_): out of bound; value 1 out of bound 0
+- polynomial/poly.m:120 [error] expected an error but none was raised
+- polynomial/poly.m:121 [error] error 'poly: wrong type argument 'cell array'' does not match <input must be numeric>
+- polynomial/poly.m:122 [error] expected an error but none was raised
+- polynomial/poly.m:123 [error] expected an error but none was raised
+- polynomial/polyaffine.m:89 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       3.5999999999999996        3.2546296296296258       Abs err 0.3453703703703739 exceeds tol 1E-10
+- polynomial/polyfit.m:233 [assert] ASSERT errors: dimensions mismatch
+- polynomial/polyfit.m:235 [assert] ASSERT errors: dimensions mismatch
+- polynomial/polyfit.m:238 [test] element number 3 undefined in return list
+- polynomial/polyfit.m:250 [test] element number 3 undefined in return list
+- polynomial/polyfit.m:261 [test] element number 3 undefined in return list
+- polynomial/polyfit.m:293 [test] element number 3 undefined in return list
+- polynomial/polyfit.m:302 [test] value on right hand side of assignment is undefined
+- polynomial/polyfit.m:324 [test] value on right hand side of assignment is undefined
+- polynomial/polyfit.m:346 [test] value on right hand side of assignment is undefined
+- polynomial/polyfit.m:364 [test] value on right hand side of assignment is undefined
+- polynomial/polyfit.m:379 [test] value on right hand side of assignment is undefined
+- polynomial/polyfit.m:393 [error] error 'All vectors must have the same dimensionality.' does not match <X and Y must have the same number of points>
+- polynomial/polyfit.m:394 [error] error 'Matrix dimensions must agree: 1x2.' does not match <X and Y must have the same number of points>
+- polynomial/polyfit.m:395 [error] error 'Matrix dimensions must agree: 1x2.' does not match <N must be a non-negative integer>
+- polynomial/polyfit.m:396 [error] expected an error but none was raised
+- polynomial/polyfit.m:397 [error] error 'Invalid call to polyfit' does not match <N must be a non-negative integer>
+- polynomial/polyfit.m:398 [error] error 'Matrix dimensions must agree: 1x2.' does not match <N must be a non-negative integer>
+- polynomial/polyfit.m:399 [test] value on right hand side of assignment is undefined
+- polynomial/polyfit.m:401 [error] error 'Matrix dimensions must agree: 1x4.' does not match <data points must be . 2 when scaling>
+- polynomial/polyfit.m:402 [error] error 'Matrix dimensions must agree: 2x4.' does not match <data points must be . 2 when scaling>
+- polynomial/polyval.m:114 [test] element number 3 undefined in return list
+- polynomial/polyval.m:126 [test] element number 3 undefined in return list
+- polynomial/polyval.m:167 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- polynomial/polyval.m:168 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- polynomial/polyval.m:172 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- polynomial/polyval.m:173 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- polynomial/polyval.m:174 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- polynomial/polyval.m:175 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- polynomial/polyval.m:181 [error] error 'polyval: wrong type argument 'cell array'' does not match <P must be a numeric floating point vector>
+- polynomial/polyval.m:182 [error] expected an error but none was raised
+- polynomial/polyval.m:183 [error] expected an error but none was raised
+- polynomial/polyval.m:184 [error] error 'polyval: wrong type argument 'cell array'' does not match <X must be numeric floating point>
+- polynomial/polyval.m:185 [error] expected an error but none was raised
+- polynomial/polyval.m:190 [error] expected an error but none was raised
+- polynomial/polyval.m:192 [error] expected an error but none was raised
+- polynomial/polyval.m:194 [error] expected an error but none was raised
+- polynomial/ppder.m:63 [shared] cellfun: all the input arguments must have the same size and shape
+- polynomial/ppder.m:68 [assert] ppval: first argument must be a pp-form structure
+- polynomial/ppder.m:69 [assert] matrix cannot be indexed with .
+- polynomial/ppder.m:71 [assert] ppval: first argument must be a pp-form structure
+- polynomial/ppder.m:72 [assert] matrix cannot be indexed with .
+- polynomial/ppder.m:74 [assert] matrix cannot be indexed with .
+- polynomial/ppder.m:75 [assert] matrix cannot be indexed with .
+- polynomial/ppder.m:76 [assert] matrix cannot be indexed with .
+- polynomial/ppder.m:78 [assert] matrix cannot be indexed with .
+- polynomial/ppder.m:79 [assert] matrix cannot be indexed with .
+- polynomial/ppder.m:80 [assert] matrix cannot be indexed with .
+- polynomial/ppder.m:81 [assert] ppval: first argument must be a pp-form structure
+- polynomial/residue.m:340 [test] ASSERT errors: dimensions mismatch
+- polynomial/residue.m:370 [test] invalid conversion from empty value to real scalar
+- polynomial/residue.m:418 [test] invalid conversion from empty value to real scalar
+- polynomial/roots.m:137 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- polynomial/roots.m:138 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- polynomial/roots.m:141 [error] expected an error but none was raised
+- polynomial/roots.m:142 [error] expected an error but none was raised
+- polynomial/roots.m:143 [error] expected an error but none was raised
+- polynomial/roots.m:144 [error] expected an error but none was raised
+- polynomial/spline.m:255 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (11)       0.49220131029418        -0.5440211108893698       Abs err 1.0362224211835498 exceeds tol 1E-14
+- polynomial/spline.m:256 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (11)       0.49220131029418        -0.5440211108893698       Abs err 1.0362224211835498 exceeds tol 1E-14
+- polynomial/spline.m:257 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (11)       0.49220131029418        -0.5440211108893698       Abs err 1.0362224211835498 exceeds tol 1E-14
+- polynomial/spline.m:258 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (11)       0.49220131029418        -0.5440211108893698       Abs err 1.0362224211835498 exceeds tol 1E-14
+- polynomial/splinefit.m:243 [test] cellfun: C must be a cell array
+- polynomial/splinefit.m:246 [test] cellfun: C must be a cell array
+- polynomial/splinefit.m:249 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       -0.3571332353103092        -0.31858211387838486       Abs err 0.03855112143192435 exceeds tol 4.440892098500626E-15
+- prefs/addpref.m:83 [test] 'save_default_options' undefined
+- prefs/getpref.m:110 [test] 'save_default_options' undefined
+- prefs/ispref.m:73 [test] 'save_default_options' undefined
+- prefs/preferences.m:42 [test] 'isguirunning' undefined
+- prefs/rmpref.m:81 [test] 'save_default_options' undefined
+- prefs/setpref.m:77 [test] 'get_home_directory' undefined
+- profiler/profile.m:123 [test] '__profiler_enable__' undefined
+- set/intersect.m:166 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/intersect.m:183 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/intersect.m:194 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/intersect.m:204 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/intersect.m:212 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/intersect.m:219 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/intersect.m:227 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/intersect.m:237 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/intersect.m:247 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/intersect.m:255 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/intersect.m:267 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/ismember.m:231 [fail] expected error <.> but got none
+- set/ismember.m:232 [fail] expected error <.> but got none
+- set/ismember.m:233 [fail] expected error <.> but got none
+- set/ismember.m:235 [fail] expected error <.> but got none
+- set/ismember.m:236 [fail] expected error <.> but got none
+- set/ismember.m:255 [test] ismember: wrong type argument 'cell array'
+- set/ismember.m:295 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/ismember.m:300 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/ismember.m:305 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/ismember.m:310 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/ismember.m:320 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/ismember.m:324 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/ismember.m:358 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/ismember.m:430 [error] expected an error but none was raised
+- set/ismember.m:431 [error] expected an error but none was raised
+- set/ismember.m:432 [error] expected an error but none was raised
+- set/ismember.m:433 [error] expected an error but none was raised
+- set/ismember.m:434 [error] expected an error but none was raised
+- set/ismember.m:435 [error] expected an error but none was raised
+- set/powerset.m:103 [test] sort: argument must be a string
+- set/powerset.m:108 [test] sort: argument must be a string
+- set/setdiff.m:127 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/setdiff.m:130 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/setdiff.m:132 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/setdiff.m:143 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/setdiff.m:150 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/setdiff.m:158 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/setdiff.m:165 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/setdiff.m:181 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/setdiff.m:192 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/setxor.m:155 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/setxor.m:173 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/setxor.m:190 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/setxor.m:202 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/setxor.m:207 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/setxor.m:242 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/setxor.m:254 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/union.m:106 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/union.m:116 [test] vertical dimensions mismatch (1x1 vs 1x4)
+- set/union.m:124 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/union.m:125 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/union.m:126 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/union.m:128 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/union.m:137 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/union.m:147 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/union.m:158 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/union.m:170 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/unique.m:296 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/unique.m:301 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/unique.m:302 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/unique.m:304 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/unique.m:306 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/unique.m:307 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/unique.m:309 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/unique.m:310 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/unique.m:316 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/unique.m:319 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/unique.m:324 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/unique.m:330 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/unique.m:343 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/unique.m:349 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/unique.m:354 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/unique.m:361 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/unique.m:375 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/unique.m:382 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/unique.m:389 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/unique.m:396 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/unique.m:412 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/unique.m:438 [error] error 'unique: argument must be a string' does not match <X must be an array or cell array of strings>
+- set/unique.m:439 [error] expected an error but none was raised
+- set/unique.m:440 [error] expected an error but none was raised
+- set/unique.m:441 [error] expected an error but none was raised
+- set/unique.m:443 [error] expected an error but none was raised
+- set/unique.m:445 [error] expected an error but none was raised
+- set/unique.m:447 [error] expected an error but none was raised
+- set/unique.m:449 [error] expected an error but none was raised
+- set/unique.m:451 [error] expected an error but none was raised
+- set/unique.m:452 [error] expected an error but none was raised
+- set/unique.m:453 [error] expected an error but none was raised
+- set/unique.m:454 [error] expected an error but none was raised
+- set/unique.m:455 [error] expected an error but none was raised
+- set/unique.m:456 [warning] expected a warning but none was issued
+- set/uniquetol.m:313 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/uniquetol.m:317 [assert] subscript indices must be either positive integers or logicals
+- set/uniquetol.m:318 [assert] subscript indices must be either positive integers or logicals
+- set/uniquetol.m:380 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/uniquetol.m:381 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/uniquetol.m:382 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/uniquetol.m:383 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/uniquetol.m:385 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- signal/fftconv.m:98 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- signal/movfun.m:1381 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- signal/movfun.m:1397 [assert] cast: TYPE 'cell' is not a built-in type
+- signal/movfun.m:1403 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- signal/movfun.m:1459 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- signal/movfun.m:1460 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- signal/movfun.m:1461 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- signal/movfun.m:1505 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- signal/movfun.m:1506 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- signal/movfun.m:1507 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- signal/movfun.m:1508 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- signal/movfun.m:1509 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- signal/movfun.m:1510 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- signal/movfun.m:1511 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- signal/movfun.m:1545 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- signal/movfun.m:1553 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- signal/movfun.m:1589 [test] value on right hand side of assignment is undefined
+- signal/movfun.m:1617 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- signal/movfun.m:1618 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- signal/movfun.m:1619 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- signal/movfun.m:1620 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- signal/movfun.m:1622 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- signal/movfun.m:1623 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- signal/movfun.m:1629 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- signal/movfun.m:1630 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- signal/movfun.m:1631 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- signal/movfun.m:1632 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- signal/movfun.m:1633 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- signal/movfun.m:1634 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- signal/movfun.m:1635 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- signal/movfun.m:1638 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- signal/movfun.m:1639 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- signal/movfun.m:1640 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- signal/movfun.m:1641 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- signal/movfun.m:1642 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- signal/movfun.m:1643 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- signal/movfun.m:1645 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- signal/movfun.m:1646 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- signal/movfun.m:1647 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- signal/movfun.m:1648 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- signal/movfun.m:1649 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- signal/movfun.m:1650 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- signal/movfun.m:1652 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- signal/movfun.m:1653 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- signal/movfun.m:1654 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- signal/movfun.m:1655 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- signal/movfun.m:1656 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- signal/movfun.m:1657 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- signal/movfun.m:1658 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- signal/movfun.m:1660 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- signal/movfun.m:1661 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- signal/movfun.m:1662 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- signal/movfun.m:1663 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- signal/movfun.m:1664 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- signal/movfun.m:1665 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- signal/movfun.m:1666 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- signal/movfun.m:1668 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- signal/movfun.m:1669 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- signal/movfun.m:1670 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- signal/movfun.m:1673 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- signal/movfun.m:1674 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- signal/movfun.m:1682 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- signal/movfun.m:1689 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- signal/movfun.m:1690 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- signal/movfun.m:1691 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- signal/movfun.m:1692 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- signal/movfun.m:1693 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- signal/movfun.m:1694 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- signal/movfun.m:1699 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- signal/spectral_adf.m:79 [error] error ''invalid_lw' undefined' does not match <unable to find function for @invalid_lw>
+- signal/spectral_xdf.m:81 [error] error ''invalid_sw' undefined' does not match <unable to find function for @invalid_sw>
+- signal/unwrap.m:210 [assert] horizontal dimensions mismatch (2x1 vs 1x101)
+- signal/unwrap.m:239 [test] concatenation operator not implemented for '1x4x2' by '2x8x1' operations; dimension mismatch
+- signal/unwrap.m:263 [assert] invalid conversion from empty value to real scalar
+- signal/unwrap.m:264 [assert] invalid conversion from empty value to real scalar
+- signal/unwrap.m:270 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- signal/unwrap.m:271 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- signal/unwrap.m:278 [test] 'repelems' undefined
+- sparse/bicg.m:479 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- sparse/bicgstab.m:478 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- sparse/cgs.m:427 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- sparse/eigs.m:469 [shared] 'onCleanup' undefined
+- sparse/eigs.m:588 [shared] 'onCleanup' undefined
+- sparse/eigs.m:718 [shared] 'onCleanup' undefined
+- sparse/eigs.m:968 [shared] 'onCleanup' undefined
+- sparse/eigs.m:1082 [shared] 'onCleanup' undefined
+- sparse/eigs.m:1211 [shared] 'onCleanup' undefined
+- sparse/eigs.m:1435 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- sparse/eigs.m:1666 [error] expected an error but none was raised
+- sparse/eigs.m:1667 [error] error 'eigs: argument must be a scalar, not empty' does not match <requested number of eigenvalues K \(2\) exceeds available eigenvalues \(1\)>
+- sparse/eigs.m:1669 [error] expected an error but none was raised
+- sparse/eigs.m:1670 [error] expected an error but none was raised
+- sparse/eigs.m:1671 [error] expected an error but none was raised
+- sparse/eigs.m:1672 [error] expected an error but none was raised
+- sparse/eigs.m:1673 [error] expected an error but none was raised
+- sparse/eigs.m:1674 [error] expected an error but none was raised
+- sparse/eigs.m:1675 [error] expected an error but none was raised
+- sparse/eigs.m:1676 [error] expected an error but none was raised
+- sparse/eigs.m:1677 [error] expected an error but none was raised
+- sparse/eigs.m:1678 [error] expected an error but none was raised
+- sparse/eigs.m:1679 [error] error 'eigs: unrecognized sigma value 'foobar'' does not match <unrecognized value for SIGMA: foobar>
+- sparse/gmres.m:511 [test] 'mgorth' undefined
+- sparse/gmres.m:541 [test] 'mgorth' undefined
+- sparse/gmres.m:550 [test] 'mgorth' undefined
+- sparse/gmres.m:566 [test] invalid conversion from empty value to real scalar
+- sparse/gmres.m:575 [test] 'mgorth' undefined
+- sparse/gmres.m:582 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- sparse/gmres.m:610 [test] invalid conversion from empty value to real scalar
+- sparse/gmres.m:616 [test] invalid conversion from empty value to real scalar
+- sparse/gmres.m:622 [test] 'mgorth' undefined
+- sparse/gmres.m:628 [test] 'mgorth' undefined
+- sparse/gmres.m:634 [test] 'mgorth' undefined
+- sparse/gmres.m:648 [test] invalid conversion from empty value to real scalar
+- sparse/ichol.m:259 [shared] Exception of type 'System.OutOfMemoryException' was thrown.
+- sparse/ichol.m:289 [test] '__ichol0__' undefined
+- sparse/ichol.m:298 [test] '__ichol0__' undefined
+- sparse/ichol.m:310 [test] '__ichol0__' undefined
+- sparse/ichol.m:324 [test] '__ichol0__' undefined
+- sparse/ichol.m:333 [test] '__ichol0__' undefined
+- sparse/ichol.m:342 [test] ichol: A must be a sparse square matrix
+- sparse/ichol.m:351 [test] ichol: A must be a sparse square matrix
+- sparse/ichol.m:361 [error] error 'ichol: A must be a sparse square matrix' does not match <negative pivot>
+- sparse/ichol.m:364 [error] error 'ichol: A must be a sparse square matrix' does not match <non-real pivot>
+- sparse/ichol.m:395 [test] '__icholt__' undefined
+- sparse/ichol.m:405 [test] '__icholt__' undefined
+- sparse/ichol.m:415 [test] ichol: A must be a sparse square matrix
+- sparse/ichol.m:425 [test] ichol: A must be a sparse square matrix
+- sparse/ichol.m:438 [error] error ''__ichol0__' undefined' does not match <pivot equal to 0>
+- sparse/ichol.m:439 [error] error ''__ichol0__' undefined' does not match <pivot equal to 0>
+- sparse/ichol.m:440 [error] error ''__ichol0__' undefined' does not match <negative pivot>
+- sparse/ilu.m:272 [test] '__ilu0__' undefined
+- sparse/ilu.m:277 [test] '__iluc__' undefined
+- sparse/ilu.m:284 [test] '__iluc__' undefined
+- sparse/ilu.m:291 [test] '__iluc__' undefined
+- sparse/ilu.m:300 [test] '__ilutp__' undefined
+- sparse/ilu.m:312 [test] '__iluc__' undefined
+- sparse/ilu.m:323 [shared] 'onCleanup' undefined
+- sparse/ilu.m:344 [test] '__ilu0__' undefined
+- sparse/ilu.m:348 [test] '__ilu0__' undefined
+- sparse/ilu.m:352 [test] '__ilu0__' undefined
+- sparse/ilu.m:356 [test] '__ilu0__' undefined
+- sparse/ilu.m:361 [test] '__iluc__' undefined
+- sparse/ilu.m:365 [test] '__iluc__' undefined
+- sparse/ilu.m:369 [test] '__iluc__' undefined
+- sparse/ilu.m:373 [test] '__iluc__' undefined
+- sparse/ilu.m:378 [test] '__ilutp__' undefined
+- sparse/ilu.m:384 [test] '__ilutp__' undefined
+- sparse/ilu.m:390 [test] '__ilutp__' undefined
+- sparse/ilu.m:396 [test] '__ilutp__' undefined
+- sparse/ilu.m:404 [shared] timeout
+- sparse/ilu.m:420 [test] '__ilu0__' undefined
+- sparse/ilu.m:424 [test] '__ilu0__' undefined
+- sparse/ilu.m:428 [test] '__ilu0__' undefined
+- sparse/ilu.m:432 [test] ilu: A must be a sparse square matrix
+- sparse/ilu.m:437 [test] '__iluc__' undefined
+- sparse/ilu.m:441 [test] '__iluc__' undefined
+- sparse/ilu.m:445 [test] '__iluc__' undefined
+- sparse/ilu.m:449 [test] ilu: A must be a sparse square matrix
+- sparse/ilu.m:454 [test] '__ilutp__' undefined
+- sparse/ilu.m:460 [test] '__ilutp__' undefined
+- sparse/ilu.m:466 [test] '__ilutp__' undefined
+- sparse/ilu.m:472 [test] ilu: A must be a sparse square matrix
+- sparse/ilu.m:483 [test] '__ilutp__' undefined
+- sparse/ilu.m:491 [error] error ''__ilutp__' undefined' does not match <encountered a pivot equal to 0>
+- sparse/ilu.m:498 [error] error ''__ilutp__' undefined' does not match <encountered a pivot equal to 0>
+- sparse/ilu.m:506 [test] '__ilutp__' undefined
+- sparse/ilu.m:531 [error] error ''__ilu0__' undefined' does not match <zero on the diagonal>
+- sparse/pcg.m:629 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- sparse/speye.m:82 [assert] Invalid call to speye
+- sparse/speye.m:85 [error] expected an error but none was raised
+- sparse/speye.m:86 [error] expected an error but none was raised
+- sparse/speye.m:87 [error] expected an error but none was raised
+- sparse/speye.m:88 [error] expected an error but none was raised
+- sparse/spfun.m:104 [error] error 'spfun: wrong type argument 'cell'' does not match <S must be numeric>
+- sparse/spfun.m:105 [error] expected an error but none was raised
+- sparse/sprand.m:72 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       1.5061968183193453        5       Abs err 3.4938031816806547 exceeds tol 1.4901161193847656E-08
+- sparse/sprand.m:104 [error] error 'Index was outside the bounds of the array.' does not match <M must be a non-negative integer>
+- sparse/sprand.m:105 [error] expected an error but none was raised
+- sparse/sprand.m:106 [error] expected an error but none was raised
+- sparse/sprand.m:107 [error] expected an error but none was raised
+- sparse/sprand.m:108 [error] expected an error but none was raised
+- sparse/sprand.m:109 [error] expected an error but none was raised
+- sparse/sprand.m:110 [error] error 'Index was outside the bounds of the array.' does not match <N must be a non-negative integer>
+- sparse/sprand.m:113 [error] expected an error but none was raised
+- sparse/sprand.m:114 [error] expected an error but none was raised
+- sparse/sprand.m:115 [error] expected an error but none was raised
+- sparse/sprandn.m:72 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       14.653283100067673        5       Abs err 9.653283100067673 exceeds tol 1.4901161193847656E-08
+- sparse/sprandn.m:103 [error] error 'Index was outside the bounds of the array.' does not match <M must be a non-negative integer>
+- sparse/sprandn.m:104 [error] expected an error but none was raised
+- sparse/sprandn.m:105 [error] expected an error but none was raised
+- sparse/sprandn.m:106 [error] expected an error but none was raised
+- sparse/sprandn.m:107 [error] expected an error but none was raised
+- sparse/sprandn.m:108 [error] expected an error but none was raised
+- sparse/sprandn.m:109 [error] error 'Index was outside the bounds of the array.' does not match <N must be a non-negative integer>
+- sparse/sprandn.m:112 [error] expected an error but none was raised
+- sparse/sprandn.m:113 [error] expected an error but none was raised
+- sparse/sprandn.m:114 [error] expected an error but none was raised
+- sparse/sprandsym.m:167 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       0.13        0.1       Abs err 0.03 exceeds tol 0.01
+- sparse/sprandsym.m:175 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- sparse/sprandsym.m:186 [error] expected an error but none was raised
+- sparse/sprandsym.m:187 [error] expected an error but none was raised
+- sparse/spy.m:88 [error] expected an error but none was raised
+- sparse/tfqmr.m:429 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- specfun/beta.m:77 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- specfun/betainc.m:217 [test] cellfun: all the input arguments must have the same size and shape
+- specfun/betainc.m:229 [test] cellfun: all the input arguments must have the same size and shape
+- specfun/betainc.m:241 [test] cellfun: all the input arguments must have the same size and shape
+- specfun/betainc.m:252 [test] cellfun: all the input arguments must have the same size and shape
+- specfun/betainc.m:257 [assert] '__betainc__' undefined
+- specfun/betainc.m:258 [assert] '__betainc__' undefined
+- specfun/betainc.m:259 [assert] '__betainc__' undefined
+- specfun/betainc.m:261 [assert] '__betainc__' undefined
+- specfun/betainc.m:262 [assert] '__betainc__' undefined
+- specfun/betainc.m:263 [assert] '__betainc__' undefined
+- specfun/betainc.m:266 [test] cellfun: all the input arguments must have the same size and shape
+- specfun/betainc.m:275 [test] '__betainc__' undefined
+- specfun/betainc.m:279 [test] '__betainc__' undefined
+- specfun/betainc.m:289 [error] error 'cellfun: all the input arguments must have the same size and shape' does not match <must be of common size or scalars>
+- specfun/betainc.m:298 [error] error 'cellfun: all the input arguments must have the same size and shape' does not match <X must be in the range \[0, 1\]>
+- specfun/betainc.m:303 [error] error 'cellfun: all the input arguments must have the same size and shape' does not match <A must be strictly positive>
+- specfun/betainc.m:308 [error] error 'cellfun: all the input arguments must have the same size and shape' does not match <B must be strictly positive>
+- specfun/betaincinv.m:239 [test] cellfun: all the input arguments must have the same size and shape
+- specfun/betaincinv.m:246 [test] cellfun: all the input arguments must have the same size and shape
+- specfun/betaincinv.m:253 [test] cellfun: all the input arguments must have the same size and shape
+- specfun/betaincinv.m:260 [test] cellfun: all the input arguments must have the same size and shape
+- specfun/betaincinv.m:268 [assert] '__betainc__' undefined
+- specfun/betaincinv.m:269 [assert] '__betainc__' undefined
+- specfun/betaincinv.m:270 [assert] '__betainc__' undefined
+- specfun/betaincinv.m:271 [assert] '__betainc__' undefined
+- specfun/betaincinv.m:274 [assert] cellfun: all the input arguments must have the same size and shape
+- specfun/betaincinv.m:275 [assert] '__betainc__' undefined
+- specfun/betaincinv.m:276 [assert] '__betainc__' undefined
+- specfun/betaincinv.m:277 [assert] '__betainc__' undefined
+- specfun/betaincinv.m:278 [assert] '__betainc__' undefined
+- specfun/betaincinv.m:279 [assert] '__betainc__' undefined
+- specfun/betaincinv.m:280 [assert] '__betainc__' undefined
+- specfun/betaincinv.m:281 [assert] cellfun: all the input arguments must have the same size and shape
+- specfun/betaincinv.m:282 [assert] '__betainc__' undefined
+- specfun/betaincinv.m:283 [assert] '__betainc__' undefined
+- specfun/betaincinv.m:284 [assert] '__betainc__' undefined
+- specfun/betaincinv.m:286 [assert] '__betainc__' undefined
+- specfun/betaincinv.m:288 [assert] '__betainc__' undefined
+- specfun/betaincinv.m:290 [assert] '__betainc__' undefined
+- specfun/betaincinv.m:297 [error] error 'cellfun: all the input arguments must have the same size and shape' does not match <must be of common size or scalars>
+- specfun/betaincinv.m:307 [error] error 'cellfun: all the input arguments must have the same size and shape' does not match <Y must be in the range \[0, 1\]>
+- specfun/betaincinv.m:312 [error] error 'cellfun: all the input arguments must have the same size and shape' does not match <A must be strictly positive>
+- specfun/betaincinv.m:317 [error] error 'cellfun: all the input arguments must have the same size and shape' does not match <B must be strictly positive>
+- specfun/cosint.m:164 [assert] invalid conversion from empty value to real scalar
+- specfun/cosint.m:166 [test] '__expint__' undefined
+- specfun/cosint.m:173 [assert] invalid conversion from empty value to real scalar
+- specfun/cosint.m:174 [assert] invalid conversion from empty value to real scalar
+- specfun/cosint.m:175 [assert] invalid conversion from empty value to real scalar
+- specfun/cosint.m:176 [assert] invalid conversion from empty value to real scalar
+- specfun/cosint.m:177 [assert] '__expint__' undefined
+- specfun/cosint.m:178 [assert] '__expint__' undefined
+- specfun/cosint.m:179 [assert] '__expint__' undefined
+- specfun/cosint.m:180 [assert] invalid conversion from empty value to real scalar
+- specfun/cosint.m:182 [assert] invalid conversion from empty value to real scalar
+- specfun/cosint.m:185 [assert] invalid conversion from empty value to real scalar
+- specfun/cosint.m:186 [assert] invalid conversion from empty value to real scalar
+- specfun/cosint.m:187 [assert] '__expint__' undefined
+- specfun/cosint.m:188 [assert] '__expint__' undefined
+- specfun/cosint.m:189 [assert] '__expint__' undefined
+- specfun/cosint.m:190 [assert] '__expint__' undefined
+- specfun/cosint.m:191 [assert] '__expint__' undefined
+- specfun/cosint.m:193 [test] '__expint__' undefined
+- specfun/cosint.m:202 [test] '__expint__' undefined
+- specfun/cosint.m:210 [test] '__expint__' undefined
+- specfun/cosint.m:218 [test] '__expint__' undefined
+- specfun/cosint.m:226 [test] '__expint__' undefined
+- specfun/cosint.m:235 [test] '__expint__' undefined
+- specfun/cosint.m:243 [test] '__expint__' undefined
+- specfun/cosint.m:258 [test] '__expint__' undefined
+- specfun/expint.m:197 [test] '__expint__' undefined
+- specfun/expint.m:243 [test] '__expint__' undefined
+- specfun/expint.m:249 [test] '__expint__' undefined
+- specfun/expint.m:255 [test] '__expint__' undefined
+- specfun/expint.m:259 [assert] '__expint__' undefined
+- specfun/expint.m:260 [assert] '__expint__' undefined
+- specfun/expint.m:261 [assert] '__expint__' undefined
+- specfun/expint.m:262 [assert] '__expint__' undefined
+- specfun/expint.m:263 [assert] '__expint__' undefined
+- specfun/expint.m:264 [assert] '__expint__' undefined
+- specfun/expint.m:265 [assert] '__expint__' undefined
+- specfun/expint.m:266 [assert] '__expint__' undefined
+- specfun/expint.m:267 [assert] '__expint__' undefined
+- specfun/expint.m:268 [assert] binary operator '&&' not implemented for 'logical' operands
+- specfun/expint.m:271 [assert] '__expint__' undefined
+- specfun/expint.m:272 [assert] '__expint__' undefined
+- specfun/factor.m:224 [error] expected an error but none was raised
+- specfun/factor.m:225 [error] expected an error but none was raised
+- specfun/factor.m:226 [error] expected an error but none was raised
+- specfun/factor.m:227 [error] expected an error but none was raised
+- specfun/factor.m:228 [error] expected an error but none was raised
+- specfun/factor.m:229 [error] expected an error but none was raised
+- specfun/factorial.m:67 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       1.1978571669967992E+100        1.1978571669969933E+100       Abs err 1.9407262233335033E+87 exceeds tol 3.404514833951547E+86
+- specfun/factorial.m:71 [error] expected an error but none was raised
+- specfun/gammainc.m:461 [assert] cellfun: all the input arguments must have the same size and shape
+- specfun/gammainc.m:462 [assert] cellfun: all the input arguments must have the same size and shape
+- specfun/gammainc.m:463 [assert] cellfun: all the input arguments must have the same size and shape
+- specfun/gammainc.m:464 [assert] cellfun: all the input arguments must have the same size and shape
+- specfun/gammainc.m:467 [assert] cellfun: all the input arguments must have the same size and shape
+- specfun/gammainc.m:468 [assert] cellfun: all the input arguments must have the same size and shape
+- specfun/gammainc.m:469 [assert] cellfun: all the input arguments must have the same size and shape
+- specfun/gammainc.m:470 [assert] cellfun: all the input arguments must have the same size and shape
+- specfun/gammainc.m:477 [assert] cellfun: all the input arguments must have the same size and shape
+- specfun/gammainc.m:478 [assert] cellfun: all the input arguments must have the same size and shape
+- specfun/gammainc.m:479 [assert] cellfun: all the input arguments must have the same size and shape
+- specfun/gammainc.m:481 [assert] cellfun: all the input arguments must have the same size and shape
+- specfun/gammainc.m:486 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       2.194528049465332        2.194528049465325       Abs err 6.661338147750939E-15 exceeds tol 4.3890560989306504E-15
+- specfun/gammainc.m:487 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       1.5000000000000049        1.5       Abs err 4.884981308350689E-15 exceeds tol 3.0000000000000002E-15
+- specfun/gammainc.m:488 [assert] cellfun: all the input arguments must have the same size and shape
+- specfun/gammainc.m:497 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       -29582761.911893398        -29582761.91189071       Abs err 2.68593430519104E-06 exceeds tol 1.9706078043951112E-07
+- specfun/gammainc.m:503 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       0.518794309678674        0.5187943096786845       Abs err 1.0436096431476471E-14 exceeds tol 2.3039095505991567E-16
+- specfun/gammainc.m:504 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       18.490436074655275        18.490436074656046       Abs err 7.709388682997087E-13 exceeds tol 4.105701573088548E-15
+- specfun/gammainc.m:511 [test] '__gammainc__' undefined
+- specfun/gammainc.m:515 [assert] '__gammainc__' undefined
+- specfun/gammainc.m:516 [assert] '__gammainc__' undefined
+- specfun/gammainc.m:517 [assert] '__gammainc__' undefined
+- specfun/gammainc.m:518 [assert] '__gammainc__' undefined
+- specfun/gammainc.m:520 [assert] '__gammainc__' undefined
+- specfun/gammainc.m:521 [assert] '__gammainc__' undefined
+- specfun/gammainc.m:523 [assert] '__gammainc__' undefined
+- specfun/gammainc.m:525 [assert] '__gammainc__' undefined
+- specfun/gammainc.m:526 [assert] '__gammainc__' undefined
+- specfun/gammainc.m:527 [assert] '__gammainc__' undefined
+- specfun/gammainc.m:530 [assert] cellfun: all the input arguments must have the same size and shape
+- specfun/gammainc.m:534 [assert] cellfun: all the input arguments must have the same size and shape
+- specfun/gammainc.m:539 [assert] cellfun: all the input arguments must have the same size and shape
+- specfun/gammainc.m:544 [assert] cellfun: all the input arguments must have the same size and shape
+- specfun/gammainc.m:548 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       0.000999500166624978        0.0009995001666250085       Abs err 3.0357660829594124E-17 exceeds tol 2.2193361962075296E-19
+- specfun/gammainc.m:552 [test] '__gammainc__' undefined
+- specfun/gammainc.m:582 [assert] '__gammainc__' undefined
+- specfun/gammainc.m:583 [assert] '__gammainc__' undefined
+- specfun/gammainc.m:584 [assert] '__gammainc__' undefined
+- specfun/gammainc.m:585 [assert] '__gammainc__' undefined
+- specfun/gammainc.m:591 [error] error 'cellfun: all the input arguments must have the same size and shape' does not match <must be of common size or scalars>
+- specfun/gammainc.m:592 [error] error 'cellfun: all the input arguments must have the same size and shape' does not match <must be of common size or scalars>
+- specfun/gammainc.m:595 [error] error 'cellfun: all the input arguments must have the same size and shape' does not match <A must be non-negative>
+- specfun/gammainc.m:596 [error] error 'cellfun: all the input arguments must have the same size and shape' does not match <A must be non-negative>
+- specfun/gammaincinv.m:275 [test] parse error near line 265, column 31: unexpected '<'
+- specfun/gammaincinv.m:282 [test] parse error near line 265, column 31: unexpected '<'
+- specfun/gammaincinv.m:289 [test] parse error near line 265, column 31: unexpected '<'
+- specfun/gammaincinv.m:296 [test] parse error near line 265, column 31: unexpected '<'
+- specfun/gammaincinv.m:303 [test] parse error near line 265, column 31: unexpected '<'
+- specfun/gammaincinv.m:308 [assert] parse error near line 265, column 31: unexpected '<'
+- specfun/gammaincinv.m:309 [assert] parse error near line 265, column 31: unexpected '<'
+- specfun/gammaincinv.m:310 [assert] parse error near line 265, column 31: unexpected '<'
+- specfun/gammaincinv.m:311 [assert] parse error near line 265, column 31: unexpected '<'
+- specfun/gammaincinv.m:312 [assert] parse error near line 265, column 31: unexpected '<'
+- specfun/gammaincinv.m:313 [assert] parse error near line 265, column 31: unexpected '<'
+- specfun/gammaincinv.m:314 [assert] parse error near line 265, column 31: unexpected '<'
+- specfun/gammaincinv.m:317 [error] error 'parse error near line 265, column 31: unexpected '<'' does not match <Invalid call>
+- specfun/gammaincinv.m:318 [error] error 'parse error near line 265, column 31: unexpected '<'' does not match <Invalid call>
+- specfun/gammaincinv.m:319 [error] error 'parse error near line 265, column 31: unexpected '<'' does not match <must be of common size or scalars>
+- specfun/gammaincinv.m:321 [error] error 'parse error near line 265, column 31: unexpected '<'' does not match <all inputs must be real>
+- specfun/gammaincinv.m:322 [error] error 'parse error near line 265, column 31: unexpected '<'' does not match <all inputs must be real>
+- specfun/gammaincinv.m:323 [error] error 'parse error near line 265, column 31: unexpected '<'' does not match <Y must be in the range \[0, 1\]>
+- specfun/gammaincinv.m:324 [error] error 'parse error near line 265, column 31: unexpected '<'' does not match <Y must be in the range \[0, 1\]>
+- specfun/gammaincinv.m:325 [error] error 'parse error near line 265, column 31: unexpected '<'' does not match <Y must be in the range \[0, 1\]>
+- specfun/gammaincinv.m:329 [error] error 'parse error near line 265, column 31: unexpected '<'' does not match <A must be strictly positive>
+- specfun/gammaincinv.m:330 [error] error 'parse error near line 265, column 31: unexpected '<'' does not match <A must be strictly positive>
+- specfun/gammaincinv.m:334 [error] error 'parse error near line 265, column 31: unexpected '<'' does not match <invalid value for TAIL>
+- specfun/isprime.m:197 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- specfun/isprime.m:199 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- specfun/isprime.m:200 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- specfun/isprime.m:201 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- specfun/isprime.m:204 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- specfun/isprime.m:210 [error] expected an error but none was raised
+- specfun/isprime.m:211 [error] expected an error but none was raised
+- specfun/lcm.m:94 [error] expected an error but none was raised
+- specfun/lcm.m:95 [error] error 'operator lcm: nonconformant arguments (op1 is 1x2, op2 is 1x3)' does not match <same size or scalar>
+- specfun/lcm.m:96 [error] error 'lcm: wrong type argument 'cell array'' does not match <arguments must be numeric>
+- specfun/lcm.m:97 [warning] expected a warning but none was issued
+- specfun/lcm.m:98 [warning] expected a warning but none was issued
+- specfun/lcm.m:99 [warning] expected a warning but none was issued
+- specfun/lcm.m:100 [warning] expected a warning but none was issued
+- specfun/lcm.m:101 [warning] expected a warning but none was issued
+- specfun/lcm.m:102 [warning] expected a warning but none was issued
+- specfun/lcm.m:103 [warning] expected a warning but none was issued
+- specfun/lcm.m:104 [warning] expected a warning but none was issued
+- specfun/lcm.m:105 [warning] expected a warning but none was issued
+- specfun/lcm.m:106 [warning] expected a warning but none was issued
+- specfun/nchoosek.m:206 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- specfun/nchoosek.m:212 [assert] nchoosek: wrong type argument 'cell array'
+- specfun/nchoosek.m:213 [test] nchoosek: wrong type argument 'struct'
+- specfun/nchoosek.m:220 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- specfun/nchoosek.m:228 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- specfun/nchoosek.m:236 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- specfun/nchoosek.m:244 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- specfun/nchoosek.m:252 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- specfun/nchoosek.m:260 [test] nchoosek: wrong type argument 'cell array'
+- specfun/nchoosek.m:268 [test] nchoosek: wrong type argument 'struct'
+- specfun/nchoosek.m:280 [test] nchoosek: wrong type argument 'struct'
+- specfun/nchoosek.m:298 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- specfun/nchoosek.m:317 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- specfun/nchoosek.m:324 [error] expected an error but none was raised
+- specfun/nchoosek.m:325 [error] expected an error but none was raised
+- specfun/nchoosek.m:326 [error] expected an error but none was raised
+- specfun/nchoosek.m:327 [error] expected an error but none was raised
+- specfun/nchoosek.m:328 [error] expected an error but none was raised
+- specfun/nchoosek.m:329 [error] expected an error but none was raised
+- specfun/nchoosek.m:330 [error] expected an error but none was raised
+- specfun/nchoosek.m:331 [error] expected an error but none was raised
+- specfun/nchoosek.m:332 [error] expected an error but none was raised
+- specfun/nchoosek.m:333 [error] expected an error but none was raised
+- specfun/nchoosek.m:334 [warning] expected a warning but none was issued
+- specfun/nchoosek.m:335 [warning] expected a warning but none was issued
+- specfun/nchoosek.m:336 [warning] expected a warning but none was issued
+- specfun/nchoosek.m:337 [warning] expected a warning but none was issued
+- specfun/nchoosek.m:338 [warning] expected a warning but none was issued
+- specfun/nchoosek.m:339 [warning] expected a warning but none was issued
+- specfun/nchoosek.m:340 [warning] expected a warning but none was issued
+- specfun/nchoosek.m:341 [warning] expected a warning but none was issued
+- specfun/nchoosek.m:342 [warning] expected a warning but none was issued
+- specfun/primes.m:120 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- specfun/primes.m:121 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- specfun/primes.m:122 [assert] Invalid call to primes
+- specfun/primes.m:125 [error] expected an error but none was raised
+- specfun/primes.m:126 [error] expected an error but none was raised
+- specfun/primes.m:127 [error] timeout
+- specfun/sinint.m:129 [assert] invalid conversion from empty value to real scalar
+- specfun/sinint.m:131 [test] '__expint__' undefined
+- specfun/sinint.m:139 [assert] invalid conversion from empty value to real scalar
+- specfun/sinint.m:140 [assert] invalid conversion from empty value to real scalar
+- specfun/sinint.m:141 [assert] invalid conversion from empty value to real scalar
+- specfun/sinint.m:142 [assert] invalid conversion from empty value to real scalar
+- specfun/sinint.m:143 [assert] invalid conversion from empty value to real scalar
+- specfun/sinint.m:146 [assert] invalid conversion from empty value to real scalar
+- specfun/sinint.m:149 [assert] invalid conversion from empty value to real scalar
+- specfun/sinint.m:150 [assert] invalid conversion from empty value to real scalar
+- specfun/sinint.m:151 [assert] '__expint__' undefined
+- specfun/sinint.m:152 [assert] '__expint__' undefined
+- specfun/sinint.m:153 [assert] '__expint__' undefined
+- specfun/sinint.m:154 [assert] '__expint__' undefined
+- specfun/sinint.m:155 [assert] '__expint__' undefined
+- specfun/sinint.m:157 [test] '__expint__' undefined
+- specfun/sinint.m:166 [test] '__expint__' undefined
+- specfun/sinint.m:175 [test] '__expint__' undefined
+- specfun/sinint.m:184 [test] '__expint__' undefined
+- specfun/sinint.m:193 [test] '__expint__' undefined
+- special-matrix/gallery.m:3102 [assert] cellfun: C must be a cell array
+- special-matrix/gallery.m:3140 [assert] cellfun: C must be a cell array
+- special-matrix/gallery.m:3234 [assert] cellfun: C must be a cell array
+- special-matrix/gallery.m:3235 [assert] cellfun: C must be a cell array
+- special-matrix/invhilb.m:122 [assert] cellfun: all the input arguments must have the same size and shape
+- special-matrix/invhilb.m:123 [test] cellfun: all the input arguments must have the same size and shape
+- special-matrix/invhilb.m:129 [assert] cellfun: all the input arguments must have the same size and shape
+- special-matrix/magic.m:98 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- special-matrix/magic.m:109 [error] expected an error but none was raised
+- statistics/bounds.m:110 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/bounds.m:124 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/bounds.m:129 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/bounds.m:134 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/bounds.m:139 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/bounds.m:144 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/bounds.m:150 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/bounds.m:156 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/bounds.m:162 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/bounds.m:168 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/corr.m:171 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/corr.m:172 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/corr.m:175 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/corr.m:176 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/corr.m:185 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/corr.m:192 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/corr.m:199 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/corr.m:200 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/corr.m:201 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/corr.m:202 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/corr.m:203 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/corr.m:204 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/corr.m:205 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/corrcoef.m:266 [test] '__betainc__' undefined
+- statistics/corrcoef.m:293 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/corrcov.m:94 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/corrcov.m:98 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/cov.m:386 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/cov.m:387 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/cov.m:388 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/cov.m:402 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/cov.m:403 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/cov.m:404 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/cov.m:405 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/cov.m:406 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/cov.m:407 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/cov.m:408 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/cov.m:410 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/cov.m:411 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/cov.m:412 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/cov.m:413 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/cov.m:414 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/cov.m:415 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/cov.m:416 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/cov.m:417 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/cov.m:418 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/cov.m:419 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/cov.m:420 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/cov.m:421 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/cov.m:422 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/cov.m:423 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/cov.m:424 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/cov.m:425 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/cov.m:428 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/cov.m:450 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/cov.m:451 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/cov.m:452 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/cov.m:453 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/cov.m:454 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/cov.m:455 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/cov.m:456 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/cov.m:457 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/cov.m:458 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/cov.m:459 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/cov.m:465 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/cov.m:466 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/cov.m:467 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/cov.m:468 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/cov.m:469 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/cov.m:484 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/cov.m:485 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/cov.m:486 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/cov.m:487 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/cov.m:488 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/cov.m:489 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/cov.m:511 [error] error 'transpose not defined for N-D objects' does not match <X must be a 2-D>
+- statistics/cov.m:514 [error] error 'invalid conversion from empty value to real scalar' does not match <normalization parameter OPT must be>
+- statistics/discrete_cdf.m:69 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (4)       0.9        1       Abs err 0.09999999999999998 exceeds tol 2.220446049250313E-16
+- statistics/discrete_cdf.m:72 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (2)       0.10000000000000002        0.10000000149011612       Abs err 1.4901160999558627E-09 exceeds tol 4.440892098500626E-16
+- statistics/discrete_cdf.m:74 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (2)       0        0.10000000149011612       Abs err 0.10000000149011612 exceeds tol 4.440892098500626E-16
+- statistics/discrete_cdf.m:76 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (3)       0.6000000089406967        0.6000000238418579       Abs err 1.4901161193847656E-08 exceeds tol 4.440892098500626E-16
+- statistics/discrete_inv.m:84 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (2)       0.1        0.10000000149011612       Abs err 1.4901161138336505E-09 exceeds tol 2.220446049250313E-16
+- statistics/discrete_inv.m:88 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (2)       0.1        0.10000000149011612       Abs err 1.4901161138336505E-09 exceeds tol 2.220446049250313E-16
+- statistics/discrete_pdf.m:70 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (4)       0        0.1       Abs err 0.1 exceeds tol 1.1102230246251565E-15
+- statistics/discrete_pdf.m:73 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (2)       0        0.10000000149011612       Abs err 0.10000000149011612 exceeds tol 1.1102230246251565E-15
+- statistics/discrete_pdf.m:75 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (2)       0        0.10000000149011612       Abs err 0.10000000149011612 exceeds tol 1.1102230246251565E-15
+- statistics/discrete_pdf.m:77 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (4)       0        0.10000000149011612       Abs err 0.10000000149011612 exceeds tol 1.1102230246251565E-15
+- statistics/empirical_cdf.m:52 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (4)       0.8999999999999999        1       Abs err 0.10000000000000009 exceeds tol 2.220446049250313E-16
+- statistics/empirical_cdf.m:53 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (4)       0.8999999999999999        1       Abs err 0.10000000000000009 exceeds tol 2.220446049250313E-16
+- statistics/empirical_cdf.m:56 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (4)       0.8999999999999999        1       Abs err 0.10000000000000009 exceeds tol 2.220446049250313E-16
+- statistics/empirical_cdf.m:57 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (2)       0.1        0.10000000149011612       Abs err 1.4901161138336505E-09 exceeds tol 2.220446049250313E-16
+- statistics/empirical_cdf.m:58 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (2)       0        0.10000000149011612       Abs err 0.10000000149011612 exceeds tol 2.220446049250313E-16
+- statistics/empirical_inv.m:56 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (2)       0.1        0.10000000149011612       Abs err 1.4901161138336505E-09 exceeds tol 2.220446049250313E-16
+- statistics/empirical_pdf.m:61 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/empirical_pdf.m:64 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/empirical_pdf.m:65 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/histc.m:186 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/histc.m:194 [error] expected an error but none was raised
+- statistics/histc.m:195 [warning] expected a warning but none was issued
+- statistics/histc.m:196 [error] expected an error but none was raised
+- statistics/iqr.m:0 [crash] child process crashed or timed out
+- statistics/kendall.m:146 [assert] invalid conversion from empty value to real scalar
+- statistics/kendall.m:147 [assert] invalid conversion from empty value to real scalar
+- statistics/kurtosis.m:164 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/kurtosis.m:165 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/kurtosis.m:175 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       2.9786508083343506        2.978651285171509       Abs err 4.76837158203125E-07 exceeds tol 2.220446049250313E-16
+- statistics/kurtosis.m:176 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/kurtosis.m:194 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       2.134982118207251        1.9345       Abs err 0.20048211820725093 exceeds tol 0.0001
+- statistics/kurtosis.m:208 [test] invalid conversion from empty value to real scalar
+- statistics/mad.m:130 [assert] invalid conversion from empty value to real scalar
+- statistics/mad.m:131 [assert] invalid conversion from empty value to real scalar
+- statistics/mad.m:132 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mad.m:134 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mad.m:148 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mad.m:149 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mad.m:150 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mad.m:152 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mad.m:153 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mad.m:155 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mad.m:160 [assert] invalid conversion from empty value to real scalar
+- statistics/mad.m:161 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mad.m:162 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mad.m:163 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mad.m:165 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mad.m:166 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mad.m:169 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mad.m:170 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mad.m:171 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mad.m:172 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mad.m:173 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mad.m:174 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mad.m:175 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mad.m:178 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mad.m:180 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mad.m:182 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mad.m:184 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mad.m:185 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mad.m:186 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mad.m:187 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mad.m:188 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mad.m:189 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mad.m:190 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mad.m:194 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mad.m:195 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mad.m:196 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mad.m:197 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mad.m:198 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mad.m:199 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mad.m:200 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mad.m:201 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mad.m:202 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mad.m:203 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mad.m:207 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mad.m:209 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mad.m:212 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mad.m:213 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mad.m:215 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mad.m:217 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mad.m:218 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mad.m:220 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mad.m:221 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mad.m:222 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mad.m:223 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mad.m:224 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mad.m:225 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mad.m:226 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mad.m:227 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mad.m:228 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mad.m:229 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mad.m:230 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mad.m:231 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mad.m:232 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mad.m:233 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mad.m:234 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mad.m:235 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mad.m:236 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mad.m:237 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mad.m:238 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mad.m:241 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       0        0.6666666666666666       Abs err 0.6666666666666666 exceeds tol 2.220446049250313E-16
+- statistics/mad.m:242 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mape.m:630 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       11.11111111111111        22.7778       Abs err 11.666688888888888 exceeds tol 0.0001
+- statistics/mape.m:638 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mape.m:648 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       0.9259259259259258        27.5307       Abs err 26.604774074074072 exceeds tol 0.0001
+- statistics/mape.m:656 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       Infinity        27.7778       Abs err Infinity exceeds tol 0.0001
+- statistics/mape.m:671 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mape.m:682 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mape.m:713 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       Infinity        30.5556       Abs err Infinity exceeds tol 0.0001
+- statistics/mape.m:722 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       Infinity        28.3333       Abs err Infinity exceeds tol 0.0001
+- statistics/mape.m:732 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       Infinity        28.3333       Abs err Infinity exceeds tol 0.0001
+- statistics/mape.m:772 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       Infinity        20.8333       Abs err Infinity exceeds tol 0.0001
+- statistics/mape.m:796 [test] reshape: can't reshape 2x2 array to 2x4x1 array
+- statistics/mape.m:860 [error] expected an error but none was raised
+- statistics/mean.m:699 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mean.m:707 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mean.m:715 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       1        0.6666666666666666       Abs err 0.33333333333333337 exceeds tol 2.220446049250313E-16
+- statistics/mean.m:723 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mean.m:731 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       0        1.5       Abs err 1.5 exceeds tol 2.220446049250313E-16
+- statistics/mean.m:741 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mean.m:750 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mean.m:760 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mean.m:790 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mean.m:820 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mean.m:842 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mean.m:853 [test] ASSERT errors: dimensions mismatch
+- statistics/mean.m:866 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mean.m:867 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mean.m:868 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mean.m:869 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mean.m:870 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mean.m:871 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mean.m:873 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mean.m:875 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mean.m:876 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mean.m:879 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mean.m:880 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mean.m:881 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mean.m:882 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mean.m:883 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mean.m:884 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mean.m:885 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mean.m:886 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mean.m:889 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mean.m:905 [test] ASSERT errors: dimensions mismatch
+- statistics/mean.m:916 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mean.m:917 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mean.m:918 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mean.m:928 [test] ASSERT errors: dimensions mismatch
+- statistics/mean.m:937 [test] ASSERT errors: dimensions mismatch
+- statistics/mean.m:952 [test] ASSERT errors: dimensions mismatch
+- statistics/mean.m:965 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mean.m:969 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mean.m:975 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       35184372088832        35184372088833       Abs err 1 exceeds tol 0.0078125
+- statistics/mean.m:977 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       35184372088832        35184372088833       Abs err 1 exceeds tol 0.0078125
+- statistics/mean.m:980 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       9007199254740992        35184372088833       Abs err 8972014882652159 exceeds tol 0.0078125
+- statistics/mean.m:982 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       9007199254740992        35184372088833       Abs err 8972014882652159 exceeds tol 0.0078125
+- statistics/mean.m:984 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       35184372088832        35184372088833       Abs err 1 exceeds tol 0.0078125
+- statistics/mean.m:986 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       35184372088832        35184372088833       Abs err 1 exceeds tol 0.0078125
+- statistics/mean.m:988 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       4503599627370496        35184372088833       Abs err 4468415255281663 exceeds tol 0.0078125
+- statistics/mean.m:993 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mean.m:1004 [error] expected an error but none was raised
+- statistics/mean.m:1005 [error] error 'mean: wrong type argument 'cell array'' does not match <X must be a numeric or logical array>
+- statistics/mean.m:1006 [error] expected an error but none was raised
+- statistics/mean.m:1007 [error] expected an error but none was raised
+- statistics/mean.m:1008 [error] expected an error but none was raised
+- statistics/mean.m:1009 [error] expected an error but none was raised
+- statistics/mean.m:1010 [error] expected an error but none was raised
+- statistics/mean.m:1011 [error] expected an error but none was raised
+- statistics/mean.m:1012 [error] expected an error but none was raised
+- statistics/mean.m:1013 [error] expected an error but none was raised
+- statistics/mean.m:1014 [error] expected an error but none was raised
+- statistics/mean.m:1015 [error] expected an error but none was raised
+- statistics/mean.m:1016 [error] expected an error but none was raised
+- statistics/mean.m:1018 [error] expected an error but none was raised
+- statistics/mean.m:1020 [error] expected an error but none was raised
+- statistics/mean.m:1022 [error] expected an error but none was raised
+- statistics/mean.m:1024 [error] expected an error but none was raised
+- statistics/mean.m:1026 [error] expected an error but none was raised
+- statistics/mean.m:1028 [error] expected an error but none was raised
+- statistics/mean.m:1030 [error] expected an error but none was raised
+- statistics/mean.m:1032 [error] expected an error but none was raised
+- statistics/mean.m:1033 [error] expected an error but none was raised
+- statistics/mean.m:1034 [error] error 'mean: DIM must be a valid dimension' does not match <DIM must be a positive integer>
+- statistics/mean.m:1035 [error] expected an error but none was raised
+- statistics/mean.m:1036 [error] error 'mean: DIM must be a valid dimension' does not match <DIM must be a positive integer>
+- statistics/mean.m:1037 [error] error 'mean: DIM must be a valid dimension' does not match <DIM must be a positive integer>
+- statistics/mean.m:1038 [error] error 'mean: DIM must be a valid dimension' does not match <DIM must be a positive integer>
+- statistics/mean.m:1039 [error] error 'Array dimensions exceeded supported range.' does not match <DIM must be a positive integer>
+- statistics/mean.m:1040 [error] error 'mean: DIM must be a valid dimension' does not match <DIM must be a positive integer>
+- statistics/mean.m:1041 [error] expected an error but none was raised
+- statistics/mean.m:1042 [error] expected an error but none was raised
+- statistics/mean.m:1043 [error] expected an error but none was raised
+- statistics/meansq.m:144 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/meansq.m:164 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/meansq.m:180 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:591 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:596 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:603 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:610 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:619 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:633 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:634 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:637 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:649 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:665 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:673 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:674 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:675 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:676 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:677 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:678 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:679 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:680 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:681 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:682 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:683 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:684 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:685 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:686 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:687 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:688 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:689 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:690 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:691 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:692 [assert] ASSERT errors: dimensions mismatch
+- statistics/median.m:693 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:694 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:695 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:697 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:698 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:699 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:700 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:704 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:709 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:710 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:711 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:712 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:713 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:714 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:715 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:716 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:717 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:718 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:719 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:720 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:721 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:722 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:723 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:726 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:727 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:728 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:729 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:730 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:731 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:732 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:733 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:734 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:735 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:738 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:750 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:759 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:765 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:766 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:767 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:768 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:769 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:770 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:772 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:773 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:774 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:775 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:776 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:777 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:779 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:781 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:784 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:785 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:786 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:787 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:790 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:791 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:794 [shared] 'onCleanup' undefined
+- statistics/median.m:802 [assert] index (_,_,_,3): out of bound; value 3 out of bound 1
+- statistics/median.m:803 [assert] index (_,_,3): out of bound; value 3 out of bound 1
+- statistics/median.m:807 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:813 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:814 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:816 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:819 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:821 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:825 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:826 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:828 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:832 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:837 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:842 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:845 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:848 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:851 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:858 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:860 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:862 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:866 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:867 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:868 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:876 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:877 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:878 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:879 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:882 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:883 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:884 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:885 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:886 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:887 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:888 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:892 [error] expected an error but none was raised
+- statistics/median.m:893 [error] expected an error but none was raised
+- statistics/median.m:894 [error] expected an error but none was raised
+- statistics/median.m:895 [error] expected an error but none was raised
+- statistics/median.m:896 [error] expected an error but none was raised
+- statistics/median.m:897 [error] expected an error but none was raised
+- statistics/median.m:898 [error] expected an error but none was raised
+- statistics/median.m:899 [error] error 'median: wrong type argument 'cell array'' does not match <X must be either numeric or logical>
+- statistics/median.m:900 [error] expected an error but none was raised
+- statistics/median.m:901 [error] expected an error but none was raised
+- statistics/median.m:902 [error] expected an error but none was raised
+- statistics/median.m:903 [error] expected an error but none was raised
+- statistics/median.m:904 [error] error 'median: DIM must be a valid dimension' does not match <DIM must be a positive integer>
+- statistics/median.m:905 [error] error 'median: DIM must be a valid dimension' does not match <DIM must be a positive integer>
+- statistics/median.m:906 [error] expected an error but none was raised
+- statistics/mode.m:306 [test] horizontal dimensions mismatch (5x1 vs 4x5)
+- statistics/mode.m:311 [test] subscript indices must be either positive integers or logicals
+- statistics/mode.m:352 [test] concatenation operator not implemented for '1x3x3' by '2x9x1' operations; dimension mismatch
+- statistics/mode.m:360 [test] concatenation operator not implemented for '3x1x3' by '2x9x1' operations; dimension mismatch
+- statistics/mode.m:368 [test] concatenation operator not implemented for '3x3x1' by '2x9x1' operations; dimension mismatch
+- statistics/mode.m:379 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mode.m:384 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mode.m:389 [test] conversion to cell array from double not possible; use '{' instead of '('
+- statistics/mode.m:394 [test] conversion to cell array from double not possible; use '{' instead of '('
+- statistics/mode.m:399 [test] conversion to cell array from double not possible; use '{' instead of '('
+- statistics/mode.m:404 [test] conversion to cell array from double not possible; use '{' instead of '('
+- statistics/mode.m:409 [test] conversion to cell array from double not possible; use '{' instead of '('
+- statistics/mode.m:414 [test] conversion to cell array from double not possible; use '{' instead of '('
+- statistics/mode.m:419 [test] conversion to cell array from double not possible; use '{' instead of '('
+- statistics/mode.m:424 [test] conversion to cell array from double not possible; use '{' instead of '('
+- statistics/mode.m:429 [test] conversion to cell array from double not possible; use '{' instead of '('
+- statistics/mode.m:434 [test] conversion to cell array from double not possible; use '{' instead of '('
+- statistics/mode.m:439 [test] conversion to cell array from double not possible; use '{' instead of '('
+- statistics/mode.m:444 [test] conversion to cell array from double not possible; use '{' instead of '('
+- statistics/mode.m:449 [test] conversion to cell array from double not possible; use '{' instead of '('
+- statistics/mode.m:454 [test] conversion to cell array from double not possible; use '{' instead of '('
+- statistics/mode.m:459 [test] conversion to cell array from double not possible; use '{' instead of '('
+- statistics/mode.m:464 [test] conversion to cell array from double not possible; use '{' instead of '('
+- statistics/mode.m:469 [test] conversion to cell array from double not possible; use '{' instead of '('
+- statistics/mode.m:474 [test] conversion to cell array from double not possible; use '{' instead of '('
+- statistics/mode.m:479 [test] conversion to cell array from double not possible; use '{' instead of '('
+- statistics/mode.m:484 [test] conversion to cell array from double not possible; use '{' instead of '('
+- statistics/mode.m:489 [test] conversion to cell array from double not possible; use '{' instead of '('
+- statistics/mode.m:496 [test] conversion to cell array from double not possible; use '{' instead of '('
+- statistics/mode.m:501 [test] conversion to cell array from double not possible; use '{' instead of '('
+- statistics/mode.m:506 [test] conversion to cell array from double not possible; use '{' instead of '('
+- statistics/mode.m:511 [test] conversion to cell array from double not possible; use '{' instead of '('
+- statistics/mode.m:516 [test] conversion to cell array from double not possible; use '{' instead of '('
+- statistics/mode.m:521 [test] conversion to cell array from double not possible; use '{' instead of '('
+- statistics/mode.m:526 [test] conversion to cell array from double not possible; use '{' instead of '('
+- statistics/mode.m:531 [test] conversion to cell array from double not possible; use '{' instead of '('
+- statistics/mode.m:536 [test] conversion to cell array from double not possible; use '{' instead of '('
+- statistics/mode.m:541 [test] conversion to cell array from double not possible; use '{' instead of '('
+- statistics/mode.m:546 [test] conversion to cell array from double not possible; use '{' instead of '('
+- statistics/mode.m:551 [test] conversion to cell array from double not possible; use '{' instead of '('
+- statistics/mode.m:556 [test] conversion to cell array from double not possible; use '{' instead of '('
+- statistics/mode.m:561 [test] conversion to cell array from double not possible; use '{' instead of '('
+- statistics/mode.m:566 [test] conversion to cell array from double not possible; use '{' instead of '('
+- statistics/mode.m:571 [test] conversion to cell array from double not possible; use '{' instead of '('
+- statistics/mode.m:576 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mode.m:581 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mode.m:586 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mode.m:591 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mode.m:596 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mode.m:601 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mode.m:608 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mode.m:618 [error] error 'mode: wrong type argument 'cell array'' does not match <mode: X must be a numeric array>
+- statistics/mode.m:619 [error] expected an error but none was raised
+- statistics/mode.m:620 [error] expected an error but none was raised
+- statistics/mode.m:621 [error] error 'mode: DIM must be a valid dimension' does not match <mode: DIM must be a positive integer>
+- statistics/mode.m:622 [error] expected an error but none was raised
+- statistics/mode.m:624 [error] expected an error but none was raised
+- statistics/mode.m:626 [error] expected an error but none was raised
+- statistics/moment.m:222 [assert] ASSERT errors: dimensions mismatch
+- statistics/moment.m:223 [assert] ASSERT errors: dimensions mismatch
+- statistics/movmad.m:134 [assert] invalid conversion from empty value to real scalar
+- statistics/movmad.m:135 [assert] invalid conversion from empty value to real scalar
+- statistics/movmad.m:146 [assert] invalid conversion from empty value to real scalar
+- statistics/movmad.m:150 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/movmad.m:152 [assert] invalid conversion from empty value to real scalar
+- statistics/movmad.m:159 [assert] invalid conversion from empty value to real scalar
+- statistics/movmad.m:160 [assert] invalid conversion from empty value to real scalar
+- statistics/movmad.m:171 [assert] invalid conversion from empty value to real scalar
+- statistics/movmad.m:175 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/movmad.m:177 [assert] invalid conversion from empty value to real scalar
+- statistics/movmad.m:180 [assert] invalid conversion from empty value to real scalar
+- statistics/movmax.m:104 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/movmax.m:105 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/movmax.m:106 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/movmean.m:100 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/movmedian.m:100 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/movmin.m:104 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/movmin.m:105 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/movmin.m:106 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/movprod.m:108 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/movprod.m:109 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/movstd.m:140 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/movsum.m:104 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/movsum.m:105 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/movvar.m:148 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/normalize.m:510 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/normalize.m:520 [assert] diff: argument must be a scalar, not empty
+- statistics/normalize.m:521 [assert] diff: argument must be a scalar, not empty
+- statistics/normalize.m:522 [assert] diff: argument must be a scalar, not empty
+- statistics/normalize.m:523 [assert] diff: argument must be a scalar, not empty
+- statistics/normalize.m:533 [assert] diff: argument must be a scalar, not empty
+- statistics/normalize.m:534 [assert] diff: argument must be a scalar, not empty
+- statistics/normalize.m:535 [assert] diff: argument must be a scalar, not empty
+- statistics/normalize.m:536 [assert] diff: argument must be a scalar, not empty
+- statistics/normalize.m:539 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/normalize.m:540 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/normalize.m:541 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/normalize.m:542 [assert] operator ./: nonconformant arguments (op1 is 1x2x2x2, op2 is 1x8x1x1)
+- statistics/normalize.m:543 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/normalize.m:544 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/normalize.m:545 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/normalize.m:546 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/normalize.m:547 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/normalize.m:548 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/normalize.m:549 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/normalize.m:550 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/normalize.m:558 [test] assert: wrong type argument 'cell array'
+- statistics/normalize.m:598 [test] subscript indices must be either positive integers or logicals
+- statistics/normalize.m:608 [test] subscript indices must be either positive integers or logicals
+- statistics/normalize.m:613 [test] assert (cond) failed
+- statistics/normalize.m:622 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/normalize.m:624 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/normalize.m:631 [assert] diff: argument must be a scalar, not empty
+- statistics/quantile.m:440 [test] 'roundb' undefined
+- statistics/quantile.m:457 [test] 'roundb' undefined
+- statistics/quantile.m:474 [test] 'roundb' undefined
+- statistics/quantile.m:491 [test] 'roundb' undefined
+- statistics/quantile.m:508 [test] 'roundb' undefined
+- statistics/quantile.m:525 [test] 'roundb' undefined
+- statistics/quantile.m:578 [assert] invalid conversion from empty value to real scalar
+- statistics/quantile.m:579 [assert] invalid conversion from empty value to real scalar
+- statistics/quantile.m:580 [assert] invalid conversion from empty value to real scalar
+- statistics/quantile.m:581 [assert] invalid conversion from empty value to real scalar
+- statistics/quantile.m:583 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/quantile.m:589 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/quantile.m:591 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/quantile.m:592 [assert] invalid conversion from empty value to real scalar
+- statistics/quantile.m:593 [assert] invalid conversion from empty value to real scalar
+- statistics/quantile.m:600 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/quantile.m:602 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/quantile.m:603 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/quantile.m:604 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/quantile.m:605 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/quantile.m:606 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/quantile.m:607 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/range.m:101 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/range.m:113 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/range.m:116 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/range.m:119 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/range.m:122 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/range.m:125 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/range.m:129 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/range.m:133 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/range.m:137 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/range.m:143 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/rms.m:105 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/rms.m:111 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/rms.m:131 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/rms.m:147 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/rmse.m:513 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       0.5773502691896258        1.4142135623730951       Abs err 0.8368632931834693 exceeds tol 2.220446049250313E-16
+- statistics/rmse.m:521 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/rmse.m:528 [test] ASSERT errors: dimensions mismatch
+- statistics/rmse.m:536 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/rmse.m:552 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       0.5        1.3229       Abs err 0.8229 exceeds tol 0.0001
+- statistics/rmse.m:560 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/rmse.m:575 [test] ASSERT errors: dimensions mismatch
+- statistics/rmse.m:581 [test] ASSERT errors: dimensions mismatch
+- statistics/rmse.m:606 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       1.3416407864998738        1.4832       Abs err 0.14155921350012624 exceeds tol 0.0001
+- statistics/rmse.m:622 [test] reshape: can't reshape 2x2 array to 2x4x1 array
+- statistics/rmse.m:638 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       2.842402420106581E+307        4.737337366844304E+307       Abs err 1.8949349467377228E+307 exceeds tol 1.99584030953472E+292
+- statistics/rmse.m:687 [error] expected an error but none was raised
+- statistics/skewness.m:158 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/skewness.m:159 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/skewness.m:171 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       1.051328182220459        1.0513283014297485       Abs err 1.1920928955078125E-07 exceeds tol 2.220446049250313E-16
+- statistics/skewness.m:172 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/skewness.m:190 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       -0.808398595388122        0.107       Abs err 0.915398595388122 exceeds tol 0.0001
+- statistics/skewness.m:204 [test] invalid conversion from empty value to real scalar
+- statistics/spearman.m:116 [assert] invalid conversion from empty value to real scalar
+- statistics/spearman.m:117 [assert] invalid conversion from empty value to real scalar
+- statistics/statistics.m:194 [test] concatenation operator not implemented for '7x1x3' by '7x3x1' operations; dimension mismatch
+- statistics/statistics.m:225 [error] error 'invalid conversion from empty value to real scalar' does not match <statistics: dimension of X is too small \(<2\)>
+- statistics/var.m:577 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:578 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:579 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       0.22222222222222224        0.1388888888888889       Abs err 0.08333333333333334 exceeds tol 2.220446049250313E-16
+- statistics/var.m:581 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:582 [assert] ASSERT errors: dimensions mismatch
+- statistics/var.m:583 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       0        0.8       Abs err 0.8 exceeds tol 2.220446049250313E-16
+- statistics/var.m:586 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       25        54.19354838709678       Abs err 29.193548387096783 exceeds tol 1E-14
+- statistics/var.m:603 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       0        0.75       Abs err 0.75 exceeds tol 2.220446049250313E-16
+- statistics/var.m:604 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       0        0.75       Abs err 0.75 exceeds tol 2.220446049250313E-16
+- statistics/var.m:605 [assert] ASSERT errors: dimensions mismatch
+- statistics/var.m:606 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       0        0.75       Abs err 0.75 exceeds tol 2.220446049250313E-16
+- statistics/var.m:607 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       0        0.75       Abs err 0.75 exceeds tol 2.220446049250313E-16
+- statistics/var.m:608 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       0        0.75       Abs err 0.75 exceeds tol 2.220446049250313E-16
+- statistics/var.m:610 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       0.6666666666666666        0.75       Abs err 0.08333333333333337 exceeds tol 2.220446049250313E-16
+- statistics/var.m:611 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       4.666666666666667        3       Abs err 1.666666666666667 exceeds tol 2.220446049250313E-16
+- statistics/var.m:612 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       8.666666666666666        0.75       Abs err 7.916666666666666 exceeds tol 2.220446049250313E-16
+- statistics/var.m:613 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (2)       1        0.75       Abs err 0.25 exceeds tol 2.220446049250313E-16
+- statistics/var.m:614 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:615 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (2)       1        0.75       Abs err 0.25 exceeds tol 2.220446049250313E-16
+- statistics/var.m:616 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:617 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:618 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:622 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:623 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:628 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:640 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:652 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:655 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:657 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:658 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:661 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:664 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:667 [test] ASSERT errors: dimensions mismatch
+- statistics/var.m:684 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       0        6.666666666666667       Abs err 6.666666666666667 exceeds tol 1E-14
+- statistics/var.m:695 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:696 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:697 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:698 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:699 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:700 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:701 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:703 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:705 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:706 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:707 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:713 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:715 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:754 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:767 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:775 [test] operator ./: nonconformant arguments (op1 is 10x3, op2 is 10x720)
+- statistics/var.m:782 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:786 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:790 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:794 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:798 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:802 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:806 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:810 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:814 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:818 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:822 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:826 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:830 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:834 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:838 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:842 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:846 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:850 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:854 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:858 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:862 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:866 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:870 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:874 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:878 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:882 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:904 [test] assert (cond) failed
+- statistics/var.m:908 [test] assert (cond) failed
+- statistics/var.m:915 [error] expected an error but none was raised
+- statistics/var.m:916 [error] expected an error but none was raised
+- statistics/var.m:917 [error] expected an error but none was raised
+- statistics/var.m:918 [error] expected an error but none was raised
+- statistics/var.m:919 [error] expected an error but none was raised
+- statistics/var.m:920 [error] expected an error but none was raised
+- statistics/var.m:921 [error] expected an error but none was raised
+- statistics/var.m:922 [error] expected an error but none was raised
+- statistics/var.m:923 [error] expected an error but none was raised
+- statistics/var.m:924 [error] expected an error but none was raised
+- statistics/var.m:925 [error] expected an error but none was raised
+- statistics/var.m:927 [error] expected an error but none was raised
+- statistics/var.m:928 [error] error 'var: wrong type argument 'cell array'' does not match <X must be a floating point numeric vector or matrix>
+- statistics/var.m:929 [error] expected an error but none was raised
+- statistics/var.m:930 [error] expected an error but none was raised
+- statistics/var.m:931 [error] expected an error but none was raised
+- statistics/var.m:932 [error] expected an error but none was raised
+- statistics/var.m:933 [error] error 'var: DIM must be a valid dimension' does not match <DIM must be a positive integer>
+- statistics/var.m:934 [error] expected an error but none was raised
+- statistics/var.m:935 [error] error 'var: DIM must be a valid dimension' does not match <DIM must be a positive integer>
+- statistics/var.m:936 [error] expected an error but none was raised
+- statistics/var.m:938 [error] expected an error but none was raised
+- statistics/var.m:940 [error] expected an error but none was raised
+- statistics/var.m:942 [error] expected an error but none was raised
+- statistics/var.m:944 [error] expected an error but none was raised
+- statistics/var.m:946 [error] expected an error but none was raised
+- statistics/var.m:948 [error] expected an error but none was raised
+- statistics/var.m:950 [error] expected an error but none was raised
+- statistics/var.m:952 [error] expected an error but none was raised
+- statistics/var.m:953 [error] expected an error but none was raised
+- statistics/var.m:954 [error] expected an error but none was raised
+- statistics/var.m:955 [error] expected an error but none was raised
+- statistics/var.m:956 [error] expected an error but none was raised
+- statistics/var.m:957 [error] expected an error but none was raised
+- statistics/var.m:958 [error] expected an error but none was raised
+- statistics/var.m:960 [error] expected an error but none was raised
+- statistics/var.m:962 [error] expected an error but none was raised
+- statistics/zscore.m:134 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/zscore.m:135 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/zscore.m:136 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       0        -1.2019       Abs err 1.2019 exceeds tol 0.0001
+- statistics/zscore.m:138 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       -1.1547005383792517        -1.2019       Abs err 0.047199461620748284 exceeds tol 0.0001
+- statistics/zscore.m:144 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       0        -1.4606       Abs err 1.4606 exceeds tol 0.0001
+- statistics/zscore.m:146 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/zscore.m:147 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       0        -1       Abs err 1 exceeds tol 0.0001
+- statistics/zscore.m:149 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/zscore.m:161 [error] expected an error but none was raised
+- statistics/zscore.m:162 [error] expected an error but none was raised
+- statistics/zscore.m:163 [error] error 'mean: DIM must be a valid dimension' does not match <DIM must be .* positive>
+- strings/base2dec.m:124 [assert] 'repelems' undefined
+- strings/base2dec.m:125 [assert] 'repelems' undefined
+- strings/base2dec.m:126 [assert] 'repelems' undefined
+- strings/base2dec.m:127 [assert] 'repelems' undefined
+- strings/bin2dec.m:79 [error] error 'Could not find any recognizable digits.' does not match <STR must be a string>
+- strings/blanks.m:67 [error] expected an error but none was raised
+- strings/blanks.m:68 [error] expected an error but none was raised
+- strings/deblank.m:93 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/deblank.m:102 [assert] deblank: argument must be a string
+- strings/deblank.m:105 [error] expected an error but none was raised
+- strings/dec2base.m:250 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/dec2base.m:251 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/dec2base.m:252 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/dec2base.m:253 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/dec2base.m:254 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/dec2base.m:255 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/dec2base.m:258 [assert] Invalid call to dec2base
+- strings/dec2base.m:259 [assert] Invalid call to dec2base
+- strings/dec2base.m:260 [assert] Invalid call to dec2base
+- strings/dec2base.m:261 [assert] Invalid call to dec2base
+- strings/dec2base.m:262 [assert] Invalid call to dec2base
+- strings/dec2base.m:263 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/dec2base.m:264 [assert] Invalid call to dec2base
+- strings/dec2base.m:265 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/dec2base.m:266 [assert] Invalid call to dec2base
+- strings/dec2base.m:267 [assert] Invalid call to dec2base
+- strings/dec2base.m:270 [assert] Invalid call to dec2base
+- strings/dec2base.m:273 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/dec2base.m:274 [assert] Invalid call to dec2base
+- strings/dec2base.m:275 [assert] Invalid call to dec2base
+- strings/dec2base.m:284 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/dec2base.m:285 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/dec2base.m:286 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/dec2base.m:287 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/dec2base.m:304 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/dec2base.m:308 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/dec2base.m:309 [assert] dec2base: wrong type argument 'cell array'
+- strings/dec2base.m:311 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/dec2base.m:315 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/dec2base.m:320 [error] expected an error but none was raised
+- strings/dec2base.m:321 [error] expected an error but none was raised
+- strings/dec2base.m:322 [error] expected an error but none was raised
+- strings/dec2base.m:323 [error] expected an error but none was raised
+- strings/dec2base.m:324 [error] timeout
+- strings/dec2bin.m:117 [assert] dec2bin: wrong type argument 'cell array'
+- strings/dec2bin.m:118 [assert] dec2bin: wrong type argument 'cell array'
+- strings/dec2bin.m:121 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/dec2bin.m:122 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/dec2bin.m:123 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/dec2bin.m:124 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/dec2bin.m:125 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/dec2bin.m:136 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/dec2bin.m:138 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/dec2bin.m:140 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/dec2bin.m:142 [assert] dec2bin: wrong type argument 'cell array'
+- strings/dec2bin.m:147 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/dec2bin.m:149 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/dec2bin.m:153 [error] expected an error but none was raised
+- strings/dec2hex.m:106 [assert] dec2hex: wrong type argument 'cell array'
+- strings/dec2hex.m:107 [assert] dec2hex: wrong type argument 'cell array'
+- strings/dec2hex.m:110 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/dec2hex.m:111 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/dec2hex.m:112 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/dec2hex.m:113 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/dec2hex.m:114 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/dec2hex.m:120 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/dec2hex.m:121 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/dec2hex.m:122 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/dec2hex.m:123 [assert] dec2hex: wrong type argument 'cell array'
+- strings/dec2hex.m:129 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/endsWith.m:127 [assert] assert (cond) failed
+- strings/endsWith.m:129 [assert] endsWith: third input must be "IgnoreCase"
+- strings/endsWith.m:133 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/endsWith.m:141 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/endsWith.m:148 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/endsWith.m:170 [error] error 'endsWith: third input must be "IgnoreCase"' does not match <"IgnoreCase" value must be a logical scalar>
+- strings/endsWith.m:172 [error] error 'endsWith: third input must be "IgnoreCase"' does not match <"IgnoreCase" value must be a logical scalar>
+- strings/erase.m:119 [assert] 'mat2cell' undefined
+- strings/erase.m:138 [assert] strrep: argument must be a string
+- strings/erase.m:140 [assert] strrep: argument must be a string
+- strings/erase.m:151 [warning] 'mat2cell' undefined
+- strings/hex2dec.m:69 [error] error 'Could not find any recognizable digits.' does not match <STR must be a string>
+- strings/index.m:101 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/index.m:102 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/index.m:103 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/index.m:104 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/index.m:107 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/index.m:118 [error] expected an error but none was raised
+- strings/index.m:120 [error] expected an error but none was raised
+- strings/isletter.m:47 [error] expected an error but none was raised
+- strings/isstrprop.m:153 [assert] isstrprop: invalid string type: "graphic"
+- strings/isstrprop.m:155 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/isstrprop.m:157 [assert] ischar: wrong type argument 'cell array'
+- strings/isstrprop.m:163 [error] expected an error but none was raised
+- strings/isstrprop.m:164 [error] expected an error but none was raised
+- strings/isstrprop.m:166 [error] expected an error but none was raised
+- strings/isstrprop.m:168 [error] expected an error but none was raised
+- strings/isstrprop.m:170 [error] expected an error but none was raised
+- strings/isstrprop.m:172 [error] error 'isstrprop: invalid string type: "foo"' does not match <invalid string property>
+- strings/mat2str.m:158 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/mat2str.m:160 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/mat2str.m:162 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/mat2str.m:164 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/mat2str.m:170 [test] 'Infi' undefined
+- strings/mat2str.m:178 [error] expected an error but none was raised
+- strings/mat2str.m:179 [error] expected an error but none was raised
+- strings/mat2str.m:180 [error] expected an error but none was raised
+- strings/native2unicode.m:87 [assert] '__native2unicode__' undefined
+- strings/ostrsplit.m:115 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/ostrsplit.m:116 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/ostrsplit.m:119 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/ostrsplit.m:124 [error] expected an error but none was raised
+- strings/ostrsplit.m:125 [error] error 'ostrsplit: argument must be a string' does not match <S and SEP must be string values>
+- strings/ostrsplit.m:126 [error] error 'ostrsplit: argument must be a string' does not match <S and SEP must be string values>
+- strings/ostrsplit.m:127 [error] expected an error but none was raised
+- strings/regexptranslate.m:87 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/rindex.m:63 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/rindex.m:72 [error] expected an error but none was raised
+- strings/startsWith.m:126 [assert] assert (cond) failed
+- strings/startsWith.m:128 [assert] startsWith: third input must be "IgnoreCase"
+- strings/startsWith.m:132 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/startsWith.m:140 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/startsWith.m:147 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/startsWith.m:169 [error] error 'startsWith: third input must be "IgnoreCase"' does not match <"IgnoreCase" value must be a logical scalar>
+- strings/startsWith.m:171 [error] error 'startsWith: third input must be "IgnoreCase"' does not match <"IgnoreCase" value must be a logical scalar>
+- strings/str2num.m:98 [error] error 'str2num: argument must be a string' does not match <S must be a string>
+- strings/strcat.m:134 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/strcat.m:135 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/strcat.m:140 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/strcat.m:144 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/strcat.m:150 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/strcat.m:160 [assert] strcat: argument must be a string
+- strings/strcat.m:161 [assert] strcat: argument must be a string
+- strings/strcat.m:162 [assert] strcat: argument must be a string
+- strings/strjoin.m:94 [assert] strjoin: argument must be a string
+- strings/strjoin.m:97 [assert] strjoin: argument must be a string
+- strings/strjust.m:106 [assert] 'sub2ind' undefined
+- strings/strjust.m:108 [assert] 'sub2ind' undefined
+- strings/strjust.m:110 [assert] 'sub2ind' undefined
+- strings/strjust.m:116 [error] error 'vertical dimensions mismatch (1x1 vs 1x2)' does not match <called with too many inputs>
+- strings/strsplit.m:239 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/strsplit.m:243 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/strsplit.m:247 [test] parse error near line 100, column 75: expected ')' but found ','
+- strings/strsplit.m:253 [test] parse error near line 100, column 75: expected ')' but found ','
+- strings/strsplit.m:263 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/strsplit.m:272 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/strsplit.m:274 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/strsplit.m:276 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/strsplit.m:283 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/strsplit.m:285 [assert] strsplit: argument must be a string
+- strings/strsplit.m:292 [test] parse error near line 100, column 75: expected ')' but found ','
+- strings/strsplit.m:297 [test] parse error near line 100, column 75: expected ')' but found ','
+- strings/strsplit.m:301 [test] parse error near line 100, column 75: expected ')' but found ','
+- strings/strsplit.m:305 [test] parse error near line 100, column 75: expected ')' but found ','
+- strings/strsplit.m:309 [test] strsplit: argument must be a string
+- strings/strsplit.m:327 [error] expected an error but none was raised
+- strings/strsplit.m:328 [error] expected an error but none was raised
+- strings/strsplit.m:329 [error] error 'strsplit: argument must be a string' does not match <S and DEL must be string values>
+- strings/strsplit.m:330 [error] expected an error but none was raised
+- strings/strsplit.m:331 [error] expected an error but none was raised
+- strings/strsplit.m:332 [error] expected an error but none was raised
+- strings/strsplit.m:333 [error] expected an error but none was raised
+- strings/strtok.m:174 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/strtok.m:186 [test] strtok: argument must be a string
+- strings/strtok.m:217 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/strtok.m:220 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/strtok.m:221 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/strtok.m:224 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/strtok.m:233 [error] error 'strtok: argument must be a string' does not match <STR must be a string>
+- strings/strtok.m:234 [error] expected an error but none was raised
+- strings/strtrim.m:88 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/strtrim.m:90 [assert] strtrim: argument must be a string
+- strings/strtrim.m:93 [error] expected an error but none was raised
+- strings/strtrim.m:95 [error] expected an error but none was raised
+- strings/strtrunc.m:70 [assert] cellfun: C must be a cell array
+- strings/strtrunc.m:71 [assert] cellfun: C must be a cell array
+- strings/strtrunc.m:72 [assert] cellfun: C must be a cell array
+- strings/strtrunc.m:73 [test] cellfun: C must be a cell array
+- strings/substr.m:100 [assert] Invalid call to substr
+- strings/substr.m:101 [assert] Invalid call to substr
+- strings/substr.m:102 [assert] Invalid call to substr
+- strings/substr.m:103 [assert] Invalid call to substr
+- strings/substr.m:110 [error] expected an error but none was raised
+- strings/substr.m:111 [error] expected an error but none was raised
+- strings/untabify.m:121 [test] cellfun: all the input arguments must have the same size and shape
+- strings/validatestring.m:151 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/validatestring.m:157 [error] error 'validatestring: 'xyz' does not match any valid string' does not match <DUMMY_TEST: 'xyz' does not match any>
+- strings/validatestring.m:159 [error] error 'validatestring: 'xyz' does not match any valid string' does not match <DUMMY_TEST: 'xyz' \(variable DUMMY_VAR\) does not match>
+- strings/validatestring.m:161 [error] error 'validatestring: 'xyz' does not match any valid string' does not match <DUMMY_TEST: 'xyz' \(variable DUMMY_VAR, argument #5\) does>
+- strings/validatestring.m:163 [error] expected an error but none was raised
+- strings/validatestring.m:167 [error] expected an error but none was raised
+- strings/validatestring.m:168 [error] expected an error but none was raised
+- strings/validatestring.m:169 [error] expected an error but none was raised
+- strings/validatestring.m:171 [error] error 'validatestring: argument must be a string' does not match <STR must be a single character string>
+- strings/validatestring.m:173 [error] error 'validatestring: 'xyzdef' does not match any valid string' does not match <STR must be a single character string>
+- strings/validatestring.m:175 [error] error 'validatestring: wrong type argument' does not match <STRARRAY must be a cellstr>
+- strings/validatestring.m:176 [error] expected an error but none was raised
+- strings/validatestring.m:178 [error] expected an error but none was raised
+- testfun/__have_feature__.m:51 [assert] '__octave_config_info__' undefined
+- testfun/__have_feature__.m:52 [assert] '__octave_config_info__' undefined
+- testfun/__have_feature__.m:53 [assert] '__octave_config_info__' undefined
+- testfun/__have_feature__.m:56 [assert] '__octave_config_info__' undefined
+- testfun/assert.m:511 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ' does not match <O\(3x0\)\s+E\(0x2\)>
+- testfun/assert.m:512 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ' does not match <Dimensions don't match>
+- testfun/assert.m:513 [error] expected an error but none was raised
+- testfun/assert.m:526 [error] error 'TST:msg_id' does not match <2-part error>
+- testfun/assert.m:529 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ' does not match <Dimensions don't match>
+- testfun/assert.m:530 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ' does not match <Dimensions don't match>
+- testfun/assert.m:531 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ' does not match <Dimensions don't match>
+- testfun/assert.m:533 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ' does not match <Abs err 1 exceeds tol>
+- testfun/assert.m:536 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       3.0000000000000004        3       Abs err 4.440892098500626E-16 exceeds tol 2.220446049250313E-16' does not match <Abs err 4.4409e-0?16 exceeds tol>
+- testfun/assert.m:537 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       3        3.0000000000000004       Abs err 4.440892098500626E-16 exceeds tol 2.220446049250313E-16' does not match <Abs err 4.4409e-0?16 exceeds tol>
+- testfun/assert.m:542 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ' does not match <Abs err 1 exceeds tol 0>
+- testfun/assert.m:544 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       2        1       Abs err 1 exceeds tol 0.1' does not match <Rel err 1 exceeds tol 0.1>
+- testfun/assert.m:545 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ' does not match <Abs err 1 exceeds tol 0>
+- testfun/assert.m:547 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       6        5       Abs err 1 exceeds tol 0.5' does not match <Rel err .* exceeds tol 0.1>
+- testfun/assert.m:548 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ' does not match <Dimensions don't match>
+- testfun/assert.m:549 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ' does not match <Dimensions don't match>
+- testfun/assert.m:550 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ' does not match <Dimensions don't match>
+- testfun/assert.m:554 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ' does not match <\(1,2\)\s+4\s+2>
+- testfun/assert.m:555 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ' does not match <Dimensions don't match>
+- testfun/assert.m:560 [test] expected error <\(1,2,3\).*Abs err 1.5 exceeds tol 0> but got <ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ>
+- testfun/assert.m:569 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       100.00000000000007        100       Abs err 7.105427357601002E-14 exceeds tol 4.440892098500626E-14' does not match <Rel err .* exceeds tol>
+- testfun/assert.m:570 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       100        100.00000000000007       Abs err 7.105427357601002E-14 exceeds tol 4.4408920985006293E-14' does not match <Rel err .* exceeds tol>
+- testfun/assert.m:574 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       0.10000000000000023        0.1       Abs err 2.220446049250313E-16 exceeds tol 4.4408920985006264E-17' does not match <Rel err 2.2204e-0?15 exceeds tol>
+- testfun/assert.m:576 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       100.00000000000003        100       Abs err 2.842170943040401E-14 exceeds tol 4.440892098500626E-16' does not match <Abs err 2.8422e-0?14 exceeds tol>
+- testfun/assert.m:579 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       2        0       Abs err 2 exceeds tol 0' does not match <Abs err 2 exceeds tol 0.1>
+- testfun/assert.m:582 [error] expected an error but none was raised
+- testfun/assert.m:583 [error] expected an error but none was raised
+- testfun/assert.m:584 [error] expected an error but none was raised
+- testfun/assert.m:585 [error] expected an error but none was raised
+- testfun/assert.m:586 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ' does not match <complex != real>
+- testfun/assert.m:587 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ' does not match <real != complex>
+- testfun/assert.m:592 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ' does not match <'NaN' mismatch>
+- testfun/assert.m:593 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ' does not match <'NaN' mismatch>
+- testfun/assert.m:594 [test] Too many errors reported for NaN assert
+- testfun/assert.m:608 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ' does not match <'NA' mismatch>
+- testfun/assert.m:610 [test] Too many errors reported for NA assert
+- testfun/assert.m:625 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ' does not match <'Inf' mismatch>
+- testfun/assert.m:626 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ' does not match <'Inf' mismatch>
+- testfun/assert.m:627 [test] Abs err reported for Inf assert
+- testfun/assert.m:638 [error] expected an error but none was raised
+- testfun/assert.m:642 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ' does not match <Strings don't match>
+- testfun/assert.m:643 [error] expected an error but none was raised
+- testfun/assert.m:644 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ' does not match <Class char != double>
+- testfun/assert.m:645 [error] error 'wrong type argument 'cell array'' does not match <Expected string, but observed cell>
+- testfun/assert.m:646 [error] error 'wrong type argument 'struct'' does not match <Expected string, but observed struct>
+- testfun/assert.m:649 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ' does not match <Expected cell, but observed double>
+- testfun/assert.m:650 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ' does not match <Dimensions don't match>
+- testfun/assert.m:651 [test] expected error <Abs err 2 exceeds tol 0> but got <ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ>
+- testfun/assert.m:660 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ' does not match <Function handles don't match>
+- testfun/assert.m:661 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ' does not match <Expected function handle, but observed double>
+- testfun/assert.m:662 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ' does not match <Class function_handle != double>
+- testfun/assert.m:664 [test] conversion to cell array from double not possible; use '{' instead of '('
+- testfun/assert.m:680 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ' does not match <Expected struct, but observed double>
+- testfun/assert.m:681 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ' does not match <Structure sizes don't match>
+- testfun/assert.m:685 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ' does not match <Structure sizes don't match>
+- testfun/assert.m:689 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ' does not match <Structure sizes don't match>
+- testfun/assert.m:694 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ' does not match <Structure fieldname mismatch>
+- testfun/assert.m:699 [test] 'resize' undefined
+- testfun/assert.m:713 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (2)       9.999999999999999E-79        1E-78       Abs err 1.1985091468012028E-94 exceeds tol 7.490682167507517E-96
+- testfun/assert.m:723 [test] Incorrect number of errors reported
+- testfun/assert.m:762 [error] expected an error but none was raised
+- testfun/assert_equal.m:535 [error] error ''debug_on_error' undefined' does not match <O\(3x0\)\s+E\(0x2\)>
+- testfun/assert_equal.m:536 [error] error ''debug_on_error' undefined' does not match <Dimensions don't match>
+- testfun/assert_equal.m:537 [error] error ''debug_on_error' undefined' does not match <Dimensions don't match>
+- testfun/assert_equal.m:540 [error] error ''debug_on_error' undefined' does not match <Dimensions don't match>
+- testfun/assert_equal.m:541 [error] error ''debug_on_error' undefined' does not match <Dimensions don't match>
+- testfun/assert_equal.m:542 [error] error ''debug_on_error' undefined' does not match <Dimensions don't match>
+- testfun/assert_equal.m:544 [error] error ''ind2sub' undefined' does not match <Abs err 1 exceeds tol>
+- testfun/assert_equal.m:547 [error] error ''ind2sub' undefined' does not match <Abs err 4.4409e-0?16 exceeds tol>
+- testfun/assert_equal.m:548 [error] error ''ind2sub' undefined' does not match <Abs err 4.4409e-0?16 exceeds tol>
+- testfun/assert_equal.m:553 [error] error ''ind2sub' undefined' does not match <Abs err 1 exceeds tol 0>
+- testfun/assert_equal.m:554 [error] error ''ind2sub' undefined' does not match <Abs err 1 exceeds tol 0.5>
+- testfun/assert_equal.m:555 [error] error ''ind2sub' undefined' does not match <Rel err 1 exceeds tol 0.1>
+- testfun/assert_equal.m:556 [error] error ''ind2sub' undefined' does not match <Abs err 1 exceeds tol 0>
+- testfun/assert_equal.m:557 [error] error ''ind2sub' undefined' does not match <Abs err 1 exceeds tol 0.5>
+- testfun/assert_equal.m:558 [error] error ''ind2sub' undefined' does not match <Rel err .* exceeds tol 0.1>
+- testfun/assert_equal.m:559 [error] error ''debug_on_error' undefined' does not match <Dimensions don't match>
+- testfun/assert_equal.m:560 [error] error ''debug_on_error' undefined' does not match <Dimensions don't match>
+- testfun/assert_equal.m:561 [error] error ''debug_on_error' undefined' does not match <Dimensions don't match>
+- testfun/assert_equal.m:565 [error] error ''ind2sub' undefined' does not match <\(1,2\)\s+4\s+2>
+- testfun/assert_equal.m:566 [error] error ''debug_on_error' undefined' does not match <Dimensions don't match>
+- testfun/assert_equal.m:571 [test] expected error <\(1,2,3\).*Abs err 1.5 exceeds tol 0> but got <Index was outside the bounds of the array.>
+- testfun/assert_equal.m:580 [error] error ''ind2sub' undefined' does not match <Rel err .* exceeds tol>
+- testfun/assert_equal.m:581 [error] error ''ind2sub' undefined' does not match <Rel err .* exceeds tol>
+- testfun/assert_equal.m:585 [error] error ''ind2sub' undefined' does not match <Rel err 2.2204e-0?15 exceeds tol>
+- testfun/assert_equal.m:587 [error] error ''ind2sub' undefined' does not match <Abs err 2.8422e-0?14 exceeds tol>
+- testfun/assert_equal.m:590 [error] error ''ind2sub' undefined' does not match <Abs err 2 exceeds tol 0.1>
+- testfun/assert_equal.m:593 [error] error ''debug_on_error' undefined' does not match <Class single != double>
+- testfun/assert_equal.m:594 [error] error ''debug_on_error' undefined' does not match <Class uint8 != uint16>
+- testfun/assert_equal.m:595 [error] error ''debug_on_error' undefined' does not match <sparse != non-sparse>
+- testfun/assert_equal.m:596 [error] error ''debug_on_error' undefined' does not match <non-sparse != sparse>
+- testfun/assert_equal.m:597 [error] error ''debug_on_error' undefined' does not match <complex != real>
+- testfun/assert_equal.m:598 [error] error ''debug_on_error' undefined' does not match <real != complex>
+- testfun/assert_equal.m:603 [error] error ''ind2sub' undefined' does not match <'NaN' mismatch>
+- testfun/assert_equal.m:604 [error] error ''ind2sub' undefined' does not match <'NaN' mismatch>
+- testfun/assert_equal.m:605 [test] Too many errors reported for NaN assert_equal
+- testfun/assert_equal.m:619 [error] error ''ind2sub' undefined' does not match <'NA' mismatch>
+- testfun/assert_equal.m:621 [test] Too many errors reported for NA assert_equal
+- testfun/assert_equal.m:636 [error] error ''ind2sub' undefined' does not match <'Inf' mismatch>
+- testfun/assert_equal.m:637 [error] error ''ind2sub' undefined' does not match <'Inf' mismatch>
+- testfun/assert_equal.m:638 [test] Too many errors reported for Inf assert_equal
+- testfun/assert_equal.m:649 [error] error ''ind2sub' undefined' does not match <Abs err>
+- testfun/assert_equal.m:653 [error] error ''debug_on_error' undefined' does not match <Strings don't match>
+- testfun/assert_equal.m:654 [error] error ''debug_on_error' undefined' does not match <Expected string, but observed number>
+- testfun/assert_equal.m:655 [error] error ''debug_on_error' undefined' does not match <Class char != double>
+- testfun/assert_equal.m:656 [error] error ''debug_on_error' undefined' does not match <Expected string, but observed cell>
+- testfun/assert_equal.m:657 [error] error ''debug_on_error' undefined' does not match <Expected string, but observed struct>
+- testfun/assert_equal.m:660 [error] error ''debug_on_error' undefined' does not match <Expected cell, but observed double>
+- testfun/assert_equal.m:661 [error] error ''debug_on_error' undefined' does not match <Dimensions don't match>
+- testfun/assert_equal.m:662 [test] expected error <Abs err 2 exceeds tol 0> but got <'debug_on_error' undefined>
+- testfun/assert_equal.m:668 [test] Incorrect number of errors reported
+- testfun/assert_equal.m:681 [error] error ''debug_on_error' undefined' does not match <Function handles don't match>
+- testfun/assert_equal.m:682 [error] error ''debug_on_error' undefined' does not match <Expected function handle, but observed double>
+- testfun/assert_equal.m:683 [error] error ''debug_on_error' undefined' does not match <Class function_handle != double>
+- testfun/assert_equal.m:685 [test] conversion to cell array from double not possible; use '{' instead of '('
+- testfun/assert_equal.m:701 [error] error ''debug_on_error' undefined' does not match <Expected struct, but observed double>
+- testfun/assert_equal.m:702 [error] error ''debug_on_error' undefined' does not match <Structure sizes don't match>
+- testfun/assert_equal.m:706 [error] error ''debug_on_error' undefined' does not match <Structure sizes don't match>
+- testfun/assert_equal.m:710 [error] error ''debug_on_error' undefined' does not match <Structure sizes don't match>
+- testfun/assert_equal.m:715 [error] error ''debug_on_error' undefined' does not match <Structure fieldname mismatch>
+- testfun/assert_equal.m:719 [error] error ''debug_on_error' undefined' does not match <Abs err 1 exceeds tol 0 by 1>
+- testfun/assert_equal.m:724 [test] 'debug_on_error' undefined
+- testfun/assert_equal.m:748 [test] Incorrect number of errors reported
+- testfun/assert_equal.m:786 [error] error ''debug_on_error' undefined' does not match <Expected classdef object, but observed double>
+- testfun/assert_equal.m:788 [error] error 'real: wrong type argument 'containers.Map'' does not match <Expected classdef object does not have an 'eq' method>
+- testfun/assert_equal.m:791 [error] error 'real: wrong type argument 'containers.Map'' does not match <Expected classdef object does not have an 'eq' method>
+- testfun/assert_equal.m:794 [test] 'ind2sub' undefined
+- testfun/demo.m:193 [warning] 'page_screen_output' undefined
+- testfun/demo.m:194 [warning] 'page_screen_output' undefined
+- testfun/example.m:113 [assert] 'file_in_loadpath' undefined
+- testfun/example.m:115 [test] 'file_in_loadpath' undefined
+- testfun/example.m:126 [warning] 'file_in_loadpath' undefined
+- testfun/example.m:127 [warning] 'file_in_loadpath' undefined
+- testfun/fail.m:150 [fail] value on right hand side of assignment is undefined
+- testfun/fail.m:151 [fail] value on right hand side of assignment is undefined
+- testfun/fail.m:157 [error] error 'value on right hand side of assignment is undefined' does not match <warning failure>
+- testfun/oruntests.m:197 [error] error ''canonicalize_file_name' undefined' does not match <DIRECTORY argument>
+- testfun/rundemos.m:121 [error] error ''canonicalize_file_name' undefined' does not match <DIRECTORY argument>
+- testfun/speed.m:430 [test] 'airy' undefined
+- testfun/test.m:1071 [test] 'file_in_loadpath' undefined
+- testfun/test.m:1084 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- time/addtodate.m:127 [assert] 'unsetenv' undefined
+- time/addtodate.m:128 [assert] 'strptime' undefined
+- time/addtodate.m:129 [assert] 'strptime' undefined
+- time/addtodate.m:130 [assert] 'strptime' undefined
+- time/addtodate.m:131 [assert] 'strptime' undefined
+- time/addtodate.m:132 [assert] 'strptime' undefined
+- time/addtodate.m:133 [assert] 'strptime' undefined
+- time/addtodate.m:134 [assert] 'strptime' undefined
+- time/addtodate.m:135 [assert] 'strptime' undefined
+- time/addtodate.m:136 [assert] 'strptime' undefined
+- time/addtodate.m:137 [assert] 'strptime' undefined
+- time/datenum.m:259 [test] cellfun: all the input arguments must have the same size and shape
+- time/datenum.m:268 [assert] cellfun: all the input arguments must have the same size and shape
+- time/datenum.m:280 [assert] cellfun: all the input arguments must have the same size and shape
+- time/datenum.m:281 [assert] cellfun: all the input arguments must have the same size and shape
+- time/datenum.m:282 [assert] cellfun: all the input arguments must have the same size and shape
+- time/datenum.m:283 [assert] cellfun: all the input arguments must have the same size and shape
+- time/datenum.m:285 [assert] cellfun: all the input arguments must have the same size and shape
+- time/datenum.m:287 [assert] cellfun: all the input arguments must have the same size and shape
+- time/datenum.m:289 [assert] cellfun: all the input arguments must have the same size and shape
+- time/datenum.m:290 [assert] cellfun: all the input arguments must have the same size and shape
+- time/datenum.m:291 [assert] cellfun: all the input arguments must have the same size and shape
+- time/datenum.m:292 [assert] cellfun: all the input arguments must have the same size and shape
+- time/datenum.m:294 [assert] cellfun: all the input arguments must have the same size and shape
+- time/datenum.m:296 [assert] cellfun: all the input arguments must have the same size and shape
+- time/datenum.m:299 [assert] 'unsetenv' undefined
+- time/datenum.m:300 [assert] 'strptime' undefined
+- time/datenum.m:301 [assert] 'strptime' undefined
+- time/datenum.m:302 [assert] 'strptime' undefined
+- time/datenum.m:305 [assert] 'strptime' undefined
+- time/datestr.m:368 [assert] 'unsetenv' undefined
+- time/datevec.m:410 [assert] 'unsetenv' undefined
+- time/datevec.m:411 [assert] 'strptime' undefined
+- time/datevec.m:412 [assert] 'strptime' undefined
+- time/datevec.m:413 [assert] 'strptime' undefined
+- time/datevec.m:414 [assert] 'strptime' undefined
+- time/datevec.m:415 [assert] 'strptime' undefined
+- time/datevec.m:416 [assert] 'strptime' undefined
+- time/datevec.m:417 [assert] 'strptime' undefined
+- time/datevec.m:418 [assert] 'strptime' undefined
+- time/datevec.m:421 [assert] 'strptime' undefined
+- time/datevec.m:422 [assert] 'strptime' undefined
+- time/datevec.m:423 [assert] 'strptime' undefined
+- time/datevec.m:426 [assert] 'strptime' undefined
+- time/datevec.m:428 [assert] 'strptime' undefined
+- time/datevec.m:430 [assert] 'strptime' undefined
+- time/datevec.m:432 [assert] 'strptime' undefined
+- time/datevec.m:434 [assert] 'strptime' undefined
+- time/datevec.m:436 [assert] 'strptime' undefined
+- time/datevec.m:438 [assert] 'strptime' undefined
+- time/datevec.m:442 [assert] 'strptime' undefined
+- time/datevec.m:443 [assert] 'strptime' undefined
+- time/datevec.m:444 [assert] 'strptime' undefined
+- time/datevec.m:445 [assert] 'strptime' undefined
+- time/datevec.m:495 [test] 'strptime' undefined
+- time/datevec.m:506 [assert] 'strptime' undefined
+- time/datevec.m:507 [assert] 'strptime' undefined
+- time/datevec.m:508 [assert] 'strptime' undefined
+- time/datevec.m:511 [assert] 'strptime' undefined
+- time/datevec.m:512 [assert] 'strptime' undefined
+- time/datevec.m:513 [assert] 'strptime' undefined
+- time/datevec.m:514 [assert] 'strptime' undefined
+- time/datevec.m:517 [assert] 'strptime' undefined
+- time/datevec.m:518 [assert] 'strptime' undefined
+- time/datevec.m:519 [assert] 'strptime' undefined
+- time/datevec.m:520 [assert] 'strptime' undefined
+- time/datevec.m:523 [assert] 'strptime' undefined
+- time/datevec.m:524 [assert] 'strptime' undefined
+- time/datevec.m:525 [assert] 'strptime' undefined
+- time/datevec.m:530 [assert] 'strptime' undefined
+- time/datevec.m:531 [assert] 'strptime' undefined
+- time/datevec.m:532 [assert] 'strptime' undefined
+- time/datevec.m:533 [assert] 'strptime' undefined
+- time/datevec.m:536 [assert] 'strptime' undefined
+- time/datevec.m:537 [assert] 'strptime' undefined
+- time/datevec.m:538 [assert] 'strptime' undefined
+- time/datevec.m:539 [assert] 'strptime' undefined
+- time/datevec.m:542 [assert] 'strptime' undefined
+- time/datevec.m:543 [assert] 'strptime' undefined
+- time/datevec.m:544 [assert] 'strptime' undefined
+- time/datevec.m:545 [assert] 'strptime' undefined
+- time/datevec.m:548 [assert] 'strptime' undefined
+- time/datevec.m:549 [assert] 'strptime' undefined
+- time/datevec.m:550 [assert] 'strptime' undefined
+- time/datevec.m:555 [assert] 'strptime' undefined
+- time/datevec.m:556 [assert] 'strptime' undefined
+- time/datevec.m:557 [assert] 'strptime' undefined
+- time/datevec.m:558 [assert] 'strptime' undefined
+- time/datevec.m:561 [assert] 'strptime' undefined
+- time/datevec.m:562 [assert] 'strptime' undefined
+- time/datevec.m:563 [assert] 'strptime' undefined
+- time/datevec.m:564 [assert] 'strptime' undefined
+- time/datevec.m:567 [assert] 'strptime' undefined
+- time/datevec.m:568 [assert] 'strptime' undefined
+- time/datevec.m:569 [assert] 'strptime' undefined
+- time/datevec.m:570 [assert] 'strptime' undefined
+- time/datevec.m:573 [assert] 'strptime' undefined
+- time/datevec.m:574 [assert] 'strptime' undefined
+- time/datevec.m:575 [assert] 'strptime' undefined
+- time/datevec.m:576 [assert] 'strptime' undefined
+- time/datevec.m:579 [assert] 'strptime' undefined
+- time/datevec.m:580 [assert] 'strptime' undefined
+- time/datevec.m:581 [assert] 'strptime' undefined
+- time/datevec.m:582 [assert] 'strptime' undefined
+- time/datevec.m:583 [assert] 'strptime' undefined
+- time/datevec.m:586 [assert] 'strptime' undefined
+- time/datevec.m:587 [assert] 'strptime' undefined
+- time/datevec.m:588 [assert] 'strptime' undefined
+- time/datevec.m:589 [assert] 'strptime' undefined
+- time/datevec.m:592 [assert] 'strptime' undefined
+- time/datevec.m:593 [assert] 'strptime' undefined
+- time/datevec.m:594 [assert] 'strptime' undefined
+- time/datevec.m:595 [assert] 'strptime' undefined
+- time/datevec.m:602 [assert] 'strptime' undefined
+- time/datevec.m:603 [assert] 'strptime' undefined
+- time/datevec.m:604 [assert] 'strptime' undefined
+- time/datevec.m:607 [assert] 'strptime' undefined
+- time/datevec.m:608 [assert] 'strptime' undefined
+- time/datevec.m:609 [assert] 'strptime' undefined
+- time/datevec.m:610 [assert] 'strptime' undefined
+- time/datevec.m:613 [assert] 'strptime' undefined
+- time/datevec.m:614 [assert] 'strptime' undefined
+- time/datevec.m:615 [assert] 'strptime' undefined
+- time/datevec.m:616 [assert] 'strptime' undefined
+- time/datevec.m:619 [assert] 'strptime' undefined
+- time/datevec.m:620 [assert] 'strptime' undefined
+- time/datevec.m:621 [assert] 'strptime' undefined
+- time/datevec.m:622 [assert] 'strptime' undefined
+- time/datevec.m:625 [assert] 'strptime' undefined
+- time/datevec.m:626 [assert] 'strptime' undefined
+- time/datevec.m:627 [assert] 'strptime' undefined
+- time/datevec.m:628 [assert] 'strptime' undefined
+- time/datevec.m:631 [assert] 'strptime' undefined
+- time/datevec.m:632 [assert] 'strptime' undefined
+- time/datevec.m:633 [assert] 'strptime' undefined
+- time/datevec.m:636 [assert] 'strptime' undefined
+- time/datevec.m:637 [assert] 'strptime' undefined
+- time/datevec.m:638 [assert] 'strptime' undefined
+- time/datevec.m:639 [assert] 'strptime' undefined
+- time/datevec.m:642 [assert] 'strptime' undefined
+- time/datevec.m:643 [assert] 'strptime' undefined
+- time/datevec.m:644 [assert] 'strptime' undefined
+- time/datevec.m:645 [assert] 'strptime' undefined
+- time/datevec.m:650 [assert] 'strptime' undefined
+- time/datevec.m:651 [assert] 'strptime' undefined
+- time/datevec.m:652 [assert] 'strptime' undefined
+- time/datevec.m:653 [assert] 'strptime' undefined
+- time/datevec.m:656 [assert] 'strptime' undefined
+- time/datevec.m:657 [assert] 'strptime' undefined
+- time/datevec.m:658 [assert] 'strptime' undefined
+- time/datevec.m:659 [assert] 'strptime' undefined
+- time/datevec.m:662 [assert] 'strptime' undefined
+- time/datevec.m:663 [assert] 'strptime' undefined
+- time/datevec.m:664 [assert] 'strptime' undefined
+- time/datevec.m:667 [assert] 'strptime' undefined
+- time/datevec.m:668 [assert] 'strptime' undefined
+- time/datevec.m:669 [assert] 'strptime' undefined
+- time/datevec.m:670 [assert] 'strptime' undefined
+- time/datevec.m:673 [assert] 'strptime' undefined
+- time/datevec.m:674 [assert] 'strptime' undefined
+- time/datevec.m:675 [assert] 'strptime' undefined
+- time/datevec.m:676 [assert] 'strptime' undefined
+- time/datevec.m:679 [assert] 'strptime' undefined
+- time/datevec.m:680 [assert] 'strptime' undefined
+- time/datevec.m:681 [assert] 'strptime' undefined
+- time/datevec.m:682 [assert] 'strptime' undefined
+- time/datevec.m:685 [assert] 'strptime' undefined
+- time/datevec.m:686 [assert] 'strptime' undefined
+- time/datevec.m:687 [assert] 'strptime' undefined
+- time/datevec.m:688 [assert] 'strptime' undefined
+- time/datevec.m:691 [assert] 'strptime' undefined
+- time/datevec.m:692 [assert] 'strptime' undefined
+- time/datevec.m:693 [assert] 'strptime' undefined
+- time/datevec.m:694 [assert] 'strptime' undefined
+- time/datevec.m:697 [assert] 'strptime' undefined
+- time/datevec.m:698 [assert] 'strptime' undefined
+- time/datevec.m:699 [assert] 'strptime' undefined
+- time/datevec.m:700 [assert] 'strptime' undefined
+- time/datevec.m:703 [assert] 'strptime' undefined
+- time/datevec.m:704 [assert] 'strptime' undefined
+- time/datevec.m:705 [assert] 'strptime' undefined
+- time/datevec.m:706 [assert] 'strptime' undefined
+- time/datevec.m:709 [assert] 'strptime' undefined
+- time/datevec.m:710 [assert] 'strptime' undefined
+- time/datevec.m:711 [assert] 'strptime' undefined
+- time/datevec.m:712 [assert] 'strptime' undefined
+- time/datevec.m:715 [assert] 'strptime' undefined
+- time/datevec.m:716 [assert] 'strptime' undefined
+- time/datevec.m:717 [assert] 'strptime' undefined
+- time/datevec.m:718 [assert] 'strptime' undefined
+- time/datevec.m:721 [assert] 'strptime' undefined
+- time/datevec.m:722 [assert] 'strptime' undefined
+- time/datevec.m:723 [assert] 'strptime' undefined
+- time/datevec.m:724 [assert] 'strptime' undefined
+- time/datevec.m:727 [assert] 'strptime' undefined
+- time/datevec.m:728 [assert] 'strptime' undefined
+- time/datevec.m:729 [assert] 'strptime' undefined
+- time/datevec.m:730 [assert] 'strptime' undefined
+- time/datevec.m:733 [assert] 'strptime' undefined
+- time/datevec.m:734 [assert] 'strptime' undefined
+- time/datevec.m:735 [assert] 'strptime' undefined
+- time/datevec.m:736 [assert] 'strptime' undefined
+- time/datevec.m:739 [assert] 'strptime' undefined
+- time/datevec.m:740 [assert] 'strptime' undefined
+- time/datevec.m:741 [assert] 'strptime' undefined
+- time/datevec.m:742 [assert] 'strptime' undefined
+- time/datevec.m:745 [assert] 'strptime' undefined
+- time/datevec.m:746 [assert] 'strptime' undefined
+- time/datevec.m:747 [assert] 'strptime' undefined
+- time/datevec.m:748 [assert] 'strptime' undefined
+- time/datevec.m:751 [assert] 'strptime' undefined
+- time/datevec.m:752 [assert] 'strptime' undefined
+- time/datevec.m:753 [assert] 'strptime' undefined
+- time/datevec.m:756 [assert] 'strptime' undefined
+- time/datevec.m:757 [assert] 'strptime' undefined
+- time/datevec.m:758 [assert] 'strptime' undefined
+- time/datevec.m:763 [error] error ''strptime' undefined' does not match <none of the standard formats match>
+- time/datevec.m:764 [error] error ''strptime' undefined' does not match <DATE not parsed correctly with given format>
+- time/datevec.m:771 [fail] value on right hand side of assignment is undefined
+- time/datevec.m:773 [fail] value on right hand side of assignment is undefined
+- time/eomday.m:59 [assert] cellfun: all the input arguments must have the same size and shape
+- time/weekday.m:106 [assert] 'unsetenv' undefined
+- time/weekday.m:107 [assert] 'strptime' undefined
+- time/weekday.m:108 [assert] 'strptime' undefined
+- time/weekday.m:109 [assert] 'strptime' undefined
+- time/weekday.m:110 [assert] 'strptime' undefined
+- time/weekday.m:111 [assert] 'strptime' undefined
+- time/weekday.m:112 [assert] 'strptime' undefined
+- time/weekday.m:114 [assert] 'strptime' undefined
+- time/weekday.m:116 [assert] 'strptime' undefined
+- time/weekday.m:117 [assert] 'strptime' undefined
+- time/weekday.m:118 [assert] 'strptime' undefined
+- time/weekday.m:119 [assert] 'strptime' undefined
+- time/weekday.m:120 [assert] 'strptime' undefined
+- time/weekday.m:121 [assert] 'strptime' undefined
+- time/weekday.m:122 [assert] 'strptime' undefined
+- time/weekday.m:126 [test] 'strptime' undefined
+- web/webread.m:110 [error] error 'parse error near line 174, column 13: invalid property declaration' does not match <NAMES/VALUES must occur in pairs>
+- web/webread.m:111 [error] error 'parse error near line 174, column 13: invalid property declaration' does not match <NAMES and VALUES must be strings>
+- web/webwrite.m:126 [error] error 'parse error near line 174, column 13: invalid property declaration' does not match <missing DATA or NAMES/VALUES>
+- web/webwrite.m:127 [error] error 'parse error near line 174, column 13: invalid property declaration' does not match <DATA must be a string>
+- web/webwrite.m:128 [error] error 'parse error near line 174, column 13: invalid property declaration' does not match <DATA must be a string>
+- web/webwrite.m:129 [error] error 'parse error near line 174, column 13: invalid property declaration' does not match <DATA not a valid query string>
+- web/webwrite.m:130 [error] error 'parse error near line 174, column 13: invalid property declaration' does not match <NAMES/VALUES must occur in pairs>
+- web/webwrite.m:131 [error] error 'parse error near line 174, column 13: invalid property declaration' does not match <NAMES and VALUES must be strings>

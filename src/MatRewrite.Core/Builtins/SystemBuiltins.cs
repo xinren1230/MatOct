@@ -41,11 +41,23 @@ public static partial class BuiltinLibrary
             if (IsString(a[0]))
             {
                 var s0 = S(a[0], "warning");
-                if (s0 is "on" or "off" or "query" or "error") return Array.Empty<Value>();
+                if (s0 is "on" or "off" or "query" or "error")
+                {
+                    var id = a.Length > 1 && IsString(a[1]) ? S(a[1], "warning") : "all";
+                    if (s0 == "off") { if (id == "all") { it.DisabledWarnings.Clear(); it.EnabledWarnings.Clear(); } it.DisabledWarnings.Add(id); it.EnabledWarnings.Remove(id); }
+                    else if (s0 == "on") { if (id == "all") { it.DisabledWarnings.Clear(); it.EnabledWarnings.Clear(); } else { it.DisabledWarnings.Remove(id); it.EnabledWarnings.Add(id); } }
+                    return Array.Empty<Value>();
+                }
             }
-            var (_, msg) = ErrorArgs(a, "warning");
-            it.Warning(msg.TrimEnd('\n'));
+            var (wid, msg) = ErrorArgs(a, "warning");
+            it.Warning(msg.TrimEnd('\n'), wid ?? "");
             return Array.Empty<Value>();
+        });
+        Reg("lastwarn", (it, a, n) =>
+        {
+            var res = new Value[] { Str(it.LastWarning), Str(it.LastWarningId) };
+            if (a.Length > 0) { it.LastWarning = S(a[0], "lastwarn"); it.LastWarningId = a.Length > 1 ? S(a[1], "lastwarn") : ""; }
+            return n <= 1 ? new[] { res[0] } : res;
         });
         Reg("rethrow", (it, a, n) =>
         {

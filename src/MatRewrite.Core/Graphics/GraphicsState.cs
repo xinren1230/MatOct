@@ -7,6 +7,8 @@ namespace MatRewrite.Core.Graphics;
 public sealed class GraphicsState
 {
     public readonly SortedDictionary<int, Figure> Figures = new();
+    /// <summary>Properties set on the root object (handle 0), e.g. defaultaxescolororder.</summary>
+    public readonly Dictionary<string, Runtime.Value> RootProps = new(StringComparer.OrdinalIgnoreCase);
     readonly Dictionary<double, GObject> handles = new();
     double nextHandle = -1000.5;
     public Figure? Current;

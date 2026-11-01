@@ -10,6 +10,7 @@ public static class Ops
     public static MatrixValue ToMatrix(Value v, string op)
     {
         if (v is MatrixValue m) return m;
+        if (v is Sparse.SparseValue sp) return sp.ToDense();
         if (v is CellValue) throw new OctaveException($"binary operator '{op}' not implemented for 'cell' by 'double' operations");
         if (v is StructValue) throw new OctaveException($"binary operator '{op}' not implemented for 'struct' operations");
         if (v is FunctionHandleValue) throw new OctaveException($"binary operator '{op}' not implemented for 'function handle' operations");
@@ -139,16 +140,9 @@ public static class Ops
 
     public static Value Binary(string op, Value av, Value bv)
     {
+        if (av is Sparse.SparseValue || bv is Sparse.SparseValue)
+            return Sparse.SparseOps.Binary(op, av, bv, BinaryCore);
         var res = BinaryCore(op, av, bv);
-        bool sa = av is MatrixValue ma && ma.IsSparse, sb = bv is MatrixValue mb && mb.IsSparse;
-        if ((sa || sb) && res is MatrixValue rm && !rm.IsScalar | (sa && sb))
-        {
-            // Octave rules (simplified): sparse op sparse -> sparse; sparse .* anything -> sparse;
-            // sparse * dense / scalar ops that keep zeros -> sparse; comparisons -> sparse logical.
-            bool keep = (sa && sb) || op is ".*" or "&" || (op is "*" && (av is MatrixValue x && x.IsScalar || bv is MatrixValue y && y.IsScalar))
-                || (op is "./" or "/" && sa && bv is MatrixValue z && z.IsScalar);
-            if (keep) { if (ReferenceEquals(res, av) || ReferenceEquals(res, bv)) rm = rm.Copy(); rm.IsSparse = true; return rm; }
-        }
         return res;
     }
 
@@ -225,6 +219,7 @@ public static class Ops
 
     public static Value Unary(string op, Value v)
     {
+        if (v is Sparse.SparseValue sv) return Sparse.SparseOps.Unary(op, sv, Unary);
         var a = ToMatrix(v, op);
         switch (op)
         {
@@ -378,6 +373,7 @@ public static class Ops
 
     public static bool IsTrue(Value v)
     {
+        if (v is Sparse.SparseValue sv) v = sv.ToDense();
         if (v is MatrixValue m)
         {
             if (m.Numel == 0) return false;

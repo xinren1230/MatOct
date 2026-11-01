@@ -1,0 +1,8715 @@
+# GNU Octave compatibility report
+
+Mode: core builtins only (Octave m-files not on path)
+
+Files: 864, blocks passed 1725, failed 8672, skipped 489, pass rate 16.6% (41 s)
+
+| Area | Files | Pass | Fail | Skip | Rate |
+|---|---:|---:|---:|---:|---:|
+| +containers | 1 | 21 | 24 | 0 | 46.7% |
+| +matlab | 4 | 1 | 47 | 0 | 2.1% |
+| @ftp | 14 | 14 | 0 | 0 | 100.0% |
+| audio | 32 | 14 | 55 | 28 | 20.3% |
+| elfun | 27 | 0 | 83 | 0 | 0.0% |
+| general | 67 | 456 | 1085 | 15 | 29.6% |
+| geometry | 15 | 2 | 125 | 31 | 1.6% |
+| gui | 26 | 10 | 81 | 8 | 11.0% |
+| help | 16 | 8 | 40 | 1 | 16.7% |
+| image | 50 | 40 | 509 | 24 | 7.3% |
+| io | 7 | 11 | 31 | 3 | 26.2% |
+| java | 4 | 2 | 13 | 14 | 13.3% |
+| legacy | 9 | 31 | 113 | 0 | 21.5% |
+| linear-algebra | 36 | 43 | 502 | 1 | 7.9% |
+| miscellaneous | 92 | 147 | 487 | 18 | 23.2% |
+| ode | 9 | 83 | 77 | 90 | 51.9% |
+| optimization | 14 | 17 | 128 | 5 | 11.7% |
+| path | 4 | 2 | 5 | 0 | 28.6% |
+| plot | 197 | 87 | 967 | 13 | 8.3% |
+| polynomial | 27 | 52 | 243 | 0 | 17.6% |
+| prefs | 6 | 0 | 24 | 0 | 0.0% |
+| profiler | 3 | 3 | 8 | 0 | 27.3% |
+| set | 9 | 48 | 273 | 2 | 15.0% |
+| signal | 21 | 35 | 470 | 9 | 6.9% |
+| sparse | 29 | 72 | 228 | 198 | 24.0% |
+| specfun | 21 | 49 | 388 | 0 | 11.2% |
+| special-matrix | 11 | 7 | 186 | 0 | 3.6% |
+| statistics | 49 | 189 | 1593 | 0 | 10.6% |
+| strings | 34 | 192 | 307 | 26 | 38.5% |
+| testfun | 13 | 85 | 187 | 2 | 31.2% |
+| time | 14 | 4 | 375 | 1 | 1.1% |
+| web | 3 | 0 | 18 | 0 | 0.0% |
+
+## Failures
+
+- +containers/Map.m:629 [test] specified key type does not match the type of this container
+- +containers/Map.m:644 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- +containers/Map.m:690 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- +containers/Map.m:742 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- +containers/Map.m:770 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- +containers/Map.m:883 [test] Unable to cast object of type 'MatRewrite.Core.Runtime.MapValue' to type 'MatRewrite.Core.Runtime.ArrayValue'.
+- +containers/Map.m:921 [test] element number 2 undefined in return list
+- +containers/Map.m:931 [error] expected an error but none was raised
+- +containers/Map.m:934 [error] expected an error but none was raised
+- +containers/Map.m:935 [error] error 'specified key type does not match the type of this container' does not match <keys must be real .* values>
+- +containers/Map.m:936 [error] error 'specified key type does not match the type of this container' does not match <keys must be .* scalar .* values>
+- +containers/Map.m:937 [warning] expected a warning but none was issued
+- +containers/Map.m:939 [error] error 'specified key type does not match the type of this container' does not match <when using multiple key types, all types must be numeric>
+- +containers/Map.m:941 [error] expected an error but none was raised
+- +containers/Map.m:943 [error] error 'containers.Map: wrong type argument 'cell array'' does not match <'UniformValues' must be a logical scalar>
+- +containers/Map.m:945 [error] expected an error but none was raised
+- +containers/Map.m:947 [error] error 'Map: invalid option 'vtype'' does not match <missing parameter name 'KeyType'>
+- +containers/Map.m:949 [error] error 'specified key type does not match the type of this container' does not match <'keySet' must be a cell>
+- +containers/Map.m:955 [error] error 'specified key type does not match the type of this container' does not match <input argument 'KeySet' is missing>
+- +containers/Map.m:958 [error] error ''foobar' undefined' does not match <unknown property 'foobar'>
+- +containers/Map.m:964 [error] error 'the given key is not present in the container' does not match <specified key .b. does not exist>
+- +containers/Map.m:967 [test] value on right hand side of assignment is undefined
+- +containers/Map.m:977 [error] error ''{' undefined for arguments of type 'containers.Map'; matrix cannot be indexed with {' does not match <only '\(\)' indexing is supported>
+- +containers/Map.m:982 [error] expected an error but none was raised
+- +matlab/+lang/makeUniqueStrings.m:177 [test] 'matlab' undefined
+- +matlab/+lang/makeUniqueStrings.m:184 [test] 'matlab' undefined
+- +matlab/+lang/makeUniqueStrings.m:198 [test] 'matlab' undefined
+- +matlab/+lang/makeUniqueStrings.m:208 [test] 'matlab' undefined
+- +matlab/+lang/makeUniqueStrings.m:215 [test] 'matlab' undefined
+- +matlab/+lang/makeUniqueStrings.m:220 [error] error ''matlab' undefined' does not match <cannot create unique elements within MAXLENGTH>
+- +matlab/+lang/makeUniqueStrings.m:223 [test] 'matlab' undefined
+- +matlab/+lang/makeUniqueStrings.m:231 [error] error ''matlab' undefined' does not match <Invalid call>
+- +matlab/+lang/makeUniqueStrings.m:232 [error] error ''matlab' undefined' does not match <STR must be a string or cellstr>
+- +matlab/+lang/makeUniqueStrings.m:233 [error] error ''matlab' undefined' does not match <STR and EX logical array must have the same length>
+- +matlab/+lang/makeUniqueStrings.m:235 [error] error ''matlab' undefined' does not match <invalid array of indices EX>
+- +matlab/+lang/makeUniqueStrings.m:236 [error] error ''matlab' undefined' does not match <MAXLENGTH must be a positive integer>
+- +matlab/+lang/makeValidName.m:76 [test] 'matlab' undefined
+- +matlab/+lang/makeValidName.m:81 [test] 'matlab' undefined
+- +matlab/+lang/makeValidName.m:86 [test] 'matlab' undefined
+- +matlab/+lang/makeValidName.m:92 [test] 'matlab' undefined
+- +matlab/+lang/makeValidName.m:102 [test] 'matlab' undefined
+- +matlab/+lang/makeValidName.m:109 [test] 'matlab' undefined
+- +matlab/+lang/makeValidName.m:115 [test] 'matlab' undefined
+- +matlab/+lang/makeValidName.m:122 [assert] 'matlab' undefined
+- +matlab/+lang/makeValidName.m:123 [assert] 'matlab' undefined
+- +matlab/+lang/makeValidName.m:127 [error] error ''matlab' undefined' does not match <Invalid call>
+- +matlab/+lang/makeValidName.m:128 [error] error ''matlab' undefined' does not match <STR must be a string or cellstr>
+- +matlab/+lang/makeValidName.m:129 [error] error ''matlab' undefined' does not match <options must occur in pairs>
+- +matlab/+lang/makeValidName.m:130 [error] error ''matlab' undefined' does not match <option argument must be a string>
+- +matlab/+lang/makeValidName.m:132 [error] error ''matlab' undefined' does not match <'ReplacementStyle' value must be a string>
+- +matlab/+lang/makeValidName.m:134 [error] error ''matlab' undefined' does not match <invalid 'ReplacementStyle' value 'foobar'>
+- +matlab/+lang/makeValidName.m:136 [error] error ''matlab' undefined' does not match <invalid 'Prefix' value '1_'>
+- +matlab/+lang/makeValidName.m:138 [error] error ''matlab' undefined' does not match <unknown property 'foobar'>
+- +matlab/+net/base64decode.m:55 [assert] 'matlab' undefined
+- +matlab/+net/base64decode.m:56 [assert] 'matlab' undefined
+- +matlab/+net/base64decode.m:57 [assert] 'matlab' undefined
+- +matlab/+net/base64decode.m:58 [assert] 'matlab' undefined
+- +matlab/+net/base64decode.m:59 [assert] 'matlab' undefined
+- +matlab/+net/base64decode.m:62 [error] error ''matlab' undefined' does not match <Invalid call>
+- +matlab/+net/base64decode.m:63 [error] error ''matlab' undefined' does not match <character vector>
+- +matlab/+net/base64decode.m:64 [error] error ''matlab' undefined' does not match <character vector>
+- +matlab/+net/base64decode.m:65 [error] error ''matlab' undefined' does not match <character vector>
+- +matlab/+net/base64encode.m:58 [assert] 'matlab' undefined
+- +matlab/+net/base64encode.m:59 [assert] 'matlab' undefined
+- +matlab/+net/base64encode.m:60 [assert] 'matlab' undefined
+- +matlab/+net/base64encode.m:61 [assert] 'matlab' undefined
+- +matlab/+net/base64encode.m:62 [assert] 'matlab' undefined
+- +matlab/+net/base64encode.m:65 [error] error ''matlab' undefined' does not match <Invalid call>
+- +matlab/+net/base64encode.m:66 [error] error ''matlab' undefined' does not match <numeric or character vector>
+- +matlab/+net/base64encode.m:67 [error] error ''matlab' undefined' does not match <numeric or character vector>
+- +matlab/+net/base64encode.m:68 [error] error ''matlab' undefined' does not match <consist of integers>
+- audio/@audioplayer/audioplayer.m:155 [error] error ''audioplayer' undefined' does not match <Y must be non-empty numeric data>
+- audio/@audiorecorder/audiorecorder.m:94 [error] error ''audiorecorder' undefined' does not match <Invalid call>
+- audio/@audiorecorder/audiorecorder.m:95 [error] error ''audiorecorder' undefined' does not match <Invalid call>
+- audio/@audiorecorder/audiorecorder.m:96 [error] error ''audiorecorder' undefined' does not match <Invalid call>
+- audio/lin2mu.m:80 [test] 'lin2mu' undefined
+- audio/lin2mu.m:86 [assert] 'lin2mu' undefined
+- audio/lin2mu.m:87 [assert] 'lin2mu' undefined
+- audio/lin2mu.m:88 [assert] 'lin2mu' undefined
+- audio/lin2mu.m:89 [assert] 'lin2mu' undefined
+- audio/lin2mu.m:90 [assert] 'lin2mu' undefined
+- audio/lin2mu.m:91 [assert] 'lin2mu' undefined
+- audio/lin2mu.m:92 [assert] 'lin2mu' undefined
+- audio/lin2mu.m:93 [assert] 'lin2mu' undefined
+- audio/lin2mu.m:94 [assert] 'lin2mu' undefined
+- audio/lin2mu.m:95 [assert] 'lin2mu' undefined
+- audio/lin2mu.m:96 [assert] 'lin2mu' undefined
+- audio/lin2mu.m:99 [error] error ''lin2mu' undefined' does not match <Invalid call>
+- audio/lin2mu.m:100 [error] error ''lin2mu' undefined' does not match <N must be either 0, 8, or 16>
+- audio/lin2mu.m:101 [error] error ''lin2mu' undefined' does not match <N must be either 0, 8, or 16>
+- audio/lin2mu.m:102 [error] error ''lin2mu' undefined' does not match <N must be either 0, 8, or 16>
+- audio/lin2mu.m:103 [error] error ''lin2mu' undefined' does not match <invalid conversion>
+- audio/mu2lin.m:104 [test] 'mu2lin' undefined
+- audio/mu2lin.m:110 [assert] 'mu2lin' undefined
+- audio/mu2lin.m:111 [assert] 'mu2lin' undefined
+- audio/mu2lin.m:112 [assert] 'mu2lin' undefined
+- audio/mu2lin.m:113 [assert] 'mu2lin' undefined
+- audio/mu2lin.m:114 [assert] 'mu2lin' undefined
+- audio/mu2lin.m:115 [assert] 'mu2lin' undefined
+- audio/mu2lin.m:116 [assert] 'mu2lin' undefined
+- audio/mu2lin.m:117 [assert] 'mu2lin' undefined
+- audio/mu2lin.m:118 [assert] 'mu2lin' undefined
+- audio/mu2lin.m:119 [assert] 'mu2lin' undefined
+- audio/mu2lin.m:122 [error] error ''mu2lin' undefined' does not match <Invalid call>
+- audio/mu2lin.m:123 [error] error ''mu2lin' undefined' does not match <N must be either 0, 8, or 16>
+- audio/mu2lin.m:124 [error] error ''mu2lin' undefined' does not match <N must be either 0, 8, or 16>
+- audio/mu2lin.m:125 [error] error ''mu2lin' undefined' does not match <N must be either 0, 8, or 16>
+- audio/record.m:67 [assert] 'record' undefined
+- audio/record.m:70 [error] error ''record' undefined' does not match <SEC must be a non-negative number>
+- audio/record.m:71 [error] error ''record' undefined' does not match <SEC must be a non-negative number>
+- audio/record.m:72 [error] error ''record' undefined' does not match <FS must be a positive number>
+- audio/record.m:73 [error] error ''record' undefined' does not match <FS must be a positive number>
+- audio/sound.m:74 [error] error ''sound' undefined' does not match <Invalid call>
+- audio/sound.m:75 [error] error ''sound' undefined' does not match <FS must be a positive number>
+- audio/sound.m:76 [error] error ''sound' undefined' does not match <FS must be a positive number>
+- audio/sound.m:77 [error] error ''sound' undefined' does not match <NBITS must be 8, 16, or 24>
+- audio/soundsc.m:102 [error] error ''soundsc' undefined' does not match <Invalid call>
+- audio/soundsc.m:103 [error] error ''soundsc' undefined' does not match <FS must be a positive number>
+- audio/soundsc.m:104 [error] error ''soundsc' undefined' does not match <FS must be a positive number>
+- audio/soundsc.m:105 [error] error ''soundsc' undefined' does not match <NBITS must be 8, 16, or 24>
+- audio/soundsc.m:106 [error] error ''soundsc' undefined' does not match <range must be a 2-element .* vector>
+- audio/soundsc.m:107 [error] error ''soundsc' undefined' does not match <range must be a 2-element .* vector>
+- audio/soundsc.m:108 [error] error ''soundsc' undefined' does not match <range must be a 2-element .* vector>
+- audio/soundsc.m:109 [error] error ''soundsc' undefined' does not match <range must be a 2-element .* vector>
+- audio/soundsc.m:110 [error] error ''soundsc' undefined' does not match <range must be a 2-element .* vector>
+- audio/soundsc.m:111 [error] error ''soundsc' undefined' does not match <range must be a 2-element .* vector>
+- elfun/acosd.m:43 [assert] 'acosd' undefined
+- elfun/acosd.m:45 [error] error ''acosd' undefined' does not match <Invalid call>
+- elfun/acot.m:43 [test] 'acot' undefined
+- elfun/acot.m:50 [error] error ''acot' undefined' does not match <Invalid call>
+- elfun/acotd.m:43 [assert] 'acotd' undefined
+- elfun/acotd.m:45 [error] error ''acotd' undefined' does not match <Invalid call>
+- elfun/acoth.m:43 [test] 'acoth' undefined
+- elfun/acoth.m:50 [error] error ''acoth' undefined' does not match <Invalid call>
+- elfun/acsc.m:43 [test] 'acsc' undefined
+- elfun/acsc.m:50 [error] error ''acsc' undefined' does not match <Invalid call>
+- elfun/acscd.m:43 [assert] 'acscd' undefined
+- elfun/acscd.m:45 [error] error ''acscd' undefined' does not match <Invalid call>
+- elfun/acsch.m:43 [test] 'acsch' undefined
+- elfun/acsch.m:48 [error] error ''acsch' undefined' does not match <Invalid call>
+- elfun/asec.m:43 [test] 'asec' undefined
+- elfun/asec.m:50 [error] error ''asec' undefined' does not match <Invalid call>
+- elfun/asecd.m:43 [assert] 'asecd' undefined
+- elfun/asecd.m:45 [error] error ''asecd' undefined' does not match <Invalid call>
+- elfun/asech.m:43 [test] 'asech' undefined
+- elfun/asech.m:48 [error] error ''asech' undefined' does not match <Invalid call>
+- elfun/asind.m:43 [assert] 'asind' undefined
+- elfun/asind.m:45 [error] error ''asind' undefined' does not match <Invalid call>
+- elfun/atan2d.m:44 [assert] 'atan2d' undefined
+- elfun/atan2d.m:47 [error] error ''atan2d' undefined' does not match <Invalid call>
+- elfun/atan2d.m:48 [error] error ''atan2d' undefined' does not match <Invalid call>
+- elfun/atand.m:43 [assert] 'atand' undefined
+- elfun/atand.m:45 [error] error ''atand' undefined' does not match <Invalid call>
+- elfun/cosd.m:53 [assert] 'cosd' undefined
+- elfun/cosd.m:54 [assert] 'cosd' undefined
+- elfun/cosd.m:55 [assert] 'cosd' undefined
+- elfun/cosd.m:56 [assert] 'cosd' undefined
+- elfun/cosd.m:57 [assert] 'cosd' undefined
+- elfun/cosd.m:58 [assert] 'cosd' undefined
+- elfun/cosd.m:59 [assert] 'cosd' undefined
+- elfun/cosd.m:60 [assert] 'cosd' undefined
+- elfun/cosd.m:62 [error] error ''cosd' undefined' does not match <Invalid call>
+- elfun/cosd.m:63 [error] error ''cosd' undefined' does not match <X must be numeric>
+- elfun/cospi.m:72 [assert] 'cospi' undefined
+- elfun/cospi.m:73 [assert] 'cospi' undefined
+- elfun/cospi.m:74 [assert] 'cospi' undefined
+- elfun/cospi.m:76 [error] error ''cospi' undefined' does not match <Invalid call>
+- elfun/cot.m:43 [test] 'cot' undefined
+- elfun/cot.m:50 [error] error ''cot' undefined' does not match <Invalid call>
+- elfun/cotd.m:43 [assert] 'cotd' undefined
+- elfun/cotd.m:44 [assert] 'cotd' undefined
+- elfun/cotd.m:45 [assert] 'cotd' undefined
+- elfun/cotd.m:47 [error] error ''cotd' undefined' does not match <Invalid call>
+- elfun/coth.m:43 [test] 'coth' undefined
+- elfun/coth.m:48 [error] error ''coth' undefined' does not match <Invalid call>
+- elfun/csc.m:43 [test] 'csc' undefined
+- elfun/csc.m:50 [error] error ''csc' undefined' does not match <Invalid call>
+- elfun/cscd.m:43 [assert] 'cscd' undefined
+- elfun/cscd.m:44 [assert] 'cscd' undefined
+- elfun/cscd.m:45 [assert] 'cscd' undefined
+- elfun/cscd.m:47 [error] error ''cscd' undefined' does not match <Invalid call>
+- elfun/csch.m:43 [test] 'csch' undefined
+- elfun/csch.m:48 [error] error ''csch' undefined' does not match <Invalid call>
+- elfun/sec.m:43 [test] 'sec' undefined
+- elfun/sec.m:50 [error] error ''sec' undefined' does not match <Invalid call>
+- elfun/secd.m:43 [assert] 'secd' undefined
+- elfun/secd.m:44 [assert] 'secd' undefined
+- elfun/secd.m:45 [assert] 'secd' undefined
+- elfun/secd.m:47 [error] error ''secd' undefined' does not match <Invalid call>
+- elfun/sech.m:43 [test] 'sech' undefined
+- elfun/sech.m:48 [error] error ''sech' undefined' does not match <Invalid call>
+- elfun/sind.m:68 [assert] 'sind' undefined
+- elfun/sind.m:69 [assert] 'sind' undefined
+- elfun/sind.m:70 [assert] 'sind' undefined
+- elfun/sind.m:71 [assert] 'sind' undefined
+- elfun/sind.m:72 [assert] 'sind' undefined
+- elfun/sind.m:73 [assert] 'sind' undefined
+- elfun/sind.m:74 [assert] 'sind' undefined
+- elfun/sind.m:75 [assert] 'sind' undefined
+- elfun/sind.m:77 [error] error ''sind' undefined' does not match <Invalid call>
+- elfun/sind.m:78 [error] error ''sind' undefined' does not match <X must be numeric>
+- elfun/sinpi.m:71 [assert] 'sinpi' undefined
+- elfun/sinpi.m:72 [assert] 'sinpi' undefined
+- elfun/sinpi.m:73 [assert] 'sinpi' undefined
+- elfun/sinpi.m:75 [error] error ''sinpi' undefined' does not match <Invalid call>
+- elfun/tand.m:50 [assert] 'tand' undefined
+- elfun/tand.m:51 [assert] 'tand' undefined
+- elfun/tand.m:52 [assert] 'tand' undefined
+- elfun/tand.m:54 [error] error ''tand' undefined' does not match <Invalid call>
+- general/accumarray.m:393 [assert] Invalid call to accumarray
+- general/accumarray.m:396 [assert] Invalid call to accumarray
+- general/accumarray.m:399 [assert] accumarray: wrong type argument 'cell array'
+- general/accumarray.m:402 [assert] Invalid call to accumarray
+- general/accumarray.m:405 [assert] Invalid call to accumarray
+- general/accumarray.m:407 [assert] Invalid call to accumarray
+- general/accumarray.m:409 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/accumarray.m:410 [assert] Invalid call to accumarray
+- general/accumarray.m:415 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/accumarray.m:416 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/accumarray.m:418 [test] Invalid call to accumarray
+- general/accumarray.m:422 [test] Invalid call to accumarray
+- general/accumarray.m:434 [test] accumarray: wrong type argument 'cell array'
+- general/accumarray.m:441 [test] accumarray: wrong type argument 'cell array'
+- general/accumarray.m:452 [test] parse error near line 3, column 16: unexpected ','
+- general/accumarray.m:463 [assert] Sequence contains no elements
+- general/accumarray.m:465 [error] expected an error but none was raised
+- general/accumdim.m:168 [assert] 'accumdim' undefined
+- general/accumdim.m:169 [assert] 'accumdim' undefined
+- general/accumdim.m:171 [assert] 'accumdim' undefined
+- general/accumdim.m:173 [assert] 'accumdim' undefined
+- general/accumdim.m:177 [assert] 'accumdim' undefined
+- general/accumdim.m:178 [assert] 'accumdim' undefined
+- general/accumdim.m:179 [assert] 'accumdim' undefined
+- general/accumdim.m:182 [error] error ''accumdim' undefined' does not match <Invalid call>
+- general/accumdim.m:183 [error] error ''accumdim' undefined' does not match <Invalid call>
+- general/accumdim.m:184 [error] error ''accumdim' undefined' does not match <SUBS must be a subscript vector>
+- general/accumdim.m:185 [error] error ''accumdim' undefined' does not match <indices must be positive integers>
+- general/accumdim.m:186 [error] error ''accumdim' undefined' does not match <N index out of range>
+- general/accumdim.m:187 [error] error ''accumdim' undefined' does not match <dimension mismatch>
+- general/bincoeff.m:111 [assert] 'bincoeff' undefined
+- general/bincoeff.m:112 [assert] 'bincoeff' undefined
+- general/bincoeff.m:113 [assert] 'bincoeff' undefined
+- general/bincoeff.m:114 [assert] 'bincoeff' undefined
+- general/bincoeff.m:115 [assert] 'bincoeff' undefined
+- general/bincoeff.m:116 [assert] 'bincoeff' undefined
+- general/bincoeff.m:118 [assert] 'bincoeff' undefined
+- general/bincoeff.m:121 [error] error ''bincoeff' undefined' does not match <Invalid call>
+- general/bincoeff.m:122 [error] error ''bincoeff' undefined' does not match <Invalid call>
+- general/bitcmp.m:85 [test] 'bitcmp' undefined
+- general/bitcmp.m:92 [test] 'bitcmp' undefined
+- general/bitcmp.m:100 [test] 'bitcmp' undefined
+- general/bitcmp.m:108 [test] 'bitcmp' undefined
+- general/bitcmp.m:116 [test] 'bitcmp' undefined
+- general/bitcmp.m:124 [test] 'bitcmp' undefined
+- general/bitcmp.m:134 [assert] 'bitcmp' undefined
+- general/bitcmp.m:135 [assert] 'bitcmp' undefined
+- general/bitcmp.m:136 [assert] 'bitcmp' undefined
+- general/bitcmp.m:137 [assert] 'bitcmp' undefined
+- general/bitget.m:102 [test] 'bitget' undefined
+- general/bitget.m:113 [test] 'bitget' undefined
+- general/bitget.m:119 [error] error ''bitget' undefined' does not match <Invalid call>
+- general/bitget.m:120 [error] error ''bitget' undefined' does not match <Invalid call>
+- general/bitget.m:121 [error] error ''bitget' undefined' does not match <invalid class>
+- general/bitget.m:122 [error] error ''bitget' undefined' does not match <N must be in the range \[1,53\]>
+- general/bitget.m:123 [error] error ''bitget' undefined' does not match <N must be in the range \[1,53\]>
+- general/bitget.m:124 [error] error ''bitget' undefined' does not match <N must be in the range \[1,24\]>
+- general/bitget.m:125 [error] error ''bitget' undefined' does not match <N must be in the range \[1,24\]>
+- general/bitget.m:126 [error] error ''bitget' undefined' does not match <N must be in the range \[1,8\]>
+- general/bitget.m:127 [error] error ''bitget' undefined' does not match <N must be in the range \[1,8\]>
+- general/bitget.m:128 [error] error ''bitget' undefined' does not match <N must be in the range \[1,16\]>
+- general/bitget.m:129 [error] error ''bitget' undefined' does not match <N must be in the range \[1,16\]>
+- general/bitget.m:130 [error] error ''bitget' undefined' does not match <N must be in the range \[1,32\]>
+- general/bitget.m:131 [error] error ''bitget' undefined' does not match <N must be in the range \[1,32\]>
+- general/bitget.m:132 [error] error ''bitget' undefined' does not match <N must be in the range \[1,64\]>
+- general/bitget.m:133 [error] error ''bitget' undefined' does not match <N must be in the range \[1,64\]>
+- general/bitset.m:123 [test] 'bitset' undefined
+- general/bitset.m:135 [assert] 'bitset' undefined
+- general/bitset.m:137 [assert] 'bitset' undefined
+- general/bitset.m:140 [assert] 'bitset' undefined
+- general/bitset.m:141 [assert] 'bitset' undefined
+- general/bitset.m:142 [assert] 'bitset' undefined
+- general/bitset.m:143 [assert] 'bitset' undefined
+- general/bitset.m:146 [error] error ''bitset' undefined' does not match <Invalid call>
+- general/bitset.m:147 [error] error ''bitset' undefined' does not match <Invalid call>
+- general/bitset.m:148 [error] error ''bitset' undefined' does not match <A must be .= 0>
+- general/bitset.m:149 [error] error ''bitset' undefined' does not match <must be the same size or scalar>
+- general/bitset.m:150 [error] error ''bitset' undefined' does not match <must be the same size or scalar>
+- general/bitset.m:151 [error] error ''bitset' undefined' does not match <invalid class char>
+- general/bitset.m:152 [error] error ''bitset' undefined' does not match <N must be in the range \[1,53\]>
+- general/bitset.m:153 [error] error ''bitset' undefined' does not match <N must be in the range \[1,53\]>
+- general/bitset.m:154 [error] error ''bitset' undefined' does not match <N must be in the range \[1,24\]>
+- general/bitset.m:155 [error] error ''bitset' undefined' does not match <N must be in the range \[1,24\]>
+- general/bitset.m:156 [error] error ''bitset' undefined' does not match <N must be in the range \[1,7\]>
+- general/bitset.m:157 [error] error ''bitset' undefined' does not match <N must be in the range \[1,7\]>
+- general/bitset.m:158 [error] error ''bitset' undefined' does not match <N must be in the range \[1,8\]>
+- general/bitset.m:159 [error] error ''bitset' undefined' does not match <N must be in the range \[1,15\]>
+- general/bitset.m:160 [error] error ''bitset' undefined' does not match <N must be in the range \[1,16\]>
+- general/bitset.m:161 [error] error ''bitset' undefined' does not match <N must be in the range \[1,31\]>
+- general/bitset.m:162 [error] error ''bitset' undefined' does not match <N must be in the range \[1,32\]>
+- general/bitset.m:163 [error] error ''bitset' undefined' does not match <N must be in the range \[1,63\]>
+- general/bitset.m:164 [error] error ''bitset' undefined' does not match <N must be in the range \[1,64\]>
+- general/blkdiag.m:96 [assert] 'blkdiag' undefined
+- general/blkdiag.m:97 [assert] 'blkdiag' undefined
+- general/blkdiag.m:98 [assert] 'blkdiag' undefined
+- general/blkdiag.m:100 [assert] 'blkdiag' undefined
+- general/blkdiag.m:102 [assert] 'blkdiag' undefined
+- general/blkdiag.m:103 [assert] 'blkdiag' undefined
+- general/blkdiag.m:104 [assert] 'blkdiag' undefined
+- general/blkdiag.m:107 [assert] 'blkdiag' undefined
+- general/blkdiag.m:109 [assert] 'blkdiag' undefined
+- general/blkdiag.m:112 [test] 'blkdiag' undefined
+- general/blkdiag.m:117 [assert] 'blkdiag' undefined
+- general/blkdiag.m:118 [test] 'blkdiag' undefined
+- general/blkdiag.m:125 [test] 'blkdiag' undefined
+- general/blkdiag.m:129 [test] 'blkdiag' undefined
+- general/blkdiag.m:135 [assert] 'blkdiag' undefined
+- general/blkdiag.m:136 [assert] 'blkdiag' undefined
+- general/blkdiag.m:137 [assert] 'blkdiag' undefined
+- general/blkdiag.m:138 [assert] 'blkdiag' undefined
+- general/blkdiag.m:141 [assert] 'blkdiag' undefined
+- general/blkdiag.m:142 [assert] 'blkdiag' undefined
+- general/blkdiag.m:143 [assert] 'blkdiag' undefined
+- general/blkdiag.m:144 [assert] 'blkdiag' undefined
+- general/blkdiag.m:147 [test] 'blkdiag' undefined
+- general/blkdiag.m:151 [test] 'blkdiag' undefined
+- general/blkdiag.m:157 [test] 'blkdiag' undefined
+- general/blkdiag.m:163 [test] 'blkdiag' undefined
+- general/blkdiag.m:167 [test] 'blkdiag' undefined
+- general/blkdiag.m:173 [test] 'blkdiag' undefined
+- general/blkdiag.m:177 [test] 'blkdiag' undefined
+- general/blkdiag.m:181 [test] 'blkdiag' undefined
+- general/blkdiag.m:187 [assert] 'blkdiag' undefined
+- general/blkdiag.m:188 [assert] 'blkdiag' undefined
+- general/blkdiag.m:189 [assert] 'blkdiag' undefined
+- general/blkdiag.m:192 [test] 'blkdiag' undefined
+- general/blkdiag.m:199 [test] 'blkdiag' undefined
+- general/blkdiag.m:204 [test] 'blkdiag' undefined
+- general/blkdiag.m:211 [error] error ''blkdiag' undefined' does not match <Invalid call>
+- general/blkdiag.m:212 [error] error ''blkdiag' undefined' does not match <all arguments must be numeric>
+- general/blkdiag.m:213 [error] error ''blkdiag' undefined' does not match <all arguments must be numeric>
+- general/blkdiag.m:214 [error] error ''blkdiag' undefined' does not match <arguments must be two-dimensional>
+- general/cart2pol.m:129 [test] 'cart2pol' undefined
+- general/cart2pol.m:136 [test] 'cart2pol' undefined
+- general/cart2pol.m:143 [test] 'cart2pol' undefined
+- general/cart2pol.m:150 [test] 'cart2pol' undefined
+- general/cart2pol.m:159 [test] 'cart2pol' undefined
+- general/cart2pol.m:168 [test] 'cart2pol' undefined
+- general/cart2pol.m:177 [test] 'cart2pol' undefined
+- general/cart2pol.m:186 [test] 'cart2pol' undefined
+- general/cart2pol.m:192 [test] 'cart2pol' undefined
+- general/cart2pol.m:199 [test] 'cart2pol' undefined
+- general/cart2pol.m:206 [test] 'cart2pol' undefined
+- general/cart2pol.m:218 [test] element number 3 undefined in return list
+- general/cart2pol.m:229 [error] error ''cart2pol' undefined' does not match <Invalid call>
+- general/cart2pol.m:231 [error] error ''cart2pol' undefined' does not match <matrix input must be 2-D numeric array>
+- general/cart2pol.m:232 [error] error ''cart2pol' undefined' does not match <matrix input must be 2-D numeric array>
+- general/cart2pol.m:233 [error] error ''cart2pol' undefined' does not match <matrix input must be a 2- or 3-element>
+- general/cart2pol.m:234 [error] error ''cart2pol' undefined' does not match <matrix input must be a 2- or 3-element>
+- general/cart2pol.m:235 [error] error ''cart2pol' undefined' does not match <must be numeric arrays or scalars>
+- general/cart2pol.m:236 [error] error ''cart2pol' undefined' does not match <must be numeric arrays or scalars>
+- general/cart2pol.m:237 [error] error ''cart2pol' undefined' does not match <must be the same size or scalars>
+- general/cart2pol.m:238 [error] error ''cart2pol' undefined' does not match <must be the same size or scalars>
+- general/cart2pol.m:239 [error] error ''cart2pol' undefined' does not match <must be the same size or scalars>
+- general/cart2pol.m:240 [error] error ''cart2pol' undefined' does not match <must be numeric arrays or scalars>
+- general/cart2pol.m:241 [error] error ''cart2pol' undefined' does not match <must be numeric arrays or scalars>
+- general/cart2pol.m:242 [error] error ''cart2pol' undefined' does not match <must be numeric arrays or scalars>
+- general/cart2pol.m:243 [error] error ''cart2pol' undefined' does not match <must be the same size or scalars>
+- general/cart2pol.m:244 [error] error ''cart2pol' undefined' does not match <must be the same size or scalars>
+- general/cart2sph.m:107 [test] 'cart2sph' undefined
+- general/cart2sph.m:116 [test] 'cart2sph' undefined
+- general/cart2sph.m:125 [test] 'cart2sph' undefined
+- general/cart2sph.m:134 [test] 'cart2sph' undefined
+- general/cart2sph.m:143 [test] 'cart2sph' undefined
+- general/cart2sph.m:152 [test] 'cart2sph' undefined
+- general/cart2sph.m:161 [test] 'cart2sph' undefined
+- general/cart2sph.m:168 [test] 'cart2sph' undefined
+- general/cart2sph.m:175 [test] element number 3 undefined in return list
+- general/cart2sph.m:188 [error] error ''cart2sph' undefined' does not match <Invalid call>
+- general/cart2sph.m:189 [error] error ''cart2sph' undefined' does not match <Invalid call>
+- general/cart2sph.m:190 [error] error ''cart2sph' undefined' does not match <matrix input C must be a 2-D numeric array>
+- general/cart2sph.m:191 [error] error ''cart2sph' undefined' does not match <matrix input C must be a 2-D numeric array>
+- general/cart2sph.m:192 [error] error ''cart2sph' undefined' does not match <matrix input C must be a 3-element>
+- general/cart2sph.m:193 [error] error ''cart2sph' undefined' does not match <matrix input C must be a 3-element>
+- general/cart2sph.m:194 [error] error ''cart2sph' undefined' does not match <must be numeric arrays or scalars>
+- general/cart2sph.m:195 [error] error ''cart2sph' undefined' does not match <must be numeric arrays or scalars>
+- general/cart2sph.m:196 [error] error ''cart2sph' undefined' does not match <must be numeric arrays or scalars>
+- general/cart2sph.m:197 [error] error ''cart2sph' undefined' does not match <must be the same size or scalars>
+- general/cart2sph.m:198 [error] error ''cart2sph' undefined' does not match <must be the same size or scalars>
+- general/cart2sph.m:199 [error] error ''cart2sph' undefined' does not match <must be the same size or scalars>
+- general/cell2mat.m:101 [assert] cell2mat: C must be a cell array
+- general/cell2mat.m:102 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/cell2mat.m:110 [test] 'mat2cell' undefined
+- general/cell2mat.m:114 [test] 'mat2cell' undefined
+- general/cell2mat.m:118 [test] 'mat2cell' undefined
+- general/cell2mat.m:135 [error] error 'concatenation operator not implemented for 'struct' by 'matrix' operations' does not match <mixed cells, structs, and matrices>
+- general/cell2mat.m:136 [error] expected an error but none was raised
+- general/cell2mat.m:137 [error] expected an error but none was raised
+- general/cell2mat.m:138 [error] error 'vertical dimensions mismatch (1x1 vs 1x2)' does not match <dimension mismatch>
+- general/cell2mat.m:139 [error] error 'vertical dimensions mismatch (1x7 vs 1x6)' does not match <dimension mismatch>
+- general/celldisp.m:101 [error] error ''celldisp' undefined' does not match <Invalid call>
+- general/celldisp.m:103 [error] error ''celldisp' undefined' does not match <C must be a cell array>
+- general/circshift.m:146 [error] expected an error but none was raised
+- general/circshift.m:147 [error] expected an error but none was raised
+- general/circshift.m:148 [error] expected an error but none was raised
+- general/circshift.m:149 [error] expected an error but none was raised
+- general/common_size.m:86 [test] 'common_size' undefined
+- general/common_size.m:94 [test] 'common_size' undefined
+- general/common_size.m:103 [error] error ''common_size' undefined' does not match <only makes sense if nargin .= 2>
+- general/common_size.m:104 [error] error ''common_size' undefined' does not match <only makes sense if nargin .= 2>
+- general/cplxpair.m:145 [assert] 'cplxpair' undefined
+- general/cplxpair.m:146 [assert] 'cplxpair' undefined
+- general/cplxpair.m:147 [assert] 'cplxpair' undefined
+- general/cplxpair.m:148 [assert] 'cplxpair' undefined
+- general/cplxpair.m:150 [assert] 'cplxpair' undefined
+- general/cplxpair.m:152 [assert] 'cplxpair' undefined
+- general/cplxpair.m:159 [assert] 'cplxpair' undefined
+- general/cplxpair.m:160 [assert] 'cplxpair' undefined
+- general/cplxpair.m:161 [assert] 'cplxpair' undefined
+- general/cplxpair.m:162 [assert] 'cplxpair' undefined
+- general/cplxpair.m:163 [assert] 'cplxpair' undefined
+- general/cplxpair.m:164 [assert] 'cplxpair' undefined
+- general/cplxpair.m:166 [assert] index (2): out of bound 0 (dimensions are 0x0)
+- general/cplxpair.m:167 [assert] index (3): out of bound 0 (dimensions are 0x0)
+- general/cplxpair.m:171 [assert] 'cplxpair' undefined
+- general/cplxpair.m:173 [error] error ''cplxpair' undefined' does not match <could not pair>
+- general/cplxpair.m:175 [error] error ''cplxpair' undefined' does not match <could not pair>
+- general/cplxpair.m:179 [error] error ''cplxpair' undefined' does not match <Invalid call>
+- general/cplxpair.m:180 [error] error ''cplxpair' undefined' does not match <cplxpair: TOL must be .* scalar number>
+- general/cplxpair.m:181 [error] error ''cplxpair' undefined' does not match <cplxpair: TOL must be .* in the range 0 <= TOL < 1>
+- general/cplxpair.m:182 [error] error ''cplxpair' undefined' does not match <cplxpair: TOL must be .* in the range 0 <= TOL < 1>
+- general/cplxpair.m:183 [error] error ''cplxpair' undefined' does not match <invalid dimension DIM>
+- general/cumtrapz.m:126 [assert] 'cumtrapz' undefined
+- general/cumtrapz.m:127 [assert] 'cumtrapz' undefined
+- general/cumtrapz.m:128 [assert] 'cumtrapz' undefined
+- general/cumtrapz.m:129 [assert] 'cumtrapz' undefined
+- general/cumtrapz.m:130 [assert] 'cumtrapz' undefined
+- general/cumtrapz.m:131 [assert] 'cumtrapz' undefined
+- general/cumtrapz.m:132 [assert] 'cumtrapz' undefined
+- general/cumtrapz.m:133 [assert] 'cumtrapz' undefined
+- general/cumtrapz.m:134 [assert] 'cumtrapz' undefined
+- general/cumtrapz.m:135 [assert] 'cumtrapz' undefined
+- general/cumtrapz.m:136 [assert] 'cumtrapz' undefined
+- general/cumtrapz.m:143 [assert] 'cumtrapz' undefined
+- general/cumtrapz.m:144 [assert] 'cumtrapz' undefined
+- general/cumtrapz.m:145 [assert] 'cumtrapz' undefined
+- general/cumtrapz.m:146 [assert] 'cumtrapz' undefined
+- general/cumtrapz.m:147 [assert] 'cumtrapz' undefined
+- general/cumtrapz.m:148 [assert] 'cumtrapz' undefined
+- general/cumtrapz.m:156 [assert] 'cumtrapz' undefined
+- general/cumtrapz.m:157 [assert] 'cumtrapz' undefined
+- general/cumtrapz.m:158 [assert] 'cumtrapz' undefined
+- general/cumtrapz.m:161 [error] error ''cumtrapz' undefined' does not match <Invalid call>
+- general/cumtrapz.m:162 [error] error ''cumtrapz' undefined' does not match <DIM must be an integer>
+- general/cumtrapz.m:163 [error] error ''cumtrapz' undefined' does not match <DIM must be an integer>
+- general/cumtrapz.m:164 [error] error ''cumtrapz' undefined' does not match <DIM must be .* a valid dimension>
+- general/cumtrapz.m:165 [error] error ''cumtrapz' undefined' does not match <length of X and length of Y.*must match>
+- general/cumtrapz.m:166 [error] error ''cumtrapz' undefined' does not match <X and Y must have same shape>
+- general/curl.m:138 [test] 'curl' undefined
+- general/dblquad.m:88 [assert] 'dblquad' undefined
+- general/dblquad.m:90 [assert] 'dblquad' undefined
+- general/dblquad.m:92 [assert] 'dblquad' undefined
+- general/dblquad.m:94 [assert] 'dblquad' undefined
+- general/deal.m:110 [error] error 'deal: nargin > 1 and nargin != nargout' does not match <Invalid call>
+- general/deg2rad.m:64 [assert] 'deg2rad' undefined
+- general/deg2rad.m:65 [assert] 'deg2rad' undefined
+- general/deg2rad.m:66 [assert] 'deg2rad' undefined
+- general/deg2rad.m:67 [assert] 'deg2rad' undefined
+- general/deg2rad.m:70 [error] error ''deg2rad' undefined' does not match <Invalid call>
+- general/deg2rad.m:71 [error] error ''deg2rad' undefined' does not match <DEG must be a floating point class>
+- general/deg2rad.m:72 [error] error ''deg2rad' undefined' does not match <DEG must be a floating point class>
+- general/del2.m:172 [test] 'del2' undefined
+- general/del2.m:180 [test] 'del2' undefined
+- general/del2.m:188 [test] 'del2' undefined
+- general/del2.m:200 [test] 'del2' undefined
+- general/del2.m:212 [test] 'del2' undefined
+- general/del2.m:221 [test] 'del2' undefined
+- general/del2.m:230 [test] 'del2' undefined
+- general/del2.m:239 [test] 'del2' undefined
+- general/del2.m:252 [test] 'del2' undefined
+- general/del2.m:267 [test] 'del2' undefined
+- general/del2.m:282 [test] 'del2' undefined
+- general/del2.m:293 [test] 'del2' undefined
+- general/del2.m:304 [test] 'del2' undefined
+- general/del2.m:315 [test] 'del2' undefined
+- general/del2.m:331 [test] 'del2' undefined
+- general/del2.m:337 [error] error ''del2' undefined' does not match <Invalid call>
+- general/del2.m:338 [error] error ''del2' undefined' does not match <Invalid call>
+- general/del2.m:339 [error] error ''del2' undefined' does not match <in spacing vector 1>
+- general/del2.m:340 [error] error ''del2' undefined' does not match <in spacing vector 2>
+- general/del2.m:341 [error] error ''del2' undefined' does not match <must be a scalar or vector>
+- general/divergence.m:116 [test] 'divergence' undefined
+- general/flip.m:85 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/flip.m:93 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/flip.m:100 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/flip.m:111 [error] expected an error but none was raised
+- general/fliplr.m:61 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/fliplr.m:69 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/fliplr.m:77 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/gradient.m:267 [test] 'gradient' undefined
+- general/gradient.m:277 [test] 'ndgrid' undefined
+- general/gradient.m:305 [test] 'ndgrid' undefined
+- general/gradient.m:333 [test] 'gradient' undefined
+- general/gradient.m:340 [test] 'gradient' undefined
+- general/gradient.m:350 [error] error ''gradient' undefined' does not match <Invalid call>
+- general/gradient.m:351 [error] error ''gradient' undefined' does not match <M must be a floating point vector or array>
+- general/idivide.m:190 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/idivide.m:191 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/idivide.m:195 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/idivide.m:196 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/idivide.m:203 [error] error 'idivide: wrong type argument 'cell array'' does not match <at least one input>
+- general/idivide.m:204 [error] error 'binary operator 'idivide' not implemented for 'int8 scalar' by 'uint8 scalar' operations' does not match <A \(int8\) must match.* B \(uint8\)>
+- general/int2str.m:112 [error] error 'int2str: wrong type argument 'cell array'' does not match <N must be a numeric>
+- general/integral.m:247 [test] 'integral' undefined
+- general/integral.m:254 [test] 'integral' undefined
+- general/integral.m:258 [test] 'integral' undefined
+- general/integral.m:262 [test] 'integral' undefined
+- general/integral.m:266 [test] 'integral' undefined
+- general/integral.m:271 [test] 'integral' undefined
+- general/integral.m:281 [test] 'integral' undefined
+- general/integral.m:288 [test] 'integral' undefined
+- general/integral.m:293 [assert] 'integral' undefined
+- general/integral.m:294 [assert] 'inline' undefined
+- general/integral.m:295 [assert] 'integral' undefined
+- general/integral.m:296 [assert] 'integral' undefined
+- general/integral.m:297 [assert] 'integral' undefined
+- general/integral.m:298 [assert] 'integral' undefined
+- general/integral.m:299 [assert] 'integral' undefined
+- general/integral.m:302 [assert] 'integral' undefined
+- general/integral.m:303 [assert] 'integral' undefined
+- general/integral.m:306 [assert] 'integral' undefined
+- general/integral.m:308 [assert] 'integral' undefined
+- general/integral.m:309 [assert] 'integral' undefined
+- general/integral.m:313 [assert] 'integral' undefined
+- general/integral.m:317 [assert] 'integral' undefined
+- general/integral.m:321 [assert] 'integral' undefined
+- general/integral.m:325 [test] 'integral' undefined
+- general/integral.m:338 [error] error ''integral' undefined' does not match <property PROP must be a string>
+- general/integral.m:339 [error] error ''integral' undefined' does not match <unknown property 'foo'>
+- general/integral2.m:293 [assert] 'integral2' undefined
+- general/integral2.m:294 [assert] 'integral2' undefined
+- general/integral2.m:295 [assert] 'integral2' undefined
+- general/integral2.m:296 [assert] 'integral2' undefined
+- general/integral2.m:301 [assert] 'integral2' undefined
+- general/integral2.m:306 [assert] 'integral2' undefined
+- general/integral2.m:307 [assert] 'integral2' undefined
+- general/integral2.m:308 [assert] 'integral2' undefined
+- general/integral2.m:314 [assert] 'integral2' undefined
+- general/integral2.m:315 [assert] 'integral2' undefined
+- general/integral2.m:316 [assert] 'integral2' undefined
+- general/integral2.m:318 [assert] 'integral2' undefined
+- general/integral2.m:320 [assert] 'integral2' undefined
+- general/integral2.m:323 [assert] 'integral2' undefined
+- general/integral2.m:326 [assert] 'integral2' undefined
+- general/integral2.m:328 [assert] 'integral2' undefined
+- general/integral2.m:330 [assert] 'integral2' undefined
+- general/integral2.m:333 [assert] 'integral2' undefined
+- general/integral2.m:334 [assert] 'integral2' undefined
+- general/integral2.m:338 [assert] 'integral2' undefined
+- general/integral2.m:341 [error] error ''integral2' undefined' does not match <Invalid call>
+- general/integral2.m:342 [error] error ''integral2' undefined' does not match <Invalid call>
+- general/integral2.m:343 [error] error ''integral2' undefined' does not match <Invalid call>
+- general/integral2.m:344 [error] error ''integral2' undefined' does not match <Invalid call>
+- general/integral2.m:345 [error] error ''integral2' undefined' does not match <Invalid call>
+- general/integral2.m:346 [error] error ''integral2' undefined' does not match <Invalid call>
+- general/integral2.m:352 [error] error ''integral2' undefined' does not match <property PROP must be a string>
+- general/integral2.m:353 [error] error ''integral2' undefined' does not match <AbsTol value must be a numeric>
+- general/integral2.m:355 [error] error ''integral2' undefined' does not match <AbsTol value must be a .* scalar>
+- general/integral2.m:357 [error] error ''integral2' undefined' does not match <AbsTol value must be.* .= 0>
+- general/integral2.m:358 [error] error ''integral2' undefined' does not match <RelTol value must be a numeric>
+- general/integral2.m:360 [error] error ''integral2' undefined' does not match <RelTol value must be a .* scalar>
+- general/integral2.m:362 [error] error ''integral2' undefined' does not match <RelTol value must be.* .= 0>
+- general/integral2.m:363 [error] error ''integral2' undefined' does not match <unrecognized method 'foo'>
+- general/integral2.m:364 [error] error ''integral2' undefined' does not match <Vectorized must be a logical value>
+- general/integral2.m:366 [error] error ''integral2' undefined' does not match <Vectorized must be a logical value>
+- general/integral2.m:368 [error] error ''integral2' undefined' does not match <unknown property 'foo'>
+- general/integral2.m:369 [error] error ''integral2' undefined' does not match <YA must be a real scalar>
+- general/integral2.m:370 [error] error ''integral2' undefined' does not match <YA must be a real scalar>
+- general/integral2.m:371 [error] error ''integral2' undefined' does not match <YB must be a real scalar>
+- general/integral2.m:372 [error] error ''integral2' undefined' does not match <YB must be a real scalar>
+- general/integral2.m:373 [warning] 'integral2' undefined
+- general/integral3.m:326 [assert] 'integral3' undefined
+- general/integral3.m:327 [assert] 'integral3' undefined
+- general/integral3.m:328 [assert] 'integral3' undefined
+- general/integral3.m:329 [assert] 'integral3' undefined
+- general/integral3.m:332 [test] 'integral3' undefined
+- general/integral3.m:339 [assert] 'integral3' undefined
+- general/integral3.m:340 [assert] 'integral3' undefined
+- general/integral3.m:341 [assert] 'integral3' undefined
+- general/integral3.m:346 [test] 'integral3' undefined
+- general/integral3.m:367 [error] error ''integral3' undefined' does not match <property PROP must be a string>
+- general/integral3.m:369 [error] error ''integral3' undefined' does not match <AbsTol value must be a numeric>
+- general/integral3.m:371 [error] error ''integral3' undefined' does not match <AbsTol value must be a .* scalar>
+- general/integral3.m:373 [error] error ''integral3' undefined' does not match <AbsTol value must be.* .= 0>
+- general/integral3.m:375 [error] error ''integral3' undefined' does not match <RelTol value must be a numeric>
+- general/integral3.m:377 [error] error ''integral3' undefined' does not match <RelTol value must be a .* scalar>
+- general/integral3.m:379 [error] error ''integral3' undefined' does not match <RelTol value must be.* .= 0>
+- general/integral3.m:381 [error] error ''integral3' undefined' does not match <unrecognized method 'foo'>
+- general/integral3.m:383 [error] error ''integral3' undefined' does not match <Vectorized must be a logical value>
+- general/integral3.m:385 [error] error ''integral3' undefined' does not match <Vectorized must be a logical value>
+- general/integral3.m:387 [error] error ''integral3' undefined' does not match <unknown property 'foo'>
+- general/integral3.m:389 [error] error ''integral3' undefined' does not match <YA must be a real scalar>
+- general/integral3.m:390 [error] error ''integral3' undefined' does not match <YA must be a real scalar>
+- general/integral3.m:391 [error] error ''integral3' undefined' does not match <YB must be a real scalar>
+- general/integral3.m:392 [error] error ''integral3' undefined' does not match <YB must be a real scalar>
+- general/integral3.m:393 [error] error ''integral3' undefined' does not match <ZA must be a real scalar>
+- general/integral3.m:394 [error] error ''integral3' undefined' does not match <ZA must be a real scalar>
+- general/integral3.m:395 [error] error ''integral3' undefined' does not match <ZB must be a real scalar>
+- general/integral3.m:396 [error] error ''integral3' undefined' does not match <ZB must be a real scalar>
+- general/interp1.m:505 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:512 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:514 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:519 [assert] 'ppval' undefined
+- general/interp1.m:521 [error] expected an error but none was raised
+- general/interp1.m:525 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:532 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:534 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:539 [assert] 'ppval' undefined
+- general/interp1.m:541 [assert] ASSERT errors: dimensions mismatch
+- general/interp1.m:543 [error] expected an error but none was raised
+- general/interp1.m:548 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:555 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:557 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:564 [assert] 'ppval' undefined
+- general/interp1.m:566 [error] expected an error but none was raised
+- general/interp1.m:570 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:577 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:579 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:584 [assert] 'ppval' undefined
+- general/interp1.m:586 [assert] ASSERT errors: dimensions mismatch
+- general/interp1.m:588 [error] expected an error but none was raised
+- general/interp1.m:593 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:600 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:602 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:607 [assert] 'ppval' undefined
+- general/interp1.m:609 [error] expected an error but none was raised
+- general/interp1.m:613 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:620 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:622 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:627 [assert] 'ppval' undefined
+- general/interp1.m:629 [assert] ASSERT errors: dimensions mismatch
+- general/interp1.m:631 [error] expected an error but none was raised
+- general/interp1.m:636 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:643 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:645 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:650 [assert] 'ppval' undefined
+- general/interp1.m:652 [error] expected an error but none was raised
+- general/interp1.m:656 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:663 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:665 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:670 [assert] 'ppval' undefined
+- general/interp1.m:674 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:675 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:676 [error] expected an error but none was raised
+- general/interp1.m:681 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:688 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:690 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:695 [assert] 'ppval' undefined
+- general/interp1.m:697 [error] expected an error but none was raised
+- general/interp1.m:701 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:708 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:710 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:715 [assert] 'ppval' undefined
+- general/interp1.m:717 [assert] ASSERT errors: dimensions mismatch
+- general/interp1.m:719 [error] expected an error but none was raised
+- general/interp1.m:724 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:731 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:733 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:738 [assert] 'ppval' undefined
+- general/interp1.m:740 [error] expected an error but none was raised
+- general/interp1.m:744 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:751 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:753 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:758 [assert] 'ppval' undefined
+- general/interp1.m:760 [assert] ASSERT errors: dimensions mismatch
+- general/interp1.m:762 [error] expected an error but none was raised
+- general/interp1.m:767 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:774 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:776 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:781 [assert] 'ppval' undefined
+- general/interp1.m:783 [error] expected an error but none was raised
+- general/interp1.m:787 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:794 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:796 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:801 [assert] 'ppval' undefined
+- general/interp1.m:805 [error] expected an error but none was raised
+- general/interp1.m:814 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:819 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:820 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:821 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:827 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:828 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:829 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:830 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:835 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:837 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:838 [assert] Invalid call to interp1
+- general/interp1.m:841 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:842 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/interp1.m:847 [error] expected an error but none was raised
+- general/interp1.m:848 [error] expected an error but none was raised
+- general/interp1.m:849 [error] expected an error but none was raised
+- general/interp1.m:850 [error] expected an error but none was raised
+- general/interp1.m:851 [error] expected an error but none was raised
+- general/interp1.m:852 [error] expected an error but none was raised
+- general/interp1.m:853 [warning] expected a warning but none was issued
+- general/interp1.m:854 [error] expected an error but none was raised
+- general/interp1.m:855 [error] expected an error but none was raised
+- general/interp1.m:856 [error] expected an error but none was raised
+- general/interp1.m:857 [error] expected an error but none was raised
+- general/interp1.m:858 [error] expected an error but none was raised
+- general/interp2.m:576 [test] 'interp2' undefined
+- general/interp2.m:643 [test] 'interp2' undefined
+- general/interp2.m:648 [test] 'interp2' undefined
+- general/interp2.m:672 [test] 'interp2' undefined
+- general/interp2.m:684 [test] 'interp2' undefined
+- general/interp2.m:695 [test] 'interp2' undefined
+- general/interp2.m:699 [test] 'interp2' undefined
+- general/interp2.m:703 [test] 'interp2' undefined
+- general/interp2.m:719 [test] 'interp2' undefined
+- general/interp2.m:726 [test] 'interp2' undefined
+- general/interp2.m:731 [assert] 'interp2' undefined
+- general/interp2.m:732 [assert] 'interp2' undefined
+- general/interp2.m:735 [assert] 'interp2' undefined
+- general/interp2.m:742 [assert] 'interp2' undefined
+- general/interp2.m:743 [assert] 'interp2' undefined
+- general/interp2.m:744 [assert] 'interp2' undefined
+- general/interp2.m:745 [assert] 'interp2' undefined
+- general/interp2.m:746 [assert] 'interp2' undefined
+- general/interp2.m:747 [assert] 'interp2' undefined
+- general/interp2.m:749 [assert] 'interp2' undefined
+- general/interp2.m:751 [assert] 'interp2' undefined
+- general/interp2.m:753 [assert] 'interp2' undefined
+- general/interp2.m:755 [assert] 'interp2' undefined
+- general/interp2.m:756 [assert] 'interp2' undefined
+- general/interp2.m:757 [assert] 'interp2' undefined
+- general/interp2.m:758 [assert] 'interp2' undefined
+- general/interp2.m:759 [assert] 'interp2' undefined
+- general/interp2.m:760 [assert] 'interp2' undefined
+- general/interp2.m:761 [assert] 'interp2' undefined
+- general/interp2.m:762 [test] 'interp2' undefined
+- general/interp2.m:769 [error] error ''interp2' undefined' does not match <Z must be a numeric 2-D matrix>
+- general/interp2.m:770 [error] error ''interp2' undefined' does not match <Z must be a numeric 2-D matrix>
+- general/interp2.m:771 [error] error ''interp2' undefined' does not match <Z must be a numeric 2-D matrix>
+- general/interp2.m:772 [error] error ''interp2' undefined' does not match <Z must be a numeric 2-D matrix>
+- general/interp2.m:773 [error] error ''interp2' undefined' does not match <Z must be a numeric 2-D matrix>
+- general/interp2.m:774 [error] error ''interp2' undefined' does not match <Z must be a numeric 2-D matrix>
+- general/interp2.m:775 [error] error ''interp2' undefined' does not match <N must be an integer .= 0>
+- general/interp2.m:776 [error] error ''interp2' undefined' does not match <N must be an integer .= 0>
+- general/interp2.m:777 [error] error ''interp2' undefined' does not match <N must be an integer .= 0>
+- general/interp2.m:778 [warning] 'interp2' undefined
+- general/interp2.m:779 [error] error ''interp2' undefined' does not match <EXTRAP must be a numeric scalar>
+- general/interp2.m:780 [error] error ''interp2' undefined' does not match <EXTRAP must be a numeric scalar>
+- general/interp2.m:781 [error] error ''interp2' undefined' does not match <EXTRAP must be a numeric scalar>
+- general/interp2.m:782 [error] error ''interp2' undefined' does not match <EXTRAP must be a numeric scalar>
+- general/interp2.m:783 [error] error ''interp2' undefined' does not match <X, Y must be numeric matrices>
+- general/interp2.m:784 [error] error ''interp2' undefined' does not match <X, Y must be numeric matrices>
+- general/interp2.m:785 [error] error ''interp2' undefined' does not match <XI, YI must be numeric>
+- general/interp2.m:786 [error] error ''interp2' undefined' does not match <XI, YI must be numeric>
+- general/interp2.m:787 [error] error ''interp2' undefined' does not match <X and Y must be matrices of equal size>
+- general/interp2.m:788 [error] error ''interp2' undefined' does not match <X and Y must be matrices of equal size>
+- general/interp2.m:789 [error] error ''interp2' undefined' does not match <X and Y size must match the dimensions of Z>
+- general/interp2.m:790 [error] error ''interp2' undefined' does not match <X and Y size must match the dimensions of Z>
+- general/interp2.m:791 [error] error ''interp2' undefined' does not match <X must be strictly monotonic>
+- general/interp2.m:792 [error] error ''interp2' undefined' does not match <Y must be strictly monotonic>
+- general/interp2.m:793 [warning] 'interp2' undefined
+- general/interp2.m:794 [error] error ''interp2' undefined' does not match <XI and YI must be matrices of equal size>
+- general/interp2.m:795 [error] error ''interp2' undefined' does not match <XI and YI must be matrices of equal size>
+- general/interp2.m:796 [error] error ''interp2' undefined' does not match <XI, YI must have uniform spacing>
+- general/interp2.m:797 [error] error ''interp2' undefined' does not match <XI, YI must have uniform spacing>
+- general/interp3.m:203 [test] element number 3 undefined in return list
+- general/interp3.m:215 [test] element number 3 undefined in return list
+- general/interp3.m:225 [test] 'interp3' undefined
+- general/interp3.m:233 [test] 'interp3' undefined
+- general/interp3.m:241 [test] 'interp3' undefined
+- general/interp3.m:249 [test] 'interp3' undefined
+- general/interp3.m:257 [test] 'interp3' undefined
+- general/interp3.m:285 [assert] 'interp3' undefined
+- general/interp3.m:286 [assert] 'interp3' undefined
+- general/interp3.m:287 [assert] 'interp3' undefined
+- general/interp3.m:289 [test] element number 3 undefined in return list
+- general/interp3.m:297 [error] error ''interp3' undefined' does not match <not enough input arguments>
+- general/interp3.m:298 [error] error ''interp3' undefined' does not match <input reference arrays must be numeric>
+- general/interp3.m:299 [error] error ''interp3' undefined' does not match <input reference arrays must be numeric>
+- general/interp3.m:300 [error] error ''interp3' undefined' does not match <input reference arrays must be numeric>
+- general/interp3.m:301 [error] error ''interp3' undefined' does not match <EXTRAPVAL must be a numeric scalar>
+- general/interp3.m:302 [error] error ''interp3' undefined' does not match <EXTRAPVAL must be a numeric scalar>
+- general/interp3.m:303 [warning] 'interp3' undefined
+- general/interp3.m:304 [error] error ''interp3' undefined' does not match <V must be a 3-D array>
+- general/interp3.m:305 [error] error ''interp3' undefined' does not match <V must be a 3-D array>
+- general/interp3.m:306 [error] error ''interp3' undefined' does not match <XI, YI, and ZI dimensions must be equal>
+- general/interp3.m:307 [error] error ''interp3' undefined' does not match <V must be a 3-D array>
+- general/interp3.m:308 [error] error ''interp3' undefined' does not match <X, Y, Z, and V dimensions must be equal>
+- general/interp3.m:309 [error] error ''interp3' undefined' does not match <XI, YI, and ZI dimensions must be equal>
+- general/interp3.m:310 [error] error ''interp3' undefined' does not match <wrong number .* input arguments>
+- general/interpft.m:144 [error] error ''interpft' undefined' does not match <Invalid call>
+- general/interpft.m:145 [error] error ''interpft' undefined' does not match <Invalid call>
+- general/interpft.m:146 [error] error ''interpft' undefined' does not match <N must be a scalar integer>
+- general/interpft.m:147 [error] error ''interpft' undefined' does not match <N must be a scalar integer>
+- general/interpft.m:148 [error] error ''interpft' undefined' does not match <invalid dimension DIM>
+- general/interpft.m:149 [error] error ''interpft' undefined' does not match <invalid dimension DIM>
+- general/interpn.m:309 [test] 'ndgrid' undefined
+- general/interpn.m:320 [test] 'ndgrid' undefined
+- general/interpn.m:328 [test] 'ndgrid' undefined
+- general/interpn.m:335 [test] 'ndgrid' undefined
+- general/interpn.m:340 [test] 'interpn' undefined
+- general/interpn.m:344 [test] 'interpn' undefined
+- general/interpn.m:394 [error] error ''interpn' undefined' does not match <Invalid call>
+- general/interpn.m:395 [error] error ''interpn' undefined' does not match <input reference arrays must be numeric>
+- general/interpn.m:396 [error] error ''interpn' undefined' does not match <input reference arrays must be numeric>
+- general/interpn.m:397 [error] error ''interpn' undefined' does not match <input reference arrays must be numeric>
+- general/interpn.m:398 [error] error ''interpn' undefined' does not match <EXTRAPVAL must be a numeric scalar>
+- general/interpn.m:399 [error] error ''interpn' undefined' does not match <EXTRAPVAL must be a numeric scalar>
+- general/interpn.m:400 [warning] 'interpn' undefined
+- general/interpn.m:401 [error] error ''interpn' undefined' does not match <'foobar' does not match any of>
+- general/interpn.m:402 [error] error ''interpn' undefined' does not match <wrong number or incorrectly formatted input arguments>
+- general/interpn.m:404 [error] error ''interpn' undefined' does not match <incorrect dimensions for input X1>
+- general/interpn.m:406 [error] error ''interpn' undefined' does not match <incorrect dimensions for input X2>
+- general/interpn.m:408 [error] error ''interpn' undefined' does not match <incorrect dimensions for input Y2>
+- general/interpn.m:410 [error] error ''interpn' undefined' does not match <pchip interpolation not yet implemented>
+- general/interpn.m:411 [error] error ''interpn' undefined' does not match <cubic interpolation not yet implemented>
+- general/isequal.m:353 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/isequal.m:399 [assert] struct: additional arguments must occur as "field", VALUE pairs
+- general/isequal.m:400 [assert] struct: additional arguments must occur as "field", VALUE pairs
+- general/isequal.m:459 [test] conversion to cell array from char not possible; use '{' instead of '('
+- general/isequal.m:499 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/isequal.m:530 [assert] Arithmetic operation resulted in an overflow.
+- general/isequal.m:531 [assert] Arithmetic operation resulted in an overflow.
+- general/isequal.m:532 [assert] Arithmetic operation resulted in an overflow.
+- general/isequal.m:533 [assert] Arithmetic operation resulted in an overflow.
+- general/isequal.m:534 [assert] Arithmetic operation resulted in an overflow.
+- general/isequal.m:535 [assert] Arithmetic operation resulted in an overflow.
+- general/isequal.m:563 [error] expected an error but none was raised
+- general/isequal.m:564 [error] expected an error but none was raised
+- general/isequaln.m:301 [assert] 'isequaln' undefined
+- general/isequaln.m:302 [assert] 'isequaln' undefined
+- general/isequaln.m:303 [assert] 'isequaln' undefined
+- general/isequaln.m:304 [assert] 'isequaln' undefined
+- general/isequaln.m:305 [assert] 'isequaln' undefined
+- general/isequaln.m:306 [assert] 'isequaln' undefined
+- general/isequaln.m:308 [assert] 'isequaln' undefined
+- general/isequaln.m:309 [assert] 'isequaln' undefined
+- general/isequaln.m:310 [assert] 'isequaln' undefined
+- general/isequaln.m:311 [assert] 'isequaln' undefined
+- general/isequaln.m:312 [assert] 'isequaln' undefined
+- general/isequaln.m:313 [assert] 'isequaln' undefined
+- general/isequaln.m:317 [assert] 'isequaln' undefined
+- general/isequaln.m:318 [assert] 'isequaln' undefined
+- general/isequaln.m:321 [error] error ''isequaln' undefined' does not match <Invalid call>
+- general/isequaln.m:322 [error] error ''isequaln' undefined' does not match <Invalid call>
+- general/isuniform.m:90 [assert] 'isuniform' undefined
+- general/isuniform.m:91 [assert] 'isuniform' undefined
+- general/isuniform.m:92 [assert] 'isuniform' undefined
+- general/isuniform.m:93 [assert] 'isuniform' undefined
+- general/isuniform.m:94 [assert] 'isuniform' undefined
+- general/isuniform.m:95 [assert] 'isuniform' undefined
+- general/isuniform.m:96 [assert] 'isuniform' undefined
+- general/isuniform.m:99 [test] 'isuniform' undefined
+- general/isuniform.m:107 [test] 'isuniform' undefined
+- general/isuniform.m:116 [test] 'isuniform' undefined
+- general/isuniform.m:127 [error] error ''isuniform' undefined' does not match <Invalid call>
+- general/isuniform.m:128 [error] error ''isuniform' undefined' does not match <V must be a real vector>
+- general/isuniform.m:129 [error] error ''isuniform' undefined' does not match <V must be a real vector>
+- general/logspace.m:100 [test] assert (cond) failed
+- general/logspace.m:119 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/logspace.m:120 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/logspace.m:137 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/logspace.m:138 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/logspace.m:139 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/logspace.m:143 [error] expected an error but none was raised
+- general/logspace.m:144 [error] expected an error but none was raised
+- general/logspace.m:145 [error] expected an error but none was raised
+- general/nextpow2.m:72 [assert] 'nextpow2' undefined
+- general/nextpow2.m:73 [assert] 'nextpow2' undefined
+- general/nextpow2.m:74 [assert] 'nextpow2' undefined
+- general/nextpow2.m:75 [assert] 'nextpow2' undefined
+- general/nextpow2.m:76 [assert] 'nextpow2' undefined
+- general/nextpow2.m:77 [assert] 'nextpow2' undefined
+- general/nextpow2.m:78 [assert] 'nextpow2' undefined
+- general/nextpow2.m:79 [assert] 'nextpow2' undefined
+- general/nextpow2.m:80 [assert] 'nextpow2' undefined
+- general/nextpow2.m:82 [assert] 'nextpow2' undefined
+- general/nextpow2.m:83 [assert] 'nextpow2' undefined
+- general/nextpow2.m:84 [assert] 'nextpow2' undefined
+- general/nextpow2.m:85 [assert] 'nextpow2' undefined
+- general/nextpow2.m:86 [assert] 'nextpow2' undefined
+- general/nextpow2.m:87 [assert] 'nextpow2' undefined
+- general/nextpow2.m:88 [assert] 'nextpow2' undefined
+- general/nextpow2.m:91 [test] 'nextpow2' undefined
+- general/nextpow2.m:102 [assert] 'nextpow2' undefined
+- general/nextpow2.m:103 [assert] 'nextpow2' undefined
+- general/nextpow2.m:105 [test] 'nextpow2' undefined
+- general/nextpow2.m:116 [assert] 'nextpow2' undefined
+- general/nextpow2.m:117 [assert] 'nextpow2' undefined
+- general/nextpow2.m:119 [test] 'nextpow2' undefined
+- general/nextpow2.m:130 [assert] 'nextpow2' undefined
+- general/nextpow2.m:131 [assert] 'nextpow2' undefined
+- general/nextpow2.m:132 [assert] 'nextpow2' undefined
+- general/nextpow2.m:134 [assert] 'nextpow2' undefined
+- general/nextpow2.m:135 [assert] 'nextpow2' undefined
+- general/nextpow2.m:137 [test] 'nextpow2' undefined
+- general/nextpow2.m:148 [assert] 'nextpow2' undefined
+- general/nextpow2.m:149 [assert] 'nextpow2' undefined
+- general/nextpow2.m:150 [assert] 'nextpow2' undefined
+- general/nextpow2.m:152 [assert] 'nextpow2' undefined
+- general/nextpow2.m:153 [assert] 'nextpow2' undefined
+- general/nextpow2.m:156 [error] error ''nextpow2' undefined' does not match <Invalid call>
+- general/nextpow2.m:157 [error] error ''nextpow2' undefined' does not match <X must be numeric>
+- general/nextpow2.m:158 [error] error ''nextpow2' undefined' does not match <X must be real>
+- general/num2str.m:210 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/num2str.m:222 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/num2str.m:223 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/num2str.m:224 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/num2str.m:229 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/num2str.m:230 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/num2str.m:231 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/num2str.m:232 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/num2str.m:233 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/num2str.m:234 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/num2str.m:242 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/num2str.m:250 [test] assert (cond) failed
+- general/num2str.m:262 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/num2str.m:267 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/num2str.m:274 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/num2str.m:278 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/num2str.m:282 [error] error 'num2str: wrong type argument 'cell array'' does not match <X must be a numeric>
+- general/num2str.m:283 [error] error 'num2str: wrong type argument 'cell array'' does not match <PRECISION must be a scalar integer .= 0>
+- general/num2str.m:284 [error] expected an error but none was raised
+- general/num2str.m:285 [error] expected an error but none was raised
+- general/num2str.m:286 [error] expected an error but none was raised
+- general/num2str.m:287 [error] error 'num2str: wrong type argument 'cell array'' does not match <PRECISION must be a scalar integer .= 0>
+- general/num2str.m:288 [error] expected an error but none was raised
+- general/num2str.m:289 [error] expected an error but none was raised
+- general/num2str.m:290 [error] expected an error but none was raised
+- general/pagectranspose.m:47 [test] 'pagectranspose' undefined
+- general/pagectranspose.m:52 [test] 'pagectranspose' undefined
+- general/pagectranspose.m:58 [error] error ''pagectranspose' undefined' does not match <Invalid call>
+- general/pagetranspose.m:47 [test] 'pagetranspose' undefined
+- general/pagetranspose.m:52 [test] 'pagetranspose' undefined
+- general/pagetranspose.m:58 [error] error ''pagetranspose' undefined' does not match <Invalid call>
+- general/pol2cart.m:129 [test] 'pol2cart' undefined
+- general/pol2cart.m:136 [test] 'pol2cart' undefined
+- general/pol2cart.m:143 [test] 'pol2cart' undefined
+- general/pol2cart.m:152 [test] 'pol2cart' undefined
+- general/pol2cart.m:162 [test] 'pol2cart' undefined
+- general/pol2cart.m:171 [test] 'pol2cart' undefined
+- general/pol2cart.m:180 [test] 'pol2cart' undefined
+- general/pol2cart.m:189 [test] 'pol2cart' undefined
+- general/pol2cart.m:195 [test] 'pol2cart' undefined
+- general/pol2cart.m:202 [test] 'pol2cart' undefined
+- general/pol2cart.m:209 [test] 'pol2cart' undefined
+- general/pol2cart.m:221 [test] element number 3 undefined in return list
+- general/pol2cart.m:235 [error] error ''pol2cart' undefined' does not match <Invalid call>
+- general/pol2cart.m:236 [error] error ''pol2cart' undefined' does not match <matrix input P must be 2-D numeric array>
+- general/pol2cart.m:237 [error] error ''pol2cart' undefined' does not match <matrix input P must be 2-D numeric array>
+- general/pol2cart.m:238 [error] error ''pol2cart' undefined' does not match <matrix input must be a 2- or 3-element>
+- general/pol2cart.m:239 [error] error ''pol2cart' undefined' does not match <matrix input must be a 2- or 3-element>
+- general/pol2cart.m:240 [error] error ''pol2cart' undefined' does not match <must be numeric arrays or scalars>
+- general/pol2cart.m:241 [error] error ''pol2cart' undefined' does not match <must be numeric arrays or scalars>
+- general/pol2cart.m:242 [error] error ''pol2cart' undefined' does not match <must be the same size or scalars>
+- general/pol2cart.m:243 [error] error ''pol2cart' undefined' does not match <must be the same size or scalars>
+- general/pol2cart.m:244 [error] error ''pol2cart' undefined' does not match <must be the same size or scalars>
+- general/pol2cart.m:245 [error] error ''pol2cart' undefined' does not match <must be numeric arrays or scalars>
+- general/pol2cart.m:246 [error] error ''pol2cart' undefined' does not match <must be numeric arrays or scalars>
+- general/pol2cart.m:247 [error] error ''pol2cart' undefined' does not match <must be numeric arrays or scalars>
+- general/pol2cart.m:248 [error] error ''pol2cart' undefined' does not match <must be the same size or scalars>
+- general/pol2cart.m:249 [error] error ''pol2cart' undefined' does not match <must be the same size or scalars>
+- general/polyarea.m:69 [assert] 'polyarea' undefined
+- general/polyarea.m:70 [assert] 'polyarea' undefined
+- general/polyarea.m:71 [assert] 'polyarea' undefined
+- general/polyarea.m:72 [assert] 'polyarea' undefined
+- general/postpad.m:100 [assert] 'postpad' undefined
+- general/postpad.m:101 [assert] 'postpad' undefined
+- general/postpad.m:102 [assert] 'postpad' undefined
+- general/postpad.m:103 [assert] 'postpad' undefined
+- general/postpad.m:104 [assert] 'postpad' undefined
+- general/postpad.m:105 [assert] 'postpad' undefined
+- general/postpad.m:106 [assert] 'postpad' undefined
+- general/postpad.m:108 [assert] 'postpad' undefined
+- general/postpad.m:109 [assert] 'postpad' undefined
+- general/postpad.m:110 [assert] 'postpad' undefined
+- general/postpad.m:113 [assert] 'postpad' undefined
+- general/postpad.m:114 [assert] 'postpad' undefined
+- general/postpad.m:116 [error] error ''postpad' undefined' does not match <Invalid call>
+- general/postpad.m:117 [error] error ''postpad' undefined' does not match <Invalid call>
+- general/prepad.m:100 [assert] 'prepad' undefined
+- general/prepad.m:101 [assert] 'prepad' undefined
+- general/prepad.m:103 [assert] 'prepad' undefined
+- general/prepad.m:104 [assert] 'prepad' undefined
+- general/prepad.m:106 [assert] 'prepad' undefined
+- general/prepad.m:107 [assert] 'prepad' undefined
+- general/prepad.m:108 [assert] 'prepad' undefined
+- general/prepad.m:110 [assert] 'prepad' undefined
+- general/prepad.m:112 [assert] 'prepad' undefined
+- general/prepad.m:113 [assert] 'prepad' undefined
+- general/prepad.m:116 [assert] 'prepad' undefined
+- general/prepad.m:117 [assert] 'prepad' undefined
+- general/prepad.m:121 [error] error ''prepad' undefined' does not match <Invalid call>
+- general/prepad.m:122 [error] error ''prepad' undefined' does not match <Invalid call>
+- general/prepad.m:123 [error] error ''prepad' undefined' does not match <C must be empty or a scalar>
+- general/prepad.m:124 [error] error ''prepad' undefined' does not match <DIM must be an integer>
+- general/prepad.m:125 [error] error ''prepad' undefined' does not match <DIM must be an integer>
+- general/prepad.m:126 [error] error ''prepad' undefined' does not match <L must be a positive scalar>
+- general/prepad.m:127 [error] error ''prepad' undefined' does not match <L must be a positive scalar>
+- general/quad2d.m:455 [assert] 'quad2d' undefined
+- general/quad2d.m:459 [assert] 'quad2d' undefined
+- general/quad2d.m:460 [assert] 'quad2d' undefined
+- general/quad2d.m:461 [assert] 'quad2d' undefined
+- general/quad2d.m:466 [assert] 'quad2d' undefined
+- general/quad2d.m:467 [assert] 'quad2d' undefined
+- general/quad2d.m:468 [assert] 'quad2d' undefined
+- general/quad2d.m:470 [assert] 'quad2d' undefined
+- general/quad2d.m:471 [assert] 'quad2d' undefined
+- general/quad2d.m:473 [assert] 'quad2d' undefined
+- general/quad2d.m:476 [assert] 'quad2d' undefined
+- general/quad2d.m:478 [assert] 'quad2d' undefined
+- general/quad2d.m:481 [error] error ''quad2d' undefined' does not match <Invalid call>
+- general/quad2d.m:482 [error] error ''quad2d' undefined' does not match <Invalid call>
+- general/quad2d.m:483 [error] error ''quad2d' undefined' does not match <Invalid call>
+- general/quad2d.m:484 [error] error ''quad2d' undefined' does not match <Invalid call>
+- general/quad2d.m:485 [error] error ''quad2d' undefined' does not match <Invalid call>
+- general/quad2d.m:486 [error] error ''quad2d' undefined' does not match <Invalid call>
+- general/quad2d.m:492 [error] error ''quad2d' undefined' does not match <property PROP must be a string>
+- general/quad2d.m:493 [error] error ''quad2d' undefined' does not match <AbsTol value must be a numeric>
+- general/quad2d.m:494 [error] error ''quad2d' undefined' does not match <AbsTol value must be a .* scalar>
+- general/quad2d.m:495 [error] error ''quad2d' undefined' does not match <AbsTol value must be.* .= 0>
+- general/quad2d.m:496 [error] error ''quad2d' undefined' does not match <RelTol value must be a numeric>
+- general/quad2d.m:497 [error] error ''quad2d' undefined' does not match <RelTol value must be a .* scalar>
+- general/quad2d.m:498 [error] error ''quad2d' undefined' does not match <RelTol value must be.* .= 0>
+- general/quad2d.m:499 [error] error ''quad2d' undefined' does not match <MaxFunEvals value must be a scalar integer>
+- general/quad2d.m:501 [error] error ''quad2d' undefined' does not match <MaxFunEvals value must be a scalar integer>
+- general/quad2d.m:503 [error] error ''quad2d' undefined' does not match <MaxFunEvals value must be a scalar integer>
+- general/quad2d.m:505 [error] error ''quad2d' undefined' does not match <MaxFunEvals value must be a scalar integer .= 1>
+- general/quad2d.m:507 [error] error ''quad2d' undefined' does not match <Singular must be a logical value>
+- general/quad2d.m:509 [error] error ''quad2d' undefined' does not match <Singular must be a logical value>
+- general/quad2d.m:511 [error] error ''quad2d' undefined' does not match <Vectorized must be a logical value>
+- general/quad2d.m:513 [error] error ''quad2d' undefined' does not match <Vectorized must be a logical value>
+- general/quad2d.m:515 [error] error ''quad2d' undefined' does not match <FailurePlot must be a logical value>
+- general/quad2d.m:517 [error] error ''quad2d' undefined' does not match <FailurePlot must be a logical value>
+- general/quad2d.m:519 [error] error ''quad2d' undefined' does not match <unknown property 'foo'>
+- general/quad2d.m:520 [error] error ''quad2d' undefined' does not match <YA must be a real scalar>
+- general/quad2d.m:521 [error] error ''quad2d' undefined' does not match <YA must be a real scalar>
+- general/quad2d.m:522 [error] error ''quad2d' undefined' does not match <YB must be a real scalar>
+- general/quad2d.m:523 [error] error ''quad2d' undefined' does not match <YB must be a real scalar>
+- general/quad2d.m:524 [warning] 'quad2d' undefined
+- general/quadgk.m:622 [assert] 'quadgk' undefined
+- general/quadgk.m:623 [test] 'inline' undefined
+- general/quadgk.m:626 [assert] 'quadgk' undefined
+- general/quadgk.m:627 [assert] 'quadgk' undefined
+- general/quadgk.m:629 [assert] 'quadgk' undefined
+- general/quadgk.m:630 [assert] 'quadgk' undefined
+- general/quadgk.m:632 [assert] 'quadgk' undefined
+- general/quadgk.m:633 [assert] 'quadgk' undefined
+- general/quadgk.m:634 [assert] 'quadgk' undefined
+- general/quadgk.m:635 [assert] 'quadgk' undefined
+- general/quadgk.m:636 [assert] 'quadgk' undefined
+- general/quadgk.m:637 [assert] 'quadgk' undefined
+- general/quadgk.m:640 [assert] 'quadgk' undefined
+- general/quadgk.m:643 [assert] 'quadgk' undefined
+- general/quadgk.m:645 [assert] 'quadgk' undefined
+- general/quadgk.m:646 [assert] 'quadgk' undefined
+- general/quadgk.m:647 [test] 'quadgk' undefined
+- general/quadgk.m:652 [assert] 'quadgk' undefined
+- general/quadgk.m:656 [assert] 'quadgk' undefined
+- general/quadgk.m:660 [warning] 'quadgk' undefined
+- general/quadgk.m:667 [error] error ''quadgk' undefined' does not match <can not pass additional arguments>
+- general/quadgk.m:668 [error] error ''quadgk' undefined' does not match <options must occur in pairs>
+- general/quadgk.m:669 [error] error ''quadgk' undefined' does not match <PROP must be a string>
+- general/quadgk.m:670 [error] error ''quadgk' undefined' does not match <unknown property 'foo'>
+- general/quadgk.m:671 [error] error ''quadgk' undefined' does not match <ABSTOL must be a scalar>
+- general/quadgk.m:672 [error] error ''quadgk' undefined' does not match <ABSTOL must be a scalar .=0>
+- general/quadgk.m:673 [error] error ''quadgk' undefined' does not match <RELTOL must be a scalar>
+- general/quadgk.m:674 [error] error ''quadgk' undefined' does not match <RELTOL must be a scalar>
+- general/quadl.m:180 [assert] 'quadl' undefined
+- general/quadl.m:183 [assert] 'quadl' undefined
+- general/quadl.m:187 [assert] 'quadl' undefined
+- general/quadl.m:191 [test] 'quadl' undefined
+- general/quadl.m:198 [test] 'quadl' undefined
+- general/quadl.m:204 [error] error ''quadl' undefined' does not match <Invalid call>
+- general/quadl.m:205 [error] error ''quadl' undefined' does not match <Invalid call>
+- general/quadl.m:206 [error] error ''quadl' undefined' does not match <Invalid call>
+- general/quadl.m:207 [error] error ''quadl' undefined' does not match <TOL must be a scalar>
+- general/quadl.m:208 [error] error ''quadl' undefined' does not match <TOL must be .* .=0>
+- general/quadv.m:209 [assert] 'quadv' undefined
+- general/quadv.m:210 [assert] 'quadv' undefined
+- general/quadv.m:213 [assert] 'quadv' undefined
+- general/quadv.m:216 [assert] 'quadv' undefined
+- general/quadv.m:219 [assert] 'quadv' undefined
+- general/quadv.m:223 [assert] 'quadv' undefined
+- general/quadv.m:226 [error] error ''quadv' undefined' does not match <Invalid call>
+- general/quadv.m:227 [error] error ''quadv' undefined' does not match <Invalid call>
+- general/quadv.m:228 [error] error ''quadv' undefined' does not match <Invalid call>
+- general/quadv.m:229 [error] error ''quadv' undefined' does not match <TOL must be a scalar>
+- general/quadv.m:230 [error] error ''quadv' undefined' does not match <TOL must be .* .=0>
+- general/rad2deg.m:64 [assert] 'rad2deg' undefined
+- general/rad2deg.m:65 [assert] 'rad2deg' undefined
+- general/rad2deg.m:66 [assert] 'rad2deg' undefined
+- general/rad2deg.m:67 [assert] 'rad2deg' undefined
+- general/rad2deg.m:70 [error] error ''rad2deg' undefined' does not match <Invalid call>
+- general/rad2deg.m:71 [error] error ''rad2deg' undefined' does not match <RAD must be a floating point class>
+- general/rad2deg.m:72 [error] error ''rad2deg' undefined' does not match <RAD must be a floating point class>
+- general/rat.m:258 [assert] 'rat' undefined
+- general/rat.m:259 [assert] 'rat' undefined
+- general/rat.m:261 [assert] 'rat' undefined
+- general/rat.m:262 [assert] 'rat' undefined
+- general/rat.m:263 [assert] 'rat' undefined
+- general/rat.m:265 [test] 'rat' undefined
+- general/rat.m:270 [test] 'rat' undefined
+- general/rat.m:276 [test] 'rat' undefined
+- general/rat.m:283 [test] 'cosd' undefined
+- general/rat.m:297 [test] 'rat' undefined
+- general/rat.m:305 [test] 'rat' undefined
+- general/rat.m:326 [test] 'rat' undefined
+- general/rat.m:331 [test] 'rat' undefined
+- general/rat.m:335 [assert] 'rat' undefined
+- general/rat.m:338 [error] error ''rat' undefined' does not match <Invalid call>
+- general/rat.m:339 [error] error ''rat' undefined' does not match <X must be a single or double array>
+- general/rat.m:340 [error] error ''rat' undefined' does not match <TOL must be a numeric scalar>
+- general/rat.m:341 [error] error ''rat' undefined' does not match <TOL must be a numeric scalar>
+- general/rat.m:342 [error] error ''rat' undefined' does not match <TOL must be a numeric scalar .* 0>
+- general/repelem.m:336 [assert] 'repelem' undefined
+- general/repelem.m:337 [assert] 'repelem' undefined
+- general/repelem.m:339 [assert] 'repelem' undefined
+- general/repelem.m:340 [assert] 'repelem' undefined
+- general/repelem.m:341 [assert] 'repelem' undefined
+- general/repelem.m:343 [assert] 'repelem' undefined
+- general/repelem.m:346 [assert] 'repelem' undefined
+- general/repelem.m:347 [assert] 'repelem' undefined
+- general/repelem.m:350 [assert] 'repelem' undefined
+- general/repelem.m:351 [assert] 'repelem' undefined
+- general/repelem.m:352 [assert] 'repelem' undefined
+- general/repelem.m:353 [assert] 'repelem' undefined
+- general/repelem.m:354 [assert] 'repelem' undefined
+- general/repelem.m:355 [assert] 'repelem' undefined
+- general/repelem.m:358 [assert] 'repelem' undefined
+- general/repelem.m:360 [assert] 'repelem' undefined
+- general/repelem.m:361 [assert] 'repelem' undefined
+- general/repelem.m:363 [assert] 'repelem' undefined
+- general/repelem.m:365 [assert] 'repelem' undefined
+- general/repelem.m:366 [assert] 'repelem' undefined
+- general/repelem.m:368 [assert] 'repelem' undefined
+- general/repelem.m:370 [assert] 'repelem' undefined
+- general/repelem.m:384 [assert] 'repelem' undefined
+- general/repelem.m:398 [assert] 'repelem' undefined
+- general/repelem.m:401 [assert] 'repelem' undefined
+- general/repelem.m:406 [assert] 'repelem' undefined
+- general/repelem.m:408 [assert] 'repelem' undefined
+- general/repelem.m:410 [assert] 'repelem' undefined
+- general/repelem.m:412 [assert] 'repelem' undefined
+- general/repelem.m:423 [assert] 'repelem' undefined
+- general/repelem.m:426 [test] 'repelem' undefined
+- general/repelem.m:436 [test] 'repelem' undefined
+- general/repelem.m:442 [test] 'repelem' undefined
+- general/repelem.m:445 [test] 'repelem' undefined
+- general/repelem.m:451 [error] error ''repelem' undefined' does not match <Invalid call>
+- general/repelem.m:452 [error] error ''repelem' undefined' does not match <Invalid call>
+- general/repmat.m:150 [assert] repmat: argument must be a scalar, not empty
+- general/repmat.m:151 [assert] repmat: argument must be a scalar, not empty
+- general/repmat.m:152 [assert] repmat: argument must be a scalar, not empty
+- general/repmat.m:153 [assert] repmat: argument must be a scalar, not empty
+- general/repmat.m:157 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/repmat.m:158 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/repmat.m:159 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/repmat.m:160 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/repmat.m:194 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/repmat.m:195 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/repmat.m:196 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/repmat.m:210 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/repmat.m:224 [error] expected an error but none was raised
+- general/rescale.m:142 [assert] 'rescale' undefined
+- general/rescale.m:143 [assert] 'rescale' undefined
+- general/rescale.m:144 [assert] 'rescale' undefined
+- general/rescale.m:145 [assert] 'rescale' undefined
+- general/rescale.m:148 [assert] 'rescale' undefined
+- general/rescale.m:149 [test] 'rescale' undefined
+- general/rescale.m:153 [test] 'rescale' undefined
+- general/rescale.m:159 [assert] 'rescale' undefined
+- general/rescale.m:162 [assert] 'rescale' undefined
+- general/rescale.m:163 [assert] 'rescale' undefined
+- general/rescale.m:164 [assert] 'rescale' undefined
+- general/rescale.m:165 [assert] 'rescale' undefined
+- general/rescale.m:168 [test] 'rescale' undefined
+- general/rescale.m:178 [error] error ''rescale' undefined' does not match <Invalid call>
+- general/rescale.m:179 [error] error ''rescale' undefined' does not match <Invalid call>
+- general/rescale.m:180 [error] error ''rescale' undefined' does not match <Invalid call>
+- general/rescale.m:181 [error] error ''rescale' undefined' does not match <Invalid call>
+- general/rescale.m:182 [error] error ''rescale' undefined' does not match <Invalid call>
+- general/rescale.m:183 [error] error ''rescale' undefined' does not match <A must be a numeric or logical matrix>
+- general/rescale.m:184 [error] error ''rescale' undefined' does not match <A must be a numeric or logical matrix>
+- general/rescale.m:185 [error] error ''rescale' undefined' does not match <U must be numeric>
+- general/rescale.m:186 [error] error ''rescale' undefined' does not match <L must be smaller than .* U>
+- general/rescale.m:189 [error] error ''rescale' undefined' does not match <INMIN must be numeric>
+- general/rescale.m:190 [error] error ''rescale' undefined' does not match <INMAX must be numeric>
+- general/rescale.m:191 [error] error ''rescale' undefined' does not match <invalid option>
+- general/rng.m:186 [test] 'rng' undefined
+- general/rng.m:211 [test] 'rng' undefined
+- general/rng.m:236 [test] 'rng' undefined
+- general/rng.m:249 [test] 'rng' undefined
+- general/rng.m:267 [test] 'rng' undefined
+- general/rng.m:291 [error] error ''rng' undefined' does not match <Invalid call>
+- general/rng.m:292 [error] error ''rng' undefined' does not match <Invalid call>
+- general/rng.m:293 [error] error ''rng' undefined' does not match <Invalid call>
+- general/rng.m:294 [error] error ''rng' undefined' does not match <Invalid call>
+- general/rng.m:295 [error] error ''rng' undefined' does not match <Invalid call>
+- general/rng.m:296 [error] error ''rng' undefined' does not match <Invalid call>
+- general/rng.m:297 [error] error ''rng' undefined' does not match <Invalid call>
+- general/rng.m:298 [error] error ''rng' undefined' does not match <Invalid call>
+- general/rng.m:299 [error] error ''rng' undefined' does not match <Invalid call>
+- general/rng.m:300 [error] error ''rng' undefined' does not match <input structure requires "Type">
+- general/rng.m:301 [error] error ''rng' undefined' does not match <input structure requires "Type">
+- general/rng.m:303 [error] error ''rng' undefined' does not match <GENERATOR must be a string>
+- general/rng.m:304 [error] error ''rng' undefined' does not match <"philox" is not available in Octave>
+- general/rng.m:305 [error] error ''rng' undefined' does not match <GENERATOR must be a string>
+- general/rng.m:306 [error] error ''rng' undefined' does not match <unknown random number generator "foobar">
+- general/rot90.m:111 [test] transpose not defined for N-D objects
+- general/rot90.m:120 [test] transpose not defined for N-D objects
+- general/rot90.m:131 [test] transpose not defined for N-D objects
+- general/rot90.m:144 [error] expected an error but none was raised
+- general/rot90.m:145 [error] expected an error but none was raised
+- general/rot90.m:146 [error] expected an error but none was raised
+- general/rotdim.m:137 [assert] 'rotdim' undefined
+- general/rotdim.m:138 [assert] 'rotdim' undefined
+- general/rotdim.m:139 [assert] 'rotdim' undefined
+- general/rotdim.m:140 [assert] 'rotdim' undefined
+- general/rotdim.m:141 [assert] 'rotdim' undefined
+- general/rotdim.m:142 [assert] 'rotdim' undefined
+- general/rotdim.m:146 [assert] 'rotdim' undefined
+- general/rotdim.m:147 [assert] 'rotdim' undefined
+- general/rotdim.m:148 [assert] 'rotdim' undefined
+- general/rotdim.m:149 [assert] 'rotdim' undefined
+- general/rotdim.m:150 [assert] 'rotdim' undefined
+- general/rotdim.m:151 [assert] 'rotdim' undefined
+- general/rotdim.m:155 [assert] 'rotdim' undefined
+- general/rotdim.m:156 [assert] 'rotdim' undefined
+- general/rotdim.m:157 [assert] 'rotdim' undefined
+- general/rotdim.m:158 [assert] 'rotdim' undefined
+- general/rotdim.m:159 [assert] 'rotdim' undefined
+- general/rotdim.m:160 [assert] 'rotdim' undefined
+- general/rotdim.m:165 [error] error ''rotdim' undefined' does not match <Invalid call>
+- general/shiftdim.m:96 [test] 'shiftdim' undefined
+- general/shiftdim.m:104 [assert] 'shiftdim' undefined
+- general/shiftdim.m:107 [error] error ''shiftdim' undefined' does not match <Invalid call>
+- general/sortrows.m:129 [test] 'sortrows' undefined
+- general/sortrows.m:140 [test] 'sortrows' undefined
+- general/sortrows.m:151 [test] 'sortrows' undefined
+- general/sortrows.m:159 [error] error ''sortrows' undefined' does not match <Invalid call>
+- general/sph2cart.m:109 [test] 'sph2cart' undefined
+- general/sph2cart.m:118 [test] 'sph2cart' undefined
+- general/sph2cart.m:127 [test] 'sph2cart' undefined
+- general/sph2cart.m:136 [test] 'sph2cart' undefined
+- general/sph2cart.m:145 [test] 'sph2cart' undefined
+- general/sph2cart.m:154 [test] 'sph2cart' undefined
+- general/sph2cart.m:160 [test] 'sph2cart' undefined
+- general/sph2cart.m:167 [test] 'sph2cart' undefined
+- general/sph2cart.m:175 [test] element number 3 undefined in return list
+- general/sph2cart.m:189 [error] error ''sph2cart' undefined' does not match <Invalid call>
+- general/sph2cart.m:190 [error] error ''sph2cart' undefined' does not match <Invalid call>
+- general/sph2cart.m:191 [error] error ''sph2cart' undefined' does not match <matrix input must be a 2-D numeric array>
+- general/sph2cart.m:192 [error] error ''sph2cart' undefined' does not match <matrix input must be a 2-D numeric array>
+- general/sph2cart.m:193 [error] error ''sph2cart' undefined' does not match <matrix input must be a 3-element>
+- general/sph2cart.m:194 [error] error ''sph2cart' undefined' does not match <matrix input must be a 3-element>
+- general/sph2cart.m:195 [error] error ''sph2cart' undefined' does not match <must be numeric arrays or scalars>
+- general/sph2cart.m:196 [error] error ''sph2cart' undefined' does not match <must be numeric arrays or scalars>
+- general/sph2cart.m:197 [error] error ''sph2cart' undefined' does not match <must be numeric arrays or scalars>
+- general/sph2cart.m:198 [error] error ''sph2cart' undefined' does not match <must be the same size or scalars>
+- general/sph2cart.m:199 [error] error ''sph2cart' undefined' does not match <must be the same size or scalars>
+- general/sph2cart.m:200 [error] error ''sph2cart' undefined' does not match <must be the same size or scalars>
+- general/structfun.m:132 [test] regexp: unknown option "matches"
+- general/structfun.m:146 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/structfun.m:158 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/structfun.m:181 [test] assert (cond) failed
+- general/structfun.m:197 [test] assert (cond) failed
+- general/subsindex.m:82 [error] error ''subsindex' undefined' does not match <not defined for class "double">
+- general/subsindex.m:85 [error] error ''subsindex' undefined' does not match <Invalid call>
+- general/trapz.m:135 [assert] Invalid call to trapz
+- general/trapz.m:136 [assert] Invalid call to trapz
+- general/trapz.m:142 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/trapz.m:143 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/trapz.m:144 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/trapz.m:145 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/trapz.m:146 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/trapz.m:147 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/trapz.m:149 [assert] Invalid call to trapz
+- general/trapz.m:150 [assert] Invalid call to trapz
+- general/trapz.m:151 [assert] Invalid call to trapz
+- general/trapz.m:152 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/trapz.m:153 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/trapz.m:157 [error] expected an error but none was raised
+- general/trapz.m:158 [error] expected an error but none was raised
+- general/trapz.m:159 [error] expected an error but none was raised
+- general/trapz.m:160 [error] error 'Invalid call to trapz' does not match <length of X and length of Y.*must match>
+- general/trapz.m:161 [error] error 'Invalid call to trapz' does not match <X and Y must have same shape>
+- general/triplequad.m:90 [assert] 'triplequad' undefined
+- general/xor.m:92 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- general/xor.m:103 [error] error 'operator xor: nonconformant arguments (op1 is 3x2, op2 is 2x3)' does not match <X and Y must be of compatible size>
+- geometry/convhull.m:196 [error] error ''convhull' undefined' does not match <Invalid call>
+- geometry/convhull.m:197 [error] error ''convhull' undefined' does not match <Invalid call>
+- geometry/convhull.m:198 [error] error ''convhull' undefined' does not match <X must be a matrix with 2 or 3 columns>
+- geometry/convhull.m:199 [error] error ''convhull' undefined' does not match <OPTIONS must be a string or cell array>
+- geometry/convhull.m:200 [error] error ''convhull' undefined' does not match <X must be a matrix with 2 or 3 columns>
+- geometry/convhull.m:201 [error] error ''convhull' undefined' does not match <OPTIONS must be a string or cell array>
+- geometry/convhull.m:202 [error] error ''convhull' undefined' does not match <OPTIONS must be a string or cell array>
+- geometry/convhull.m:203 [error] error ''convhull' undefined' does not match <X and Y must be the same size>
+- geometry/convhull.m:204 [error] error ''convhull' undefined' does not match <X, Y, and Z must be the same size>
+- geometry/delaunay.m:212 [error] error ''delaunay' undefined' does not match <Invalid call>
+- geometry/delaunay.m:213 [error] error ''delaunay' undefined' does not match <Invalid call>
+- geometry/delaunay.m:214 [error] error ''delaunay' undefined' does not match <X must be a matrix with 2 or 3 columns>
+- geometry/delaunay.m:215 [error] error ''delaunay' undefined' does not match <OPTIONS must be a string or cell array>
+- geometry/delaunay.m:216 [error] error ''delaunay' undefined' does not match <X must be a matrix with 2 or 3 columns>
+- geometry/delaunay.m:217 [error] error ''delaunay' undefined' does not match <OPTIONS must be a string or cell array>
+- geometry/delaunay.m:218 [error] error ''delaunay' undefined' does not match <OPTIONS must be a string or cell array>
+- geometry/delaunay.m:219 [error] error ''delaunay' undefined' does not match <X and Y must be the same size>
+- geometry/delaunay.m:220 [error] error ''delaunay' undefined' does not match <X, Y, and Z must be the same size>
+- geometry/delaunayn.m:263 [error] error ''delaunayn' undefined' does not match <Invalid call>
+- geometry/delaunayn.m:264 [error] error ''delaunayn' undefined' does not match <PTS must be .* numeric array>
+- geometry/delaunayn.m:265 [error] error ''delaunayn' undefined' does not match <PTS must be .* numeric array>
+- geometry/delaunayn.m:266 [error] error ''delaunayn' undefined' does not match <PTS must be .* numeric array>
+- geometry/delaunayn.m:267 [error] error ''delaunayn' undefined' does not match <PTS must be a 2-dimensional .* array>
+- geometry/delaunayn.m:268 [error] error ''delaunayn' undefined' does not match <PTS must not contain Inf>
+- geometry/delaunayn.m:269 [error] error ''delaunayn' undefined' does not match <PTS must not contain .* NaN>
+- geometry/dsearchn.m:74 [assert] 'dsearchn' undefined
+- geometry/dsearchn.m:75 [assert] 'dsearchn' undefined
+- geometry/dsearchn.m:76 [assert] 'dsearchn' undefined
+- geometry/dsearchn.m:77 [assert] 'dsearchn' undefined
+- geometry/dsearchn.m:78 [assert] 'dsearchn' undefined
+- geometry/dsearchn.m:79 [assert] 'dsearchn' undefined
+- geometry/griddata.m:370 [error] error ''griddata' undefined' does not match <Invalid call>
+- geometry/griddata.m:371 [error] error ''griddata' undefined' does not match <Invalid call>
+- geometry/griddata.m:372 [error] error ''griddata' undefined' does not match <Invalid call>
+- geometry/griddata.m:373 [error] error ''griddata' undefined' does not match <Invalid call>
+- geometry/griddata.m:374 [error] error ''griddata' undefined' does not match <Invalid call>
+- geometry/griddata.m:375 [error] error ''griddata' undefined' does not match <only one output argument>
+- geometry/griddata.m:376 [error] error ''griddata' undefined' does not match <vectors of the same length>
+- geometry/griddata.m:377 [error] error ''griddata' undefined' does not match <vectors of the same length>
+- geometry/griddata.m:378 [error] error ''griddata' undefined' does not match <vectors of the same length>
+- geometry/griddata.m:379 [error] error ''griddata' undefined' does not match <the columns and rows of Z>
+- geometry/griddata.m:380 [error] error ''griddata' undefined' does not match <the columns and rows of Z>
+- geometry/griddata.m:381 [error] error ''griddata' undefined' does not match <XI and YI .* matrices of same size>
+- geometry/griddata.m:382 [error] error ''griddata' undefined' does not match <XI and YI .* matrices of same size>
+- geometry/griddata.m:383 [error] error ''griddata' undefined' does not match <XI and YI .* matrices of same size>
+- geometry/griddata.m:384 [error] error ''griddata' undefined' does not match <XI and YI .* matrices of same size>
+- geometry/griddata.m:385 [error] error ''griddata' undefined' does not match <METHOD must be a string>
+- geometry/griddata.m:386 [error] error ''griddata' undefined' does not match <"cubic" .* not yet implemented>
+- geometry/griddata.m:387 [error] error ''griddata' undefined' does not match <"natural" .* not yet implemented>
+- geometry/griddata.m:388 [error] error ''griddata' undefined' does not match <unknown interpolation METHOD: "foobar">
+- geometry/griddatan.m:188 [error] error ''griddatan' undefined' does not match <Invalid call>
+- geometry/griddatan.m:189 [error] error ''griddatan' undefined' does not match <Invalid call>
+- geometry/griddatan.m:190 [error] error ''griddatan' undefined' does not match <Invalid call>
+- geometry/griddatan.m:191 [error] error ''griddatan' undefined' does not match <number of points in X>
+- geometry/griddatan.m:192 [error] error ''griddatan' undefined' does not match <Y must be a column vector>
+- geometry/griddatan.m:193 [error] error ''griddatan' undefined' does not match <Y must .* same number of points .* as X>
+- geometry/griddatan.m:194 [error] error ''griddatan' undefined' does not match <dimension of .* XI .* must match X>
+- geometry/griddatan.m:195 [error] error ''griddatan' undefined' does not match <METHOD must be a string>
+- geometry/griddatan.m:196 [error] error ''griddatan' undefined' does not match <"v4" METHOD is available for 2-D>
+- geometry/griddatan.m:197 [error] error ''griddatan' undefined' does not match <"cubic" .* not yet implemented>
+- geometry/griddatan.m:198 [error] error ''griddatan' undefined' does not match <"natural" .* not yet implemented>
+- geometry/griddatan.m:199 [error] error ''griddatan' undefined' does not match <unknown .* METHOD: "foobar">
+- geometry/inpolygon.m:139 [test] 'inpolygon' undefined
+- geometry/inpolygon.m:145 [test] 'inpolygon' undefined
+- geometry/inpolygon.m:161 [error] error ''inpolygon' undefined' does not match <Invalid call>
+- geometry/inpolygon.m:162 [error] error ''inpolygon' undefined' does not match <Invalid call>
+- geometry/inpolygon.m:163 [error] error ''inpolygon' undefined' does not match <Invalid call>
+- geometry/inpolygon.m:164 [error] error ''inpolygon' undefined' does not match <X and Y must be real>
+- geometry/inpolygon.m:165 [error] error ''inpolygon' undefined' does not match <X and Y must be real>
+- geometry/inpolygon.m:166 [error] error ''inpolygon' undefined' does not match <X and Y must be .* the same size>
+- geometry/inpolygon.m:167 [error] error ''inpolygon' undefined' does not match <X and Y must be .* the same size>
+- geometry/inpolygon.m:168 [error] error ''inpolygon' undefined' does not match <XV and YV must be real vectors>
+- geometry/inpolygon.m:169 [error] error ''inpolygon' undefined' does not match <XV and YV must be real vectors>
+- geometry/inpolygon.m:170 [error] error ''inpolygon' undefined' does not match <XV and YV must .* the same size>
+- geometry/rectint.m:85 [assert] 'rectint' undefined
+- geometry/rectint.m:87 [assert] 'rectint' undefined
+- geometry/rectint.m:89 [assert] 'rectint' undefined
+- geometry/rectint.m:91 [assert] 'rectint' undefined
+- geometry/rectint.m:93 [assert] 'rectint' undefined
+- geometry/rectint.m:95 [assert] 'rectint' undefined
+- geometry/rectint.m:97 [assert] 'rectint' undefined
+- geometry/rectint.m:99 [assert] 'rectint' undefined
+- geometry/rectint.m:100 [assert] 'rectint' undefined
+- geometry/rectint.m:102 [assert] 'rectint' undefined
+- geometry/rectint.m:103 [assert] 'rectint' undefined
+- geometry/rectint.m:104 [assert] 'rectint' undefined
+- geometry/rectint.m:105 [assert] 'rectint' undefined
+- geometry/rectint.m:115 [assert] 'rectint' undefined
+- geometry/rectint.m:116 [assert] 'rectint' undefined
+- geometry/rectint.m:117 [assert] 'rectint' undefined
+- geometry/rectint.m:120 [assert] 'rectint' undefined
+- geometry/rotx.m:102 [assert] 'rotx' undefined
+- geometry/rotx.m:103 [assert] 'rotx' undefined
+- geometry/rotx.m:104 [assert] 'rotx' undefined
+- geometry/rotx.m:105 [assert] 'rotx' undefined
+- geometry/rotx.m:108 [error] error ''rotx' undefined' does not match <Invalid call>
+- geometry/rotx.m:109 [error] error ''rotx' undefined' does not match <Invalid call>
+- geometry/roty.m:102 [assert] 'roty' undefined
+- geometry/roty.m:103 [assert] 'roty' undefined
+- geometry/roty.m:104 [assert] 'roty' undefined
+- geometry/roty.m:105 [assert] 'roty' undefined
+- geometry/roty.m:108 [error] error ''roty' undefined' does not match <Invalid call>
+- geometry/roty.m:109 [error] error ''roty' undefined' does not match <Invalid call>
+- geometry/rotz.m:102 [assert] 'rotz' undefined
+- geometry/rotz.m:103 [assert] 'rotz' undefined
+- geometry/rotz.m:104 [assert] 'rotz' undefined
+- geometry/rotz.m:105 [assert] 'rotz' undefined
+- geometry/rotz.m:108 [error] error ''rotz' undefined' does not match <Invalid call>
+- geometry/rotz.m:109 [error] error ''rotz' undefined' does not match <Invalid call>
+- geometry/tsearchn.m:102 [test] 'tsearchn' undefined
+- geometry/tsearchn.m:106 [test] 'tsearchn' undefined
+- geometry/tsearchn.m:110 [test] 'tsearchn' undefined
+- geometry/tsearchn.m:114 [test] 'tsearchn' undefined
+- geometry/tsearchn.m:118 [test] 'tsearchn' undefined
+- geometry/tsearchn.m:124 [error] error ''tsearchn' undefined' does not match <Invalid call>
+- geometry/tsearchn.m:125 [error] error ''tsearchn' undefined' does not match <Invalid call>
+- geometry/tsearchn.m:126 [error] error ''tsearchn' undefined' does not match <Invalid call>
+- geometry/tsearchn.m:127 [error] error ''tsearchn' undefined' does not match <number of columns of X and XI must match>
+- geometry/tsearchn.m:128 [error] error ''tsearchn' undefined' does not match <T must not access points outside X>
+- geometry/voronoi.m:227 [error] error ''voronoi' undefined' does not match <Invalid call>
+- geometry/voronoi.m:230 [error] error ''voronoi' undefined' does not match <HAX argument must be an axes object>
+- geometry/voronoi.m:231 [error] error ''voronoi' undefined' does not match <X and Y must be vectors of the same length>
+- geometry/voronoi.m:232 [error] error ''voronoi' undefined' does not match <minimum of 2 points required>
+- geometry/voronoin.m:83 [error] error ''voronoin' undefined' does not match <Invalid call>
+- geometry/voronoin.m:84 [error] error ''voronoin' undefined' does not match <number of points must be greater than their dimension>
+- gui/getappdata.m:80 [test] 'rmappdata' undefined
+- gui/getappdata.m:94 [error] error ''getappdata' undefined' does not match <Invalid call>
+- gui/getappdata.m:95 [error] error ''getappdata' undefined' does not match <H must be a scalar .* graphic handle>
+- gui/getappdata.m:96 [error] error ''getappdata' undefined' does not match <NAME must be a string>
+- gui/getappdata.m:97 [error] error ''getappdata' undefined' does not match <Only one handle H may be used when fetching appdata>
+- gui/getpixelposition.m:98 [test] figure: unknown property 'menubar' for figure object
+- gui/getpixelposition.m:110 [test] 'groot' undefined
+- gui/getpixelposition.m:114 [test] 'getpixelposition' undefined
+- gui/getpixelposition.m:124 [error] error ''getpixelposition' undefined' does not match <Invalid call>
+- gui/getpixelposition.m:125 [error] error ''getpixelposition' undefined' does not match <H must be a scalar>
+- gui/getpixelposition.m:126 [error] error ''getpixelposition' undefined' does not match <H must be a .* graphics handle>
+- gui/guidata.m:68 [error] error ''guidata' undefined' does not match <Invalid call>
+- gui/guidata.m:69 [error] error ''guidata' undefined' does not match <H must be a valid object handle>
+- gui/guidata.m:70 [error] error ''guidata' undefined' does not match <no ancestor figure of H found>
+- gui/inputdlg.m:260 [error] error ''inputdlg' undefined' does not match <Invalid call>
+- gui/inputdlg.m:261 [error] error ''inputdlg' undefined' does not match <Invalid call>
+- gui/inputdlg.m:262 [error] error ''inputdlg' undefined' does not match <PROMPT must be a character string>
+- gui/inputdlg.m:263 [error] error ''inputdlg' undefined' does not match <TITLE must be a character string>
+- gui/inputdlg.m:264 [error] error ''inputdlg' undefined' does not match <ROWSCOLS must be numeric>
+- gui/inputdlg.m:265 [error] error ''inputdlg' undefined' does not match <number of DEFAULT items must match number of PROMPT items>
+- gui/inputdlg.m:267 [error] error ''inputdlg' undefined' does not match <ROWSCOLS vector does not match size of PROMPT>
+- gui/inputdlg.m:269 [error] error ''inputdlg' undefined' does not match <ROWSCOLS matrix does not match size of PROMPT>
+- gui/inputdlg.m:271 [error] error ''inputdlg' undefined' does not match <invalid form of ROWSCOLS argument>
+- gui/isappdata.m:59 [test] 'rmappdata' undefined
+- gui/isappdata.m:70 [error] error ''isappdata' undefined' does not match <Invalid call>
+- gui/isappdata.m:71 [error] error ''isappdata' undefined' does not match <H must be a scalar .* graphic handle>
+- gui/isappdata.m:72 [error] error ''isappdata' undefined' does not match <NAME must be a string>
+- gui/listdlg.m:203 [error] error ''listdlg' undefined' does not match <Invalid call>
+- gui/listdlg.m:204 [error] error ''listdlg' undefined' does not match <Invalid call>
+- gui/listdlg.m:206 [error] error ''listdlg' undefined' does not match <must occur in pairs>
+- gui/listdlg.m:207 [error] error ''listdlg' undefined' does not match <invalid KEY .FooBar.>
+- gui/listdlg.m:208 [error] error ''listdlg' undefined' does not match <"ListString" property must not be empty>
+- gui/listdlg.m:209 [error] error ''listdlg' undefined' does not match <"SelectionMode" must be "single" or "multiple">
+- gui/listfonts.m:71 [error] error ''listfonts' undefined' does not match <H must be a handle to a graphics object with a "fontname" property>
+- gui/listfonts.m:73 [error] error ''listfonts' undefined' does not match <H must be a handle to a graphics object>
+- gui/movegui.m:210 [test] 'movegui' undefined
+- gui/movegui.m:230 [error] error ''movegui' undefined' does not match <H must be a graphics handle>
+- gui/movegui.m:231 [error] error ''movegui' undefined' does not match <invalid position>
+- gui/movegui.m:238 [error] error ''movegui' undefined' does not match <invalid position>
+- gui/msgbox.m:362 [error] error ''msgbox' undefined' does not match <Invalid call>
+- gui/msgbox.m:363 [error] error ''msgbox' undefined' does not match <MSG must be a string or cell array of strings>
+- gui/msgbox.m:364 [error] error ''msgbox' undefined' does not match <invalid value "foobar" for WindowStyle>
+- gui/msgbox.m:366 [error] error ''msgbox' undefined' does not match <TITLE must be a string>
+- gui/msgbox.m:367 [error] error ''msgbox' undefined' does not match <invalid value "foobar" for ICON>
+- gui/msgbox.m:368 [error] error ''msgbox' undefined' does not match <ICON must be a string>
+- gui/msgbox.m:369 [error] error ''msgbox' undefined' does not match <missing data for "custom" icon>
+- gui/msgbox.m:370 [error] error ''msgbox' undefined' does not match <invalid data for "custom" icon>
+- gui/msgbox.m:372 [error] error ''msgbox' undefined' does not match <Invalid call to msgbox>
+- gui/msgbox.m:373 [error] error ''msgbox' undefined' does not match <Invalid call to msgbox>
+- gui/questdlg.m:189 [error] error ''questdlg' undefined' does not match <Invalid call>
+- gui/questdlg.m:190 [error] error ''questdlg' undefined' does not match <Invalid call>
+- gui/questdlg.m:191 [error] error ''questdlg' undefined' does not match <MSG must be a character string or cellstr array>
+- gui/questdlg.m:192 [error] error ''questdlg' undefined' does not match <TITLE must be a character string>
+- gui/questdlg.m:193 [error] error ''questdlg' undefined' does not match <DEFAULT must match one of the button>
+- gui/questdlg.m:194 [error] error ''questdlg' undefined' does not match <DEFAULT must match one of the button>
+- gui/questdlg.m:196 [error] error ''questdlg' undefined' does not match <DEFAULT must match one of the button>
+- gui/rmappdata.m:68 [test] 'setappdata' undefined
+- gui/rmappdata.m:73 [test] 'setappdata' undefined
+- gui/rmappdata.m:81 [error] error ''rmappdata' undefined' does not match <Invalid call>
+- gui/rmappdata.m:82 [error] error ''rmappdata' undefined' does not match <Invalid call>
+- gui/rmappdata.m:83 [error] error ''rmappdata' undefined' does not match <H must be a scalar .* graphic handle>
+- gui/rmappdata.m:84 [error] error ''rmappdata' undefined' does not match <NAME must be a string>
+- gui/rmappdata.m:85 [error] error ''rmappdata' undefined' does not match <appdata 'foobar' is not present>
+- gui/setappdata.m:95 [test] 'rmappdata' undefined
+- gui/setappdata.m:104 [test] 'rmappdata' undefined
+- gui/setappdata.m:115 [test] 'rmappdata' undefined
+- gui/setappdata.m:131 [error] error ''setappdata' undefined' does not match <Invalid call>
+- gui/setappdata.m:132 [error] error ''setappdata' undefined' does not match <Invalid call>
+- gui/setappdata.m:133 [error] error ''setappdata' undefined' does not match <Invalid call>
+- gui/setappdata.m:134 [error] error ''setappdata' undefined' does not match <H must be a scalar .* graphic handle>
+- gui/setappdata.m:135 [error] error ''setappdata' undefined' does not match <NAME/VALUE arguments must occur in pairs>
+- gui/setappdata.m:136 [error] error ''setappdata' undefined' does not match <only 3 arguments possible>
+- gui/setappdata.m:137 [error] error ''setappdata' undefined' does not match <number of NAME and VALUE arguments must match>
+- gui/setappdata.m:139 [error] error ''setappdata' undefined' does not match <NAME must be a string>
+- gui/uicontrol.m:148 [warning] 'uicontrol' undefined
+- gui/uifigure.m:86 [test] 'uifigure' undefined
+- gui/uifigure.m:96 [error] error ''uifigure' undefined' does not match <parameters must occur in pairs>
+- gui/waitbar.m:334 [error] error ''waitbar' undefined' does not match <FRAC must be between 0 and 1>
+- gui/waitbar.m:335 [error] error ''waitbar' undefined' does not match <FRAC must be between 0 and 1>
+- gui/waitbar.m:336 [error] error ''waitbar' undefined' does not match <MSG must be a character string>
+- gui/waitbar.m:337 [error] error ''waitbar' undefined' does not match <invalid number of property/value pairs>
+- help/__gripe_missing_component__.m:68 [error] error ''__gripe_missing_component__' undefined' does not match <abc: .*>
+- help/__gripe_missing_component__.m:69 [error] error ''__gripe_missing_component__' undefined' does not match <abc: .*>
+- help/__gripe_missing_component__.m:70 [error] error ''__gripe_missing_component__' undefined' does not match <abc: .*>
+- help/__gripe_missing_component__.m:71 [error] error ''__gripe_missing_component__' undefined' does not match <abc: .*>
+- help/__gripe_missing_component__.m:73 [error] error ''__gripe_missing_component__' undefined' does not match <Invalid call>
+- help/__gripe_missing_component__.m:74 [error] error ''__gripe_missing_component__' undefined' does not match <Invalid call>
+- help/__unimplemented__.m:1313 [test] '__unimplemented__' undefined
+- help/__unimplemented__.m:1317 [test] '__unimplemented__' undefined
+- help/__unimplemented__.m:1321 [test] '__unimplemented__' undefined
+- help/bessel.m:104 [error] error ''bessel' undefined' does not match <you must use besselj, ...>
+- help/get_first_help_sentence.m:189 [assert] 'get_first_help_sentence' undefined
+- help/get_first_help_sentence.m:192 [assert] 'get_first_help_sentence' undefined
+- help/get_first_help_sentence.m:196 [error] error ''get_first_help_sentence' undefined' does not match <Invalid call>
+- help/get_first_help_sentence.m:197 [error] error ''get_first_help_sentence' undefined' does not match <NAME must be a string>
+- help/get_first_help_sentence.m:198 [error] error ''get_first_help_sentence' undefined' does not match <MAX_LEN must be positive integer>
+- help/get_first_help_sentence.m:199 [error] error ''get_first_help_sentence' undefined' does not match <MAX_LEN must be positive integer>
+- help/get_first_help_sentence.m:200 [error] error ''get_first_help_sentence' undefined' does not match <MAX_LEN must be positive integer>
+- help/help.m:223 [assert] 'help' undefined
+- help/help.m:224 [assert] 'help' undefined
+- help/help.m:227 [error] error ''help' undefined' does not match <invalid input>
+- help/help.m:228 [error] error ''help' undefined' does not match <called with too many inputs>
+- help/help.m:229 [error] error ''help' undefined' does not match <'_! UNLIKELY_FCN! _' not found>
+- help/type.m:139 [test] 'type' undefined
+- help/type.m:145 [test] 'type' undefined
+- help/type.m:150 [test] 'type' undefined
+- help/type.m:154 [assert] 'type' undefined
+- help/type.m:155 [assert] 'type' undefined
+- help/type.m:156 [assert] 'type' undefined
+- help/type.m:157 [assert] 'type' undefined
+- help/type.m:159 [error] error ''type' undefined' does not match <Invalid call>
+- help/type.m:160 [error] error ''type' undefined' does not match <'__NO_NAME__' undefined>
+- help/which.m:100 [test] 'which' undefined
+- help/which.m:103 [test] 'which' undefined
+- help/which.m:106 [assert] 'which' undefined
+- help/which.m:107 [test] 'which' undefined
+- help/which.m:112 [assert] 'which' undefined
+- help/which.m:114 [test] 'which' undefined
+- help/which.m:124 [error] error ''which' undefined' does not match <Invalid call>
+- help/which.m:125 [error] error ''which' undefined' does not match <Invalid call>
+- help/which.m:126 [warning] 'which' undefined
+- image/autumn.m:77 [assert] 'autumn' undefined
+- image/autumn.m:78 [assert] 'autumn' undefined
+- image/autumn.m:80 [assert] 'autumn' undefined
+- image/autumn.m:81 [assert] 'autumn' undefined
+- image/autumn.m:82 [assert] 'autumn' undefined
+- image/autumn.m:83 [assert] 'autumn' undefined
+- image/autumn.m:85 [assert] 'autumn' undefined
+- image/autumn.m:86 [assert] 'autumn' undefined
+- image/autumn.m:88 [assert] 'autumn' undefined
+- image/autumn.m:91 [error] error ''autumn' undefined' does not match <N must be a scalar integer>
+- image/autumn.m:92 [error] error ''autumn' undefined' does not match <N must be a scalar integer>
+- image/autumn.m:93 [error] error ''autumn' undefined' does not match <N must be a scalar integer>
+- image/bone.m:104 [assert] 'bone' undefined
+- image/bone.m:105 [assert] 'bone' undefined
+- image/bone.m:107 [assert] 'bone' undefined
+- image/bone.m:108 [assert] 'bone' undefined
+- image/bone.m:109 [assert] 'bone' undefined
+- image/bone.m:110 [assert] 'bone' undefined
+- image/bone.m:111 [assert] 'bone' undefined
+- image/bone.m:113 [assert] 'bone' undefined
+- image/bone.m:114 [assert] 'bone' undefined
+- image/bone.m:116 [test] 'bone' undefined
+- image/bone.m:125 [error] error ''bone' undefined' does not match <N must be a scalar integer>
+- image/bone.m:126 [error] error ''bone' undefined' does not match <N must be a scalar integer>
+- image/bone.m:127 [error] error ''bone' undefined' does not match <N must be a scalar integer>
+- image/cmpermute.m:97 [shared] 'cmunique' undefined
+- image/cmpermute.m:101 [test] 'cmpermute' undefined
+- image/cmpermute.m:108 [test] 'cmpermute' undefined
+- image/cmpermute.m:115 [shared] 'cmunique' undefined
+- image/cmpermute.m:119 [test] 'cmpermute' undefined
+- image/cmpermute.m:126 [test] 'cmpermute' undefined
+- image/cmpermute.m:134 [error] error ''cmpermute' undefined' does not match <Invalid call>
+- image/cmpermute.m:135 [error] error ''cmpermute' undefined' does not match <Invalid call>
+- image/cmpermute.m:136 [error] error ''cmpermute' undefined' does not match <invalid data type 'uint32'>
+- image/cmpermute.m:137 [error] error ''cmpermute' undefined' does not match <X must be an indexed image>
+- image/cmpermute.m:138 [error] error ''cmpermute' undefined' does not match <X must be an indexed image>
+- image/cmpermute.m:139 [error] error ''cmpermute' undefined' does not match <X must be an indexed image>
+- image/cmpermute.m:140 [error] error ''cmpermute' undefined' does not match <X must be an indexed image>
+- image/cmpermute.m:141 [error] error ''cmpermute' undefined' does not match <MAP must be a valid colormap>
+- image/cmpermute.m:142 [error] error ''cmpermute' undefined' does not match <MAP must be a valid colormap>
+- image/cmpermute.m:143 [error] error ''cmpermute' undefined' does not match <MAP must be a valid colormap>
+- image/cmpermute.m:144 [error] error ''cmpermute' undefined' does not match <MAP must be a valid colormap>
+- image/cmpermute.m:145 [error] error ''cmpermute' undefined' does not match <MAP must be a valid colormap>
+- image/cmpermute.m:146 [error] error ''cmpermute' undefined' does not match <MAP must be a valid colormap>
+- image/cmpermute.m:147 [error] error ''cmpermute' undefined' does not match <invalid parameter INDEX>
+- image/cmpermute.m:148 [error] error ''cmpermute' undefined' does not match <invalid parameter INDEX>
+- image/cmunique.m:120 [test] 'cmunique' undefined
+- image/cmunique.m:126 [test] 'cmunique' undefined
+- image/cmunique.m:132 [test] 'cmunique' undefined
+- image/cmunique.m:138 [test] 'cmunique' undefined
+- image/cmunique.m:144 [test] 'cmunique' undefined
+- image/cmunique.m:152 [test] 'cmunique' undefined
+- image/cmunique.m:161 [test] 'cmunique' undefined
+- image/cmunique.m:170 [test] 'cmunique' undefined
+- image/cmunique.m:178 [test] 'cmunique' undefined
+- image/cmunique.m:187 [test] 'cmunique' undefined
+- image/cmunique.m:196 [error] error ''cmunique' undefined' does not match <Invalid call>
+- image/cmunique.m:197 [error] error ''cmunique' undefined' does not match <X is of invalid data type>
+- image/cmunique.m:198 [error] error ''cmunique' undefined' does not match <MAP must be a valid colormap>
+- image/cmunique.m:199 [error] error ''cmunique' undefined' does not match <MAP must be a valid colormap>
+- image/cmunique.m:200 [error] error ''cmunique' undefined' does not match <MAP must be a valid colormap>
+- image/cmunique.m:201 [error] error ''cmunique' undefined' does not match <MAP must be a valid colormap>
+- image/cmunique.m:202 [error] error ''cmunique' undefined' does not match <MAP must be a valid colormap>
+- image/cmunique.m:203 [error] error ''cmunique' undefined' does not match <MAP must be a valid colormap>
+- image/colorcube.m:113 [assert] 'colorcube' undefined
+- image/colorcube.m:114 [assert] 'colorcube' undefined
+- image/colorcube.m:116 [assert] 'colorcube' undefined
+- image/colorcube.m:117 [assert] 'colorcube' undefined
+- image/colorcube.m:118 [assert] 'colorcube' undefined
+- image/colorcube.m:119 [assert] 'colorcube' undefined
+- image/colorcube.m:121 [assert] 'colorcube' undefined
+- image/colorcube.m:122 [assert] 'colorcube' undefined
+- image/colorcube.m:124 [assert] 'colorcube' undefined
+- image/colorcube.m:126 [test] 'colorcube' undefined
+- image/colorcube.m:142 [error] error ''colorcube' undefined' does not match <N must be a scalar integer>
+- image/colorcube.m:143 [error] error ''colorcube' undefined' does not match <N must be a scalar integer>
+- image/colorcube.m:144 [error] error ''colorcube' undefined' does not match <N must be a scalar integer>
+- image/colormap.m:187 [test] get: unknown property 'colormap'
+- image/colormap.m:205 [test] 'pink' undefined
+- image/colormap.m:226 [error] error 'colormap: MAP must be an N x 3 matrix of RGB values' does not match <target argument must be a figure or axes handle>
+- image/colormap.m:227 [error] error 'colormap: MAP must be an N x 3 matrix of RGB values' does not match <Invalid call>
+- image/colormap.m:228 [error] error 'colormap: invalid MAP name 'invalid_map_name'' does not match <failed to set MAP .invalid_map_name.>
+- image/colormap.m:229 [error] error 'colormap: invalid argument' does not match <MAP must be a real-valued N x 3>
+- image/colormap.m:230 [error] expected an error but none was raised
+- image/colormap.m:231 [error] error 'colormap: MAP must be an N x 3 matrix of RGB values' does not match <MAP must be a real-valued N x 3>
+- image/colormap.m:232 [error] error 'colormap: MAP must be an N x 3 matrix of RGB values' does not match <MAP must be a real-valued N x 3>
+- image/contrast.m:75 [assert] 'contrast' undefined
+- image/cool.m:76 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- image/cool.m:90 [error] expected an error but none was raised
+- image/cool.m:91 [error] expected an error but none was raised
+- image/cool.m:92 [error] error 'cool: wrong type argument' does not match <N must be a scalar integer>
+- image/copper.m:79 [assert] 'copper' undefined
+- image/copper.m:80 [assert] 'copper' undefined
+- image/copper.m:82 [assert] 'copper' undefined
+- image/copper.m:83 [assert] 'copper' undefined
+- image/copper.m:84 [assert] 'copper' undefined
+- image/copper.m:85 [assert] 'copper' undefined
+- image/copper.m:87 [assert] 'copper' undefined
+- image/copper.m:88 [assert] 'copper' undefined
+- image/copper.m:90 [test] 'copper' undefined
+- image/copper.m:96 [error] error ''copper' undefined' does not match <N must be a scalar integer>
+- image/copper.m:97 [error] error ''copper' undefined' does not match <N must be a scalar integer>
+- image/copper.m:98 [error] error ''copper' undefined' does not match <N must be a scalar integer>
+- image/cubehelix.m:103 [assert] 'cubehelix' undefined
+- image/cubehelix.m:104 [assert] 'cubehelix' undefined
+- image/cubehelix.m:106 [assert] 'cubehelix' undefined
+- image/cubehelix.m:107 [assert] 'cubehelix' undefined
+- image/cubehelix.m:108 [assert] 'cubehelix' undefined
+- image/cubehelix.m:109 [assert] 'cubehelix' undefined
+- image/cubehelix.m:111 [assert] 'cubehelix' undefined
+- image/cubehelix.m:112 [assert] 'cubehelix' undefined
+- image/cubehelix.m:114 [assert] 'cubehelix' undefined
+- image/cubehelix.m:115 [assert] 'cubehelix' undefined
+- image/cubehelix.m:123 [assert] 'cubehelix' undefined
+- image/cubehelix.m:128 [error] error ''cubehelix' undefined' does not match <N must be a scalar integer>
+- image/cubehelix.m:129 [error] error ''cubehelix' undefined' does not match <N must be a scalar integer>
+- image/cubehelix.m:130 [error] error ''cubehelix' undefined' does not match <N must be a scalar integer>
+- image/dither.m:410 [test] 'dither' undefined
+- image/dither.m:414 [test] 'dither' undefined
+- image/dither.m:418 [test] 'dither' undefined
+- image/dither.m:422 [test] 'dither' undefined
+- image/dither.m:426 [test] 'dither' undefined
+- image/flag.m:74 [assert] 'flag' undefined
+- image/flag.m:75 [assert] 'flag' undefined
+- image/flag.m:77 [assert] 'flag' undefined
+- image/flag.m:78 [assert] 'flag' undefined
+- image/flag.m:79 [assert] 'flag' undefined
+- image/flag.m:80 [assert] 'flag' undefined
+- image/flag.m:82 [assert] 'flag' undefined
+- image/flag.m:83 [assert] 'flag' undefined
+- image/flag.m:85 [test] 'flag' undefined
+- image/flag.m:101 [error] error ''flag' undefined' does not match <N must be a scalar integer>
+- image/flag.m:102 [error] error ''flag' undefined' does not match <N must be a scalar integer>
+- image/flag.m:103 [error] error ''flag' undefined' does not match <N must be a scalar integer>
+- image/frame2im.m:74 [test] 'frame2im' undefined
+- image/frame2im.m:82 [test] 'frame2im' undefined
+- image/frame2im.m:89 [test] 'frame2im' undefined
+- image/frame2im.m:100 [test] 'frame2im' undefined
+- image/gray.m:75 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- image/gray.m:89 [error] expected an error but none was raised
+- image/gray.m:90 [error] expected an error but none was raised
+- image/gray.m:91 [error] error 'gray: wrong type argument' does not match <N must be a scalar integer>
+- image/gray2ind.m:89 [assert] 'gray2ind' undefined
+- image/gray2ind.m:90 [assert] 'gray2ind' undefined
+- image/gray2ind.m:91 [assert] 'gray2ind' undefined
+- image/gray2ind.m:92 [assert] 'gray2ind' undefined
+- image/gray2ind.m:94 [test] 'ind2gray' undefined
+- image/gray2ind.m:99 [assert] 'gray2ind' undefined
+- image/gray2ind.m:100 [assert] 'gray2ind' undefined
+- image/gray2ind.m:103 [test] 'gray2ind' undefined
+- image/gray2ind.m:109 [error] error ''gray2ind' undefined' does not match <Invalid call>
+- image/gray2ind.m:110 [error] error ''gray2ind' undefined' does not match <I must be a grayscale or binary image>
+- image/gray2ind.m:111 [error] error ''gray2ind' undefined' does not match <I must be a grayscale or binary image>
+- image/gray2ind.m:112 [error] error ''gray2ind' undefined' does not match <I must be a grayscale or binary image>
+- image/gray2ind.m:113 [error] error ''gray2ind' undefined' does not match <I must be a grayscale or binary image>
+- image/gray2ind.m:114 [error] error ''gray2ind' undefined' does not match <N must be a positive integer>
+- image/gray2ind.m:115 [error] error ''gray2ind' undefined' does not match <N must be a positive integer>
+- image/gray2ind.m:116 [error] error ''gray2ind' undefined' does not match <N must be a positive integer>
+- image/gray2ind.m:117 [error] error ''gray2ind' undefined' does not match <invalid data type>
+- image/gray2ind.m:118 [error] error ''gray2ind' undefined' does not match <values between 0 and 1>
+- image/gray2ind.m:119 [error] error ''gray2ind' undefined' does not match <values between 0 and 1>
+- image/hot.m:91 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- image/hot.m:94 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- image/hot.m:95 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- image/hot.m:96 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- image/hot.m:97 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- image/hot.m:98 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- image/hot.m:99 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- image/hot.m:104 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       0        0.25       Abs err 0.25 exceeds tol 2.220446049250313E-16
+- image/hot.m:119 [error] expected an error but none was raised
+- image/hot.m:120 [error] expected an error but none was raised
+- image/hot.m:121 [error] error 'hot: wrong type argument' does not match <N must be a scalar integer>
+- image/hsv.m:80 [assert] 'hsv' undefined
+- image/hsv.m:81 [assert] 'hsv' undefined
+- image/hsv.m:83 [assert] 'hsv' undefined
+- image/hsv.m:84 [assert] 'hsv' undefined
+- image/hsv.m:85 [assert] 'hsv' undefined
+- image/hsv.m:86 [assert] 'hsv' undefined
+- image/hsv.m:88 [assert] 'hsv' undefined
+- image/hsv.m:89 [assert] 'hsv' undefined
+- image/hsv.m:91 [assert] 'hsv' undefined
+- image/hsv.m:94 [error] error ''hsv' undefined' does not match <N must be a scalar integer>
+- image/hsv.m:95 [error] error ''hsv' undefined' does not match <N must be a scalar integer>
+- image/hsv.m:96 [error] error ''hsv' undefined' does not match <N must be a scalar integer>
+- image/hsv2rgb.m:106 [assert] 'hsv2rgb' undefined
+- image/hsv2rgb.m:107 [assert] 'hsv2rgb' undefined
+- image/hsv2rgb.m:108 [assert] 'hsv2rgb' undefined
+- image/hsv2rgb.m:109 [assert] 'hsv2rgb' undefined
+- image/hsv2rgb.m:110 [assert] 'hsv2rgb' undefined
+- image/hsv2rgb.m:111 [assert] 'hsv2rgb' undefined
+- image/hsv2rgb.m:113 [assert] 'hsv2rgb' undefined
+- image/hsv2rgb.m:118 [assert] 'hsv2rgb' undefined
+- image/hsv2rgb.m:122 [assert] 'hsv2rgb' undefined
+- image/hsv2rgb.m:123 [assert] 'hsv2rgb' undefined
+- image/hsv2rgb.m:125 [test] 'hsv2rgb' undefined
+- image/hsv2rgb.m:129 [test] 'hsv2rgb' undefined
+- image/hsv2rgb.m:134 [assert] 'hsv2rgb' undefined
+- image/hsv2rgb.m:135 [assert] 'hsv2rgb' undefined
+- image/hsv2rgb.m:136 [assert] 'hsv2rgb' undefined
+- image/hsv2rgb.m:139 [error] error ''hsv2rgb' undefined' does not match <Invalid call>
+- image/hsv2rgb.m:140 [error] error ''hsv2rgb' undefined' does not match <invalid data type>
+- image/hsv2rgb.m:141 [error] error ''hsv2rgb' undefined' does not match <HSV must be a colormap or HSV image>
+- image/hsv2rgb.m:144 [test] 'hsv2rgb' undefined
+- image/hsv2rgb.m:155 [test] 'hsv2rgb' undefined
+- image/hsv2rgb.m:160 [test] 'hsv2rgb' undefined
+- image/hsv2rgb.m:165 [test] 'hsv2rgb' undefined
+- image/hsv2rgb.m:171 [test] 'hsv2rgb' undefined
+- image/hsv2rgb.m:177 [test] 'hsv2rgb' undefined
+- image/hsv2rgb.m:182 [test] 'hsv2rgb' undefined
+- image/hsv2rgb.m:187 [test] 'hsv2rgb' undefined
+- image/hsv2rgb.m:192 [test] 'hsv2rgb' undefined
+- image/im2double.m:94 [assert] 'im2double' undefined
+- image/im2double.m:95 [assert] 'im2double' undefined
+- image/im2double.m:96 [assert] 'im2double' undefined
+- image/im2double.m:97 [assert] 'im2double' undefined
+- image/im2double.m:98 [assert] 'im2double' undefined
+- image/im2double.m:101 [assert] 'im2double' undefined
+- image/im2double.m:102 [assert] 'im2double' undefined
+- image/im2double.m:103 [assert] 'im2double' undefined
+- image/im2double.m:104 [assert] 'im2double' undefined
+- image/im2double.m:119 [test] 'im2double' undefined
+- image/im2double.m:127 [assert] 'im2double' undefined
+- image/im2double.m:128 [assert] 'im2double' undefined
+- image/im2double.m:129 [assert] 'im2double' undefined
+- image/im2double.m:130 [assert] 'im2double' undefined
+- image/im2double.m:131 [assert] 'im2double' undefined
+- image/im2double.m:133 [error] error ''im2double' undefined' does not match <unsigned integer class>
+- image/im2double.m:134 [error] error ''im2double' undefined' does not match <unsigned integer class>
+- image/im2double.m:135 [error] error ''im2double' undefined' does not match <must be the string "indexed">
+- image/im2frame.m:85 [test] 'im2frame' undefined
+- image/im2frame.m:89 [test] 'bone' undefined
+- image/im2frame.m:94 [test] 'im2frame' undefined
+- image/im2frame.m:102 [test] 'bone' undefined
+- image/im2frame.m:112 [error] error ''im2frame' undefined' does not match <Invalid call>
+- image/im2frame.m:113 [error] error ''im2frame' undefined' does not match <must be a single image>
+- image/im2frame.m:114 [error] error ''im2frame' undefined' does not match <MAP required for indexed images>
+- image/im2frame.m:115 [error] error ''im2frame' undefined' does not match <argument must be indexed or RGB image>
+- image/image.m:238 [test] 'image' undefined
+- image/image.m:264 [error] error ''image' undefined' does not match <IMG data can not be complex>
+- image/imfinfo.m:191 [error] error ''imfinfo' undefined' does not match <Invalid call>
+- image/imfinfo.m:192 [error] error ''imfinfo' undefined' does not match <Invalid call>
+- image/imfinfo.m:193 [error] error ''imfinfo' undefined' does not match <FILENAME must be a string>
+- image/imfinfo.m:194 [error] error ''imfinfo' undefined' does not match <EXT must be a string>
+- image/imformats.m:336 [test] 'imformats' undefined
+- image/imshow.m:271 [error] error ''imshow' undefined' does not match <Invalid call>
+- image/imshow.m:272 [error] error ''imshow' undefined' does not match <IM must be an image>
+- image/imshow.m:273 [error] error ''imshow' undefined' does not match <TrueColor image must be uint8>
+- image/imshow.m:274 [error] error ''imshow' undefined' does not match <TrueColor image must be uint8>
+- image/imshow.m:275 [error] error ''imshow' undefined' does not match <image must be MxN or MxNx3 matrix>
+- image/imshow.m:277 [test] 'fail' undefined
+- image/imwrite.m:132 [error] error ''imwrite' undefined' does not match <Invalid call>
+- image/imwrite.m:133 [error] error ''imwrite' undefined' does not match <Invalid call>
+- image/ind2gray.m:79 [shared] 'ind2gray' undefined
+- image/ind2gray.m:82 [assert] ASSERT errors: dimensions mismatch
+- image/ind2gray.m:83 [assert] 'gray2ind' undefined
+- image/ind2gray.m:86 [error] error ''ind2gray' undefined' does not match <Invalid call>
+- image/ind2gray.m:87 [error] error ''ind2gray' undefined' does not match <Invalid call>
+- image/ind2gray.m:88 [error] error ''ind2gray' undefined' does not match <X must be an indexed image>
+- image/ind2gray.m:89 [error] error ''ind2gray' undefined' does not match <X must be an indexed image>
+- image/ind2gray.m:90 [error] error ''ind2gray' undefined' does not match <X must be an indexed image>
+- image/ind2gray.m:91 [error] error ''ind2gray' undefined' does not match <X must be an indexed image>
+- image/ind2gray.m:92 [error] error ''ind2rgb' undefined' does not match <X must be an indexed image>
+- image/ind2gray.m:93 [error] error ''ind2gray' undefined' does not match <X must be an indexed image>
+- image/ind2gray.m:94 [error] error ''ind2gray' undefined' does not match <MAP must be a valid colormap>
+- image/ind2gray.m:95 [warning] 'ind2gray' undefined
+- image/ind2gray.m:96 [warning] 'ind2gray' undefined
+- image/ind2gray.m:97 [warning] 'ind2gray' undefined
+- image/ind2gray.m:98 [warning] 'ind2gray' undefined
+- image/ind2gray.m:99 [warning] 'ind2gray' undefined
+- image/ind2rgb.m:81 [shared] 'ind2rgb' undefined
+- image/ind2rgb.m:95 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- image/ind2rgb.m:96 [assert] reshape: can't reshape 0x3 array to 3x3x3 array
+- image/ind2rgb.m:97 [test] 'ind2rgb' undefined
+- image/ind2rgb.m:102 [test] 'ind2rgb' undefined
+- image/ind2rgb.m:108 [test] 'ind2rgb' undefined
+- image/ind2rgb.m:116 [test] 'ind2rgb' undefined
+- image/ind2rgb.m:135 [test] 'ind2rgb' undefined
+- image/ind2rgb.m:141 [error] error ''ind2rgb' undefined' does not match <Invalid call>
+- image/ind2rgb.m:142 [error] error ''ind2rgb' undefined' does not match <Invalid call>
+- image/ind2rgb.m:143 [error] error ''ind2rgb' undefined' does not match <X must be an indexed image>
+- image/ind2rgb.m:144 [error] error ''ind2rgb' undefined' does not match <X must be an indexed image>
+- image/ind2rgb.m:145 [error] error ''ind2rgb' undefined' does not match <X must be an indexed image>
+- image/ind2rgb.m:146 [error] error ''ind2rgb' undefined' does not match <X must be an indexed image>
+- image/ind2rgb.m:147 [error] error ''ind2rgb' undefined' does not match <X must be an indexed image>
+- image/ind2rgb.m:148 [error] error ''ind2rgb' undefined' does not match <X must be an indexed image>
+- image/ind2rgb.m:149 [error] error ''ind2rgb' undefined' does not match <MAP must be a valid colormap>
+- image/ind2rgb.m:150 [warning] 'ind2rgb' undefined
+- image/ind2rgb.m:151 [warning] 'ind2rgb' undefined
+- image/ind2rgb.m:152 [warning] 'ind2rgb' undefined
+- image/ind2rgb.m:153 [warning] 'ind2rgb' undefined
+- image/ind2rgb.m:154 [warning] 'ind2rgb' undefined
+- image/iscolormap.m:53 [assert] 'iscolormap' undefined
+- image/iscolormap.m:54 [assert] 'iscolormap' undefined
+- image/iscolormap.m:55 [assert] 'iscolormap' undefined
+- image/iscolormap.m:56 [assert] 'iscolormap' undefined
+- image/iscolormap.m:57 [assert] 'iscolormap' undefined
+- image/iscolormap.m:58 [assert] 'iscolormap' undefined
+- image/iscolormap.m:60 [error] error ''iscolormap' undefined' does not match <Invalid call>
+- image/jet.m:116 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- image/jet.m:119 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- image/jet.m:120 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- image/jet.m:121 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- image/jet.m:122 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- image/jet.m:123 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- image/jet.m:128 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (7)       0.2142857142857142        0.25       Abs err 0.03571428571428581 exceeds tol 2.220446049250313E-16
+- image/jet.m:136 [error] expected an error but none was raised
+- image/jet.m:137 [error] expected an error but none was raised
+- image/jet.m:138 [error] error 'jet: wrong type argument' does not match <N must be a scalar integer>
+- image/lines.m:82 [assert] 'lines' undefined
+- image/lines.m:83 [assert] 'lines' undefined
+- image/lines.m:85 [assert] 'lines' undefined
+- image/lines.m:86 [assert] 'lines' undefined
+- image/lines.m:87 [assert] 'lines' undefined
+- image/lines.m:88 [assert] 'lines' undefined
+- image/lines.m:90 [assert] 'lines' undefined
+- image/lines.m:91 [assert] 'lines' undefined
+- image/lines.m:93 [test] 'groot' undefined
+- image/lines.m:99 [error] error ''lines' undefined' does not match <N must be a scalar integer>
+- image/lines.m:100 [error] error ''lines' undefined' does not match <N must be a scalar integer>
+- image/lines.m:101 [error] error ''lines' undefined' does not match <N must be a scalar integer>
+- image/movie.m:247 [error] error ''movie' undefined' does not match <Invalid call>
+- image/movie.m:248 [error] error ''movie' undefined' does not match <Invalid call>
+- image/movie.m:249 [error] error ''movie' undefined' does not match <MOV must be a frame struct array>
+- image/movie.m:250 [error] error ''movie' undefined' does not match <MOV must contain at least two frames>
+- image/movie.m:252 [error] error ''movie' undefined' does not match <N must be a nonzero integer>
+- image/movie.m:254 [error] error ''movie' undefined' does not match <N must be a nonzero integer>
+- image/movie.m:256 [error] error ''movie' undefined' does not match <All elements N\(2:end\) must be valid indices into the MOV struct>
+- image/movie.m:258 [error] error ''movie' undefined' does not match <All elements N\(2:end\) must be valid indices into the MOV struct>
+- image/movie.m:260 [error] error ''movie' undefined' does not match <FPS must be a numeric scalar . 0>
+- image/movie.m:262 [error] error ''movie' undefined' does not match <FPS must be a numeric scalar . 0>
+- image/movie.m:264 [error] error ''movie' undefined' does not match <FPS must be a numeric scalar . 0>
+- image/movie.m:266 [error] error ''movie' undefined' does not match <empty image data at frame 1>
+- image/movie.m:273 [error] error ''movie' undefined' does not match <empty image data at frame 2>
+- image/ocean.m:84 [assert] 'ocean' undefined
+- image/ocean.m:85 [assert] 'ocean' undefined
+- image/ocean.m:87 [assert] 'ocean' undefined
+- image/ocean.m:88 [assert] 'ocean' undefined
+- image/ocean.m:89 [assert] 'ocean' undefined
+- image/ocean.m:90 [assert] 'ocean' undefined
+- image/ocean.m:92 [assert] 'ocean' undefined
+- image/ocean.m:93 [assert] 'ocean' undefined
+- image/ocean.m:95 [assert] 'ocean' undefined
+- image/ocean.m:96 [assert] 'ocean' undefined
+- image/ocean.m:98 [test] 'ocean' undefined
+- image/ocean.m:106 [error] error ''ocean' undefined' does not match <N must be a scalar integer>
+- image/ocean.m:107 [error] error ''ocean' undefined' does not match <N must be a scalar integer>
+- image/ocean.m:108 [error] error ''ocean' undefined' does not match <N must be a scalar integer>
+- image/pink.m:94 [assert] 'pink' undefined
+- image/pink.m:95 [assert] 'pink' undefined
+- image/pink.m:97 [assert] 'pink' undefined
+- image/pink.m:98 [assert] 'pink' undefined
+- image/pink.m:99 [assert] 'pink' undefined
+- image/pink.m:100 [assert] 'pink' undefined
+- image/pink.m:101 [assert] 'pink' undefined
+- image/pink.m:103 [assert] 'pink' undefined
+- image/pink.m:104 [assert] 'pink' undefined
+- image/pink.m:105 [assert] 'pink' undefined
+- image/pink.m:107 [test] 'pink' undefined
+- image/pink.m:115 [error] error ''pink' undefined' does not match <N must be a scalar integer>
+- image/pink.m:116 [error] error ''pink' undefined' does not match <N must be a scalar integer>
+- image/pink.m:117 [error] error ''pink' undefined' does not match <N must be a scalar integer>
+- image/prism.m:74 [assert] 'prism' undefined
+- image/prism.m:75 [assert] 'prism' undefined
+- image/prism.m:77 [assert] 'prism' undefined
+- image/prism.m:78 [assert] 'prism' undefined
+- image/prism.m:79 [assert] 'prism' undefined
+- image/prism.m:80 [assert] 'prism' undefined
+- image/prism.m:82 [assert] 'prism' undefined
+- image/prism.m:83 [assert] 'prism' undefined
+- image/prism.m:85 [test] 'prism' undefined
+- image/prism.m:91 [error] error ''prism' undefined' does not match <N must be a scalar integer>
+- image/prism.m:92 [error] error ''prism' undefined' does not match <N must be a scalar integer>
+- image/prism.m:93 [error] error ''prism' undefined' does not match <N must be a scalar integer>
+- image/rainbow.m:89 [assert] 'rainbow' undefined
+- image/rainbow.m:90 [assert] 'rainbow' undefined
+- image/rainbow.m:92 [assert] 'rainbow' undefined
+- image/rainbow.m:93 [assert] 'rainbow' undefined
+- image/rainbow.m:94 [assert] 'rainbow' undefined
+- image/rainbow.m:95 [assert] 'rainbow' undefined
+- image/rainbow.m:97 [assert] 'rainbow' undefined
+- image/rainbow.m:98 [assert] 'rainbow' undefined
+- image/rainbow.m:100 [assert] 'rainbow' undefined
+- image/rainbow.m:103 [error] error ''rainbow' undefined' does not match <N must be a scalar integer>
+- image/rainbow.m:104 [error] error ''rainbow' undefined' does not match <N must be a scalar integer>
+- image/rainbow.m:105 [error] error ''rainbow' undefined' does not match <N must be a scalar integer>
+- image/rgb2gray.m:91 [assert] 'rgb2gray' undefined
+- image/rgb2gray.m:92 [assert] 'rgb2gray' undefined
+- image/rgb2gray.m:93 [assert] 'rgb2gray' undefined
+- image/rgb2gray.m:99 [test] 'rgb2gray' undefined
+- image/rgb2gray.m:110 [test] 'rgb2gray' undefined
+- image/rgb2gray.m:115 [test] 'rgb2gray' undefined
+- image/rgb2gray.m:120 [test] 'rgb2gray' undefined
+- image/rgb2gray.m:126 [test] 'rgb2gray' undefined
+- image/rgb2gray.m:132 [test] 'rgb2gray' undefined
+- image/rgb2gray.m:137 [test] 'rgb2gray' undefined
+- image/rgb2gray.m:142 [test] 'rgb2gray' undefined
+- image/rgb2gray.m:147 [test] 'rgb2gray' undefined
+- image/rgb2gray.m:152 [test] 'rgb2gray' undefined
+- image/rgb2gray.m:164 [error] error ''rgb2gray' undefined' does not match <Invalid call>
+- image/rgb2gray.m:165 [error] error ''rgb2gray' undefined' does not match <invalid data type 'cell'>
+- image/rgb2gray.m:166 [error] error ''rgb2gray' undefined' does not match <RGB must be a colormap or RGB image>
+- image/rgb2hsv.m:91 [assert] 'rgb2hsv' undefined
+- image/rgb2hsv.m:92 [assert] 'rgb2hsv' undefined
+- image/rgb2hsv.m:93 [assert] 'rgb2hsv' undefined
+- image/rgb2hsv.m:94 [assert] 'rgb2hsv' undefined
+- image/rgb2hsv.m:95 [assert] 'rgb2hsv' undefined
+- image/rgb2hsv.m:96 [assert] 'rgb2hsv' undefined
+- image/rgb2hsv.m:97 [assert] 'rgb2hsv' undefined
+- image/rgb2hsv.m:100 [assert] 'rgb2hsv' undefined
+- image/rgb2hsv.m:102 [test] 'rgb2hsv' undefined
+- image/rgb2hsv.m:106 [test] 'rgb2hsv' undefined
+- image/rgb2hsv.m:111 [assert] 'rgb2hsv' undefined
+- image/rgb2hsv.m:112 [assert] 'rgb2hsv' undefined
+- image/rgb2hsv.m:113 [assert] 'rgb2hsv' undefined
+- image/rgb2hsv.m:116 [error] error ''rgb2hsv' undefined' does not match <Invalid call>
+- image/rgb2hsv.m:117 [error] error ''rgb2hsv' undefined' does not match <invalid data type 'cell'>
+- image/rgb2hsv.m:118 [error] error ''rgb2hsv' undefined' does not match <RGB must be a colormap or RGB image>
+- image/rgb2hsv.m:121 [test] 'rgb2hsv' undefined
+- image/rgb2hsv.m:132 [test] 'rgb2hsv' undefined
+- image/rgb2hsv.m:137 [test] 'rgb2hsv' undefined
+- image/rgb2hsv.m:142 [test] 'rgb2hsv' undefined
+- image/rgb2hsv.m:148 [test] 'rgb2hsv' undefined
+- image/rgb2hsv.m:154 [test] 'rgb2hsv' undefined
+- image/rgb2hsv.m:159 [test] 'rgb2hsv' undefined
+- image/rgb2hsv.m:164 [test] 'rgb2hsv' undefined
+- image/rgb2hsv.m:169 [test] 'rgb2hsv' undefined
+- image/rgb2ind.m:106 [error] error ''rgb2ind' undefined' does not match <Invalid call>
+- image/rgb2ind.m:107 [error] error ''rgb2ind' undefined' does not match <Invalid call>
+- image/rgb2ind.m:108 [error] error ''rgb2ind' undefined' does not match <RGB>
+- image/rgb2ind.m:114 [test] 'rgb2ind' undefined
+- image/rgb2ind.m:124 [test] 'rgb2ind' undefined
+- image/rgb2ind.m:132 [test] assert (cond) failed
+- image/rgbplot.m:94 [error] error ''rgbplot' undefined' does not match <Invalid call>
+- image/rgbplot.m:95 [error] error ''rgbplot' undefined' does not match <CMAP must be a valid colormap>
+- image/rgbplot.m:96 [error] error ''rgbplot' undefined' does not match <STYLE must be a string>
+- image/rgbplot.m:97 [error] error ''rgbplot' undefined' does not match <unknown STYLE 'nostyle'>
+- image/spring.m:76 [assert] 'spring' undefined
+- image/spring.m:77 [assert] 'spring' undefined
+- image/spring.m:78 [assert] 'spring' undefined
+- image/spring.m:79 [assert] 'spring' undefined
+- image/spring.m:81 [assert] 'spring' undefined
+- image/spring.m:82 [assert] 'spring' undefined
+- image/spring.m:83 [assert] 'spring' undefined
+- image/spring.m:84 [assert] 'spring' undefined
+- image/spring.m:86 [assert] 'spring' undefined
+- image/spring.m:87 [assert] 'spring' undefined
+- image/spring.m:90 [error] error ''spring' undefined' does not match <N must be a scalar integer>
+- image/spring.m:91 [error] error ''spring' undefined' does not match <N must be a scalar integer>
+- image/spring.m:92 [error] error ''spring' undefined' does not match <N must be a scalar integer>
+- image/summer.m:76 [assert] 'summer' undefined
+- image/summer.m:77 [assert] 'summer' undefined
+- image/summer.m:79 [assert] 'summer' undefined
+- image/summer.m:80 [assert] 'summer' undefined
+- image/summer.m:81 [assert] 'summer' undefined
+- image/summer.m:82 [assert] 'summer' undefined
+- image/summer.m:84 [assert] 'summer' undefined
+- image/summer.m:85 [assert] 'summer' undefined
+- image/summer.m:87 [assert] 'summer' undefined
+- image/summer.m:90 [error] error ''summer' undefined' does not match <N must be a scalar integer>
+- image/summer.m:91 [error] error ''summer' undefined' does not match <N must be a scalar integer>
+- image/summer.m:92 [error] error ''summer' undefined' does not match <N must be a scalar integer>
+- image/turbo.m:331 [assert] 'turbo' undefined
+- image/turbo.m:332 [assert] 'turbo' undefined
+- image/turbo.m:334 [assert] 'turbo' undefined
+- image/turbo.m:335 [assert] 'turbo' undefined
+- image/turbo.m:343 [assert] 'turbo' undefined
+- image/turbo.m:344 [assert] 'turbo' undefined
+- image/turbo.m:345 [assert] 'turbo' undefined
+- image/turbo.m:346 [assert] 'turbo' undefined
+- image/turbo.m:347 [assert] 'turbo' undefined
+- image/turbo.m:352 [error] error ''turbo' undefined' does not match <N must be a scalar integer>
+- image/turbo.m:353 [error] error ''turbo' undefined' does not match <N must be a scalar integer>
+- image/turbo.m:354 [error] error ''turbo' undefined' does not match <N must be a scalar integer>
+- image/viridis.m:331 [assert] 'viridis' undefined
+- image/viridis.m:332 [assert] 'viridis' undefined
+- image/viridis.m:334 [assert] 'viridis' undefined
+- image/viridis.m:335 [assert] 'viridis' undefined
+- image/viridis.m:343 [assert] 'viridis' undefined
+- image/viridis.m:344 [assert] 'viridis' undefined
+- image/viridis.m:345 [assert] 'viridis' undefined
+- image/viridis.m:346 [assert] 'viridis' undefined
+- image/viridis.m:347 [assert] 'viridis' undefined
+- image/viridis.m:352 [error] error ''viridis' undefined' does not match <N must be a scalar integer>
+- image/viridis.m:353 [error] error ''viridis' undefined' does not match <N must be a scalar integer>
+- image/viridis.m:354 [error] error ''viridis' undefined' does not match <N must be a scalar integer>
+- image/white.m:65 [assert] 'white' undefined
+- image/white.m:66 [assert] 'white' undefined
+- image/white.m:67 [assert] 'white' undefined
+- image/white.m:69 [assert] 'white' undefined
+- image/white.m:70 [assert] 'white' undefined
+- image/white.m:71 [assert] 'white' undefined
+- image/white.m:72 [assert] 'white' undefined
+- image/white.m:73 [assert] 'white' undefined
+- image/white.m:74 [assert] 'white' undefined
+- image/white.m:78 [error] error ''white' undefined' does not match <N must be a scalar integer>
+- image/white.m:79 [error] error ''white' undefined' does not match <N must be a scalar integer>
+- image/white.m:80 [error] error ''white' undefined' does not match <N must be a scalar integer>
+- image/winter.m:76 [assert] 'winter' undefined
+- image/winter.m:77 [assert] 'winter' undefined
+- image/winter.m:79 [assert] 'winter' undefined
+- image/winter.m:80 [assert] 'winter' undefined
+- image/winter.m:81 [assert] 'winter' undefined
+- image/winter.m:82 [assert] 'winter' undefined
+- image/winter.m:84 [assert] 'winter' undefined
+- image/winter.m:85 [assert] 'winter' undefined
+- image/winter.m:87 [assert] 'winter' undefined
+- image/winter.m:90 [error] error ''winter' undefined' does not match <N must be a scalar integer>
+- image/winter.m:91 [error] error ''winter' undefined' does not match <N must be a scalar integer>
+- image/winter.m:92 [error] error ''winter' undefined' does not match <N must be a scalar integer>
+- io/beep.m:43 [error] expected an error but none was raised
+- io/fileread.m:105 [error] error 'fileread: argument must be a string' does not match <FILENAME argument must be a string>
+- io/fileread.m:106 [error] error 'fileread: cannot open file filename' does not match <parameter "Encoding" missing value>
+- io/fileread.m:107 [error] error 'fileread: cannot open file filename' does not match <Unknown option "UnknownParam">
+- io/importdata.m:360 [test] 'importdata' undefined
+- io/importdata.m:377 [test] 'importdata' undefined
+- io/importdata.m:394 [test] 'importdata' undefined
+- io/importdata.m:411 [test] 'importdata' undefined
+- io/importdata.m:428 [test] 'importdata' undefined
+- io/importdata.m:444 [test] 'importdata' undefined
+- io/importdata.m:462 [test] 'importdata' undefined
+- io/importdata.m:477 [test] 'importdata' undefined
+- io/importdata.m:497 [test] 'importdata' undefined
+- io/importdata.m:512 [test] 'importdata' undefined
+- io/importdata.m:552 [test] 'importdata' undefined
+- io/importdata.m:565 [test] 'importdata' undefined
+- io/importdata.m:605 [test] 'importdata' undefined
+- io/importdata.m:617 [test] 'importdata' undefined
+- io/importdata.m:629 [test] 'importdata' undefined
+- io/importdata.m:641 [test] 'importdata' undefined
+- io/importdata.m:671 [error] error ''importdata' undefined' does not match <Invalid call>
+- io/importdata.m:672 [error] error ''importdata' undefined' does not match <FNAME must be a string>
+- io/importdata.m:673 [error] error ''importdata' undefined' does not match <option -pastespecial not implemented>
+- io/importdata.m:674 [error] error ''importdata' undefined' does not match <DELIMITER must be a single character>
+- io/importdata.m:675 [error] error ''importdata' undefined' does not match <DELIMITER must be a single character>
+- io/importdata.m:676 [error] error ''importdata' undefined' does not match <HEADER_ROWS must be an integer>
+- io/importdata.m:677 [error] error ''importdata' undefined' does not match <HEADER_ROWS must be an integer>
+- io/importdata.m:678 [error] error ''importdata' undefined' does not match <not implemented for file format .avi>
+- io/importdata.m:679 [warning] 'importdata' undefined
+- io/is_valid_file_id.m:54 [assert] assert (cond) failed
+- io/is_valid_file_id.m:55 [test] 'fid' undefined
+- java/javaaddpath.m:181 [error] error ''javaaddpath' undefined' does not match <Invalid call>
+- java/javaaddpath.m:182 [error] error ''javaaddpath' undefined' does not match <arguments must be strings>
+- java/javaaddpath.m:183 [error] error ''javaaddpath' undefined' does not match <arguments must be .* cell array of strings>
+- java/javaaddpath.m:184 [error] error ''javaaddpath' undefined' does not match <CLSPATH does not exist>
+- java/javachk.m:160 [error] error ''javachk' undefined' does not match <Invalid call>
+- java/javachk.m:161 [error] error ''javachk' undefined' does not match <FEATURE must be a string>
+- java/javarmpath.m:125 [error] error ''javarmpath' undefined' does not match <Invalid call>
+- java/javarmpath.m:126 [error] error ''javarmpath' undefined' does not match <arguments must be strings>
+- java/javarmpath.m:127 [error] error ''javarmpath' undefined' does not match <arguments must be .* cell array of strings>
+- java/usejava.m:89 [assert] 'usejava' undefined
+- java/usejava.m:95 [error] error ''usejava' undefined' does not match <Invalid call>
+- java/usejava.m:96 [error] error ''usejava' undefined' does not match <Invalid call>
+- java/usejava.m:97 [error] error ''usejava' undefined' does not match <unrecognized FEATURE>
+- legacy/caxis.m:107 [test] 'caxis' undefined
+- legacy/caxis.m:124 [test] 'fail' undefined
+- legacy/findstr.m:151 [test] 'findstr' undefined
+- legacy/findstr.m:155 [assert] 'findstr' undefined
+- legacy/findstr.m:156 [assert] 'findstr' undefined
+- legacy/findstr.m:157 [assert] 'findstr' undefined
+- legacy/findstr.m:160 [error] error ''findstr' undefined' does not match <Invalid call>
+- legacy/findstr.m:161 [error] error ''findstr' undefined' does not match <Invalid call>
+- legacy/findstr.m:162 [error] error ''findstr' undefined' does not match <must have only one non-singleton dimension>
+- legacy/genvarname.m:194 [assert] 'genvarname' undefined
+- legacy/genvarname.m:196 [assert] 'genvarname' undefined
+- legacy/genvarname.m:198 [assert] 'genvarname' undefined
+- legacy/genvarname.m:200 [assert] 'genvarname' undefined
+- legacy/genvarname.m:201 [assert] 'genvarname' undefined
+- legacy/genvarname.m:202 [assert] 'genvarname' undefined
+- legacy/genvarname.m:203 [assert] 'genvarname' undefined
+- legacy/genvarname.m:204 [assert] 'genvarname' undefined
+- legacy/genvarname.m:207 [assert] 'genvarname' undefined
+- legacy/genvarname.m:208 [assert] 'genvarname' undefined
+- legacy/genvarname.m:209 [assert] 'genvarname' undefined
+- legacy/genvarname.m:210 [assert] 'genvarname' undefined
+- legacy/genvarname.m:211 [assert] 'genvarname' undefined
+- legacy/genvarname.m:214 [assert] 'genvarname' undefined
+- legacy/genvarname.m:215 [assert] 'genvarname' undefined
+- legacy/genvarname.m:217 [assert] 'genvarname' undefined
+- legacy/genvarname.m:219 [assert] 'genvarname' undefined
+- legacy/genvarname.m:220 [assert] 'genvarname' undefined
+- legacy/genvarname.m:221 [assert] 'genvarname' undefined
+- legacy/genvarname.m:222 [assert] 'genvarname' undefined
+- legacy/genvarname.m:223 [assert] 'genvarname' undefined
+- legacy/genvarname.m:224 [assert] 'genvarname' undefined
+- legacy/genvarname.m:225 [assert] 'genvarname' undefined
+- legacy/genvarname.m:226 [assert] 'genvarname' undefined
+- legacy/genvarname.m:228 [assert] 'genvarname' undefined
+- legacy/genvarname.m:231 [error] error ''genvarname' undefined' does not match <Invalid call>
+- legacy/genvarname.m:232 [error] error ''genvarname' undefined' does not match <more than one STR is given, it must be a cellstr>
+- legacy/genvarname.m:233 [error] error ''genvarname' undefined' does not match <STR must be a string or cellstr>
+- legacy/genvarname.m:234 [error] error ''genvarname' undefined' does not match <more than one exclusion is given, it must be a cellstr>
+- legacy/genvarname.m:235 [error] error ''genvarname' undefined' does not match <EXCLUSIONS must be a string or cellstr>
+- legacy/maxNumCompThreads.m:63 [test] 'maxNumCompThreads' undefined
+- legacy/maxNumCompThreads.m:67 [test] 'maxNumCompThreads' undefined
+- legacy/maxNumCompThreads.m:72 [error] error ''maxNumCompThreads' undefined' does not match <invalid input argument>
+- legacy/maxNumCompThreads.m:73 [error] error ''maxNumCompThreads' undefined' does not match <invalid input argument>
+- legacy/strmatch.m:133 [test] 'strmatch' undefined
+- legacy/strmatch.m:137 [assert] 'strmatch' undefined
+- legacy/strmatch.m:138 [assert] 'strmatch' undefined
+- legacy/strmatch.m:139 [assert] vertical dimensions mismatch (1x9 vs 1x11)
+- legacy/strmatch.m:140 [assert] 'strmatch' undefined
+- legacy/strmatch.m:141 [assert] 'strmatch' undefined
+- legacy/strmatch.m:142 [assert] 'strmatch' undefined
+- legacy/strmatch.m:143 [assert] 'strmatch' undefined
+- legacy/strmatch.m:144 [assert] 'strmatch' undefined
+- legacy/strmatch.m:145 [assert] 'strmatch' undefined
+- legacy/strmatch.m:146 [assert] 'strmatch' undefined
+- legacy/strmatch.m:149 [test] 'strmatch' undefined
+- legacy/strmatch.m:154 [test] 'strmatch' undefined
+- legacy/strmatch.m:157 [test] 'strmatch' undefined
+- legacy/strmatch.m:163 [error] error ''strmatch' undefined' does not match <Invalid call to strmatch>
+- legacy/strmatch.m:164 [error] error ''strmatch' undefined' does not match <Invalid call to strmatch>
+- legacy/strmatch.m:165 [error] error ''strmatch' undefined' does not match <called with too many inputs>
+- legacy/strmatch.m:166 [error] error ''strmatch' undefined' does not match <S must contain only one string>
+- legacy/strmatch.m:167 [error] error ''strmatch' undefined' does not match <S must be a string>
+- legacy/strmatch.m:168 [error] error ''strmatch' undefined' does not match <S must be a string>
+- legacy/strmatch.m:169 [error] error ''strmatch' undefined' does not match <A must be a string>
+- legacy/strmatch.m:170 [error] error ''strmatch' undefined' does not match <A must be a string>
+- legacy/strread.m:897 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- legacy/strread.m:902 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- legacy/strread.m:908 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- legacy/strread.m:919 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- legacy/strread.m:924 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- legacy/strread.m:937 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- legacy/strread.m:955 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- legacy/strread.m:965 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- legacy/strread.m:970 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- legacy/strread.m:976 [test] element number 2 undefined in return list
+- legacy/strread.m:987 [test] textscan: unrecognized option 'treatasempty'
+- legacy/strread.m:993 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- legacy/strread.m:1001 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- legacy/strread.m:1009 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- legacy/strread.m:1020 [test] ASSERT errors: dimensions mismatch
+- legacy/strread.m:1038 [test] ASSERT errors: dimensions mismatch
+- legacy/strread.m:1056 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- legacy/strread.m:1061 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- legacy/strread.m:1066 [test] element number 2 undefined in return list
+- legacy/strread.m:1078 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- legacy/strread.m:1110 [error] expected an error but none was raised
+- legacy/strread.m:1111 [error] expected an error but none was raised
+- legacy/strread.m:1112 [error] expected an error but none was raised
+- legacy/strread.m:1113 [error] expected an error but none was raised
+- legacy/strread.m:1114 [error] expected an error but none was raised
+- legacy/strread.m:1115 [error] expected an error but none was raised
+- legacy/strread.m:1116 [error] expected an error but none was raised
+- legacy/strread.m:1117 [error] expected an error but none was raised
+- legacy/strread.m:1118 [error] expected an error but none was raised
+- legacy/strread.m:1119 [error] expected an error but none was raised
+- legacy/strread.m:1120 [error] expected an error but none was raised
+- legacy/strread.m:1121 [error] expected an error but none was raised
+- legacy/strread.m:1122 [error] expected an error but none was raised
+- legacy/strread.m:1123 [error] expected an error but none was raised
+- legacy/strread.m:1126 [error] expected an error but none was raised
+- legacy/strread.m:1139 [warning] index (3): out of bound 1 (dimensions are 1x1)
+- legacy/textread.m:338 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (2)       0.4        0.4389113597655616       Abs err 0.03891135976556159 exceeds tol 0.01
+- legacy/textread.m:347 [test] value on right hand side of assignment is undefined
+- legacy/textread.m:359 [test] value on right hand side of assignment is undefined
+- legacy/textread.m:443 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- legacy/vectorize.m:70 [assert] 'vectorize' undefined
+- legacy/vectorize.m:71 [test] 'vectorize' undefined
+- legacy/vectorize.m:76 [assert] 'vectorize' undefined
+- legacy/vectorize.m:77 [test] 'vectorize' undefined
+- legacy/vectorize.m:82 [assert] 'vectorize' undefined
+- legacy/vectorize.m:83 [test] 'vectorize' undefined
+- legacy/vectorize.m:89 [error] error ''vectorize' undefined' does not match <Invalid call>
+- legacy/vectorize.m:90 [error] error ''vectorize' undefined' does not match <FCN must be a string or anonymous function handle>
+- linear-algebra/bandwidth.m:75 [test] 'bandwidth' undefined
+- linear-algebra/bandwidth.m:81 [test] 'bandwidth' undefined
+- linear-algebra/bandwidth.m:88 [assert] 'bandwidth' undefined
+- linear-algebra/bandwidth.m:89 [assert] 'bandwidth' undefined
+- linear-algebra/bandwidth.m:90 [assert] 'bandwidth' undefined
+- linear-algebra/bandwidth.m:91 [assert] 'bandwidth' undefined
+- linear-algebra/bandwidth.m:92 [assert] 'bandwidth' undefined
+- linear-algebra/bandwidth.m:93 [assert] 'bandwidth' undefined
+- linear-algebra/bandwidth.m:94 [assert] 'bandwidth' undefined
+- linear-algebra/bandwidth.m:95 [assert] 'bandwidth' undefined
+- linear-algebra/bandwidth.m:96 [assert] 'bandwidth' undefined
+- linear-algebra/bandwidth.m:98 [assert] 'bandwidth' undefined
+- linear-algebra/bandwidth.m:100 [test] 'bandwidth' undefined
+- linear-algebra/bandwidth.m:103 [test] 'bandwidth' undefined
+- linear-algebra/bandwidth.m:106 [test] 'bandwidth' undefined
+- linear-algebra/bandwidth.m:111 [error] error ''bandwidth' undefined' does not match <Invalid call>
+- linear-algebra/bandwidth.m:112 [error] error ''bandwidth' undefined' does not match <A must be a 2-D numeric or logical>
+- linear-algebra/bandwidth.m:113 [error] error ''bandwidth' undefined' does not match <A must be a 2-D numeric or logical>
+- linear-algebra/bandwidth.m:114 [error] error ''bandwidth' undefined' does not match <TYPE must be "lower" or "upper">
+- linear-algebra/bandwidth.m:115 [error] error ''bandwidth' undefined' does not match <TYPE must be "lower" or "upper">
+- linear-algebra/commutation_matrix.m:103 [test] 'commutation_matrix' undefined
+- linear-algebra/commutation_matrix.m:107 [test] 'vec' undefined
+- linear-algebra/commutation_matrix.m:114 [test] 'vec' undefined
+- linear-algebra/commutation_matrix.m:121 [error] error ''commutation_matrix' undefined' does not match <M must be a positive integer>
+- linear-algebra/commutation_matrix.m:122 [error] error ''commutation_matrix' undefined' does not match <N must be a positive integer>
+- linear-algebra/commutation_matrix.m:123 [error] error ''commutation_matrix' undefined' does not match <M must be a positive integer>
+- linear-algebra/cond.m:88 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       0.0195971567839821        0.01746       Abs err 0.002137156783982099 exceeds tol 1E-06
+- linear-algebra/cond.m:101 [error] expected an error but none was raised
+- linear-algebra/cond.m:102 [error] error 'An algorithm failed to converge.' does not match <A must not contain Inf or NaN value>
+- linear-algebra/cond.m:103 [error] error 'An algorithm failed to converge.' does not match <A must not contain Inf or NaN value>
+- linear-algebra/condeig.m:122 [test] 'condeig' undefined
+- linear-algebra/condeig.m:128 [test] 'condeig' undefined
+- linear-algebra/condeig.m:138 [assert] 'condeig' undefined
+- linear-algebra/condeig.m:141 [error] error ''condeig' undefined' does not match <Invalid call>
+- linear-algebra/condeig.m:142 [error] error ''condeig' undefined' does not match <A must be a square numeric matrix>
+- linear-algebra/condeig.m:143 [error] error ''condeig' undefined' does not match <A must be a square numeric matrix>
+- linear-algebra/condeig.m:144 [error] error ''condeig' undefined' does not match <A must be a square numeric matrix>
+- linear-algebra/condest.m:339 [test] 'hilb' undefined
+- linear-algebra/condest.m:346 [test] 'hilb' undefined
+- linear-algebra/condest.m:353 [test] 'hilb' undefined
+- linear-algebra/condest.m:361 [test] 'hilb' undefined
+- linear-algebra/condest.m:370 [test] 'hilb' undefined
+- linear-algebra/condest.m:379 [test] 'condest' undefined
+- linear-algebra/condest.m:388 [test] 'condest' undefined
+- linear-algebra/condest.m:401 [error] error ''condest' undefined' does not match <Invalid call>
+- linear-algebra/condest.m:402 [error] error ''condest' undefined' does not match <Invalid call>
+- linear-algebra/condest.m:403 [error] error ''condest' undefined' does not match <A must be square>
+- linear-algebra/condest.m:404 [error] error ''condest' undefined' does not match <must provide AINVFCN when using AFCN>
+- linear-algebra/condest.m:405 [error] error ''condest' undefined' does not match <AINVFCN must be a function handle>
+- linear-algebra/condest.m:406 [error] error ''condest' undefined' does not match <argument must be a square matrix or function handle>
+- linear-algebra/cross.m:155 [test] cross: both X and Y must have 3 elements
+- linear-algebra/cross.m:162 [test] cross: both X and Y must have 3 elements
+- linear-algebra/cross.m:188 [error] error 'cross: both X and Y must have 3 elements' does not match <must have at least one dimension with 3 elements>
+- linear-algebra/cross.m:189 [error] error 'cross: both X and Y must have 3 elements' does not match <must have at least one dimension with 3 elements>
+- linear-algebra/cross.m:190 [error] error 'cross: both X and Y must have 3 elements' does not match <must have at least one dimension with 3 elements>
+- linear-algebra/cross.m:191 [error] error 'cross: both X and Y must have 3 elements' does not match <X and Y must have three elements in dimension DIM>
+- linear-algebra/cross.m:192 [error] expected an error but none was raised
+- linear-algebra/cross.m:193 [error] expected an error but none was raised
+- linear-algebra/cross.m:194 [error] error 'cross: both X and Y must have 3 elements' does not match <X and Y must have three elements in dimension DIM>
+- linear-algebra/cross.m:195 [error] expected an error but none was raised
+- linear-algebra/cross.m:196 [error] expected an error but none was raised
+- linear-algebra/cross.m:197 [error] expected an error but none was raised
+- linear-algebra/cross.m:198 [error] expected an error but none was raised
+- linear-algebra/cross.m:199 [error] expected an error but none was raised
+- linear-algebra/cross.m:200 [error] expected an error but none was raised
+- linear-algebra/cross.m:201 [error] expected an error but none was raised
+- linear-algebra/cross.m:202 [error] expected an error but none was raised
+- linear-algebra/cross.m:203 [error] error 'cross: both X and Y must have 3 elements' does not match <X and Y must have the same dimensions>
+- linear-algebra/cross.m:204 [warning] expected a warning but none was issued
+- linear-algebra/cross.m:205 [warning] expected a warning but none was issued
+- linear-algebra/cross.m:207 [test] 'fail' undefined
+- linear-algebra/duplication_matrix.m:94 [test] 'duplication_matrix' undefined
+- linear-algebra/duplication_matrix.m:103 [test] 'duplication_matrix' undefined
+- linear-algebra/duplication_matrix.m:112 [test] 'duplication_matrix' undefined
+- linear-algebra/duplication_matrix.m:121 [error] error ''duplication_matrix' undefined' does not match <Invalid call>
+- linear-algebra/expm.m:154 [assert] Invalid call to expm
+- linear-algebra/expm.m:155 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- linear-algebra/expm.m:162 [error] error 'expm: wrong type argument 'cell array'' does not match <expm: A must be a square matrix>
+- linear-algebra/funm.m:840 [assert] 'funm' undefined
+- linear-algebra/funm.m:841 [assert] 'funm' undefined
+- linear-algebra/funm.m:842 [assert] 'funm' undefined
+- linear-algebra/funm.m:843 [assert] 'funm' undefined
+- linear-algebra/funm.m:844 [assert] 'funm' undefined
+- linear-algebra/funm.m:847 [assert] 'funm' undefined
+- linear-algebra/funm.m:848 [assert] 'funm' undefined
+- linear-algebra/funm.m:851 [test] 'funm' undefined
+- linear-algebra/funm.m:861 [test] 'funm' undefined
+- linear-algebra/funm.m:866 [test] 'funm' undefined
+- linear-algebra/funm.m:872 [test] 'funm' undefined
+- linear-algebra/funm.m:883 [test] 'funm' undefined
+- linear-algebra/funm.m:895 [test] 'funm' undefined
+- linear-algebra/funm.m:901 [test] 'funm' undefined
+- linear-algebra/funm.m:907 [test] 'funm' undefined
+- linear-algebra/funm.m:915 [test] 'funm' undefined
+- linear-algebra/funm.m:924 [test] 'funm' undefined
+- linear-algebra/funm.m:930 [test] 'funm' undefined
+- linear-algebra/funm.m:936 [test] 'funm' undefined
+- linear-algebra/funm.m:942 [test] 'funm' undefined
+- linear-algebra/funm.m:950 [test] 'funm' undefined
+- linear-algebra/funm.m:956 [test] 'funm' undefined
+- linear-algebra/funm.m:962 [test] 'funm' undefined
+- linear-algebra/funm.m:969 [test] 'funm' undefined
+- linear-algebra/funm.m:975 [test] 'funm' undefined
+- linear-algebra/funm.m:982 [test] 'funm' undefined
+- linear-algebra/funm.m:991 [error] error ''funm' undefined' does not match <Invalid call>
+- linear-algebra/funm.m:992 [error] error ''funm' undefined' does not match <Invalid call>
+- linear-algebra/funm.m:993 [error] error ''funm' undefined' does not match <A must be a numeric square matrix>
+- linear-algebra/funm.m:994 [error] error ''funm' undefined' does not match <A must be a numeric square matrix>
+- linear-algebra/funm.m:995 [error] error ''funm' undefined' does not match <A must be a numeric square matrix>
+- linear-algebra/funm.m:996 [error] error ''funm' undefined' does not match <A must be a numeric square matrix>
+- linear-algebra/funm.m:997 [error] error ''funm' undefined' does not match <FUN must be a function handle or function name>
+- linear-algebra/funm.m:998 [error] error ''funm' undefined' does not match <FUN must be a function handle or function name>
+- linear-algebra/funm.m:1001 [error] error ''funm' undefined' does not match <OPTIONS must be a .* struct>
+- linear-algebra/funm.m:1003 [error] error ''funm' undefined' does not match <OPTIONS must be a scalar struct>
+- linear-algebra/funm.m:1005 [error] error ''funm' undefined' does not match <TolBlk must be a positive scalar>
+- linear-algebra/funm.m:1007 [error] error ''funm' undefined' does not match <TolTay must be a positive scalar>
+- linear-algebra/funm.m:1009 [error] error ''funm' undefined' does not match <MaxTerms must be a positive integer>
+- linear-algebra/funm.m:1011 [error] error ''funm' undefined' does not match <Ord must be a numeric or logical vector>
+- linear-algebra/funm.m:1013 [error] error ''funm' undefined' does not match <Ord must be a numeric or logical vector>
+- linear-algebra/funm.m:1015 [error] error ''funm' undefined' does not match <Ord must be a numeric or logical vector>
+- linear-algebra/funm.m:1017 [error] error ''funm' undefined' does not match <Ord must be a numeric or logical vector>
+- linear-algebra/funm.m:1019 [error] error ''funm' undefined' does not match <invalid string value specified>
+- linear-algebra/funm.m:1021 [error] error ''funm' undefined' does not match <string or scalar value .= 0>
+- linear-algebra/funm.m:1023 [error] error ''funm' undefined' does not match <string or scalar value>
+- linear-algebra/funm.m:1025 [error] error ''funm' undefined' does not match <string or scalar value>
+- linear-algebra/gls.m:221 [test] 'gls' undefined
+- linear-algebra/gls.m:229 [error] error ''gls' undefined' does not match <Invalid call>
+- linear-algebra/gls.m:230 [error] error ''gls' undefined' does not match <Invalid call>
+- linear-algebra/gls.m:231 [error] error ''gls' undefined' does not match <Invalid call>
+- linear-algebra/housh.m:100 [test] 'housh' undefined
+- linear-algebra/housh.m:109 [test] 'housh' undefined
+- linear-algebra/housh.m:118 [test] 'housh' undefined
+- linear-algebra/housh.m:127 [test] 'housh' undefined
+- linear-algebra/housh.m:136 [error] error ''housh' undefined' does not match <Invalid call>
+- linear-algebra/housh.m:137 [error] error ''housh' undefined' does not match <Invalid call>
+- linear-algebra/housh.m:138 [error] error ''housh' undefined' does not match <Invalid call>
+- linear-algebra/isbanded.m:64 [assert] 'isbanded' undefined
+- linear-algebra/isbanded.m:65 [assert] 'isbanded' undefined
+- linear-algebra/isbanded.m:66 [assert] 'isbanded' undefined
+- linear-algebra/isbanded.m:67 [assert] 'isbanded' undefined
+- linear-algebra/isbanded.m:68 [assert] 'isbanded' undefined
+- linear-algebra/isbanded.m:70 [assert] 'isbanded' undefined
+- linear-algebra/isbanded.m:71 [assert] 'isbanded' undefined
+- linear-algebra/isbanded.m:72 [assert] 'isbanded' undefined
+- linear-algebra/isbanded.m:73 [assert] 'isbanded' undefined
+- linear-algebra/isbanded.m:74 [assert] 'isbanded' undefined
+- linear-algebra/isbanded.m:75 [assert] 'isbanded' undefined
+- linear-algebra/isbanded.m:83 [error] error ''isbanded' undefined' does not match <Invalid call>
+- linear-algebra/isbanded.m:84 [error] error ''isbanded' undefined' does not match <Invalid call>
+- linear-algebra/isbanded.m:85 [error] error ''isbanded' undefined' does not match <Invalid call>
+- linear-algebra/isbanded.m:86 [error] error ''isbanded' undefined' does not match <LOWER and UPPER must be non-negative>
+- linear-algebra/isbanded.m:87 [error] error ''isbanded' undefined' does not match <LOWER and UPPER must be non-negative>
+- linear-algebra/isbanded.m:88 [error] error ''isbanded' undefined' does not match <LOWER and UPPER must be non-negative>
+- linear-algebra/isbanded.m:89 [error] error ''isbanded' undefined' does not match <LOWER and UPPER must be non-negative>
+- linear-algebra/isdefinite.m:85 [test] 'isdefinite' undefined
+- linear-algebra/isdefinite.m:89 [test] 'isdefinite' undefined
+- linear-algebra/isdefinite.m:93 [test] 'isdefinite' undefined
+- linear-algebra/isdefinite.m:98 [test] 'isdefinite' undefined
+- linear-algebra/isdefinite.m:104 [assert] 'isdefinite' undefined
+- linear-algebra/isdefinite.m:106 [error] error ''isdefinite' undefined' does not match <Invalid call>
+- linear-algebra/isdefinite.m:107 [error] error ''isdefinite' undefined' does not match <TOL must be a scalar .= 0>
+- linear-algebra/isdefinite.m:108 [error] error ''isdefinite' undefined' does not match <TOL must be a scalar .= 0>
+- linear-algebra/isdefinite.m:109 [error] error ''isdefinite' undefined' does not match <TOL must be a scalar .= 0>
+- linear-algebra/isdiag.m:51 [assert] 'isdiag' undefined
+- linear-algebra/isdiag.m:52 [assert] 'isdiag' undefined
+- linear-algebra/isdiag.m:53 [assert] 'isdiag' undefined
+- linear-algebra/isdiag.m:54 [assert] 'isdiag' undefined
+- linear-algebra/isdiag.m:55 [assert] 'isdiag' undefined
+- linear-algebra/isdiag.m:56 [assert] 'isdiag' undefined
+- linear-algebra/isdiag.m:57 [assert] 'isdiag' undefined
+- linear-algebra/isdiag.m:58 [assert] 'isdiag' undefined
+- linear-algebra/isdiag.m:59 [assert] 'isdiag' undefined
+- linear-algebra/isdiag.m:60 [assert] 'isdiag' undefined
+- linear-algebra/isdiag.m:61 [assert] 'isdiag' undefined
+- linear-algebra/isdiag.m:62 [assert] 'isdiag' undefined
+- linear-algebra/isdiag.m:65 [error] error ''isdiag' undefined' does not match <Invalid call>
+- linear-algebra/ishermitian.m:113 [assert] 'ishermitian' undefined
+- linear-algebra/ishermitian.m:114 [assert] 'ishermitian' undefined
+- linear-algebra/ishermitian.m:115 [assert] 'ishermitian' undefined
+- linear-algebra/ishermitian.m:116 [assert] 'ishermitian' undefined
+- linear-algebra/ishermitian.m:117 [assert] 'ishermitian' undefined
+- linear-algebra/ishermitian.m:118 [assert] 'ishermitian' undefined
+- linear-algebra/ishermitian.m:119 [assert] 'ishermitian' undefined
+- linear-algebra/ishermitian.m:120 [assert] 'ishermitian' undefined
+- linear-algebra/ishermitian.m:121 [assert] 'ishermitian' undefined
+- linear-algebra/ishermitian.m:122 [assert] 'ishermitian' undefined
+- linear-algebra/ishermitian.m:123 [assert] 'ishermitian' undefined
+- linear-algebra/ishermitian.m:124 [assert] 'ishermitian' undefined
+- linear-algebra/ishermitian.m:125 [assert] 'ishermitian' undefined
+- linear-algebra/ishermitian.m:127 [assert] 'ishermitian' undefined
+- linear-algebra/ishermitian.m:128 [assert] 'ishermitian' undefined
+- linear-algebra/ishermitian.m:129 [assert] 'ishermitian' undefined
+- linear-algebra/ishermitian.m:130 [assert] 'ishermitian' undefined
+- linear-algebra/ishermitian.m:131 [test] 'ishermitian' undefined
+- linear-algebra/ishermitian.m:136 [error] error ''ishermitian' undefined' does not match <Invalid call>
+- linear-algebra/ishermitian.m:137 [error] error ''ishermitian' undefined' does not match <second argument must be>
+- linear-algebra/ishermitian.m:138 [error] error ''ishermitian' undefined' does not match <SKEWOPT must be 'skew' or 'nonskew'>
+- linear-algebra/ishermitian.m:139 [error] error ''ishermitian' undefined' does not match <SKEWOPT must be 'skew' or 'nonskew'>
+- linear-algebra/ishermitian.m:140 [error] error ''ishermitian' undefined' does not match <TOL must be a scalar .= 0>
+- linear-algebra/ishermitian.m:141 [error] error ''ishermitian' undefined' does not match <TOL must be a scalar .= 0>
+- linear-algebra/ishermitian.m:142 [error] error ''ishermitian' undefined' does not match <TOL must be a scalar .= 0>
+- linear-algebra/issymmetric.m:116 [assert] 'issymmetric' undefined
+- linear-algebra/issymmetric.m:117 [assert] 'issymmetric' undefined
+- linear-algebra/issymmetric.m:118 [assert] 'issymmetric' undefined
+- linear-algebra/issymmetric.m:119 [assert] 'issymmetric' undefined
+- linear-algebra/issymmetric.m:120 [assert] 'issymmetric' undefined
+- linear-algebra/issymmetric.m:121 [assert] 'issymmetric' undefined
+- linear-algebra/issymmetric.m:122 [assert] 'issymmetric' undefined
+- linear-algebra/issymmetric.m:123 [assert] 'issymmetric' undefined
+- linear-algebra/issymmetric.m:124 [assert] 'issymmetric' undefined
+- linear-algebra/issymmetric.m:125 [assert] 'issymmetric' undefined
+- linear-algebra/issymmetric.m:126 [assert] 'issymmetric' undefined
+- linear-algebra/issymmetric.m:127 [assert] 'issymmetric' undefined
+- linear-algebra/issymmetric.m:128 [assert] 'issymmetric' undefined
+- linear-algebra/issymmetric.m:129 [assert] 'issymmetric' undefined
+- linear-algebra/issymmetric.m:130 [assert] 'issymmetric' undefined
+- linear-algebra/issymmetric.m:131 [assert] 'issymmetric' undefined
+- linear-algebra/issymmetric.m:132 [assert] 'issymmetric' undefined
+- linear-algebra/issymmetric.m:135 [error] error ''issymmetric' undefined' does not match <Invalid call>
+- linear-algebra/issymmetric.m:136 [error] error ''issymmetric' undefined' does not match <second argument must be>
+- linear-algebra/issymmetric.m:137 [error] error ''issymmetric' undefined' does not match <A must be a numeric,.* matrix>
+- linear-algebra/issymmetric.m:138 [error] error ''issymmetric' undefined' does not match <SKEWOPT must be 'skew' or 'nonskew'>
+- linear-algebra/issymmetric.m:139 [error] error ''issymmetric' undefined' does not match <TOL must be a scalar .= 0>
+- linear-algebra/issymmetric.m:140 [error] error ''issymmetric' undefined' does not match <TOL must be a scalar .= 0>
+- linear-algebra/issymmetric.m:141 [error] error ''issymmetric' undefined' does not match <TOL must be a scalar .= 0>
+- linear-algebra/istril.m:50 [assert] 'istril' undefined
+- linear-algebra/istril.m:51 [assert] 'istril' undefined
+- linear-algebra/istril.m:52 [assert] 'istril' undefined
+- linear-algebra/istril.m:54 [assert] 'istril' undefined
+- linear-algebra/istril.m:55 [assert] 'istril' undefined
+- linear-algebra/istril.m:56 [assert] 'istril' undefined
+- linear-algebra/istril.m:57 [assert] 'istril' undefined
+- linear-algebra/istril.m:58 [assert] 'istril' undefined
+- linear-algebra/istril.m:60 [assert] 'istril' undefined
+- linear-algebra/istril.m:61 [assert] 'istril' undefined
+- linear-algebra/istril.m:64 [error] error ''istril' undefined' does not match <Invalid call>
+- linear-algebra/istriu.m:50 [assert] 'istriu' undefined
+- linear-algebra/istriu.m:51 [assert] 'istriu' undefined
+- linear-algebra/istriu.m:52 [assert] 'istriu' undefined
+- linear-algebra/istriu.m:54 [assert] 'istriu' undefined
+- linear-algebra/istriu.m:55 [assert] 'istriu' undefined
+- linear-algebra/istriu.m:56 [assert] 'istriu' undefined
+- linear-algebra/istriu.m:57 [assert] 'istriu' undefined
+- linear-algebra/istriu.m:58 [assert] 'istriu' undefined
+- linear-algebra/istriu.m:60 [assert] 'istriu' undefined
+- linear-algebra/istriu.m:61 [assert] 'istriu' undefined
+- linear-algebra/istriu.m:64 [error] error ''istriu' undefined' does not match <Invalid call>
+- linear-algebra/linsolve.m:142 [test] 'linsolve' undefined
+- linear-algebra/linsolve.m:150 [test] 'gallery' undefined
+- linear-algebra/linsolve.m:160 [test] 'hilb' undefined
+- linear-algebra/linsolve.m:167 [test] 'hilb' undefined
+- linear-algebra/linsolve.m:175 [test] 'linsolve' undefined
+- linear-algebra/linsolve.m:182 [test] 'linsolve' undefined
+- linear-algebra/linsolve.m:189 [test] 'linsolve' undefined
+- linear-algebra/linsolve.m:196 [test] 'linsolve' undefined
+- linear-algebra/linsolve.m:204 [error] error ''linsolve' undefined' does not match <Invalid call>
+- linear-algebra/linsolve.m:205 [error] error ''linsolve' undefined' does not match <Invalid call>
+- linear-algebra/linsolve.m:206 [error] error ''linsolve' undefined' does not match <A and B must be numeric>
+- linear-algebra/linsolve.m:207 [error] error ''linsolve' undefined' does not match <A and B must be numeric>
+- linear-algebra/linsolve.m:208 [error] error ''linsolve' undefined' does not match <OPTS must be a structure>
+- linear-algebra/linsolve.m:209 [warning] 'linsolve' undefined
+- linear-algebra/logm.m:184 [assert] 'logm' undefined
+- linear-algebra/logm.m:185 [test] 'logm' undefined
+- linear-algebra/logm.m:188 [assert] 'logm' undefined
+- linear-algebra/logm.m:189 [assert] 'logm' undefined
+- linear-algebra/logm.m:190 [assert] 'logm' undefined
+- linear-algebra/logm.m:191 [assert] 'logm' undefined
+- linear-algebra/logm.m:192 [assert] 'logm' undefined
+- linear-algebra/logm.m:193 [test] '__have_feature__' undefined
+- linear-algebra/logm.m:205 [assert] 'logm' undefined
+- linear-algebra/logm.m:206 [assert] 'logm' undefined
+- linear-algebra/logm.m:209 [error] error ''logm' undefined' does not match <Invalid call>
+- linear-algebra/logm.m:210 [error] error ''logm' undefined' does not match <logm: A must be a square matrix>
+- linear-algebra/lscov.m:139 [test] 'lscov' undefined
+- linear-algebra/lscov.m:174 [test] 'lscov' undefined
+- linear-algebra/lscov.m:203 [test] 'lscov' undefined
+- linear-algebra/lscov.m:214 [error] error ''lscov' undefined' does not match <Invalid call>
+- linear-algebra/lscov.m:215 [error] error ''lscov' undefined' does not match <Invalid call>
+- linear-algebra/lscov.m:216 [error] error ''lscov' undefined' does not match <A and B must have the same number of rows>
+- linear-algebra/lscov.m:217 [warning] 'lscov' undefined
+- linear-algebra/lscov.m:219 [error] error ''lscov' undefined' does not match <vector V must have n .* elements>
+- linear-algebra/lscov.m:220 [error] error ''lscov' undefined' does not match <matrix V must be square>
+- linear-algebra/normest.m:90 [test] 'toeplitz' undefined
+- linear-algebra/normest.m:94 [test] 'normest' undefined
+- linear-algebra/normest.m:99 [error] error ''normest' undefined' does not match <Invalid call>
+- linear-algebra/normest.m:100 [error] error ''normest' undefined' does not match <A must be a numeric .* matrix>
+- linear-algebra/normest.m:101 [error] error ''normest' undefined' does not match <A must be .* 2-D matrix>
+- linear-algebra/normest.m:102 [error] error ''normest' undefined' does not match <TOL must be a real scalar>
+- linear-algebra/normest.m:103 [error] error ''normest' undefined' does not match <TOL must be a real scalar>
+- linear-algebra/normest1.m:282 [test] 'normest1' undefined
+- linear-algebra/normest1.m:287 [test] 'normest1' undefined
+- linear-algebra/normest1.m:292 [test] 'normest1' undefined
+- linear-algebra/normest1.m:301 [test] 'normest1' undefined
+- linear-algebra/normest1.m:308 [test] 'normest1' undefined
+- linear-algebra/normest1.m:313 [test] 'normest1' undefined
+- linear-algebra/normest1.m:319 [test] 'normest1' undefined
+- linear-algebra/normest1.m:327 [test] 'normest1' undefined
+- linear-algebra/normest1.m:332 [test] 'normest1' undefined
+- linear-algebra/normest1.m:337 [test] 'normest1' undefined
+- linear-algebra/normest1.m:347 [test] 'hilb' undefined
+- linear-algebra/normest1.m:358 [test] 'normest1' undefined
+- linear-algebra/normest1.m:375 [test] 'normest1' undefined
+- linear-algebra/normest1.m:382 [error] error ''normest1' undefined' does not match <Invalid call>
+- linear-algebra/normest1.m:383 [error] error ''normest1' undefined' does not match <A must be a square matrix or a function handle>
+- linear-algebra/normest1.m:384 [error] error ''normest1' undefined' does not match <A must be a square matrix>
+- linear-algebra/normest1.m:385 [error] error ''normest1' undefined' does not match <X0 must have 2 columns>
+- linear-algebra/null.m:82 [test] Invalid call to null
+- linear-algebra/null.m:100 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       -0.7071067811865475        -0.7071067690849304       Abs err 1.2101617041793133E-08 exceeds tol 2.220446049250313E-16
+- linear-algebra/null.m:110 [test] parse error near line 4, column 9: unexpected ','
+- linear-algebra/null.m:122 [assert] Invalid call to null
+- linear-algebra/null.m:126 [error] expected an error but none was raised
+- linear-algebra/ols.m:229 [test] 'ols' undefined
+- linear-algebra/ols.m:235 [test] 'ols' undefined
+- linear-algebra/ols.m:243 [test] 'ols' undefined
+- linear-algebra/ols.m:250 [test] 'ols' undefined
+- linear-algebra/ols.m:257 [error] error ''ols' undefined' does not match <Invalid call>
+- linear-algebra/ols.m:258 [error] error ''ols' undefined' does not match <Invalid call>
+- linear-algebra/ordeig.m:121 [test] 'toeplitz' undefined
+- linear-algebra/ordeig.m:127 [test] 'toeplitz' undefined
+- linear-algebra/ordeig.m:140 [test] 'ordeig' undefined
+- linear-algebra/ordeig.m:145 [error] error ''ordeig' undefined' does not match <Invalid call>
+- linear-algebra/ordeig.m:146 [error] error ''ordeig' undefined' does not match <A must be a square matrix>
+- linear-algebra/ordeig.m:147 [error] error ''ordeig' undefined' does not match <A must be a square matrix>
+- linear-algebra/ordeig.m:148 [error] error ''ordeig' undefined' does not match <A must be quasi-triangular>
+- linear-algebra/ordeig.m:149 [error] error ''ordeig' undefined' does not match <A must be upper-triangular>
+- linear-algebra/ordeig.m:150 [error] error ''ordeig' undefined' does not match <B must be a square matrix>
+- linear-algebra/ordeig.m:151 [error] error ''ordeig' undefined' does not match <B must be a square matrix>
+- linear-algebra/ordeig.m:152 [error] error ''ordeig' undefined' does not match <A and B must be the same size>
+- linear-algebra/ordeig.m:153 [error] error ''ordeig' undefined' does not match <A and B must be quasi-triangular>
+- linear-algebra/ordeig.m:155 [error] error ''ordeig' undefined' does not match <A and B must both be upper-triangular>
+- linear-algebra/orth.m:83 [test] 'orth' undefined
+- linear-algebra/planerot.m:79 [test] 'planerot' undefined
+- linear-algebra/planerot.m:86 [error] error ''planerot' undefined' does not match <Invalid call>
+- linear-algebra/planerot.m:87 [error] error ''planerot' undefined' does not match <X must be a 2-element vector>
+- linear-algebra/planerot.m:88 [error] error ''planerot' undefined' does not match <X must be a 2-element vector>
+- linear-algebra/qzhess.m:111 [test] 'qzhess' undefined
+- linear-algebra/qzhess.m:132 [test] 'qzhess' undefined
+- linear-algebra/qzhess.m:157 [error] error ''qzhess' undefined' does not match <Invalid call>
+- linear-algebra/qzhess.m:158 [error] error ''qzhess' undefined' does not match <Invalid call>
+- linear-algebra/rank.m:157 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- linear-algebra/rref.m:99 [test] 'rref' undefined
+- linear-algebra/rref.m:105 [test] 'rref' undefined
+- linear-algebra/rref.m:112 [test] 'rref' undefined
+- linear-algebra/rref.m:119 [test] 'rref' undefined
+- linear-algebra/rref.m:126 [test] 'rref' undefined
+- linear-algebra/rref.m:136 [error] error ''rref' undefined' does not match <Invalid call>
+- linear-algebra/subspace.m:69 [assert] 'subspace' undefined
+- linear-algebra/subspace.m:70 [assert] 'subspace' undefined
+- linear-algebra/subspace.m:71 [assert] 'subspace' undefined
+- linear-algebra/subspace.m:72 [assert] 'subspace' undefined
+- linear-algebra/subspace.m:73 [assert] 'subspace' undefined
+- linear-algebra/subspace.m:75 [test] 'subspace' undefined
+- linear-algebra/tensorprod.m:233 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:234 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:235 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:236 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:237 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:238 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:239 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:240 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:241 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:249 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:250 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:251 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:252 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:253 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:254 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:255 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:256 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:258 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:259 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:260 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:261 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:262 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:263 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:264 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:265 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:266 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:267 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:268 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:269 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:270 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:271 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:272 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:273 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:274 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:275 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:276 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:279 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:283 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:285 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:286 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:288 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:289 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:292 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:296 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:299 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:308 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:317 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:321 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:323 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:325 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:329 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:330 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:331 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:335 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:337 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:339 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:341 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:343 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:345 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:346 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:347 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:348 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:349 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:351 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:353 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:356 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:360 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:363 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:374 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:375 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:376 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:377 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:378 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:379 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:380 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:381 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:382 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:383 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:384 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:385 [assert] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:387 [test] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:393 [test] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:399 [test] 'tensorprod' undefined
+- linear-algebra/tensorprod.m:406 [error] error ''tensorprod' undefined' does not match <Invalid call>
+- linear-algebra/tensorprod.m:407 [error] error ''tensorprod' undefined' does not match <Invalid call>
+- linear-algebra/tensorprod.m:408 [error] error ''tensorprod' undefined' does not match <Invalid call>
+- linear-algebra/tensorprod.m:409 [error] error ''tensorprod' undefined' does not match <A must be a single or double precision array>
+- linear-algebra/tensorprod.m:410 [error] error ''tensorprod' undefined' does not match <B must be a single or double precision array>
+- linear-algebra/tensorprod.m:411 [error] error ''tensorprod' undefined' does not match <A must be a single or double precision array>
+- linear-algebra/tensorprod.m:412 [error] error ''tensorprod' undefined' does not match <B must be a single or double precision array>
+- linear-algebra/tensorprod.m:413 [error] error ''tensorprod' undefined' does not match <value for the NumDimensionsA property must be provided>
+- linear-algebra/tensorprod.m:414 [error] error ''tensorprod' undefined' does not match <NumDimensionsA=VALUE syntax is unsupported>
+- linear-algebra/tensorprod.m:415 [error] error ''tensorprod' undefined' does not match <value for NumDimensionsA must be a numeric scalar>
+- linear-algebra/tensorprod.m:416 [error] error ''tensorprod' undefined' does not match <value for NumDimensionsA must be a numeric scalar>
+- linear-algebra/tensorprod.m:417 [error] error ''tensorprod' undefined' does not match <value for NumDimensionsA must be a positive integer>
+- linear-algebra/tensorprod.m:418 [error] error ''tensorprod' undefined' does not match <value for NumDimensionsA must be a positive integer>
+- linear-algebra/tensorprod.m:419 [error] error ''tensorprod' undefined' does not match <value for NumDimensionsA must be a positive integer>
+- linear-algebra/tensorprod.m:420 [error] error ''tensorprod' undefined' does not match <value for NumDimensionsA must be a positive integer>
+- linear-algebra/tensorprod.m:421 [error] error ''tensorprod' undefined' does not match <value for NumDimensionsA must be a positive integer>
+- linear-algebra/tensorprod.m:422 [error] error ''tensorprod' undefined' does not match <DIM must be a numeric vector of integers or \[\]>
+- linear-algebra/tensorprod.m:423 [error] error ''tensorprod' undefined' does not match <DIM must be a numeric vector of integers or \[\]>
+- linear-algebra/tensorprod.m:424 [error] error ''tensorprod' undefined' does not match <size of A and B must be identical when using the 'all' option>
+- linear-algebra/tensorprod.m:425 [error] error ''tensorprod' undefined' does not match <unknown option 'foo'>
+- linear-algebra/tensorprod.m:426 [error] error ''tensorprod' undefined' does not match <third argument must be a numeric vector of integers, \[\], or 'all'>
+- linear-algebra/tensorprod.m:427 [error] error ''tensorprod' undefined' does not match <DIMA must be a numeric vector of integers or \[\]>
+- linear-algebra/tensorprod.m:428 [error] error ''tensorprod' undefined' does not match <DIMA must be a numeric vector of integers or \[\]>
+- linear-algebra/tensorprod.m:429 [error] error ''tensorprod' undefined' does not match <DIMA must be a numeric vector of integers or \[\]>
+- linear-algebra/tensorprod.m:430 [error] error ''tensorprod' undefined' does not match <DIMB must be a numeric vector of integers or \[\]>
+- linear-algebra/tensorprod.m:431 [error] error ''tensorprod' undefined' does not match <DIMB must be a numeric vector of integers or \[\]>
+- linear-algebra/tensorprod.m:432 [error] error ''tensorprod' undefined' does not match <DIMB must be a numeric vector of integers or \[\]>
+- linear-algebra/tensorprod.m:433 [error] error ''tensorprod' undefined' does not match <an equal number of dimensions must be matched for A and B>
+- linear-algebra/tensorprod.m:434 [error] error ''tensorprod' undefined' does not match <an equal number of dimensions must be matched for A and B>
+- linear-algebra/tensorprod.m:435 [error] error ''tensorprod' undefined' does not match <an equal number of dimensions must be matched for A and B>
+- linear-algebra/tensorprod.m:436 [error] error ''tensorprod' undefined' does not match <misplaced 'NumDimensionsA' option>
+- linear-algebra/tensorprod.m:437 [error] error ''tensorprod' undefined' does not match <misplaced 'all' option>
+- linear-algebra/tensorprod.m:438 [error] error ''tensorprod' undefined' does not match <unknown option 'foo'>
+- linear-algebra/tensorprod.m:439 [error] error ''tensorprod' undefined' does not match <optional arguments must be numeric vectors of integers, \[\], 'all', or 'NumDimensionsA'>
+- linear-algebra/tensorprod.m:440 [error] error ''tensorprod' undefined' does not match <too many dimension inputs given>
+- linear-algebra/tensorprod.m:441 [error] error ''tensorprod' undefined' does not match <too many dimension inputs given>
+- linear-algebra/tensorprod.m:442 [error] error ''tensorprod' undefined' does not match <dimensions must be positive integers>
+- linear-algebra/tensorprod.m:443 [error] error ''tensorprod' undefined' does not match <dimensions must be positive integers>
+- linear-algebra/tensorprod.m:444 [error] error ''tensorprod' undefined' does not match <dimensions must be positive integers>
+- linear-algebra/tensorprod.m:445 [error] error ''tensorprod' undefined' does not match <dimensions must be positive integers>
+- linear-algebra/tensorprod.m:446 [error] error ''tensorprod' undefined' does not match <dimensions must be positive integers>
+- linear-algebra/tensorprod.m:447 [error] error ''tensorprod' undefined' does not match <matched dimensions of A and B must have the same lengths>
+- linear-algebra/tensorprod.m:448 [error] error ''tensorprod' undefined' does not match <matched dimensions of A and B must have the same lengths>
+- linear-algebra/tensorprod.m:449 [error] error ''tensorprod' undefined' does not match <highest dimension of dim must be less than or equal to NumDimensionsA>
+- linear-algebra/tensorprod.m:450 [error] error ''tensorprod' undefined' does not match <highest dimension of dimA must be less than or equal to NumDimensionsA>
+- linear-algebra/tensorprod.m:451 [error] error ''tensorprod' undefined' does not match <NumDimensionsA cannot be smaller than the number of dimensions of A>
+- linear-algebra/trace.m:55 [assert] trace: A must be a square matrix
+- linear-algebra/trace.m:56 [assert] trace: A must be a square matrix
+- linear-algebra/trace.m:58 [assert] trace: A must be a square matrix
+- linear-algebra/trace.m:59 [assert] trace: A must be a square matrix
+- linear-algebra/trace.m:62 [error] error 'trace: A must be a square matrix' does not match <only valid on 2-D objects>
+- linear-algebra/vech.m:57 [assert] 'vech' undefined
+- linear-algebra/vech.m:60 [error] error ''vech' undefined' does not match <Invalid call>
+- linear-algebra/vech.m:61 [error] error ''vech' undefined' does not match <X must be square>
+- linear-algebra/vecnorm.m:84 [test] 'vecnorm' undefined
+- linear-algebra/vecnorm.m:92 [test] 'vecnorm' undefined
+- linear-algebra/vecnorm.m:95 [test] 'vecnorm' undefined
+- linear-algebra/vecnorm.m:105 [error] error ''vecnorm' undefined' does not match <Invalid call>
+- linear-algebra/vecnorm.m:106 [error] error ''vecnorm' undefined' does not match <A must be numeric>
+- linear-algebra/vecnorm.m:107 [error] error ''vecnorm' undefined' does not match <P must be positive real scalar>
+- linear-algebra/vecnorm.m:108 [error] error ''vecnorm' undefined' does not match <P must be positive real scalar>
+- linear-algebra/vecnorm.m:109 [error] error ''vecnorm' undefined' does not match <P must be positive real scalar>
+- linear-algebra/vecnorm.m:110 [error] error ''vecnorm' undefined' does not match <P must be positive real scalar>
+- linear-algebra/vecnorm.m:111 [error] error ''vecnorm' undefined' does not match <DIM must be a positive integer>
+- linear-algebra/vecnorm.m:112 [error] error ''vecnorm' undefined' does not match <DIM must be a positive integer>
+- linear-algebra/vecnorm.m:113 [error] error ''vecnorm' undefined' does not match <DIM must be a positive integer>
+- linear-algebra/vecnorm.m:114 [error] error ''vecnorm' undefined' does not match <DIM must be a positive integer>
+- miscellaneous/cast.m:147 [assert] Invalid call to cast
+- miscellaneous/cast.m:148 [assert] Invalid call to cast
+- miscellaneous/cast.m:149 [assert] Invalid call to cast
+- miscellaneous/cast.m:150 [assert] Invalid call to cast
+- miscellaneous/cast.m:151 [assert] Invalid call to cast
+- miscellaneous/cast.m:152 [assert] Invalid call to cast
+- miscellaneous/cast.m:153 [assert] Invalid call to cast
+- miscellaneous/cast.m:154 [assert] Invalid call to cast
+- miscellaneous/cast.m:155 [assert] Invalid call to cast
+- miscellaneous/cast.m:156 [assert] Invalid call to cast
+- miscellaneous/cast.m:157 [assert] Invalid call to cast
+- miscellaneous/cast.m:163 [error] error 'cast: argument must be a string' does not match <TYPE must be a string>
+- miscellaneous/cast.m:164 [error] error 'cast: wrong type argument 'cell array'' does not match <type conversion from .* not supported>
+- miscellaneous/cast.m:165 [error] error 'cast: wrong type argument 'struct'' does not match <type conversion from .* not supported>
+- miscellaneous/cast.m:166 [error] error 'cast: TYPE 'foobar' is not a built-in type' does not match <type conversion to .* not supported>
+- miscellaneous/cast.m:167 [error] error 'cast: TYPE 'cell' is not a built-in type' does not match <type conversion to .* not supported>
+- miscellaneous/cast.m:168 [error] error 'Invalid call to cast' does not match <type conversion to .* not supported>
+- miscellaneous/cast.m:169 [error] error 'Invalid call to cast' does not match <type conversion to .* not supported>
+- miscellaneous/citation.m:57 [error] error ''citation' undefined' does not match <citation: PACKAGE must be a string>
+- miscellaneous/citation.m:58 [error] error ''citation' undefined' does not match <citation: package .* is not installed>
+- miscellaneous/clearvars.m:221 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- miscellaneous/clearvars.m:225 [error] expected an error but none was raised
+- miscellaneous/clearvars.m:226 [error] expected an error but none was raised
+- miscellaneous/compare_versions.m:188 [assert] 'compare_versions' undefined
+- miscellaneous/compare_versions.m:189 [assert] 'compare_versions' undefined
+- miscellaneous/compare_versions.m:190 [assert] 'compare_versions' undefined
+- miscellaneous/compare_versions.m:191 [assert] 'compare_versions' undefined
+- miscellaneous/compare_versions.m:192 [assert] 'compare_versions' undefined
+- miscellaneous/compare_versions.m:194 [assert] 'compare_versions' undefined
+- miscellaneous/compare_versions.m:195 [assert] 'compare_versions' undefined
+- miscellaneous/compare_versions.m:196 [assert] 'compare_versions' undefined
+- miscellaneous/compare_versions.m:197 [assert] 'compare_versions' undefined
+- miscellaneous/compare_versions.m:198 [assert] 'compare_versions' undefined
+- miscellaneous/compare_versions.m:201 [assert] 'compare_versions' undefined
+- miscellaneous/compare_versions.m:202 [assert] 'compare_versions' undefined
+- miscellaneous/compare_versions.m:203 [assert] 'compare_versions' undefined
+- miscellaneous/compare_versions.m:204 [assert] 'compare_versions' undefined
+- miscellaneous/compare_versions.m:205 [assert] 'compare_versions' undefined
+- miscellaneous/compare_versions.m:206 [assert] 'compare_versions' undefined
+- miscellaneous/compare_versions.m:207 [assert] 'compare_versions' undefined
+- miscellaneous/compare_versions.m:208 [assert] 'compare_versions' undefined
+- miscellaneous/compare_versions.m:209 [assert] 'compare_versions' undefined
+- miscellaneous/compare_versions.m:212 [assert] 'compare_versions' undefined
+- miscellaneous/compare_versions.m:214 [assert] 'compare_versions' undefined
+- miscellaneous/compare_versions.m:215 [assert] 'compare_versions' undefined
+- miscellaneous/compare_versions.m:216 [assert] 'compare_versions' undefined
+- miscellaneous/compare_versions.m:217 [assert] 'compare_versions' undefined
+- miscellaneous/compare_versions.m:218 [assert] 'compare_versions' undefined
+- miscellaneous/compare_versions.m:220 [assert] 'compare_versions' undefined
+- miscellaneous/compare_versions.m:221 [assert] 'compare_versions' undefined
+- miscellaneous/compare_versions.m:222 [assert] 'compare_versions' undefined
+- miscellaneous/compare_versions.m:223 [assert] 'compare_versions' undefined
+- miscellaneous/compare_versions.m:224 [assert] 'compare_versions' undefined
+- miscellaneous/compare_versions.m:227 [error] error ''compare_versions' undefined' does not match <Invalid call>
+- miscellaneous/compare_versions.m:228 [error] error ''compare_versions' undefined' does not match <Invalid call>
+- miscellaneous/compare_versions.m:229 [error] error ''compare_versions' undefined' does not match <Invalid call>
+- miscellaneous/compare_versions.m:230 [error] error ''compare_versions' undefined' does not match <V1 and V2 must be strings>
+- miscellaneous/compare_versions.m:231 [error] error ''compare_versions' undefined' does not match <V1 and V2 must be strings>
+- miscellaneous/compare_versions.m:232 [error] error ''compare_versions' undefined' does not match <V1 and V2 must be a single row>
+- miscellaneous/compare_versions.m:233 [error] error ''compare_versions' undefined' does not match <V1 and V2 must be a single row>
+- miscellaneous/compare_versions.m:234 [error] error ''compare_versions' undefined' does not match <OPERATOR must be a string>
+- miscellaneous/compare_versions.m:235 [error] error ''compare_versions' undefined' does not match <OPERATOR must be 1 or 2>
+- miscellaneous/compare_versions.m:236 [error] error ''compare_versions' undefined' does not match <V1 is not valid>
+- miscellaneous/compare_versions.m:237 [error] error ''compare_versions' undefined' does not match <V2 is not valid>
+- miscellaneous/compare_versions.m:239 [error] error ''compare_versions' undefined' does not match <cannot contain both greater and less than>
+- miscellaneous/compare_versions.m:240 [error] error ''compare_versions' undefined' does not match <cannot contain not and greater than>
+- miscellaneous/compare_versions.m:241 [error] error ''compare_versions' undefined' does not match <cannot contain not and greater than>
+- miscellaneous/compare_versions.m:242 [error] error ''compare_versions' undefined' does not match <equality OPERATOR is "==">
+- miscellaneous/compare_versions.m:243 [error] error ''compare_versions' undefined' does not match <no valid OPERATOR>
+- miscellaneous/computer.m:145 [assert] '__octave_config_info__' undefined
+- miscellaneous/computer.m:148 [error] expected an error but none was raised
+- miscellaneous/computer.m:149 [error] expected an error but none was raised
+- miscellaneous/copyfile.m:181 [test] 'copyfile' undefined
+- miscellaneous/copyfile.m:206 [error] error ''copyfile' undefined' does not match <Invalid call>
+- miscellaneous/copyfile.m:207 [error] error ''copyfile' undefined' does not match <Invalid call>
+- miscellaneous/copyfile.m:208 [error] error ''copyfile' undefined' does not match <F1 must be a string>
+- miscellaneous/copyfile.m:209 [error] error ''copyfile' undefined' does not match <F2 must be a string>
+- miscellaneous/copyfile.m:210 [error] error ''copyfile' undefined' does not match <F2 must be a directory>
+- miscellaneous/copyfile.m:219 [test] 'status' undefined
+- miscellaneous/delete.m:96 [test] delete: argument must be a string
+- miscellaneous/delete.m:109 [error] error 'delete: argument must be a string' does not match <first argument must be a filename>
+- miscellaneous/dir.m:198 [test] 'chdir' undefined
+- miscellaneous/dir.m:234 [test] 'chdir' undefined
+- miscellaneous/dir.m:267 [test] 'dir' undefined
+- miscellaneous/dir.m:282 [error] error ''dir' undefined' does not match <DIRECTORY argument must be a string>
+- miscellaneous/dir.m:283 [warning] 'dir' undefined
+- miscellaneous/dos.m:61 [test] 'ls_command' undefined
+- miscellaneous/dos.m:76 [error] error ''dos' undefined' does not match <Invalid call>
+- miscellaneous/edit.m:582 [test] parse error near line 8, column 11: unexpected 'home'
+- miscellaneous/fieldnames.m:89 [test] fieldnames: Invalid input argument
+- miscellaneous/fieldnames.m:95 [test] 'ftp' undefined
+- miscellaneous/fileattrib.m:176 [test] 'P_tmpdir' undefined
+- miscellaneous/fileattrib.m:200 [error] error ''fileattrib' undefined' does not match <FILE must be a string>
+- miscellaneous/fileparts.m:95 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- miscellaneous/fileparts.m:125 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- miscellaneous/fileparts.m:169 [error] error 'fileparts: argument must be a string' does not match <FILENAME must be a single string>
+- miscellaneous/fileparts.m:170 [error] expected an error but none was raised
+- miscellaneous/fullfile.m:155 [assert] fullfile: argument must be a string
+- miscellaneous/fullfile.m:156 [assert] fullfile: argument must be a string
+- miscellaneous/fullfile.m:160 [assert] fullfile: argument must be a string
+- miscellaneous/fullfile.m:184 [error] error 'fullfile: argument must be a string' does not match <strings or cell strings>
+- miscellaneous/fullfile.m:185 [error] error 'fullfile: argument must be a string' does not match <strings or cell strings>
+- miscellaneous/fullfile.m:186 [error] error 'fullfile: argument must be a string' does not match <same size>
+- miscellaneous/getfield.m:64 [test] getfield: argument must be a string
+- miscellaneous/getfield.m:70 [error] error 'getfield: wrong type argument' does not match <Invalid call>
+- miscellaneous/getfield.m:71 [error] error 'getfield: wrong type argument' does not match <invalid index>
+- miscellaneous/grabcode.m:103 [error] error ''grabcode' undefined' does not match <Invalid call>
+- miscellaneous/inputParser.m:729 [test] 'inputParser' undefined
+- miscellaneous/inputParser.m:739 [test] 'inputParser' undefined
+- miscellaneous/inputParser.m:747 [test] 'inputParser' undefined
+- miscellaneous/inputParser.m:755 [test] 'inputParser' undefined
+- miscellaneous/inputParser.m:764 [test] 'inputParser' undefined
+- miscellaneous/inputParser.m:773 [test] 'inputParser' undefined
+- miscellaneous/inputParser.m:782 [test] 'inputParser' undefined
+- miscellaneous/inputParser.m:789 [error] error ''inputParser' undefined' does not match <not enough input arguments>
+- miscellaneous/inputParser.m:794 [error] error ''inputParser' undefined' does not match <failed validation of >
+- miscellaneous/inputParser.m:799 [error] error ''inputParser' undefined' does not match <is not a declared parameter or switch>
+- miscellaneous/inputParser.m:804 [error] error ''inputParser' undefined' does not match <failed validation of >
+- miscellaneous/inputParser.m:809 [error] error ''inputParser' undefined' does not match <'arg' matches more than one Parameter: 'arg123', 'arg456'>
+- miscellaneous/inputParser.m:817 [error] error ''inputParser' undefined' does not match <'arg7' matches more than one Switch: 'arg789', 'arg790'>
+- miscellaneous/inputParser.m:836 [test] 'inputParser' undefined
+- miscellaneous/inputParser.m:845 [test] 'inputParser' undefined
+- miscellaneous/inputParser.m:853 [test] 'inputParser' undefined
+- miscellaneous/inputParser.m:859 [test] 'inputParser' undefined
+- miscellaneous/inputParser.m:867 [test] 'inputParser' undefined
+- miscellaneous/inputParser.m:887 [test] 'inputParser' undefined
+- miscellaneous/inputParser.m:894 [test] 'inputParser' undefined
+- miscellaneous/inputParser.m:901 [test] 'inputParser' undefined
+- miscellaneous/inputParser.m:909 [test] 'inputParser' undefined
+- miscellaneous/inputParser.m:919 [test] 'inputParser' undefined
+- miscellaneous/inputParser.m:926 [test] 'inputParser' undefined
+- miscellaneous/inputParser.m:937 [test] 'inputParser' undefined
+- miscellaneous/inputParser.m:977 [test] 'inputParser' undefined
+- miscellaneous/inputParser.m:986 [test] 'inputParser' undefined
+- miscellaneous/inputParser.m:994 [test] 'inputParser' undefined
+- miscellaneous/inputParser.m:1003 [test] 'inputParser' undefined
+- miscellaneous/inputParser.m:1013 [error] error ''inputParser' undefined' does not match <failed validation of 'a'.*ischar>
+- miscellaneous/inputParser.m:1018 [test] 'inputParser' undefined
+- miscellaneous/inputParser.m:1027 [test] 'inputParser' undefined
+- miscellaneous/inputParser.m:1037 [test] 'inputParser' undefined
+- miscellaneous/inputParser.m:1047 [test] 'inputParser' undefined
+- miscellaneous/inputParser.m:1056 [test] 'inputParser' undefined
+- miscellaneous/inputParser.m:1063 [test] 'inputParser' undefined
+- miscellaneous/inputParser.m:1075 [test] 'inputParser' undefined
+- miscellaneous/inputParser.m:1083 [test] 'inputParser' undefined
+- miscellaneous/isfile.m:56 [shared] 'which' undefined
+- miscellaneous/isfile.m:59 [assert] assert (cond) failed
+- miscellaneous/isfile.m:61 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- miscellaneous/isfile.m:62 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- miscellaneous/isfile.m:80 [error] expected an error but none was raised
+- miscellaneous/isfile.m:81 [error] expected an error but none was raised
+- miscellaneous/isfolder.m:58 [assert] 'which' undefined
+- miscellaneous/isfolder.m:59 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- miscellaneous/isfolder.m:60 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- miscellaneous/isfolder.m:79 [error] expected an error but none was raised
+- miscellaneous/isfolder.m:80 [error] expected an error but none was raised
+- miscellaneous/ismethod.m:58 [assert] 'ftp' undefined
+- miscellaneous/ismethod.m:59 [assert] 'inputParser' undefined
+- miscellaneous/jupyter_notebook.m:709 [error] error ''jupyter_notebook' undefined' does not match <Invalid call>
+- miscellaneous/jupyter_notebook.m:710 [error] error ''jupyter_notebook' undefined' does not match <NOTEBOOK_FILENAME must be a string>
+- miscellaneous/jupyter_notebook.m:711 [error] error ''jupyter_notebook' undefined' does not match <NOTEBOOK_FILENAME must be a string>
+- miscellaneous/jupyter_notebook.m:712 [error] error ''jupyter_notebook' undefined' does not match <OPTIONS must be a struct>
+- miscellaneous/license.m:152 [assert] 'license' undefined
+- miscellaneous/license.m:153 [assert] 'license' undefined
+- miscellaneous/license.m:156 [test] 'pkg' undefined
+- miscellaneous/license.m:169 [assert] 'license' undefined
+- miscellaneous/license.m:170 [assert] 'license' undefined
+- miscellaneous/license.m:177 [assert] 'license' undefined
+- miscellaneous/license.m:179 [test] 'license' undefined
+- miscellaneous/license.m:186 [error] error ''license' undefined' does not match <TOGGLE must be enable or disable>
+- miscellaneous/list_primes.m:62 [assert] 'list_primes' undefined
+- miscellaneous/list_primes.m:64 [assert] 'list_primes' undefined
+- miscellaneous/list_primes.m:66 [assert] 'list_primes' undefined
+- miscellaneous/list_primes.m:67 [assert] 'list_primes' undefined
+- miscellaneous/list_primes.m:70 [error] error ''list_primes' undefined' does not match <N must be a real scalar>
+- miscellaneous/list_primes.m:71 [error] error ''list_primes' undefined' does not match <N must be a real scalar>
+- miscellaneous/ls.m:133 [test] 'ls' undefined
+- miscellaneous/ls.m:138 [test] 'ls' undefined
+- miscellaneous/ls.m:149 [error] error ''ls' undefined' does not match <all arguments must be character strings>
+- miscellaneous/ls_command.m:63 [test] 'ls_command' undefined
+- miscellaneous/ls_command.m:72 [error] error ''ls_command' undefined' does not match <argument must be a character string>
+- miscellaneous/memoize.m:80 [test] 'memoize' undefined
+- miscellaneous/memoize.m:88 [test] 'memoize' undefined
+- miscellaneous/memoize.m:97 [test] 'memoize' undefined
+- miscellaneous/memoize.m:105 [error] error ''memoize' undefined' does not match <Invalid call>
+- miscellaneous/memoize.m:106 [error] error ''memoize' undefined' does not match <FCN_HANDLE must be a function handle>
+- miscellaneous/menu.m:104 [error] error ''menu' undefined' does not match <Invalid call>
+- miscellaneous/menu.m:105 [error] error ''menu' undefined' does not match <Invalid call>
+- miscellaneous/menu.m:106 [error] error ''menu' undefined' does not match <TITLE must be a string>
+- miscellaneous/menu.m:107 [error] error ''menu' undefined' does not match <All OPTIONS must be strings>
+- miscellaneous/menu.m:108 [error] error ''menu' undefined' does not match <OPTIONS must be string or cell array of strings>
+- miscellaneous/methods.m:132 [test] 'inputParser' undefined
+- miscellaneous/methods.m:140 [assert] methods: invalid class name
+- miscellaneous/methods.m:146 [test] methods: invalid class name
+- miscellaneous/methods.m:152 [test] methods: invalid class name
+- miscellaneous/methods.m:181 [error] error 'methods: invalid class name' does not match <invalid option>
+- miscellaneous/methods.m:182 [error] error 'methods: invalid class name' does not match <class 'foobar' not found>
+- miscellaneous/methods.m:183 [error] error 'methods: argument must be a string' does not match <invalid input argument>
+- miscellaneous/mexext.m:41 [assert] 'mexext' undefined
+- miscellaneous/mkdir.m:106 [test] 'confirm_recursive_rmdir' undefined
+- miscellaneous/mkdir.m:119 [test] assert (cond) failed
+- miscellaneous/movefile.m:199 [test] 'movefile' undefined
+- miscellaneous/movefile.m:226 [error] error ''movefile' undefined' does not match <Invalid call>
+- miscellaneous/movefile.m:227 [error] error ''movefile' undefined' does not match <F1 must be a string>
+- miscellaneous/movefile.m:228 [error] error ''movefile' undefined' does not match <F2 must be a string>
+- miscellaneous/movefile.m:229 [error] error ''movefile' undefined' does not match <F2 must be a directory>
+- miscellaneous/movefile.m:238 [test] 'status' undefined
+- miscellaneous/movefile.m:250 [error] error ''movefile' undefined' does not match <no files to move>
+- miscellaneous/mustBeFinite.m:57 [test] 'mustBeFinite' undefined
+- miscellaneous/mustBeFinite.m:63 [error] error ''mustBeFinite' undefined' does not match <Invalid call>
+- miscellaneous/mustBeFinite.m:64 [error] error ''mustBeFinite' undefined' does not match <found 1 non-finite>
+- miscellaneous/mustBeFinite.m:65 [error] error ''mustBeFinite' undefined' does not match <indexes 4>
+- miscellaneous/mustBeFinite.m:66 [error] error ''mustBeFinite' undefined' does not match <indexes 1>
+- miscellaneous/mustBeFinite.m:67 [error] error ''mustBeFinite' undefined' does not match <indexes 1>
+- miscellaneous/mustBeGreaterThan.m:64 [test] 'mustBeGreaterThan' undefined
+- miscellaneous/mustBeGreaterThan.m:68 [error] error ''mustBeGreaterThan' undefined' does not match <Invalid call>
+- miscellaneous/mustBeGreaterThan.m:69 [error] error ''mustBeGreaterThan' undefined' does not match <Invalid call>
+- miscellaneous/mustBeGreaterThan.m:70 [error] error ''mustBeGreaterThan' undefined' does not match <called with too many inputs>
+- miscellaneous/mustBeGreaterThan.m:71 [error] error ''mustBeGreaterThan' undefined' does not match <input must be greater than 42>
+- miscellaneous/mustBeGreaterThan.m:72 [error] error ''mustBeGreaterThan' undefined' does not match <found 1 elements that were not>
+- miscellaneous/mustBeGreaterThan.m:73 [error] error ''mustBeGreaterThan' undefined' does not match <must be greater than 0>
+- miscellaneous/mustBeGreaterThanOrEqual.m:64 [test] 'mustBeGreaterThanOrEqual' undefined
+- miscellaneous/mustBeGreaterThanOrEqual.m:70 [error] error ''mustBeGreaterThanOrEqual' undefined' does not match <Invalid call>
+- miscellaneous/mustBeGreaterThanOrEqual.m:71 [error] error ''mustBeGreaterThanOrEqual' undefined' does not match <Invalid call>
+- miscellaneous/mustBeGreaterThanOrEqual.m:72 [error] error ''mustBeGreaterThanOrEqual' undefined' does not match <called with too many inputs>
+- miscellaneous/mustBeGreaterThanOrEqual.m:73 [error] error ''mustBeGreaterThanOrEqual' undefined' does not match <must be greater than or equal to 2>
+- miscellaneous/mustBeGreaterThanOrEqual.m:74 [error] error ''mustBeGreaterThanOrEqual' undefined' does not match <must be greater than or equal to 0>
+- miscellaneous/mustBeInteger.m:72 [test] 'mustBeInteger' undefined
+- miscellaneous/mustBeInteger.m:79 [error] error ''mustBeInteger' undefined' does not match <Invalid call>
+- miscellaneous/mustBeInteger.m:80 [error] error ''mustBeInteger' undefined' does not match <it was non-numeric>
+- miscellaneous/mustBeInteger.m:81 [error] error ''mustBeInteger' undefined' does not match <it was complex>
+- miscellaneous/mustBeInteger.m:82 [error] error ''mustBeInteger' undefined' does not match <there were non-finite values>
+- miscellaneous/mustBeInteger.m:83 [error] error ''mustBeInteger' undefined' does not match <there were non-finite values>
+- miscellaneous/mustBeInteger.m:84 [error] error ''mustBeInteger' undefined' does not match <it had fractional values>
+- miscellaneous/mustBeLessThan.m:64 [test] 'mustBeLessThan' undefined
+- miscellaneous/mustBeLessThan.m:70 [error] error ''mustBeLessThan' undefined' does not match <Invalid call>
+- miscellaneous/mustBeLessThan.m:71 [error] error ''mustBeLessThan' undefined' does not match <Invalid call>
+- miscellaneous/mustBeLessThan.m:72 [error] error ''mustBeLessThan' undefined' does not match <called with too many inputs>
+- miscellaneous/mustBeLessThan.m:73 [error] error ''mustBeLessThan' undefined' does not match <must be less than 0>
+- miscellaneous/mustBeLessThan.m:74 [error] error ''mustBeLessThan' undefined' does not match <must be less than 1>
+- miscellaneous/mustBeLessThan.m:75 [error] error ''mustBeLessThan' undefined' does not match <must be less than Inf>
+- miscellaneous/mustBeLessThan.m:76 [error] error ''mustBeLessThan' undefined' does not match <must be less than 42>
+- miscellaneous/mustBeLessThanOrEqual.m:64 [test] 'mustBeLessThanOrEqual' undefined
+- miscellaneous/mustBeLessThanOrEqual.m:73 [error] error ''mustBeLessThanOrEqual' undefined' does not match <Invalid call>
+- miscellaneous/mustBeLessThanOrEqual.m:74 [error] error ''mustBeLessThanOrEqual' undefined' does not match <Invalid call>
+- miscellaneous/mustBeLessThanOrEqual.m:75 [error] error ''mustBeLessThanOrEqual' undefined' does not match <called with too many inputs>
+- miscellaneous/mustBeLessThanOrEqual.m:76 [error] error ''mustBeLessThanOrEqual' undefined' does not match <must be less than or equal to 0>
+- miscellaneous/mustBeMember.m:65 [test] 'mustBeMember' undefined
+- miscellaneous/mustBeMember.m:71 [error] error ''mustBeMember' undefined' does not match <Invalid call>
+- miscellaneous/mustBeMember.m:72 [error] error ''mustBeMember' undefined' does not match <Invalid call>
+- miscellaneous/mustBeMember.m:73 [error] error ''mustBeMember' undefined' does not match <called with too many inputs>
+- miscellaneous/mustBeMember.m:74 [error] error ''mustBeMember' undefined' does not match <found 1 elements>
+- miscellaneous/mustBeMember.m:75 [error] error ''mustBeMember' undefined' does not match <found 1 elements>
+- miscellaneous/mustBeNegative.m:64 [test] 'mustBeNegative' undefined
+- miscellaneous/mustBeNegative.m:69 [error] error ''mustBeNegative' undefined' does not match <Invalid call>
+- miscellaneous/mustBeNegative.m:70 [error] error ''mustBeNegative' undefined' does not match <found 1 elements>
+- miscellaneous/mustBeNegative.m:71 [error] error ''mustBeNegative' undefined' does not match <found 6 elements>
+- miscellaneous/mustBeNonNan.m:58 [test] 'mustBeNonNan' undefined
+- miscellaneous/mustBeNonNan.m:65 [error] error ''mustBeNonNan' undefined' does not match <Invalid call>
+- miscellaneous/mustBeNonNan.m:66 [error] error ''mustBeNonNan' undefined' does not match <must be non-NaN>
+- miscellaneous/mustBeNonNan.m:67 [error] error ''mustBeNonNan' undefined' does not match <input must be non-NaN>
+- miscellaneous/mustBeNonempty.m:54 [test] 'mustBeNonempty' undefined
+- miscellaneous/mustBeNonempty.m:60 [error] error ''mustBeNonempty' undefined' does not match <Invalid call>
+- miscellaneous/mustBeNonempty.m:61 [error] error ''mustBeNonempty' undefined' does not match <input must not be empty>
+- miscellaneous/mustBeNonempty.m:62 [error] error ''mustBeNonempty' undefined' does not match <input must not be empty>
+- miscellaneous/mustBeNonempty.m:63 [error] error ''mustBeNonempty' undefined' does not match <input must not be empty>
+- miscellaneous/mustBeNonnegative.m:64 [test] 'mustBeNonnegative' undefined
+- miscellaneous/mustBeNonnegative.m:72 [error] error ''mustBeNonnegative' undefined' does not match <Invalid call>
+- miscellaneous/mustBeNonnegative.m:73 [error] error ''mustBeNonnegative' undefined' does not match <input must be non-negative>
+- miscellaneous/mustBeNonnegative.m:74 [error] error ''mustBeNonnegative' undefined' does not match <found 1 elements>
+- miscellaneous/mustBeNonnegative.m:75 [error] error ''mustBeNonnegative' undefined' does not match <input must be non-negative>
+- miscellaneous/mustBeNonnegative.m:76 [error] error ''mustBeNonnegative' undefined' does not match <must be non-negative>
+- miscellaneous/mustBeNonpositive.m:64 [test] 'mustBeNonpositive' undefined
+- miscellaneous/mustBeNonpositive.m:70 [error] error ''mustBeNonpositive' undefined' does not match <Invalid call>
+- miscellaneous/mustBeNonpositive.m:71 [error] error ''mustBeNonpositive' undefined' does not match <must be non-positive>
+- miscellaneous/mustBeNonpositive.m:72 [error] error ''mustBeNonpositive' undefined' does not match <found 2 elements>
+- miscellaneous/mustBeNonpositive.m:73 [error] error ''mustBeNonpositive' undefined' does not match <must be non-positive>
+- miscellaneous/mustBeNonsparse.m:54 [test] 'mustBeNonsparse' undefined
+- miscellaneous/mustBeNonsparse.m:60 [error] error ''mustBeNonsparse' undefined' does not match <Invalid call>
+- miscellaneous/mustBeNonsparse.m:61 [error] error ''mustBeNonsparse' undefined' does not match <input must be nonsparse>
+- miscellaneous/mustBeNonzero.m:58 [test] 'mustBeNonzero' undefined
+- miscellaneous/mustBeNonzero.m:67 [error] error ''mustBeNonzero' undefined' does not match <Invalid call>
+- miscellaneous/mustBeNonzero.m:68 [error] error ''mustBeNonzero' undefined' does not match <found 1 elements>
+- miscellaneous/mustBeNonzero.m:69 [error] error ''mustBeNonzero' undefined' does not match <found 2 elements>
+- miscellaneous/mustBeNumeric.m:54 [test] 'mustBeNumeric' undefined
+- miscellaneous/mustBeNumeric.m:60 [error] error ''mustBeNumeric' undefined' does not match <Invalid call>
+- miscellaneous/mustBeNumeric.m:61 [error] error ''mustBeNumeric' undefined' does not match <found a char>
+- miscellaneous/mustBeNumeric.m:62 [error] error ''mustBeNumeric' undefined' does not match <found a logical>
+- miscellaneous/mustBeNumeric.m:63 [error] error ''mustBeNumeric' undefined' does not match <found a struct>
+- miscellaneous/mustBeNumeric.m:64 [error] error ''mustBeNumeric' undefined' does not match <found a cell>
+- miscellaneous/mustBeNumericOrLogical.m:54 [test] 'mustBeNumericOrLogical' undefined
+- miscellaneous/mustBeNumericOrLogical.m:61 [error] error ''mustBeNumericOrLogical' undefined' does not match <Invalid call>
+- miscellaneous/mustBeNumericOrLogical.m:62 [error] error ''mustBeNumericOrLogical' undefined' does not match <found a char>
+- miscellaneous/mustBeNumericOrLogical.m:63 [error] error ''mustBeNumericOrLogical' undefined' does not match <found a struct>
+- miscellaneous/mustBeNumericOrLogical.m:64 [error] error ''mustBeNumericOrLogical' undefined' does not match <found a cell>
+- miscellaneous/mustBePositive.m:64 [test] 'mustBePositive' undefined
+- miscellaneous/mustBePositive.m:70 [error] error ''mustBePositive' undefined' does not match <Invalid call>
+- miscellaneous/mustBePositive.m:71 [error] error ''mustBePositive' undefined' does not match <found 1 elements>
+- miscellaneous/mustBePositive.m:72 [error] error ''mustBePositive' undefined' does not match <found 1 elements>
+- miscellaneous/mustBePositive.m:73 [error] error ''mustBePositive' undefined' does not match <found 2 elements>
+- miscellaneous/mustBePositive.m:74 [error] error ''mustBePositive' undefined' does not match <found 2 elements>
+- miscellaneous/mustBePositive.m:75 [error] error ''mustBePositive' undefined' does not match <found 1 elements>
+- miscellaneous/mustBePositive.m:76 [error] error ''mustBePositive' undefined' does not match <found 1 elements>
+- miscellaneous/mustBeReal.m:54 [test] 'mustBeReal' undefined
+- miscellaneous/mustBeReal.m:62 [error] error ''mustBeReal' undefined' does not match <Invalid call>
+- miscellaneous/mustBeReal.m:63 [error] error ''mustBeReal' undefined' does not match <must be real>
+- miscellaneous/mustBeReal.m:64 [error] error ''mustBeReal' undefined' does not match <input must be real>
+- miscellaneous/namedargs2cell.m:60 [test] 'namedargs2cell' undefined
+- miscellaneous/namedargs2cell.m:67 [error] error ''namedargs2cell' undefined' does not match <Invalid call>
+- miscellaneous/namedargs2cell.m:68 [error] error ''namedargs2cell' undefined' does not match <called with too many inputs>
+- miscellaneous/namedargs2cell.m:69 [error] error ''namedargs2cell' undefined' does not match <S must be a scalar structure>
+- miscellaneous/namedargs2cell.m:70 [error] error ''namedargs2cell' undefined' does not match <S must be a scalar structure>
+- miscellaneous/namelengthmax.m:42 [assert] 'namelengthmax' undefined
+- miscellaneous/nargchk.m:73 [shared] 'resize' undefined
+- miscellaneous/nargchk.m:79 [assert] 'nargchk' undefined
+- miscellaneous/nargchk.m:80 [assert] 'nargchk' undefined
+- miscellaneous/nargchk.m:81 [assert] 'nargchk' undefined
+- miscellaneous/nargchk.m:82 [assert] 'nargchk' undefined
+- miscellaneous/nargchk.m:83 [assert] 'nargchk' undefined
+- miscellaneous/nargchk.m:85 [assert] 'nargchk' undefined
+- miscellaneous/nargchk.m:86 [assert] 'nargchk' undefined
+- miscellaneous/nargchk.m:87 [assert] 'nargchk' undefined
+- miscellaneous/nargchk.m:88 [assert] 'nargchk' undefined
+- miscellaneous/narginchk.m:70 [error] error ''narginchk' undefined' does not match <too many input arguments>
+- miscellaneous/narginchk.m:71 [error] error ''narginchk' undefined' does not match <not enough input arguments>
+- miscellaneous/narginchk.m:73 [test] 'narginchk' undefined
+- miscellaneous/narginchk.m:75 [test] 'narginchk' undefined
+- miscellaneous/nargoutchk.m:112 [shared] 'resize' undefined
+- miscellaneous/nargoutchk.m:118 [assert] 'nargoutchk' undefined
+- miscellaneous/nargoutchk.m:119 [assert] 'nargoutchk' undefined
+- miscellaneous/nargoutchk.m:120 [assert] 'nargoutchk' undefined
+- miscellaneous/nargoutchk.m:121 [assert] 'nargoutchk' undefined
+- miscellaneous/nargoutchk.m:122 [assert] 'nargoutchk' undefined
+- miscellaneous/nargoutchk.m:124 [assert] 'nargoutchk' undefined
+- miscellaneous/nargoutchk.m:125 [assert] 'nargoutchk' undefined
+- miscellaneous/nargoutchk.m:126 [assert] 'nargoutchk' undefined
+- miscellaneous/nargoutchk.m:127 [assert] 'nargoutchk' undefined
+- miscellaneous/news.m:46 [error] error ''news' undefined' does not match <news: PACKAGE must be a string>
+- miscellaneous/news.m:47 [error] error ''news' undefined' does not match <news: package .* is not installed>
+- miscellaneous/nthargout.m:136 [assert] 'ind2sub' undefined
+- miscellaneous/nthargout.m:142 [error] error 'Invalid call to sin' does not match <N .* must be positive integers>
+- miscellaneous/nthargout.m:143 [error] error 'expected a function handle or function name' does not match <N .* must be positive integers>
+- miscellaneous/nthargout.m:144 [error] error 'Invalid call to sin' does not match <N .* must be positive integers>
+- miscellaneous/nthargout.m:145 [error] error 'expected a function handle or function name' does not match <N .* must be positive integers>
+- miscellaneous/nthargout.m:146 [error] error 'Invalid call to nthargout' does not match <too many output arguments: 2>
+- miscellaneous/open.m:134 [error] error ''open' undefined' does not match <Invalid call>
+- miscellaneous/open.m:136 [error] error ''open' undefined' does not match <FILE must be a string>
+- miscellaneous/orderfields.m:169 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- miscellaneous/orderfields.m:175 [test] element number 2 undefined in return list
+- miscellaneous/orderfields.m:182 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- miscellaneous/orderfields.m:188 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- miscellaneous/orderfields.m:207 [test] 'resize' undefined
+- miscellaneous/orderfields.m:217 [error] error 'orderfields: wrong type argument' does not match <S1 must be a struct>
+- miscellaneous/orderfields.m:218 [error] expected an error but none was raised
+- miscellaneous/orderfields.m:222 [error] expected an error but none was raised
+- miscellaneous/orderfields.m:225 [error] expected an error but none was raised
+- miscellaneous/orderfields.m:228 [error] expected an error but none was raised
+- miscellaneous/orderfields.m:231 [error] expected an error but none was raised
+- miscellaneous/parseparams.m:116 [test] 'parseparams' undefined
+- miscellaneous/parseparams.m:120 [test] 'parseparams' undefined
+- miscellaneous/parseparams.m:124 [test] 'parseparams' undefined
+- miscellaneous/parseparams.m:128 [test] 'parseparams' undefined
+- miscellaneous/parseparams.m:132 [test] 'parseparams' undefined
+- miscellaneous/parseparams.m:138 [error] error ''parseparams' undefined' does not match <needs odd number of arguments>
+- miscellaneous/parseparams.m:139 [error] error ''parseparams' undefined' does not match <must be given as name-value pairs>
+- miscellaneous/parseparams.m:140 [error] error ''parseparams' undefined' does not match <unrecognized option: color>
+- miscellaneous/perl.m:67 [error] error ''perl' undefined' does not match <Invalid call>
+- miscellaneous/perl.m:68 [error] error ''perl' undefined' does not match <SCRIPTFILE must be a non-empty string>
+- miscellaneous/perl.m:69 [error] error ''perl' undefined' does not match <SCRIPTFILE must be a non-empty string>
+- miscellaneous/perl.m:70 [error] error ''perl' undefined' does not match <SCRIPTFILE must be a non-empty string>
+- miscellaneous/perl.m:71 [error] error ''perl' undefined' does not match <ARGUMENTS must be strings>
+- miscellaneous/perl.m:72 [error] error ''perl' undefined' does not match <SCRIPTFILE .* not found>
+- miscellaneous/publish.m:1136 [error] error ''publish' undefined' does not match <Invalid call>
+- miscellaneous/publish.m:1137 [error] error ''publish' undefined' does not match <NAME must be a string>
+- miscellaneous/publish.m:1138 [error] error ''publish' undefined' does not match <FILE does not exist>
+- miscellaneous/publish.m:1139 [error] error ''publish' undefined' does not match <only script files can be published>
+- miscellaneous/python.m:90 [error] error ''python' undefined' does not match <Invalid call>
+- miscellaneous/python.m:91 [error] error ''python' undefined' does not match <SCRIPTFILE must be a non-empty string>
+- miscellaneous/python.m:92 [error] error ''python' undefined' does not match <SCRIPTFILE must be a non-empty string>
+- miscellaneous/python.m:93 [error] error ''python' undefined' does not match <SCRIPTFILE must be a non-empty string>
+- miscellaneous/python.m:94 [error] error ''python' undefined' does not match <ARGUMENTS must be strings>
+- miscellaneous/python.m:95 [error] error ''python' undefined' does not match <SCRIPTFILE .* not found>
+- miscellaneous/recycle.m:66 [test] 'recycle' undefined
+- miscellaneous/recycle.m:71 [error] error ''recycle' undefined' does not match <NEW_VAL must be a character string>
+- miscellaneous/recycle.m:72 [error] error ''recycle' undefined' does not match <recycling files is not implemented>
+- miscellaneous/recycle.m:73 [error] error ''recycle' undefined' does not match <invalid value 'foobar'>
+- miscellaneous/run.m:121 [test] 'is_same_file' undefined
+- miscellaneous/setfield.m:144 [test] setfield: argument must be a string
+- miscellaneous/setfield.m:151 [error] error 'setfield: wrong type argument' does not match <Invalid call>
+- miscellaneous/setfield.m:152 [error] error 'setfield: wrong type argument' does not match <Invalid call>
+- miscellaneous/setfield.m:153 [error] error 'setfield: wrong type argument' does not match <invalid index>
+- miscellaneous/substruct.m:83 [test] 'substruct' undefined
+- miscellaneous/substruct.m:94 [error] error ''substruct' undefined' does not match <Invalid call>
+- miscellaneous/substruct.m:95 [error] error ''substruct' undefined' does not match <Invalid call>
+- miscellaneous/substruct.m:96 [error] error ''substruct' undefined' does not match <Invalid call>
+- miscellaneous/swapbytes.m:71 [assert] 'swapbytes' undefined
+- miscellaneous/swapbytes.m:72 [test] 'swapbytes' undefined
+- miscellaneous/swapbytes.m:77 [error] error ''swapbytes' undefined' does not match <Invalid call>
+- miscellaneous/swapbytes.m:78 [error] error ''swapbytes' undefined' does not match <invalid object of class 'cell'>
+- miscellaneous/symvar.m:61 [assert] 'symvar' undefined
+- miscellaneous/symvar.m:62 [assert] 'symvar' undefined
+- miscellaneous/symvar.m:63 [assert] 'symvar' undefined
+- miscellaneous/tar.m:108 [test] 'chdir' undefined
+- miscellaneous/tar.m:157 [error] error ''tar' undefined' does not match <Invalid call>
+- miscellaneous/tar.m:158 [error] error ''tar' undefined' does not match <Invalid call>
+- miscellaneous/tar.m:159 [error] error ''tar' undefined' does not match <TARFILE must be a string>
+- miscellaneous/tar.m:160 [error] error ''tar' undefined' does not match <FILES must be a character array or cellstr>
+- miscellaneous/unix.m:61 [test] 'ls_command' undefined
+- miscellaneous/unix.m:75 [error] error ''unix' undefined' does not match <Invalid call>
+- miscellaneous/unpack.m:398 [error] error ''unpack' undefined' does not match <Invalid call>
+- miscellaneous/unpack.m:399 [error] error ''unpack' undefined' does not match <FILE must be a string or cell array of strings>
+- miscellaneous/unpack.m:400 [error] error ''unpack' undefined' does not match <FILE "_%NOT_A_FILENAME%_" not found>
+- miscellaneous/unpack.m:401 [error] error ''unpack' undefined' does not match <FILE "_%NOT_A_FILENAME%_" not found>
+- miscellaneous/unpack.m:402 [error] error ''unpack' undefined' does not match <FILE "_%NOT_A_FILENAME%_" not found>
+- miscellaneous/unpack.m:403 [error] error ''unpack' undefined' does not match <FILETYPE must be a string>
+- miscellaneous/unpack.m:409 [error] error ''unpack' undefined' does not match <FILETYPE must be given for a directory>
+- miscellaneous/unpack.m:415 [error] error ''unpack' undefined' does not match <FILETYPE must be "gz" for a directory>
+- miscellaneous/validateattributes.m:432 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:433 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:434 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:435 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:436 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:437 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:438 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:439 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:440 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:441 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:442 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:443 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:444 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:445 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:446 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:447 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:448 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:449 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:450 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:451 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:452 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:453 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:454 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:455 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:456 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:457 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:458 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:459 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:460 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:461 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:462 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:463 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:464 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:465 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:466 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:467 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:468 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:469 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:470 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:471 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:472 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:473 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:474 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:475 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:476 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:477 [error] expected an error but none was raised
+- miscellaneous/validateattributes.m:478 [error] expected an error but none was raised
+- miscellaneous/ver.m:119 [test] 'ver' undefined
+- miscellaneous/ver.m:131 [test] 'pkg' undefined
+- miscellaneous/ver.m:142 [test] 'ver' undefined
+- miscellaneous/verLessThan.m:80 [assert] 'verLessThan' undefined
+- miscellaneous/verLessThan.m:81 [assert] 'verLessThan' undefined
+- miscellaneous/verLessThan.m:82 [assert] 'verLessThan' undefined
+- miscellaneous/verLessThan.m:83 [assert] 'verLessThan' undefined
+- miscellaneous/verLessThan.m:86 [error] error ''verLessThan' undefined' does not match <Invalid call>
+- miscellaneous/verLessThan.m:89 [error] error ''verLessThan' undefined' does not match <package "no-such-package" is not installed>
+- miscellaneous/verLessThan.m:91 [error] error ''verLessThan' undefined' does not match <compare_versions: version numbers V1 and V2 must be strings>
+- miscellaneous/version.m:126 [test] element number 2 undefined in return list
+- miscellaneous/version.m:131 [assert] '__octave_config_info__' undefined
+- miscellaneous/version.m:133 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- miscellaneous/version.m:134 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- miscellaneous/version.m:139 [error] expected an error but none was raised
+- miscellaneous/version.m:141 [error] expected an error but none was raised
+- miscellaneous/version.m:142 [error] expected an error but none was raised
+- miscellaneous/what.m:192 [test] 'what' undefined
+- miscellaneous/zip.m:98 [test] value on right hand side of assignment is undefined
+- miscellaneous/zip.m:137 [error] error ''zip' undefined' does not match <Invalid call>
+- miscellaneous/zip.m:138 [error] error ''zip' undefined' does not match <Invalid call>
+- miscellaneous/zip.m:139 [error] error ''zip' undefined' does not match <ZIPFILE must be a string>
+- miscellaneous/zip.m:140 [error] error ''zip' undefined' does not match <FILES must be a character array or cellstr>
+- ode/decic.m:205 [test] 'decic' undefined
+- ode/decic.m:210 [test] 'decic' undefined
+- ode/decic.m:218 [error] error ''decic' undefined' does not match <Invalid call>
+- ode/decic.m:219 [error] error ''decic' undefined' does not match <Invalid call>
+- ode/decic.m:220 [error] error ''decic' undefined' does not match <Invalid call>
+- ode/decic.m:221 [error] error ''decic' undefined' does not match <Invalid call>
+- ode/decic.m:222 [error] error ''decic' undefined' does not match <Invalid call>
+- ode/decic.m:223 [error] error ''decic' undefined' does not match <Invalid call>
+- ode/decic.m:224 [error] error ''decic' undefined' does not match <FCN must be a valid function handle>
+- ode/decic.m:226 [error] error ''decic' undefined' does not match <T0 must be a numeric scalar>
+- ode/decic.m:228 [error] error ''decic' undefined' does not match <length of Y0, FIXED_Y0, YP0, and FIXED_YP0 must be equal>
+- ode/decic.m:230 [error] error ''decic' undefined' does not match <Y0, FIXED_Y0, YP0, and FIXED_YP0 must be numeric vectors>
+- ode/decic.m:232 [error] error ''decic' undefined' does not match <Y0, FIXED_Y0, YP0, and FIXED_YP0 must be numeric vectors>
+- ode/decic.m:234 [error] error ''decic' undefined' does not match <FIXED_Y0 and FIXED_YP0 must be boolean vectors>
+- ode/decic.m:236 [error] error ''decic' undefined' does not match <FIXED_Y0 and FIXED_YP0 must be boolean vectors>
+- ode/decic.m:238 [error] error ''decic' undefined' does not match <cannot fix more than length \(Y0\) components>
+- ode/ode23.m:401 [test] assert (cond) failed
+- ode/ode23.m:462 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       1.8858951968958593E-06        0       Abs err 1.8858951968958593E-06 exceeds tol 1E-06
+- ode/ode23.m:470 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (2)       0.3237325815578595        2       Abs err 1.6762674184421404 exceeds tol 0.1
+- ode/ode23.m:486 [test] assert (cond) failed
+- ode/ode23.m:541 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- ode/ode23.m:551 [error] error 'ode23: wrong type argument 'cell array'' does not match <TRANGE must be a numeric>
+- ode/ode23.m:552 [error] error 'ode23: invalid time span, TRANGE(1) == TRANGE(2)' does not match <TRANGE must be a .* vector>
+- ode/ode23.m:555 [error] error 'ode23: wrong type argument 'cell array'' does not match <INIT must be a numeric>
+- ode/ode23.m:556 [error] error 'ode23: function must return a vector of length 6 (got 2)' does not match <INIT must be a .* vector>
+- ode/ode23.m:557 [error] error 'expected a function handle or function name' does not match <FCN must be a valid function handle>
+- ode/ode23s.m:346 [test] 'ode23s' undefined
+- ode/ode23s.m:350 [test] 'ode23s' undefined
+- ode/ode23s.m:432 [test] 'ode23s' undefined
+- ode/ode23s.m:435 [test] 'ode23s' undefined
+- ode/ode23s.m:443 [test] 'ode23s' undefined
+- ode/ode23s.m:447 [test] 'ode23s' undefined
+- ode/ode23s.m:450 [test] 'ode23s' undefined
+- ode/ode23s.m:454 [test] 'ode23s' undefined
+- ode/ode23s.m:458 [test] 'ode23s' undefined
+- ode/ode23s.m:462 [test] 'ode23s' undefined
+- ode/ode23s.m:466 [test] 'ode23s' undefined
+- ode/ode23s.m:470 [test] 'ode23s' undefined
+- ode/ode23s.m:474 [test] 'ode23s' undefined
+- ode/ode23s.m:478 [test] 'ode23s' undefined
+- ode/ode23s.m:482 [test] 'ode23s' undefined
+- ode/ode23s.m:486 [test] 'ode23s' undefined
+- ode/ode23s.m:492 [test] 'ode23s' undefined
+- ode/ode23s.m:499 [test] 'ode23s' undefined
+- ode/ode23s.m:504 [test] 'ode23s' undefined
+- ode/ode23s.m:508 [test] 'ode23s' undefined
+- ode/ode23s.m:512 [test] 'ode23s' undefined
+- ode/ode23s.m:516 [test] 'ode23s' undefined
+- ode/ode23s.m:520 [test] 'ode23s' undefined
+- ode/ode23s.m:524 [test] 'ode23s' undefined
+- ode/ode23s.m:550 [test] 'ode23s' undefined
+- ode/ode23s.m:557 [error] error ''ode23s' undefined' does not match <Invalid call>
+- ode/ode23s.m:558 [error] error ''ode23s' undefined' does not match <Invalid call>
+- ode/ode23s.m:559 [error] error ''ode23s' undefined' does not match <Invalid call>
+- ode/ode23s.m:560 [error] error ''ode23s' undefined' does not match <TRANGE must be a numeric>
+- ode/ode23s.m:561 [error] error ''ode23s' undefined' does not match <TRANGE must be a .* vector>
+- ode/ode23s.m:562 [error] error ''ode23s' undefined' does not match <TRANGE must contain at least 2 elements>
+- ode/ode23s.m:563 [error] error ''ode23s' undefined' does not match <invalid time span>
+- ode/ode23s.m:564 [error] error ''ode23s' undefined' does not match <INIT must be a numeric>
+- ode/ode23s.m:565 [error] error ''ode23s' undefined' does not match <INIT must be a .* vector>
+- ode/ode23s.m:566 [error] error ''ode23s' undefined' does not match <FCN must be a valid function handle>
+- ode/ode45.m:403 [test] assert (cond) failed
+- ode/ode45.m:481 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (2)       0.32327536496080506        2       Abs err 1.6767246350391949 exceeds tol 0.5
+- ode/ode45.m:497 [test] assert (cond) failed
+- ode/ode45.m:510 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (2)       2.4929810584549656        2.49611       Abs err 0.0031289415450341806 exceeds tol 0.002
+- ode/ode45.m:515 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (2)       2.4929810584549656        2.49611       Abs err 0.0031289415450341806 exceeds tol 0.002
+- ode/ode45.m:553 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- ode/ode45.m:562 [error] error 'ode45: wrong type argument 'cell array'' does not match <TRANGE must be a numeric>
+- ode/ode45.m:563 [error] error 'ode45: invalid time span, TRANGE(1) == TRANGE(2)' does not match <TRANGE must be a .* vector>
+- ode/ode45.m:566 [error] error 'ode45: wrong type argument 'cell array'' does not match <INIT must be a numeric>
+- ode/ode45.m:567 [error] error 'ode45: function must return a vector of length 6 (got 2)' does not match <INIT must be a .* vector>
+- ode/ode45.m:568 [error] error 'expected a function handle or function name' does not match <FCN must be a valid function handle>
+- ode/odeget.m:88 [error] error 'odeget: ODE_OPT must be a valid ODE_OPT structure' does not match <Invalid call>
+- ode/odeget.m:91 [error] expected an error but none was raised
+- ode/odeset.m:283 [error] error 'odeset: FIELD/VALUE arguments must occur in pairs' does not match <argument 'opt1' is not a declared parameter>
+- ode/odeset.m:285 [error] error 'odeset: FIELD/VALUE arguments must occur in pairs' does not match <argument 'opt1' is not a declared parameter>
+- ode/odeset.m:287 [error] expected an error but none was raised
+- optimization/fminbnd.m:341 [shared] 'optimset' undefined
+- optimization/fminbnd.m:343 [assert] 'fminbnd' undefined
+- optimization/fminbnd.m:344 [assert] 'fminbnd' undefined
+- optimization/fminbnd.m:345 [assert] 'fminbnd' undefined
+- optimization/fminbnd.m:346 [assert] 'fminbnd' undefined
+- optimization/fminbnd.m:347 [assert] 'fminbnd' undefined
+- optimization/fminbnd.m:348 [assert] 'fminbnd' undefined
+- optimization/fminbnd.m:351 [error] error ''fminbnd' undefined' does not match <Invalid call>
+- optimization/fminbnd.m:352 [error] error ''fminbnd' undefined' does not match <A must be a finite floating point scalar>
+- optimization/fminbnd.m:353 [error] error ''fminbnd' undefined' does not match <A must be a finite floating point scalar>
+- optimization/fminbnd.m:354 [error] error ''fminbnd' undefined' does not match <A must be a finite floating point scalar>
+- optimization/fminbnd.m:355 [error] error ''fminbnd' undefined' does not match <B must be a finite floating point scalar>
+- optimization/fminbnd.m:356 [error] error ''fminbnd' undefined' does not match <B must be a finite floating point scalar>
+- optimization/fminbnd.m:357 [error] error ''fminbnd' undefined' does not match <B must be a finite floating point scalar>
+- optimization/fminbnd.m:358 [error] error ''fminbnd' undefined' does not match <lower bound cannot be greater>
+- optimization/fminsearch.m:543 [assert] 'optimset' undefined
+- optimization/fminsearch.m:548 [test] 'optimset' undefined
+- optimization/fminsearch.m:554 [test] 'optimset' undefined
+- optimization/fminsearch.m:565 [test] 'fminsearch' undefined
+- optimization/fminsearch.m:570 [test] 'optimset' undefined
+- optimization/fminsearch.m:585 [error] error ''optimset' undefined' does not match <non-real value encountered>
+- optimization/fminsearch.m:587 [error] error ''optimset' undefined' does not match <NaN value encountered>
+- optimization/fminsearch.m:589 [error] error ''optimset' undefined' does not match <Inf value encountered>
+- optimization/fminsearch.m:593 [error] error ''fminsearch' undefined' does not match <Invalid call>
+- optimization/fminsearch.m:594 [error] error ''fminsearch' undefined' does not match <Invalid call>
+- optimization/fminsearch.m:595 [error] error ''fminsearch' undefined' does not match <PROBLEM must be a structure>
+- optimization/fminsearch.m:596 [test] 'fail' undefined
+- optimization/fminsearch.m:603 [test] 'fail' undefined
+- optimization/fminunc.m:459 [test] 'fminunc' undefined
+- optimization/fminunc.m:465 [test] 'fminunc' undefined
+- optimization/fminunc.m:473 [assert] 'optimset' undefined
+- optimization/fminunc.m:474 [error] error ''optimset' undefined' does not match <non-real value>
+- optimization/fminunc.m:475 [error] error ''optimset' undefined' does not match <NaN value>
+- optimization/fminunc.m:476 [error] error ''optimset' undefined' does not match <Inf value>
+- optimization/fsolve.m:594 [test] 'fsolve' undefined
+- optimization/fsolve.m:615 [test] 'fsolve' undefined
+- optimization/fsolve.m:634 [test] 'fsolve' undefined
+- optimization/fsolve.m:653 [test] 'optimset' undefined
+- optimization/fsolve.m:664 [test] 'fsolve' undefined
+- optimization/fsolve.m:684 [test] 'optimset' undefined
+- optimization/fsolve.m:693 [test] 'fsolve' undefined
+- optimization/fsolve.m:704 [test] 'fsolve' undefined
+- optimization/fzero.m:537 [shared] 'optimset' undefined
+- optimization/fzero.m:539 [assert] 'fzero' undefined
+- optimization/fzero.m:540 [assert] 'fzero' undefined
+- optimization/fzero.m:542 [assert] 'fzero' undefined
+- optimization/fzero.m:543 [assert] 'fzero' undefined
+- optimization/fzero.m:546 [shared] 'optimset' undefined
+- optimization/fzero.m:548 [test] 'fzero' undefined
+- optimization/fzero.m:553 [test] 'optimset' undefined
+- optimization/fzero.m:572 [test] 'optimset' undefined
+- optimization/fzero.m:580 [test] 'optimset' undefined
+- optimization/fzero.m:587 [test] 'fzero' undefined
+- optimization/fzero.m:592 [test] 'fzero' undefined
+- optimization/fzero.m:598 [error] error ''fzero' undefined' does not match <Invalid call>
+- optimization/fzero.m:599 [error] error ''fzero' undefined' does not match <Invalid call>
+- optimization/fzero.m:600 [error] error ''fzero' undefined' does not match <function must be real>
+- optimization/fzero.m:601 [error] error ''fzero' undefined' does not match <function must be real>
+- optimization/fzero.m:602 [error] error ''fzero' undefined' does not match <function must be .* finite>
+- optimization/fzero.m:603 [error] error ''fzero' undefined' does not match <function must be .* finite>
+- optimization/fzero.m:604 [error] error ''fzero' undefined' does not match <not a valid initial bracketing>
+- optimization/glpk.m:687 [error] error ''glpk' undefined' does not match <C .* finite values>
+- optimization/glpk.m:688 [error] error ''glpk' undefined' does not match <A must be finite>
+- optimization/glpk.m:689 [error] error ''glpk' undefined' does not match <B must be finite>
+- optimization/glpk.m:690 [error] error ''glpk' undefined' does not match <LB must be a real-valued>
+- optimization/glpk.m:691 [error] error ''glpk' undefined' does not match <UB must be a real-valued>
+- optimization/glpk.m:692 [error] error ''glpk' undefined' does not match <SENSE must be .* integer>
+- optimization/humps.m:81 [assert] 'humps' undefined
+- optimization/humps.m:82 [assert] 'humps' undefined
+- optimization/humps.m:83 [assert] 'humps' undefined
+- optimization/humps.m:84 [assert] 'humps' undefined
+- optimization/humps.m:90 [assert] 'humps' undefined
+- optimization/humps.m:91 [assert] 'humps' undefined
+- optimization/humps.m:92 [assert] 'humps' undefined
+- optimization/humps.m:95 [assert] 'humps' undefined
+- optimization/humps.m:99 [assert] 'humps' undefined
+- optimization/humps.m:100 [assert] 'humps' undefined
+- optimization/lsqnonneg.m:231 [test] 'lsqnonneg' undefined
+- optimization/lsqnonneg.m:236 [test] 'lsqnonneg' undefined
+- optimization/lsqnonneg.m:244 [test] 'lsqnonneg' undefined
+- optimization/lsqnonneg.m:252 [test] 'lsqnonneg' undefined
+- optimization/lsqnonneg.m:260 [test] 'lsqnonneg' undefined
+- optimization/lsqnonneg.m:268 [test] 'lsqnonneg' undefined
+- optimization/lsqnonneg.m:277 [error] error ''lsqnonneg' undefined' does not match <Invalid call>
+- optimization/lsqnonneg.m:278 [error] error ''lsqnonneg' undefined' does not match <Invalid call>
+- optimization/lsqnonneg.m:279 [error] error ''lsqnonneg' undefined' does not match <C .* must be numeric matrices>
+- optimization/lsqnonneg.m:280 [error] error ''lsqnonneg' undefined' does not match <C .* must be numeric matrices>
+- optimization/lsqnonneg.m:281 [error] error ''lsqnonneg' undefined' does not match <D must be numeric matrices>
+- optimization/lsqnonneg.m:282 [error] error ''lsqnonneg' undefined' does not match <D must be numeric matrices>
+- optimization/lsqnonneg.m:283 [error] error ''lsqnonneg' undefined' does not match <OPTIONS must be a struct>
+- optimization/optimget.m:85 [shared] 'optimset' undefined
+- optimization/optimget.m:87 [assert] 'optimget' undefined
+- optimization/optimget.m:88 [assert] 'optimget' undefined
+- optimization/optimget.m:89 [assert] 'optimget' undefined
+- optimization/optimget.m:90 [assert] 'optimget' undefined
+- optimization/optimget.m:91 [assert] 'optimget' undefined
+- optimization/optimget.m:94 [error] error ''optimget' undefined' does not match <Invalid call>
+- optimization/optimget.m:95 [error] error ''optimget' undefined' does not match <Invalid call>
+- optimization/optimget.m:98 [warning] 'optimget' undefined
+- optimization/optimget.m:99 [error] error ''optimget' undefined' does not match <ambiguous option: 'Max'>
+- optimization/optimset.m:229 [assert] 'optimset' undefined
+- optimization/optimset.m:230 [assert] 'optimset' undefined
+- optimization/optimset.m:231 [assert] 'optimset' undefined
+- optimization/optimset.m:232 [test] 'optimset' undefined
+- optimization/optimset.m:242 [test] 'optimset' undefined
+- optimization/optimset.m:248 [error] error ''optimset' undefined' does not match <no defaults for function>
+- optimization/optimset.m:249 [warning] 'optimset' undefined
+- optimization/optimset.m:250 [error] error ''optimset' undefined' does not match <ambiguous option: 'Max'>
+- optimization/pqpnonneg.m:235 [test] 'pqpnonneg' undefined
+- optimization/pqpnonneg.m:241 [test] 'pqpnonneg' undefined
+- optimization/pqpnonneg.m:247 [test] 'pqpnonneg' undefined
+- optimization/pqpnonneg.m:254 [test] 'pqpnonneg' undefined
+- optimization/pqpnonneg.m:261 [test] 'pqpnonneg' undefined
+- optimization/pqpnonneg.m:268 [test] 'pqpnonneg' undefined
+- optimization/pqpnonneg.m:276 [error] error ''pqpnonneg' undefined' does not match <Invalid call>
+- optimization/pqpnonneg.m:277 [error] error ''pqpnonneg' undefined' does not match <Invalid call>
+- optimization/pqpnonneg.m:278 [error] error ''pqpnonneg' undefined' does not match <C .* must be numeric matrices>
+- optimization/pqpnonneg.m:279 [error] error ''pqpnonneg' undefined' does not match <C .* must be numeric matrices>
+- optimization/pqpnonneg.m:280 [error] error ''pqpnonneg' undefined' does not match <D must be numeric matrices>
+- optimization/pqpnonneg.m:281 [error] error ''pqpnonneg' undefined' does not match <D must be numeric matrices>
+- optimization/pqpnonneg.m:282 [error] error ''pqpnonneg' undefined' does not match <C must be a square matrix>
+- optimization/pqpnonneg.m:283 [error] error ''pqpnonneg' undefined' does not match <OPTIONS must be a struct>
+- optimization/qp.m:478 [test] 'qp' undefined
+- optimization/qp.m:485 [test] 'qp' undefined
+- optimization/sqp.m:781 [test] 'sqp' undefined
+- optimization/sqp.m:799 [error] error ''sqp' undefined' does not match <Invalid call>
+- optimization/sqp.m:800 [error] error ''sqp' undefined' does not match <Invalid call>
+- optimization/sqp.m:801 [error] error ''sqp' undefined' does not match <Invalid call>
+- path/import.m:68 [error] error ''import' undefined' does not match <not yet implemented>
+- path/matlabroot.m:42 [assert] 'matlabroot' undefined
+- path/pathdef.m:100 [test] 'canonicalize_file_name' undefined
+- path/pathdef.m:119 [test] 'canonicalize_file_name' undefined
+- path/savepath.m:211 [test] 'confirm_recursive_rmdir' undefined
+- plot/appearance/annotation.m:1479 [test] 'axes' undefined
+- plot/appearance/annotation.m:1495 [test] 'findobj' undefined
+- plot/appearance/annotation.m:1511 [test] 'findobj' undefined
+- plot/appearance/annotation.m:1529 [test] 'axes' undefined
+- plot/appearance/annotation.m:1552 [test] set: unknown property 'units' for annotation object
+- plot/appearance/annotation.m:1569 [test] 'ancestor' undefined
+- plot/appearance/annotation.m:1583 [error] error 'annotation: wrong type argument 'cell array'' does not match <Invalid call to annotation>
+- plot/appearance/annotation.m:1584 [error] error 'annotation: wrong type argument 'cell array'' does not match <X and Y must be 2-element vectors>
+- plot/appearance/annotation.m:1585 [error] error 'annotation: wrong type argument 'cell array'' does not match <X and Y must be 2-element vectors>
+- plot/appearance/annotation.m:1587 [error] expected an error but none was raised
+- plot/appearance/annotation.m:1588 [error] error 'annotation: X and Y must be 2-element vectors' does not match <Invalid call to annotation>
+- plot/appearance/annotation.m:1589 [error] error 'annotation: X and Y must be 2-element vectors' does not match <POS must be a 4-element vector>
+- plot/appearance/annotation.m:1590 [error] error 'annotation: X and Y must be 2-element vectors' does not match <POS must be a 4-element vector>
+- plot/appearance/annotation.m:1591 [error] error 'annotation: unknown annotation type 'foo'' does not match <unknown annotation TYPE foo>
+- plot/appearance/annotation.m:1592 [warning] expected a warning but none was issued
+- plot/appearance/annotation.m:1599 [error] error 'annotation: unknown annotation type 'foo'' does not match <unknown annotation TYPE foo>
+- plot/appearance/axis.m:607 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- plot/appearance/axis.m:621 [test] peaks: X and Y must be the same size
+- plot/appearance/axis.m:647 [error] expected an error but none was raised
+- plot/appearance/axis.m:655 [error] expected an error but none was raised
+- plot/appearance/axis.m:663 [error] error 'axis: argument must be a string' does not match <expecting no args, or a numeric vector with .* elements>
+- plot/appearance/camlookat.m:174 [test] 'camlookat' undefined
+- plot/appearance/camlookat.m:178 [test] 'sphere' undefined
+- plot/appearance/camlookat.m:189 [test] 'sphere' undefined
+- plot/appearance/camlookat.m:215 [test] 'sphere' undefined
+- plot/appearance/camlookat.m:231 [test] 'sphere' undefined
+- plot/appearance/camlookat.m:260 [test] 'sphere' undefined
+- plot/appearance/camlookat.m:284 [test] 'sphere' undefined
+- plot/appearance/camlookat.m:312 [error] error ''camlookat' undefined' does not match <called with too many inputs>
+- plot/appearance/camlookat.m:313 [error] error ''camlookat' undefined' does not match <must be graphic handles>
+- plot/appearance/camlookat.m:314 [error] error ''sphere' undefined' does not match <children of the same axes>
+- plot/appearance/camorbit.m:202 [test] 'sphere' undefined
+- plot/appearance/camorbit.m:216 [test] 'sphere' undefined
+- plot/appearance/camorbit.m:232 [test] 'sphere' undefined
+- plot/appearance/camorbit.m:248 [test] 'sphere' undefined
+- plot/appearance/camorbit.m:268 [test] 'sphere' undefined
+- plot/appearance/camorbit.m:285 [error] error ''camorbit' undefined' does not match <numeric scalars>
+- plot/appearance/camorbit.m:286 [error] error ''camorbit' undefined' does not match <Invalid call>
+- plot/appearance/camorbit.m:287 [error] error ''camorbit' undefined' does not match <DIR must be>
+- plot/appearance/camorbit.m:288 [error] error ''camorbit' undefined' does not match <DIR must be>
+- plot/appearance/camorbit.m:289 [error] error ''camorbit' undefined' does not match <DIR can not be>
+- plot/appearance/camorbit.m:290 [error] error ''camorbit' undefined' does not match <COORSYS must be>
+- plot/appearance/campos.m:129 [test] delete: argument must be a string
+- plot/appearance/campos.m:145 [test] delete: argument must be a string
+- plot/appearance/campos.m:165 [test] delete: argument must be a string
+- plot/appearance/campos.m:184 [error] error ''campos' undefined' does not match <Invalid call>
+- plot/appearance/campos.m:185 [error] error 'delete: argument must be a string' does not match <invalid value>
+- plot/appearance/camroll.m:113 [test] 'sphere' undefined
+- plot/appearance/camroll.m:126 [test] 'axes' undefined
+- plot/appearance/camroll.m:153 [test] 'sphere' undefined
+- plot/appearance/camroll.m:172 [error] error ''camroll' undefined' does not match <Invalid call>
+- plot/appearance/camroll.m:173 [error] error ''camroll' undefined' does not match <Invalid call>
+- plot/appearance/camroll.m:174 [error] error ''camroll' undefined' does not match <Invalid call>
+- plot/appearance/camtarget.m:141 [test] delete: argument must be a string
+- plot/appearance/camtarget.m:156 [test] delete: argument must be a string
+- plot/appearance/camtarget.m:176 [test] delete: argument must be a string
+- plot/appearance/camtarget.m:195 [error] error ''camtarget' undefined' does not match <Invalid>
+- plot/appearance/camtarget.m:196 [error] error 'delete: argument must be a string' does not match <invalid value>
+- plot/appearance/camup.m:137 [test] 'sphere' undefined
+- plot/appearance/camup.m:152 [test] 'sphere' undefined
+- plot/appearance/camup.m:172 [test] 'sphere' undefined
+- plot/appearance/camup.m:191 [error] error ''camup' undefined' does not match <Invalid call>
+- plot/appearance/camup.m:192 [error] error 'delete: argument must be a string' does not match <invalid value>
+- plot/appearance/camva.m:120 [test] 'sphere' undefined
+- plot/appearance/camva.m:135 [test] 'sphere' undefined
+- plot/appearance/camva.m:155 [test] 'sphere' undefined
+- plot/appearance/camva.m:174 [error] error ''camva' undefined' does not match <Invalid call>
+- plot/appearance/camva.m:175 [error] error 'delete: argument must be a string' does not match <invalid value>
+- plot/appearance/camzoom.m:100 [test] 'sphere' undefined
+- plot/appearance/camzoom.m:114 [test] 'sphere' undefined
+- plot/appearance/camzoom.m:129 [test] 'campos' undefined
+- plot/appearance/camzoom.m:147 [test] 'sphere' undefined
+- plot/appearance/camzoom.m:163 [error] error ''camzoom' undefined' does not match <Invalid call>
+- plot/appearance/camzoom.m:164 [error] error ''camzoom' undefined' does not match <Invalid call>
+- plot/appearance/camzoom.m:165 [error] error ''camzoom' undefined' does not match <Invalid call>
+- plot/appearance/clim.m:104 [test] 'clim' undefined
+- plot/appearance/clim.m:121 [test] 'fail' undefined
+- plot/appearance/datetick.m:101 [test] 'axes' undefined
+- plot/appearance/grid.m:205 [test] 'axes' undefined
+- plot/appearance/grid.m:264 [test] 'axes' undefined
+- plot/appearance/legend.m:2183 [test] 'axes' undefined
+- plot/appearance/legend.m:2197 [test] 'axes' undefined
+- plot/appearance/legend.m:2212 [test] 'axes' undefined
+- plot/appearance/legend.m:2227 [test] 'axes' undefined
+- plot/appearance/legend.m:2242 [test] 'axes' undefined
+- plot/appearance/lighting.m:184 [test] 'axes' undefined
+- plot/appearance/lighting.m:229 [error] expected an error but none was raised
+- plot/appearance/lighting.m:230 [error] error 'lighting: argument must be a string' does not match <MODE must be a string>
+- plot/appearance/lighting.m:231 [error] error 'lighting: argument must be a string' does not match <MODE must be a string>
+- plot/appearance/lighting.m:232 [error] error 'lighting: invalid lighting mode 'foo'' does not match <Invalid MODE "foo">
+- plot/appearance/lighting.m:233 [error] expected an error but none was raised
+- plot/appearance/material.m:227 [test] 'patch' undefined
+- plot/appearance/material.m:301 [test] value on right hand side of assignment is undefined
+- plot/appearance/material.m:307 [test] value on right hand side of assignment is undefined
+- plot/appearance/material.m:312 [error] expected an error but none was raised
+- plot/appearance/material.m:313 [error] expected an error but none was raised
+- plot/appearance/material.m:314 [error] error 'value on right hand side of assignment is undefined' does not match <Invalid call to material>
+- plot/appearance/material.m:315 [error] error 'value on right hand side of assignment is undefined' does not match <Invalid call to material>
+- plot/appearance/material.m:316 [error] error 'value on right hand side of assignment is undefined' does not match <Invalid call to material>
+- plot/appearance/material.m:317 [error] error 'value on right hand side of assignment is undefined' does not match <Invalid call to material>
+- plot/appearance/material.m:318 [error] error 'value on right hand side of assignment is undefined' does not match <called with too many outputs>
+- plot/appearance/material.m:319 [error] expected an error but none was raised
+- plot/appearance/material.m:320 [error] expected an error but none was raised
+- plot/appearance/material.m:321 [error] expected an error but none was raised
+- plot/appearance/material.m:322 [error] expected an error but none was raised
+- plot/appearance/material.m:323 [error] expected an error but none was raised
+- plot/appearance/material.m:325 [error] expected an error but none was raised
+- plot/appearance/orient.m:125 [test] parse error near line 12, column 19: unexpected 'portrait'
+- plot/appearance/orient.m:166 [error] error ''orient' undefined' does not match <Invalid call>
+- plot/appearance/orient.m:167 [error] error ''orient' undefined' does not match <Invalid call>
+- plot/appearance/orient.m:168 [error] error ''orient' undefined' does not match <unknown ORIENTATION 'foobar'>
+- plot/appearance/private/__gnuplot_legend__.m:1800 [test] legend: argument must be a string
+- plot/appearance/private/__gnuplot_legend__.m:1816 [test] 'plotyy' undefined
+- plot/appearance/private/__gnuplot_legend__.m:1833 [test] 'fail' undefined
+- plot/appearance/private/__gnuplot_legend__.m:1853 [test] 'fail' undefined
+- plot/appearance/rticklabels.m:171 [test] 'polar' undefined
+- plot/appearance/rticklabels.m:210 [test] 'fail' undefined
+- plot/appearance/rticklabels.m:222 [test] 'fail' undefined
+- plot/appearance/rticklabels.m:237 [test] 'fail' undefined
+- plot/appearance/rticks.m:119 [test] 'polar' undefined
+- plot/appearance/rticks.m:134 [test] 'polar' undefined
+- plot/appearance/shading.m:265 [test] 'axes' undefined
+- plot/appearance/shading.m:312 [error] expected an error but none was raised
+- plot/appearance/shading.m:313 [error] error 'shading: argument must be a string' does not match <MODE must be a valid string>
+- plot/appearance/shading.m:314 [error] error 'shading: argument must be a string' does not match <MODE must be a valid string>
+- plot/appearance/shading.m:315 [error] error 'shading: unknown argument 'foo'' does not match <Invalid MODE "foo">
+- plot/appearance/text.m:346 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- plot/appearance/text.m:390 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- plot/appearance/text.m:431 [test] text: invalid number of PROPERTY/VALUE arguments
+- plot/appearance/text.m:441 [test] Invalid call to text
+- plot/appearance/text.m:450 [test] text: argument must be a string
+- plot/appearance/text.m:460 [error] expected an error but none was raised
+- plot/appearance/text.m:461 [error] expected an error but none was raised
+- plot/appearance/text.m:462 [error] error 'text: invalid number of PROPERTY/VALUE arguments' does not match <Invalid call to text>
+- plot/appearance/text.m:463 [error] expected an error but none was raised
+- plot/appearance/text.m:464 [error] expected an error but none was raised
+- plot/appearance/text.m:465 [error] expected an error but none was raised
+- plot/appearance/thetaticklabels.m:163 [test] 'polar' undefined
+- plot/appearance/thetaticklabels.m:202 [test] 'fail' undefined
+- plot/appearance/thetaticklabels.m:214 [test] 'fail' undefined
+- plot/appearance/thetaticklabels.m:229 [test] 'fail' undefined
+- plot/appearance/thetaticks.m:123 [test] 'polar' undefined
+- plot/appearance/thetaticks.m:138 [test] 'polar' undefined
+- plot/appearance/title.m:86 [test] get: invalid graphics handle
+- plot/appearance/title.m:96 [test] get: invalid graphics handle
+- plot/appearance/title.m:106 [test] set: unknown property 'titlefontsizemultiplier' for axes object
+- plot/appearance/title.m:117 [test] get: invalid graphics handle
+- plot/appearance/title.m:129 [test] value on right hand side of assignment is undefined
+- plot/appearance/title.m:141 [test] value on right hand side of assignment is undefined
+- plot/appearance/view.m:124 [test] view: VIEW must be [AZ EL], 2, or 3
+- plot/appearance/view.m:140 [test] Invalid call to line
+- plot/appearance/view.m:153 [test] view: VIEW must be [AZ EL], 2, or 3
+- plot/appearance/view.m:164 [test] view: VIEW must be [AZ EL], 2, or 3
+- plot/appearance/view.m:193 [test] view: VIEW must be [AZ EL], 2, or 3
+- plot/appearance/view.m:218 [error] expected an error but none was raised
+- plot/appearance/view.m:219 [error] error 'view: VIEW must be [AZ EL], 2, or 3' does not match <cannot simultaneously get and set>
+- plot/appearance/whitebg.m:234 [test] get: unknown root property
+- plot/appearance/xlabel.m:70 [test] value on right hand side of assignment is undefined
+- plot/appearance/xlabel.m:83 [test] set: unknown property 'labelfontsizemultiplier' for axes object
+- plot/appearance/xlim.m:122 [test] indexing produces no results / value undefined
+- plot/appearance/xlim.m:135 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (2)       1.2000000000000002        1.4       Abs err 0.19999999999999973 exceeds tol 2.220446049250313E-16
+- plot/appearance/xlim.m:146 [test] 'fail' undefined
+- plot/appearance/xtickangle.m:82 [test] 'axes' undefined
+- plot/appearance/xtickangle.m:98 [error] error ''xtickangle' undefined' does not match <HAX must be a handle to an axes object>
+- plot/appearance/xtickangle.m:99 [error] error ''xtickangle' undefined' does not match <ANGLE must be .* scalar>
+- plot/appearance/xtickangle.m:100 [error] error ''xtickangle' undefined' does not match <ANGLE must be .* numeric>
+- plot/appearance/xtickangle.m:101 [error] error ''xtickangle' undefined' does not match <ANGLE must be .* finite>
+- plot/appearance/xtickangle.m:102 [error] error ''xtickangle' undefined' does not match <called with output query and input set value>
+- plot/appearance/xticklabels.m:145 [test] set: unknown property 'xticklabelmode' for axes object
+- plot/appearance/xticklabels.m:168 [test] 'fail' undefined
+- plot/appearance/xticks.m:121 [test] set: unknown property 'xtickmode' for axes object
+- plot/appearance/xticks.m:143 [test] 'fail' undefined
+- plot/appearance/ylabel.m:72 [test] value on right hand side of assignment is undefined
+- plot/appearance/ylabel.m:85 [test] set: unknown property 'labelfontsizemultiplier' for axes object
+- plot/appearance/ylim.m:122 [test] indexing produces no results / value undefined
+- plot/appearance/ylim.m:136 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (2)       1.2000000000000002        1.4       Abs err 0.19999999999999973 exceeds tol 2.220446049250313E-16
+- plot/appearance/ytickangle.m:82 [test] 'axes' undefined
+- plot/appearance/ytickangle.m:98 [error] error ''ytickangle' undefined' does not match <HAX must be a handle to an axes object>
+- plot/appearance/ytickangle.m:99 [error] error ''ytickangle' undefined' does not match <ANGLE must be .* scalar>
+- plot/appearance/ytickangle.m:100 [error] error ''ytickangle' undefined' does not match <ANGLE must be .* numeric>
+- plot/appearance/ytickangle.m:101 [error] error ''ytickangle' undefined' does not match <ANGLE must be .* finite>
+- plot/appearance/ytickangle.m:102 [error] error ''ytickangle' undefined' does not match <called with output query and input set value>
+- plot/appearance/yticklabels.m:145 [test] set: unknown property 'yticklabelmode' for axes object
+- plot/appearance/yticklabels.m:168 [test] 'fail' undefined
+- plot/appearance/yticks.m:123 [test] set: unknown property 'ytickmode' for axes object
+- plot/appearance/yticks.m:145 [test] 'fail' undefined
+- plot/appearance/zlabel.m:70 [test] 'axes' undefined
+- plot/appearance/zlabel.m:89 [test] set: unknown property 'labelfontsizemultiplier' for axes object
+- plot/appearance/zlim.m:122 [test] indexing produces no results / value undefined
+- plot/appearance/zlim.m:136 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (2)       1.2000000000000002        1.4       Abs err 0.19999999999999973 exceeds tol 2.220446049250313E-16
+- plot/appearance/ztickangle.m:82 [test] 'axes' undefined
+- plot/appearance/ztickangle.m:98 [error] error ''ztickangle' undefined' does not match <HAX must be a handle to an axes object>
+- plot/appearance/ztickangle.m:99 [error] error ''ztickangle' undefined' does not match <ANGLE must be .* scalar>
+- plot/appearance/ztickangle.m:100 [error] error ''ztickangle' undefined' does not match <ANGLE must be .* numeric>
+- plot/appearance/ztickangle.m:101 [error] error ''ztickangle' undefined' does not match <ANGLE must be .* finite>
+- plot/appearance/ztickangle.m:102 [error] error ''ztickangle' undefined' does not match <called with output query and input set value>
+- plot/appearance/zticklabels.m:145 [test] set: unknown property 'zticklabelmode' for axes object
+- plot/appearance/zticklabels.m:168 [test] 'fail' undefined
+- plot/appearance/zticks.m:121 [test] set: unknown property 'ztickmode' for axes object
+- plot/appearance/zticks.m:143 [test] 'fail' undefined
+- plot/draw/area.m:279 [error] error ''area' undefined' does not match <Invalid call>
+- plot/draw/area.m:281 [error] error ''area' undefined' does not match <X and Y must be real vectors or matrices>
+- plot/draw/area.m:282 [error] error ''area' undefined' does not match <X and Y must be real vectors or matrices>
+- plot/draw/area.m:283 [error] error ''area' undefined' does not match <X and Y must be real vectors or matrices>
+- plot/draw/area.m:284 [error] error ''area' undefined' does not match <X and Y must be real vectors or matrices>
+- plot/draw/area.m:285 [error] error ''area' undefined' does not match <LVL must be a real scalar>
+- plot/draw/area.m:286 [error] error ''area' undefined' does not match <LVL must be a real scalar>
+- plot/draw/bar.m:154 [test] element number 2 undefined in return list
+- plot/draw/bar.m:159 [test] element number 2 undefined in return list
+- plot/draw/bar.m:164 [test] element number 2 undefined in return list
+- plot/draw/bar.m:169 [test] element number 2 undefined in return list
+- plot/draw/bar.m:174 [test] element number 2 undefined in return list
+- plot/draw/bar.m:180 [test] element number 2 undefined in return list
+- plot/draw/bar.m:190 [test] element number 2 undefined in return list
+- plot/draw/bar.m:196 [test] element number 2 undefined in return list
+- plot/draw/bar.m:205 [test] element number 2 undefined in return list
+- plot/draw/bar.m:210 [test] element number 2 undefined in return list
+- plot/draw/bar.m:219 [test] element number 2 undefined in return list
+- plot/draw/bar.m:224 [test] element number 2 undefined in return list
+- plot/draw/bar.m:234 [test] 'axes' undefined
+- plot/draw/bar.m:296 [test] 'axes' undefined
+- plot/draw/bar.m:348 [test] 'axes' undefined
+- plot/draw/bar.m:372 [test] 'axes' undefined
+- plot/draw/bar.m:393 [test] 'axes' undefined
+- plot/draw/bar.m:428 [test] 'axes' undefined
+- plot/draw/bar.m:465 [test] 'axes' undefined
+- plot/draw/bar.m:506 [test] 'axes' undefined
+- plot/draw/bar.m:544 [test] 'axes' undefined
+- plot/draw/bar.m:575 [test] 'axes' undefined
+- plot/draw/bar.m:599 [test] 'axes' undefined
+- plot/draw/bar.m:640 [test] 'axes' undefined
+- plot/draw/bar.m:674 [test] 'axes' undefined
+- plot/draw/bar.m:704 [test] 'axes' undefined
+- plot/draw/bar.m:752 [test] 'axes' undefined
+- plot/draw/bar.m:788 [test] 'axes' undefined
+- plot/draw/bar.m:816 [test] 'axes' undefined
+- plot/draw/bar.m:842 [test] 'axes' undefined
+- plot/draw/bar.m:869 [test] 'axes' undefined
+- plot/draw/bar.m:899 [test] 'axes' undefined
+- plot/draw/bar.m:929 [test] 'axes' undefined
+- plot/draw/bar.m:941 [error] expected an error but none was raised
+- plot/draw/bar.m:942 [error] expected an error but none was raised
+- plot/draw/bar.m:943 [error] expected an error but none was raised
+- plot/draw/barh.m:109 [test] element number 2 undefined in return list
+- plot/draw/barh.m:114 [test] element number 2 undefined in return list
+- plot/draw/barh.m:119 [test] element number 2 undefined in return list
+- plot/draw/barh.m:124 [test] element number 2 undefined in return list
+- plot/draw/barh.m:129 [test] element number 2 undefined in return list
+- plot/draw/barh.m:135 [test] element number 2 undefined in return list
+- plot/draw/barh.m:145 [test] element number 2 undefined in return list
+- plot/draw/barh.m:151 [test] element number 2 undefined in return list
+- plot/draw/barh.m:160 [test] element number 2 undefined in return list
+- plot/draw/barh.m:165 [test] element number 2 undefined in return list
+- plot/draw/barh.m:174 [test] element number 2 undefined in return list
+- plot/draw/barh.m:179 [test] element number 2 undefined in return list
+- plot/draw/barh.m:190 [test] 'axes' undefined
+- plot/draw/barh.m:238 [test] 'axes' undefined
+- plot/draw/barh.m:257 [test] 'axes' undefined
+- plot/draw/barh.m:276 [test] 'axes' undefined
+- plot/draw/barh.m:328 [test] 'axes' undefined
+- plot/draw/barh.m:352 [test] 'axes' undefined
+- plot/draw/barh.m:373 [test] 'axes' undefined
+- plot/draw/barh.m:408 [test] 'axes' undefined
+- plot/draw/barh.m:445 [test] 'axes' undefined
+- plot/draw/barh.m:486 [test] 'axes' undefined
+- plot/draw/barh.m:524 [test] 'axes' undefined
+- plot/draw/barh.m:555 [test] 'axes' undefined
+- plot/draw/barh.m:579 [test] 'axes' undefined
+- plot/draw/barh.m:619 [test] 'axes' undefined
+- plot/draw/barh.m:653 [test] 'axes' undefined
+- plot/draw/barh.m:683 [test] 'axes' undefined
+- plot/draw/barh.m:719 [test] 'axes' undefined
+- plot/draw/barh.m:767 [test] 'axes' undefined
+- plot/draw/barh.m:795 [test] 'axes' undefined
+- plot/draw/barh.m:821 [test] 'axes' undefined
+- plot/draw/barh.m:848 [test] 'axes' undefined
+- plot/draw/barh.m:878 [test] 'axes' undefined
+- plot/draw/barh.m:908 [test] 'axes' undefined
+- plot/draw/barh.m:920 [error] expected an error but none was raised
+- plot/draw/barh.m:921 [error] expected an error but none was raised
+- plot/draw/barh.m:922 [error] expected an error but none was raised
+- plot/draw/camlight.m:266 [test] 'sphere' undefined
+- plot/draw/camlight.m:288 [test] 'sphere' undefined
+- plot/draw/camlight.m:306 [test] 'sphere' undefined
+- plot/draw/camlight.m:322 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- plot/draw/camlight.m:336 [error] expected an error but none was raised
+- plot/draw/camlight.m:337 [error] expected an error but none was raised
+- plot/draw/camlight.m:338 [error] error 'camlight: wrong type argument 'cell array'' does not match <Invalid call>
+- plot/draw/camlight.m:339 [error] expected an error but none was raised
+- plot/draw/camlight.m:340 [error] error 'camlight: invalid argument 'foobar'' does not match <invalid light position 'foobar'>
+- plot/draw/camlight.m:341 [error] error 'camlight: invalid argument 'foobar'' does not match <invalid light position 'foobar'>
+- plot/draw/colorbar.m:1000 [test] 'lasterror' undefined
+- plot/draw/colorbar.m:1014 [error] expected an error but none was raised
+- plot/draw/colorbar.m:1015 [error] expected an error but none was raised
+- plot/draw/colorbar.m:1016 [error] expected an error but none was raised
+- plot/draw/colorbar.m:1017 [error] expected an error but none was raised
+- plot/draw/colorbar.m:1018 [error] expected an error but none was raised
+- plot/draw/colorbar.m:1019 [error] expected an error but none was raised
+- plot/draw/colorbar.m:1020 [error] expected an error but none was raised
+- plot/draw/compass.m:128 [error] error ''compass' undefined' does not match <Invalid call>
+- plot/draw/compass.m:129 [error] error ''compass' undefined' does not match <Invalid call>
+- plot/draw/compass.m:131 [error] error ''compass' undefined' does not match <invalid linestyle STYLE>
+- plot/draw/compass.m:132 [error] error ''compass' undefined' does not match <invalid linestyle STYLE>
+- plot/draw/contour.m:112 [test] set: unknown property 'levellist' for contour object
+- plot/draw/contour.m:126 [test] set: unknown property 'levelstep' for contour object
+- plot/draw/contourc.m:169 [test] element number 2 undefined in return list
+- plot/draw/contourc.m:182 [error] error 'contourc: wrong type argument 'cell array'' does not match <X, Y, and Z must be .* numeric>
+- plot/draw/contourc.m:183 [error] error 'contourc: wrong type argument 'cell array'' does not match <X, Y, and Z must be .* numeric>
+- plot/draw/contourc.m:184 [error] error 'contourc: wrong type argument 'cell array'' does not match <X, Y, and Z must be .* numeric>
+- plot/draw/contourc.m:185 [error] expected an error but none was raised
+- plot/draw/contourc.m:186 [error] error 'contourc: Z must be a 2-D matrix of at least 2x2' does not match <X, Y, and Z must be .* matrices>
+- plot/draw/contourc.m:187 [error] error 'contourc: Z must be a 2-D matrix of at least 2x2' does not match <X, Y, and Z must be .* matrices>
+- plot/draw/contourc.m:188 [error] error 'contourc: Z must be a 2-D matrix of at least 2x2' does not match <X, Y, and Z must be real>
+- plot/draw/contourc.m:189 [error] error 'contourc: Z must be a 2-D matrix of at least 2x2' does not match <X, Y, and Z must be real>
+- plot/draw/contourc.m:190 [error] error 'contourc: Z must be a 2-D matrix of at least 2x2' does not match <X, Y, and Z must be real>
+- plot/draw/contourc.m:191 [error] error 'contourc: Z must be a 2-D matrix of at least 2x2' does not match <Z data must have at least 2 rows>
+- plot/draw/contourc.m:192 [error] error 'contourc: Z must be a 2-D matrix of at least 2x2' does not match <Z data must have at least .* 2 columns>
+- plot/draw/cylinder.m:111 [error] error ''cylinder' undefined' does not match <Invalid call>
+- plot/draw/cylinder.m:112 [error] error ''cylinder' undefined' does not match <R must be a scalar>
+- plot/draw/cylinder.m:113 [error] error ''cylinder' undefined' does not match <R must be a scalar or vector>
+- plot/draw/ellipsoid.m:99 [test] 'ellipsoid' undefined
+- plot/draw/ellipsoid.m:113 [error] error ''ellipsoid' undefined' does not match <Invalid call>
+- plot/draw/ellipsoid.m:114 [error] error ''ellipsoid' undefined' does not match <Invalid call>
+- plot/draw/ellipsoid.m:115 [error] error ''ellipsoid' undefined' does not match <N must be a real scalar>
+- plot/draw/ellipsoid.m:116 [error] error ''ellipsoid' undefined' does not match <N must be a real scalar>
+- plot/draw/ellipsoid.m:117 [error] error ''ellipsoid' undefined' does not match <N must be a real scalar . 0>
+- plot/draw/errorbar.m:238 [shared] 'axes' undefined
+- plot/draw/errorbar.m:244 [error] error 'errorbar: wrong type argument 'cell array'' does not match <data argument 1 must be numeric>
+- plot/draw/errorbar.m:245 [error] error 'errorbar: wrong type argument 'cell array'' does not match <data argument 2 must be numeric>
+- plot/draw/errorbar.m:246 [error] error 'errorbar: X, Y, and error arrays must have the same size' does not match <size of argument 2 does not match others>
+- plot/draw/errorbar.m:247 [error] error 'errorbar: X, Y, and error arrays must have the same size' does not match <size of argument 3 does not match others>
+- plot/draw/errorbar.m:248 [error] error 'Invalid call to errorbar' does not match <too many arguments to plot>
+- plot/draw/errorbar.m:250 [error] expected an error but none was raised
+- plot/draw/errorbar.m:251 [error] error 'Invalid call to errorbar' does not match <6 columns only valid for xyerr and boxxy>
+- plot/draw/errorbar.m:252 [error] error 'Invalid call to errorbar' does not match <error plot requires 2, 3, 4, or 6 arguments>
+- plot/draw/ezplot.m:118 [test] 'ezplot' undefined
+- plot/draw/feather.m:126 [error] error ''feather' undefined' does not match <Invalid call>
+- plot/draw/feather.m:127 [error] error ''feather' undefined' does not match <Invalid call>
+- plot/draw/feather.m:129 [error] error ''feather' undefined' does not match <invalid linestyle STYLE>
+- plot/draw/feather.m:130 [error] error ''feather' undefined' does not match <invalid linestyle STYLE>
+- plot/draw/fplot.m:271 [test] 'fplot' undefined
+- plot/draw/fplot.m:278 [test] 'fplot' undefined
+- plot/draw/fplot.m:286 [test] 'fplot' undefined
+- plot/draw/fplot.m:294 [test] 'fplot' undefined
+- plot/draw/fplot.m:305 [test] 'fplot' undefined
+- plot/draw/fplot.m:317 [error] error ''fplot' undefined' does not match <Invalid call>
+- plot/draw/fplot.m:318 [error] error ''fplot' undefined' does not match <Invalid call>
+- plot/draw/fplot.m:319 [error] error ''fplot' undefined' does not match <FCN must be a function handle>
+- plot/draw/fplot.m:320 [error] error ''fplot' undefined' does not match <LIMITS must be a real vector>
+- plot/draw/fplot.m:321 [error] error ''fplot' undefined' does not match <LIMITS must be a real vector with 2 or 4>
+- plot/draw/fplot.m:322 [error] error ''fplot' undefined' does not match <LIMITS must be a real vector with 2 or 4>
+- plot/draw/fplot.m:323 [error] error ''fplot' undefined' does not match <bad input in position 2>
+- plot/draw/fplot.m:324 [error] error ''fplot' undefined' does not match <bad input in position 3>
+- plot/draw/fplot.m:325 [warning] 'fplot' undefined
+- plot/draw/fplot.m:328 [error] error ''fplot' undefined' does not match <invalid function FCN>
+- plot/draw/hist.m:274 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- plot/draw/hist.m:278 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- plot/draw/hist.m:290 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- plot/draw/hist.m:303 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- plot/draw/hist.m:307 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- plot/draw/hist.m:312 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- plot/draw/hist.m:349 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- plot/draw/hist.m:352 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- plot/draw/hist.m:361 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       2.933333333333333        2.933333396911621       Abs err 6.35782879676583E-08 exceeds tol 4.440892098500626E-16
+- plot/draw/hist.m:379 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- plot/draw/hist.m:402 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- plot/draw/hist.m:409 [test] assert (cond) failed
+- plot/draw/hist.m:434 [test] 'axes' undefined
+- plot/draw/hist.m:446 [test] 'axes' undefined
+- plot/draw/hist.m:461 [error] expected an error but none was raised
+- plot/draw/hist.m:462 [error] error 'hist: wrong type argument 'cell array'' does not match <bin specification must be a numeric>
+- plot/draw/hist.m:464 [test] 'fail' undefined
+- plot/draw/hist.m:472 [error] expected an error but none was raised
+- plot/draw/hist.m:473 [error] error 'hist: wrong type argument 'cell array'' does not match <NORM must be a numeric constant>
+- plot/draw/hist.m:474 [error] expected an error but none was raised
+- plot/draw/hist.m:475 [error] expected an error but none was raised
+- plot/draw/isocaps.m:432 [shared] element number 3 undefined in return list
+- plot/draw/isocaps.m:439 [test] 'isocaps' undefined
+- plot/draw/isocaps.m:447 [test] 'isocaps' undefined
+- plot/draw/isocaps.m:454 [test] 'isocaps' undefined
+- plot/draw/isocaps.m:463 [test] 'isocaps' undefined
+- plot/draw/isocaps.m:470 [test] 'isocaps' undefined
+- plot/draw/isocaps.m:476 [test] 'isocaps' undefined
+- plot/draw/isocaps.m:484 [test] 'isocaps' undefined
+- plot/draw/isocaps.m:491 [test] 'isocaps' undefined
+- plot/draw/isocaps.m:498 [test] 'isocaps' undefined
+- plot/draw/isocaps.m:505 [test] 'isocaps' undefined
+- plot/draw/isocaps.m:513 [test] 'isocaps' undefined
+- plot/draw/isocaps.m:521 [test] 'isocaps' undefined
+- plot/draw/isocaps.m:529 [test] 'isocaps' undefined
+- plot/draw/isocaps.m:538 [test] 'isocaps' undefined
+- plot/draw/isocaps.m:547 [error] error ''isocaps' undefined' does not match <Invalid call>
+- plot/draw/isocaps.m:548 [error] error ''isocaps' undefined' does not match <Invalid call>
+- plot/draw/isocaps.m:549 [error] error ''isocaps' undefined' does not match <parameter 'foo' not supported>
+- plot/draw/isocaps.m:550 [error] error ''isocaps' undefined' does not match <incorrect number of input arguments>
+- plot/draw/isocaps.m:551 [error] error ''isocaps' undefined' does not match <incorrect number of input arguments>
+- plot/draw/isocaps.m:552 [error] error ''isocaps' undefined' does not match <V must be a non-singleton 3-dimensional matrix>
+- plot/draw/isocaps.m:555 [error] error ''isocaps' undefined' does not match <V must be a non-singleton 3-dimensional matrix>
+- plot/draw/isocaps.m:558 [error] error ''isocaps' undefined' does not match <X must match the size of V>
+- plot/draw/isocaps.m:561 [error] error ''isocaps' undefined' does not match <Y must match the size of V>
+- plot/draw/isocaps.m:564 [error] error ''isocaps' undefined' does not match <Z must match the size of V>
+- plot/draw/isocaps.m:567 [error] error 'element number 3 undefined in return list' does not match <X must match the size of V>
+- plot/draw/isocaps.m:571 [error] error 'element number 3 undefined in return list' does not match <X must match the size of V>
+- plot/draw/isocaps.m:575 [error] error 'element number 3 undefined in return list' does not match <X must match the size of V>
+- plot/draw/isocaps.m:579 [error] error ''isocaps' undefined' does not match <ISOVAL must be a scalar>
+- plot/draw/isocaps.m:580 [error] error ''isocaps' undefined' does not match <ISOVAL must be a scalar>
+- plot/draw/isocolors.m:180 [test] element number 3 undefined in return list
+- plot/draw/isocolors.m:188 [error] error ''isocolors' undefined' does not match <Invalid call>
+- plot/draw/isocolors.m:189 [error] error ''isocolors' undefined' does not match <Invalid call>
+- plot/draw/isocolors.m:190 [error] error ''isocolors' undefined' does not match <Invalid call>
+- plot/draw/isocolors.m:191 [error] error ''isocolors' undefined' does not match <Invalid call>
+- plot/draw/isocolors.m:192 [error] error ''isocolors' undefined' does not match <Invalid call>
+- plot/draw/isocolors.m:193 [error] error ''isocolors' undefined' does not match <last argument must be a vertex list>
+- plot/draw/isocolors.m:194 [error] error ''isocolors' undefined' does not match <last argument must be a vertex list>
+- plot/draw/isocolors.m:195 [error] error ''isocolors' undefined' does not match <last argument must be a .*patch handle>
+- plot/draw/isonormals.m:173 [shared] element number 3 undefined in return list
+- plot/draw/isonormals.m:178 [test] 'isonormals' undefined
+- plot/draw/isonormals.m:182 [test] 'isonormals' undefined
+- plot/draw/isonormals.m:187 [test] element number 3 undefined in return list
+- plot/draw/isonormals.m:196 [error] error ''isonormals' undefined' does not match <Invalid call>
+- plot/draw/isonormals.m:197 [error] error ''isonormals' undefined' does not match <Invalid call>
+- plot/draw/isonormals.m:198 [error] error ''isonormals' undefined' does not match <Invalid call>
+- plot/draw/isonormals.m:199 [error] error ''isonormals' undefined' does not match <Invalid call>
+- plot/draw/isonormals.m:200 [error] error ''isonormals' undefined' does not match <Invalid call>
+- plot/draw/isonormals.m:201 [error] error ''isonormals' undefined' does not match <Unknown option 'foo'>
+- plot/draw/isonormals.m:202 [error] error ''isonormals' undefined' does not match <must be a list of vertices>
+- plot/draw/isonormals.m:203 [error] error ''isonormals' undefined' does not match <must be a list of vertices>
+- plot/draw/isonormals.m:204 [error] error ''isonormals' undefined' does not match <must be a .* patch handle>
+- plot/draw/isonormals.m:206 [error] error ''isonormals' undefined' does not match <X, Y, Z have unequal dimensions>
+- plot/draw/isonormals.m:207 [error] error ''isonormals' undefined' does not match <X, Y, Z have unequal dimensions>
+- plot/draw/isonormals.m:208 [error] error ''isonormals' undefined' does not match <X, Y, Z have unequal dimensions>
+- plot/draw/isonormals.m:209 [error] error 'index (1): out of bound 0 (dimensions are 0x0)' does not match <X, Y, Z have unequal dimensions>
+- plot/draw/isonormals.m:210 [error] error ''isonormals' undefined' does not match <X, Y, Z have unequal dimensions>
+- plot/draw/isonormals.m:211 [error] error ''isonormals' undefined' does not match <VAL dimensions must match those of X, Y, and Z>
+- plot/draw/isosurface.m:441 [shared] element number 3 undefined in return list
+- plot/draw/isosurface.m:451 [test] 'isosurface' undefined
+- plot/draw/isosurface.m:459 [test] 'isosurface' undefined
+- plot/draw/isosurface.m:467 [test] 'isosurface' undefined
+- plot/draw/isosurface.m:477 [test] 'isosurface' undefined
+- plot/draw/isosurface.m:487 [test] 'isosurface' undefined
+- plot/draw/isosurface.m:495 [test] 'isosurface' undefined
+- plot/draw/isosurface.m:503 [test] 'isosurface' undefined
+- plot/draw/isosurface.m:513 [test] 'isosurface' undefined
+- plot/draw/isosurface.m:523 [test] 'isosurface' undefined
+- plot/draw/isosurface.m:529 [test] 'isosurface' undefined
+- plot/draw/isosurface.m:536 [test] 'isosurface' undefined
+- plot/draw/isosurface.m:544 [test] 'isosurface' undefined
+- plot/draw/isosurface.m:554 [test] 'isosurface' undefined
+- plot/draw/isosurface.m:564 [error] error ''isosurface' undefined' does not match <Invalid call>
+- plot/draw/isosurface.m:565 [error] error ''isosurface' undefined' does not match <Invalid call>
+- plot/draw/isosurface.m:566 [error] error ''isosurface' undefined' does not match <parameter 'foobar' not supported>
+- plot/draw/isosurface.m:568 [error] error ''isosurface' undefined' does not match <incorrect number of input arguments>
+- plot/draw/isosurface.m:570 [error] error ''isosurface' undefined' does not match <V must be a non-singleton 3-dimensional matrix>
+- plot/draw/isosurface.m:573 [error] error ''isosurface' undefined' does not match <V must be a non-singleton 3-dimensional matrix>
+- plot/draw/isosurface.m:575 [error] error ''isosurface' undefined' does not match <X must match the size of V>
+- plot/draw/isosurface.m:578 [error] error ''isosurface' undefined' does not match <Y must match the size of V>
+- plot/draw/isosurface.m:581 [error] error ''isosurface' undefined' does not match <Z must match the size of V>
+- plot/draw/isosurface.m:584 [error] error 'element number 3 undefined in return list' does not match <X must match the size of V>
+- plot/draw/isosurface.m:588 [error] error 'element number 3 undefined in return list' does not match <X must match the size of V>
+- plot/draw/isosurface.m:592 [error] error 'element number 3 undefined in return list' does not match <X must match the size of V>
+- plot/draw/isosurface.m:596 [error] error ''isosurface' undefined' does not match <ISOVAL must be a scalar>
+- plot/draw/isosurface.m:597 [error] error ''isosurface' undefined' does not match <COL must match the size of V>
+- plot/draw/isosurface.m:598 [error] error ''isosurface' undefined' does not match <COL must be passed to return C>
+- plot/draw/isosurface.m:599 [warning] 'isosurface' undefined
+- plot/draw/light.m:581 [test] 'findobj' undefined
+- plot/draw/light.m:593 [test] light: invalid number of PROPERTY/VALUE arguments
+- plot/draw/lightangle.m:146 [test] 'sphere' undefined
+- plot/draw/lightangle.m:166 [error] error ''lightangle' undefined' does not match <Invalid call>
+- plot/draw/lightangle.m:167 [error] error ''lightangle' undefined' does not match <Invalid call>
+- plot/draw/lightangle.m:168 [error] error ''lightangle' undefined' does not match <Invalid call>
+- plot/draw/lightangle.m:169 [error] error ''lightangle' undefined' does not match <Invalid call>
+- plot/draw/lightangle.m:170 [error] error ''lightangle' undefined' does not match <HL must be a handle to a light object>
+- plot/draw/lightangle.m:171 [error] error ''lightangle' undefined' does not match <H must be a handle to an axes or light object>
+- plot/draw/lightangle.m:172 [error] error ''lightangle' undefined' does not match <AZ and EL must be numeric scalars>
+- plot/draw/lightangle.m:173 [error] error ''lightangle' undefined' does not match <AZ and EL must be numeric scalars>
+- plot/draw/lightangle.m:174 [error] error ''lightangle' undefined' does not match <AZ and EL must be numeric scalars>
+- plot/draw/lightangle.m:175 [error] error ''lightangle' undefined' does not match <AZ and EL must be numeric scalars>
+- plot/draw/line.m:123 [test] Invalid call to line
+- plot/draw/loglog.m:103 [test] get: unknown property 'ytick'
+- plot/draw/ostreamtube.m:359 [error] error ''ostreamtube' undefined' does not match <Invalid call>
+- plot/draw/ostreamtube.m:360 [error] error ''ostreamtube' undefined' does not match <Invalid call>
+- plot/draw/ostreamtube.m:361 [error] error ''ostreamtube' undefined' does not match <Invalid call>
+- plot/draw/ostreamtube.m:362 [error] error ''ostreamtube' undefined' does not match <Invalid call>
+- plot/draw/ostreamtube.m:363 [error] error ''ostreamtube' undefined' does not match <Invalid call>
+- plot/draw/ostreamtube.m:364 [error] error ''ostreamtube' undefined' does not match <Invalid call>
+- plot/draw/ostreamtube.m:365 [error] error ''ostreamtube' undefined' does not match <OPTIONS must be a 1- or 2-element>
+- plot/draw/ostreamtube.m:366 [error] error ''ostreamtube' undefined' does not match <SCALE must be a real scalar . 0>
+- plot/draw/ostreamtube.m:367 [error] error ''ostreamtube' undefined' does not match <SCALE must be a real scalar . 0>
+- plot/draw/ostreamtube.m:368 [error] error ''ostreamtube' undefined' does not match <N must be greater than 2>
+- plot/draw/ostreamtube.m:369 [error] error ''ostreamtube' undefined' does not match <N must be greater than 2>
+- plot/draw/patch.m:275 [test] 'patch' undefined
+- plot/draw/patch.m:306 [test] 'patch' undefined
+- plot/draw/patch.m:319 [error] error ''patch' undefined' does not match <invalid color specification C>
+- plot/draw/patch.m:320 [error] error ''patch' undefined' does not match <invalid TrueColor data C>
+- plot/draw/patch.m:321 [error] error ''patch' undefined' does not match <size of X, Y, and C must be equal>
+- plot/draw/patch.m:322 [error] error ''patch' undefined' does not match <invalid color specification C>
+- plot/draw/pie.m:106 [error] error ''pie' undefined' does not match <Invalid call>
+- plot/draw/pie.m:107 [error] error ''pie' undefined' does not match <all data in X must be finite>
+- plot/draw/pie.m:108 [error] error ''pie' undefined' does not match <all data in X must be finite>
+- plot/draw/pie3.m:105 [error] error ''pie3' undefined' does not match <Invalid call>
+- plot/draw/pie3.m:106 [error] error ''pie3' undefined' does not match <all data in X must be finite>
+- plot/draw/pie3.m:107 [error] error ''pie3' undefined' does not match <all data in X must be finite>
+- plot/draw/polar.m:465 [test] 'polar' undefined
+- plot/draw/polar.m:485 [test] 'polar' undefined
+- plot/draw/polar.m:502 [test] 'polar' undefined
+- plot/draw/polar.m:530 [test] 'polar' undefined
+- plot/draw/polar.m:546 [test] 'polar' undefined
+- plot/draw/polar.m:617 [test] 'polar' undefined
+- plot/draw/polar.m:646 [test] 'polar' undefined
+- plot/draw/polar.m:659 [test] 'polar' undefined
+- plot/draw/polar.m:688 [error] error ''polar' undefined' does not match <Invalid call>
+- plot/draw/polar.m:689 [test] 'fail' undefined
+- plot/draw/private/__calc_isovalue_from_data__.m:67 [assert] '__calc_isovalue_from_data__' undefined
+- plot/draw/quiver.m:132 [test] 'quiver' undefined
+- plot/draw/quiver.m:181 [test] 'quiver' undefined
+- plot/draw/quiver.m:237 [test] 'quiver' undefined
+- plot/draw/quiver.m:270 [test] 'quiver' undefined
+- plot/draw/quiver.m:321 [test] 'quiver' undefined
+- plot/draw/quiver.m:355 [test] 'quiver' undefined
+- plot/draw/quiver.m:414 [test] 'quiver' undefined
+- plot/draw/quiver.m:445 [test] 'quiver' undefined
+- plot/draw/quiver.m:480 [test] 'quiver' undefined
+- plot/draw/quiver.m:508 [test] 'quiver' undefined
+- plot/draw/quiver.m:540 [test] 'quiver' undefined
+- plot/draw/quiver.m:588 [error] error ''quiver' undefined' does not match <Invalid call>
+- plot/draw/quiver.m:589 [error] error ''quiver' undefined' does not match <Invalid call>
+- plot/draw/quiver.m:590 [error] error ''quiver' undefined' does not match <Invalid call>
+- plot/draw/quiver.m:591 [error] error ''quiver' undefined' does not match <Invalid call>
+- plot/draw/quiver.m:592 [error] error ''quiver' undefined' does not match <U and V must be the same size>
+- plot/draw/quiver.m:593 [error] error ''quiver' undefined' does not match <U and V must be the same size>
+- plot/draw/quiver.m:594 [error] error ''quiver' undefined' does not match <U and V must be the same size>
+- plot/draw/quiver.m:595 [error] error ''quiver' undefined' does not match <U and V must be the same size>
+- plot/draw/quiver.m:596 [error] error ''quiver' undefined' does not match <X vector length must equal>
+- plot/draw/quiver.m:597 [error] error ''quiver' undefined' does not match <Y vector length must equal>
+- plot/draw/quiver.m:598 [error] error ''quiver' undefined' does not match <X, Y, U, and V must be the same size>
+- plot/draw/quiver.m:599 [error] error ''quiver' undefined' does not match <X, Y, U, and V must be the same size>
+- plot/draw/quiver.m:600 [error] error ''quiver' undefined' does not match <X, Y, U, and V must be the same size>
+- plot/draw/quiver.m:601 [error] error ''quiver' undefined' does not match <X, Y, U, and V must be the same size>
+- plot/draw/quiver.m:602 [error] error ''quiver' undefined' does not match <scaling factor must be>
+- plot/draw/quiver.m:603 [error] error ''quiver' undefined' does not match <scaling factor must be>
+- plot/draw/quiver.m:604 [error] error ''quiver' undefined' does not match <scaling factor must be>
+- plot/draw/quiver.m:605 [error] error ''quiver' undefined' does not match <scaling factor must be>
+- plot/draw/quiver3.m:129 [test] 'quiver3' undefined
+- plot/draw/quiver3.m:184 [test] element number 3 undefined in return list
+- plot/draw/quiver3.m:335 [error] error ''quiver3' undefined' does not match <Invalid call>
+- plot/draw/quiver3.m:336 [error] error ''quiver3' undefined' does not match <Invalid call>
+- plot/draw/quiver3.m:337 [error] error ''quiver3' undefined' does not match <Invalid call>
+- plot/draw/quiver3.m:338 [error] error ''quiver3' undefined' does not match <Invalid call>
+- plot/draw/quiver3.m:339 [error] error ''quiver3' undefined' does not match <Invalid call>
+- plot/draw/quiver3.m:340 [error] error ''quiver3' undefined' does not match <Invalid call>
+- plot/draw/quiver3.m:341 [error] error ''quiver3' undefined' does not match <U, V, and W must be the same>
+- plot/draw/quiver3.m:342 [error] error ''quiver3' undefined' does not match <Z vector length must equal size of>
+- plot/draw/quiver3.m:343 [error] error ''quiver3' undefined' does not match <Z, U, V, and W must be the same>
+- plot/draw/quiver3.m:344 [error] error ''quiver3' undefined' does not match <Z, U, V, and W must be the same>
+- plot/draw/quiver3.m:345 [error] error ''quiver3' undefined' does not match <Z, U, V, and W must be the same>
+- plot/draw/quiver3.m:346 [error] error ''quiver3' undefined' does not match <Z, U, V, and W must be the same>
+- plot/draw/quiver3.m:347 [error] error ''quiver3' undefined' does not match <U, V, and W must be the same size>
+- plot/draw/quiver3.m:348 [error] error ''quiver3' undefined' does not match <U, V, and W must be the same size>
+- plot/draw/quiver3.m:349 [error] error ''quiver3' undefined' does not match <U, V, and W must be the same size>
+- plot/draw/quiver3.m:350 [error] error ''quiver3' undefined' does not match <X vector length must equal number of>
+- plot/draw/quiver3.m:351 [error] error ''quiver3' undefined' does not match <Y vector length must equal number of>
+- plot/draw/quiver3.m:352 [error] error ''quiver3' undefined' does not match <Z vector length must equal size of>
+- plot/draw/quiver3.m:353 [error] error ''quiver3' undefined' does not match <X, Y, Z, U, V, and W must be the same size>
+- plot/draw/quiver3.m:354 [error] error ''quiver3' undefined' does not match <X, Y, Z, U, V, and W must be the same size>
+- plot/draw/quiver3.m:355 [error] error ''quiver3' undefined' does not match <X, Y, Z, U, V, and W must be the same size>
+- plot/draw/quiver3.m:356 [error] error ''quiver3' undefined' does not match <X, Y, Z, U, V, and W must be the same size>
+- plot/draw/quiver3.m:357 [error] error ''quiver3' undefined' does not match <X, Y, Z, U, V, and W must be the same size>
+- plot/draw/quiver3.m:358 [error] error ''quiver3' undefined' does not match <X, Y, Z, U, V, and W must be the same size>
+- plot/draw/quiver3.m:359 [error] error ''quiver3' undefined' does not match <scaling factor must be>
+- plot/draw/quiver3.m:360 [error] error ''quiver3' undefined' does not match <scaling factor must be>
+- plot/draw/quiver3.m:361 [error] error ''quiver3' undefined' does not match <scaling factor must be>
+- plot/draw/quiver3.m:362 [error] error ''quiver3' undefined' does not match <scaling factor must be>
+- plot/draw/reducepatch.m:373 [shared] element number 3 undefined in return list
+- plot/draw/reducepatch.m:381 [test] 'reducepatch' undefined
+- plot/draw/reducepatch.m:388 [test] 'reducepatch' undefined
+- plot/draw/reducepatch.m:395 [test] 'reducepatch' undefined
+- plot/draw/reducepatch.m:402 [test] 'reducepatch' undefined
+- plot/draw/reducepatch.m:410 [test] 'patch' undefined
+- plot/draw/reducepatch.m:421 [test] 'reducepatch' undefined
+- plot/draw/reducepatch.m:428 [test] 'reducepatch' undefined
+- plot/draw/reducepatch.m:435 [test] 'reducepatch' undefined
+- plot/draw/reducepatch.m:442 [error] error ''reducepatch' undefined' does not match <Invalid call>
+- plot/draw/reducepatch.m:443 [error] error ''reducepatch' undefined' does not match <Invalid call>
+- plot/draw/reducepatch.m:444 [error] error ''reducepatch' undefined' does not match <reducepatch: parameter 'foo' not supported>
+- plot/draw/reducepatch.m:446 [error] error ''reducepatch' undefined' does not match <struct FV must contain the fields 'vertices' and 'faces'>
+- plot/draw/reducepatch.m:449 [error] error ''reducepatch' undefined' does not match <PATCH_HANDLE must be a valid handle to a patch>
+- plot/draw/reducepatch.m:450 [error] error ''reducepatch' undefined' does not match <If first argument is a matrix containing FACES, second argument must be a matrix containing VERTICES>
+- plot/draw/reducepatch.m:451 [error] error ''reducepatch' undefined' does not match <REDUCTION_FACTOR must be a positive scalar>
+- plot/draw/reducepatch.m:452 [error] error ''reducepatch' undefined' does not match <REDUCTION_FACTOR must be a positive scalar>
+- plot/draw/reducepatch.m:453 [error] error ''reducepatch' undefined' does not match <VERTICES must be an Mx3 matrix>
+- plot/draw/reducepatch.m:454 [error] error ''reducepatch' undefined' does not match <reducepatch: Currently patches must consist of triangles only>
+- plot/draw/reducepatch.m:459 [error] error ''reducepatch' undefined' does not match <reducepatch: not enough VERTICES for given FACES>
+- plot/draw/reducevolume.m:198 [shared] element number 3 undefined in return list
+- plot/draw/reducevolume.m:204 [test] 'reducevolume' undefined
+- plot/draw/reducevolume.m:210 [test] 'reducevolume' undefined
+- plot/draw/reducevolume.m:222 [test] 'reducevolume' undefined
+- plot/draw/reducevolume.m:228 [test] 'reducevolume' undefined
+- plot/draw/reducevolume.m:240 [test] 'reducevolume' undefined
+- plot/draw/reducevolume.m:252 [test] 'reducevolume' undefined
+- plot/draw/reducevolume.m:267 [error] error ''reducevolume' undefined' does not match <Invalid call>
+- plot/draw/reducevolume.m:268 [error] error ''reducevolume' undefined' does not match <Invalid call>
+- plot/draw/reducevolume.m:269 [error] error ''reducevolume' undefined' does not match <Invalid call>
+- plot/draw/reducevolume.m:270 [error] error ''reducevolume' undefined' does not match <incorrect number of arguments>
+- plot/draw/reducevolume.m:271 [error] error ''reducevolume' undefined' does not match <R must be a scalar or a vector of length 3>
+- plot/draw/reducevolume.m:272 [error] error ''reducevolume' undefined' does not match <R must be a scalar or a vector of length 3>
+- plot/draw/reducevolume.m:273 [error] error ''reducevolume' undefined' does not match <reduction values R must be positive integers>
+- plot/draw/reducevolume.m:274 [error] error ''reducevolume' undefined' does not match <reduction values R must be positive integers>
+- plot/draw/reducevolume.m:275 [error] error ''reducevolume' undefined' does not match <data V must have at least 3 dimensions>
+- plot/draw/reducevolume.m:278 [error] error ''reducevolume' undefined' does not match <data must be a non-singleton 3-dimensional matrix>
+- plot/draw/reducevolume.m:281 [error] error ''reducevolume' undefined' does not match <X must match the size of data V>
+- plot/draw/reducevolume.m:284 [error] error ''reducevolume' undefined' does not match <Y must match the size of data V>
+- plot/draw/reducevolume.m:287 [error] error ''reducevolume' undefined' does not match <Z must match the size of data V>
+- plot/draw/reducevolume.m:290 [error] error ''reducevolume' undefined' does not match <reduction value R is too high>
+- plot/draw/reducevolume.m:291 [error] error ''reducevolume' undefined' does not match <reduction value R is too high>
+- plot/draw/rose.m:182 [test] 'rose' undefined
+- plot/draw/rose.m:188 [test] 'rose' undefined
+- plot/draw/rose.m:196 [test] 'deg2rad' undefined
+- plot/draw/rose.m:204 [test] 'deg2rad' undefined
+- plot/draw/rose.m:211 [test] 'deg2rad' undefined
+- plot/draw/rose.m:217 [test] 'deg2rad' undefined
+- plot/draw/rose.m:228 [error] error ''rose' undefined' does not match <Invalid call>
+- plot/draw/rose.m:229 [error] error ''rose' undefined' does not match <Invalid call>
+- plot/draw/semilogx.m:116 [test] get: unknown property 'xtick'
+- plot/draw/semilogy.m:116 [test] get: unknown property 'ytick'
+- plot/draw/shrinkfaces.m:222 [shared] 'shrinkfaces' undefined
+- plot/draw/shrinkfaces.m:227 [assert] assert (cond) failed
+- plot/draw/shrinkfaces.m:228 [assert] assert (cond) failed
+- plot/draw/shrinkfaces.m:229 [assert] matrix cannot be indexed with .
+- plot/draw/shrinkfaces.m:230 [assert] matrix cannot be indexed with .
+- plot/draw/shrinkfaces.m:231 [assert] matrix cannot be indexed with .
+- plot/draw/shrinkfaces.m:234 [error] error ''shrinkfaces' undefined' does not match <Invalid call>
+- plot/draw/shrinkfaces.m:235 [error] error ''shrinkfaces' undefined' does not match <Invalid call>
+- plot/draw/shrinkfaces.m:237 [error] error ''shrinkfaces' undefined' does not match <scale factor must be a positive scalar>
+- plot/draw/shrinkfaces.m:238 [error] error ''shrinkfaces' undefined' does not match <scale factor must be a positive scalar>
+- plot/draw/shrinkfaces.m:239 [error] error ''shrinkfaces' undefined' does not match <only 2-D and 3-D patches are supported>
+- plot/draw/shrinkfaces.m:240 [error] error ''shrinkfaces' undefined' does not match <only 2-D and 3-D patches are supported>
+- plot/draw/shrinkfaces.m:241 [error] error ''shrinkfaces' undefined' does not match <faces must consist of at least 3 vertices>
+- plot/draw/smooth3.m:187 [test] 'smooth3' undefined
+- plot/draw/smooth3.m:193 [test] 'smooth3' undefined
+- plot/draw/smooth3.m:205 [test] 'smooth3' undefined
+- plot/draw/smooth3.m:211 [test] 'smooth3' undefined
+- plot/draw/smooth3.m:217 [test] 'smooth3' undefined
+- plot/draw/smooth3.m:223 [test] 'smooth3' undefined
+- plot/draw/smooth3.m:229 [test] 'smooth3' undefined
+- plot/draw/smooth3.m:235 [test] 'smooth3' undefined
+- plot/draw/smooth3.m:241 [test] 'smooth3' undefined
+- plot/draw/smooth3.m:247 [test] 'smooth3' undefined
+- plot/draw/smooth3.m:254 [test] 'smooth3' undefined
+- plot/draw/smooth3.m:260 [error] error ''smooth3' undefined' does not match <Invalid call>
+- plot/draw/smooth3.m:261 [error] error ''smooth3' undefined' does not match <DATA must be a 3-D numeric matrix>
+- plot/draw/smooth3.m:262 [error] error ''smooth3' undefined' does not match <DATA must be a 3-D numeric matrix>
+- plot/draw/smooth3.m:263 [error] error ''smooth3' undefined' does not match <METHOD must be a string>
+- plot/draw/smooth3.m:264 [error] error ''smooth3' undefined' does not match <SZ must be a real>
+- plot/draw/smooth3.m:265 [error] error ''smooth3' undefined' does not match <SZ .* must be .* 3-element vector>
+- plot/draw/smooth3.m:266 [error] error ''smooth3' undefined' does not match <SZ .* must .* positive .* integers>
+- plot/draw/smooth3.m:267 [error] error ''smooth3' undefined' does not match <SZ .* must .* odd integers>
+- plot/draw/smooth3.m:268 [error] error ''smooth3' undefined' does not match <STD_DEV must be a real>
+- plot/draw/smooth3.m:269 [error] error ''smooth3' undefined' does not match <STD_DEV .* must be .* 3-element>
+- plot/draw/smooth3.m:270 [error] error ''smooth3' undefined' does not match <invalid METHOD 'foobar'>
+- plot/draw/sombrero.m:88 [error] error ''sombrero' undefined' does not match <N must be greater than 1>
+- plot/draw/sphere.m:101 [error] error ''sphere' undefined' does not match <Invalid call>
+- plot/draw/sphere.m:102 [error] error ''sphere' undefined' does not match <N must be a real scalar>
+- plot/draw/sphere.m:103 [error] error ''sphere' undefined' does not match <N must be a real scalar>
+- plot/draw/sphere.m:104 [error] error ''sphere' undefined' does not match <N must be a real scalar>
+- plot/draw/sphere.m:105 [error] error ''sphere' undefined' does not match <N must be a real scalar . 0>
+- plot/draw/stairs.m:319 [shared] 'axes' undefined
+- plot/draw/stairs.m:323 [error] error ''stairs' undefined' does not match <Invalid call>
+- plot/draw/stairs.m:324 [error] error ''stairs' undefined' does not match <Y must be a numeric 2-D vector>
+- plot/draw/stairs.m:325 [error] error ''stairs' undefined' does not match <Y must be a numeric 2-D vector>
+- plot/draw/stairs.m:326 [error] error ''stairs' undefined' does not match <X and Y must be numeric 2-D vector>
+- plot/draw/stairs.m:327 [error] error ''stairs' undefined' does not match <X and Y must be numeric 2-D vector>
+- plot/draw/stairs.m:328 [error] error ''stairs' undefined' does not match <X and Y must be numeric 2-D vector>
+- plot/draw/stairs.m:329 [error] error ''stairs' undefined' does not match <X and Y must be numeric 2-D vector>
+- plot/draw/stairs.m:330 [error] error ''stairs' undefined' does not match <X and Y sizes must match>
+- plot/draw/stem.m:212 [test] 'stem' undefined
+- plot/draw/stem.m:228 [error] error ''stem' undefined' does not match <Invalid call>
+- plot/draw/stem.m:229 [error] error ''stem' undefined' does not match <can not define Z for 2-D stem plot>
+- plot/draw/stem.m:230 [error] error ''stem' undefined' does not match <Y must be a vector or 2-D array>
+- plot/draw/stem.m:231 [error] error ''stem' undefined' does not match <X and Y must be numeric>
+- plot/draw/stem.m:232 [error] error ''stem' undefined' does not match <X and Y must be numeric>
+- plot/draw/stem.m:233 [error] error ''stem' undefined' does not match <inconsistent sizes for X and Y>
+- plot/draw/stem.m:234 [error] error ''stem' undefined' does not match <inconsistent sizes for X and Y>
+- plot/draw/stem.m:235 [error] error ''stem' undefined' does not match <inconsistent sizes for X and Y>
+- plot/draw/stem.m:236 [error] error ''stem' undefined' does not match <No value specified for property "FOO">
+- plot/draw/stem3.m:93 [error] error ''stem3' undefined' does not match <Invalid call>
+- plot/draw/stem3.m:94 [error] error ''stem3' undefined' does not match <must define X, Y, and Z>
+- plot/draw/stem3.m:95 [error] error ''stem3' undefined' does not match <X, Y, and Z must be numeric>
+- plot/draw/stem3.m:96 [error] error ''stem3' undefined' does not match <X, Y, and Z must be numeric>
+- plot/draw/stem3.m:97 [error] error ''stem3' undefined' does not match <X, Y, and Z must be numeric>
+- plot/draw/stem3.m:98 [error] error ''stem3' undefined' does not match <inconsistent sizes for X, Y, and Z>
+- plot/draw/stem3.m:99 [error] error ''stem3' undefined' does not match <inconsistent sizes for X, Y, and Z>
+- plot/draw/stem3.m:100 [error] error ''stem3' undefined' does not match <inconsistent sizes for X, Y, and Z>
+- plot/draw/stem3.m:101 [error] error ''stem3' undefined' does not match <No value specified for property "FOO">
+- plot/draw/stemleaf.m:339 [test] 'stemleaf' undefined
+- plot/draw/stemleaf.m:386 [test] 'stemleaf' undefined
+- plot/draw/stemleaf.m:414 [test] 'stemleaf' undefined
+- plot/draw/stemleaf.m:443 [test] 'stemleaf' undefined
+- plot/draw/stemleaf.m:471 [test] 'stemleaf' undefined
+- plot/draw/stemleaf.m:500 [test] 'stemleaf' undefined
+- plot/draw/stemleaf.m:524 [test] 'stemleaf' undefined
+- plot/draw/stemleaf.m:548 [test] 'stemleaf' undefined
+- plot/draw/stemleaf.m:589 [error] error ''stemleaf' undefined' does not match <Invalid call>
+- plot/draw/stemleaf.m:590 [error] error ''stemleaf' undefined' does not match <X must be a vector>
+- plot/draw/stemleaf.m:591 [warning] 'stemleaf' undefined
+- plot/draw/stemleaf.m:592 [error] error ''stemleaf' undefined' does not match <X must be a numeric vector>
+- plot/draw/stemleaf.m:593 [error] error ''stemleaf' undefined' does not match <CAPTION must be a character array>
+- plot/draw/stemleaf.m:594 [error] error ''stemleaf' undefined' does not match <STEM_SZ must be a real integer>
+- plot/draw/stemleaf.m:595 [error] error ''stemleaf' undefined' does not match <STEM_SZ must be a real integer>
+- plot/draw/stemleaf.m:596 [error] error ''stemleaf' undefined' does not match <STEM_SZ must be a real integer>
+- plot/draw/stream2.m:203 [test] 'stream2' undefined
+- plot/draw/stream2.m:208 [error] error ''stream2' undefined' does not match <Invalid call>
+- plot/draw/stream2.m:209 [error] error ''stream2' undefined' does not match <Invalid call>
+- plot/draw/stream2.m:210 [error] error ''stream2' undefined' does not match <Invalid call>
+- plot/draw/stream2.m:211 [error] error ''stream2' undefined' does not match <Invalid call>
+- plot/draw/stream2.m:212 [error] error ''stream2' undefined' does not match <OPTIONS must be a 1- or 2-element>
+- plot/draw/stream2.m:213 [error] error ''stream2' undefined' does not match <STEPSIZE must be a real scalar != 0>
+- plot/draw/stream2.m:214 [error] error ''stream2' undefined' does not match <STEPSIZE must be a real scalar != 0>
+- plot/draw/stream2.m:215 [error] error ''stream2' undefined' does not match <MAX_VERTICES must be an integer>
+- plot/draw/stream2.m:216 [error] error ''stream2' undefined' does not match <MAX_VERTICES must be an integer>
+- plot/draw/stream2.m:217 [error] error ''stream2' undefined' does not match <matrix dimensions must match>
+- plot/draw/stream2.m:218 [error] error ''stream2' undefined' does not match <matrix dimensions must match>
+- plot/draw/stream2.m:219 [error] error ''stream2' undefined' does not match <matrix dimensions must match>
+- plot/draw/stream2.m:220 [error] error ''stream2' undefined' does not match <matrix dimensions must match>
+- plot/draw/stream2.m:221 [error] error ''stream2' undefined' does not match <all inputs must be real-valued>
+- plot/draw/stream2.m:222 [error] error ''stream2' undefined' does not match <all inputs must be real-valued>
+- plot/draw/stream2.m:223 [error] error ''stream2' undefined' does not match <all inputs must be real-valued>
+- plot/draw/stream2.m:224 [error] error ''stream2' undefined' does not match <all inputs must be real-valued>
+- plot/draw/stream2.m:225 [error] error ''stream2' undefined' does not match <non-monotonically increasing or NaN values found in mesh>
+- plot/draw/stream2.m:227 [error] error ''stream2' undefined' does not match <non-monotonically increasing or NaN values found in mesh>
+- plot/draw/stream3.m:226 [test] element number 3 undefined in return list
+- plot/draw/stream3.m:232 [error] error ''stream3' undefined' does not match <Invalid call>
+- plot/draw/stream3.m:233 [error] error ''stream3' undefined' does not match <Invalid call>
+- plot/draw/stream3.m:234 [error] error ''stream3' undefined' does not match <Invalid call>
+- plot/draw/stream3.m:235 [error] error ''stream3' undefined' does not match <Invalid call>
+- plot/draw/stream3.m:236 [error] error ''stream3' undefined' does not match <Invalid call>
+- plot/draw/stream3.m:237 [error] error ''stream3' undefined' does not match <Invalid call>
+- plot/draw/stream3.m:238 [error] error ''stream3' undefined' does not match <Invalid call>
+- plot/draw/stream3.m:239 [error] error ''stream3' undefined' does not match <OPTIONS must be a 1- or 2-element>
+- plot/draw/stream3.m:240 [error] error ''stream3' undefined' does not match <STEPSIZE must be a real scalar != 0>
+- plot/draw/stream3.m:241 [error] error ''stream3' undefined' does not match <STEPSIZE must be a real scalar != 0>
+- plot/draw/stream3.m:242 [error] error ''stream3' undefined' does not match <MAX_VERTICES must be an integer>
+- plot/draw/stream3.m:243 [error] error ''stream3' undefined' does not match <MAX_VERTICES must be an integer>
+- plot/draw/stream3.m:244 [error] error ''stream3' undefined' does not match <matrix dimensions must match>
+- plot/draw/stream3.m:245 [error] error ''stream3' undefined' does not match <matrix dimensions must match>
+- plot/draw/stream3.m:246 [error] error ''stream3' undefined' does not match <matrix dimensions must match>
+- plot/draw/stream3.m:247 [error] error ''stream3' undefined' does not match <matrix dimensions must match>
+- plot/draw/stream3.m:248 [error] error ''stream3' undefined' does not match <matrix dimensions must match>
+- plot/draw/stream3.m:249 [error] error ''stream3' undefined' does not match <matrix dimensions must match>
+- plot/draw/stream3.m:250 [error] error ''stream3' undefined' does not match <all inputs must be real-valued>
+- plot/draw/stream3.m:251 [error] error ''stream3' undefined' does not match <all inputs must be real-valued>
+- plot/draw/stream3.m:252 [error] error ''stream3' undefined' does not match <all inputs must be real-valued>
+- plot/draw/stream3.m:253 [error] error ''stream3' undefined' does not match <all inputs must be real-valued>
+- plot/draw/stream3.m:254 [error] error ''stream3' undefined' does not match <all inputs must be real-valued>
+- plot/draw/stream3.m:255 [error] error ''stream3' undefined' does not match <all inputs must be real-valued>
+- plot/draw/stream3.m:256 [error] error ''stream3' undefined' does not match <non-monotonically increasing or NaN values found in mesh>
+- plot/draw/stream3.m:258 [error] error ''stream3' undefined' does not match <non-monotonically increasing or NaN values found in mesh>
+- plot/draw/streamline.m:170 [error] error ''streamline' undefined' does not match <Invalid call>
+- plot/draw/streamline.m:171 [error] error ''axes' undefined' does not match <Invalid call to streamline>
+- plot/draw/streamline.m:179 [error] error ''streamline' undefined' does not match <input data must be 2-D or 3-D>
+- plot/draw/streamribbon.m:435 [error] error ''streamribbon' undefined' does not match <Invalid call>
+- plot/draw/streamribbon.m:436 [error] error ''streamribbon' undefined' does not match <Invalid call>
+- plot/draw/streamribbon.m:437 [error] error ''streamribbon' undefined' does not match <Invalid call>
+- plot/draw/streamribbon.m:438 [error] error ''streamribbon' undefined' does not match <Invalid call>
+- plot/draw/streamribbon.m:439 [error] error ''streamribbon' undefined' does not match <Invalid call>
+- plot/draw/streamribbon.m:440 [error] error ''streamribbon' undefined' does not match <WIDTH must be a real scalar . 0>
+- plot/draw/streamribbon.m:441 [error] error ''streamribbon' undefined' does not match <WIDTH must be a real scalar . 0>
+- plot/draw/streamribbon.m:442 [error] error ''streamribbon' undefined' does not match <WIDTH must be a real scalar . 0>
+- plot/draw/streamribbon.m:443 [error] error ''streamribbon' undefined' does not match <ANLR_ROT must have same length as XYZ>
+- plot/draw/streamtube.m:369 [error] error ''streamtube' undefined' does not match <Invalid call>
+- plot/draw/streamtube.m:370 [error] error ''streamtube' undefined' does not match <Invalid call>
+- plot/draw/streamtube.m:371 [error] error ''streamtube' undefined' does not match <Invalid call>
+- plot/draw/streamtube.m:372 [error] error ''streamtube' undefined' does not match <Invalid call>
+- plot/draw/streamtube.m:373 [error] error ''streamtube' undefined' does not match <Invalid call>
+- plot/draw/streamtube.m:374 [error] error ''streamtube' undefined' does not match <OPTIONS must be a 1- or 2-element vector>
+- plot/draw/streamtube.m:375 [error] error ''streamtube' undefined' does not match <SCALE must be a real scalar . 0>
+- plot/draw/streamtube.m:376 [error] error ''streamtube' undefined' does not match <SCALE must be a real scalar . 0>
+- plot/draw/streamtube.m:377 [error] error ''streamtube' undefined' does not match <SCALE must be a real scalar . 0>
+- plot/draw/streamtube.m:378 [error] error ''streamtube' undefined' does not match <N must be greater than 2>
+- plot/draw/streamtube.m:379 [error] error ''streamtube' undefined' does not match <N must be greater than 2>
+- plot/draw/streamtube.m:380 [error] error ''streamtube' undefined' does not match <DIA must have same length then XYZ>
+- plot/draw/surface.m:206 [test] 'surface' undefined
+- plot/draw/surfnorm.m:197 [error] error ''surfnorm' undefined' does not match <Invalid call>
+- plot/draw/surfnorm.m:198 [error] error ''surfnorm' undefined' does not match <Invalid call>
+- plot/draw/surfnorm.m:199 [error] error ''surfnorm' undefined' does not match <X, Y, and Z must be 2-D real matrices>
+- plot/draw/surfnorm.m:200 [error] error ''surfnorm' undefined' does not match <X, Y, and Z must be 2-D real matrices>
+- plot/draw/surfnorm.m:201 [error] error ''surfnorm' undefined' does not match <X, Y, and Z must be 2-D real matrices>
+- plot/draw/surfnorm.m:202 [error] error ''surfnorm' undefined' does not match <X, Y, and Z must be 2-D real matrices>
+- plot/draw/surfnorm.m:203 [error] error ''surfnorm' undefined' does not match <X, Y, and Z must have the same dimensions>
+- plot/draw/surfnorm.m:204 [error] error ''surfnorm' undefined' does not match <X, Y, and Z must have the same dimensions>
+- plot/draw/surfnorm.m:205 [error] error ''surfnorm' undefined' does not match <X, Y, and Z must have the same dimensions>
+- plot/draw/trimesh.m:125 [error] error ''trimesh' undefined' does not match <Invalid call>
+- plot/draw/trimesh.m:126 [error] error ''trimesh' undefined' does not match <Invalid call>
+- plot/draw/trimesh.m:127 [error] error ''trimesh' undefined' does not match <Invalid call>
+- plot/draw/trimesh.m:128 [error] error ''trimesh' undefined' does not match <the numbers of colors>
+- plot/draw/trimesh.m:129 [error] error ''trimesh' undefined' does not match <the numbers of colors>
+- plot/draw/trimesh.m:130 [error] error ''trimesh' undefined' does not match <the numbers of colors>
+- plot/draw/trimesh.m:131 [error] error ''trimesh' undefined' does not match <TrueColor C matrix must have 3 columns>
+- plot/draw/trisurf.m:174 [error] error ''trisurf' undefined' does not match <Invalid call>
+- plot/draw/trisurf.m:175 [error] error ''trisurf' undefined' does not match <Invalid call>
+- plot/draw/trisurf.m:176 [error] error ''trisurf' undefined' does not match <Invalid call>
+- plot/draw/trisurf.m:177 [error] error ''trisurf' undefined' does not match <Invalid call>
+- plot/draw/trisurf.m:178 [error] error ''trisurf' undefined' does not match <the numbers of colors>
+- plot/draw/trisurf.m:179 [error] error ''trisurf' undefined' does not match <the numbers of colors>
+- plot/draw/trisurf.m:180 [error] error ''trisurf' undefined' does not match <the numbers of colors>
+- plot/draw/trisurf.m:181 [error] error ''trisurf' undefined' does not match <TrueColor C matrix must have 3 columns>
+- plot/draw/xline.m:717 [test] 'xline' undefined
+- plot/draw/xline.m:728 [test] 'xline' undefined
+- plot/draw/xline.m:741 [test] 'xline' undefined
+- plot/draw/xline.m:753 [test] 'xline' undefined
+- plot/draw/xline.m:764 [test] 'xline' undefined
+- plot/draw/xline.m:775 [test] 'xline' undefined
+- plot/draw/xline.m:787 [error] error ''xline' undefined' does not match <X must be a real numeric>
+- plot/draw/xline.m:788 [error] error ''xline' undefined' does not match <X must be a real numeric>
+- plot/draw/xline.m:789 [error] error ''xline' undefined' does not match <X must be a scalar or vector>
+- plot/draw/yline.m:678 [test] 'yline' undefined
+- plot/draw/yline.m:689 [test] 'yline' undefined
+- plot/draw/yline.m:702 [test] 'yline' undefined
+- plot/draw/yline.m:714 [test] 'yline' undefined
+- plot/draw/yline.m:725 [test] 'yline' undefined
+- plot/draw/yline.m:736 [test] 'yline' undefined
+- plot/draw/yline.m:748 [error] error ''yline' undefined' does not match <Y must be a real numeric>
+- plot/draw/yline.m:749 [error] error ''yline' undefined' does not match <Y must be a real numeric>
+- plot/draw/yline.m:750 [error] error ''yline' undefined' does not match <Y must be a scalar or vector>
+- plot/util/__default_plot_options__.m:43 [test] '__default_plot_options__' undefined
+- plot/util/__next_line_color__.m:72 [test] 'axes' undefined
+- plot/util/__next_line_style__.m:69 [test] 'axes' undefined
+- plot/util/__pltopt__.m:272 [test] '__pltopt__' undefined
+- plot/util/__pltopt__.m:278 [test] '__pltopt__' undefined
+- plot/util/__pltopt__.m:283 [test] '__pltopt__' undefined
+- plot/util/__pltopt__.m:288 [test] '__pltopt__' undefined
+- plot/util/__pltopt__.m:293 [test] '__pltopt__' undefined
+- plot/util/__pltopt__.m:299 [test] '__pltopt__' undefined
+- plot/util/__pltopt__.m:307 [error] error ''__pltopt__' undefined' does not match <argument must be a character string or cell array>
+- plot/util/__pltopt__.m:308 [error] error ''__pltopt__' undefined' does not match <missing terminating ';'>
+- plot/util/__pltopt__.m:309 [error] error ''__pltopt__' undefined' does not match <unrecognized format character: 'u'>
+- plot/util/allchild.m:69 [error] error ''allchild' undefined' does not match <Invalid call>
+- plot/util/ancestor.m:91 [test] Invalid call to line
+- plot/util/ancestor.m:101 [test] 'hggroup' undefined
+- plot/util/ancestor.m:118 [assert] 'ancestor' undefined
+- plot/util/ancestor.m:120 [error] error ''ancestor' undefined' does not match <Invalid call>
+- plot/util/ancestor.m:121 [error] error ''ancestor' undefined' does not match <TYPE must be a string>
+- plot/util/ancestor.m:122 [error] error ''ancestor' undefined' does not match <third argument must be "toplevel">
+- plot/util/axes.m:249 [test] 'axes' undefined
+- plot/util/axes.m:321 [error] error ''axes' undefined' does not match <H must be a scalar handle>
+- plot/util/axes.m:322 [error] error ''axes' undefined' does not match <H must be a handle to an axes or container>
+- plot/util/cla.m:94 [test] plot: vector lengths must match
+- plot/util/clf.m:119 [test] Invalid call to line
+- plot/util/clf.m:139 [test] set: unknown property 'papertype' for figure object
+- plot/util/close.m:171 [test] figure: unknown property 'closerequestfcn' for figure object
+- plot/util/close.m:186 [error] error 'close: wrong type argument 'cell array'' does not match <first argument must be "all", a figure handle>
+- plot/util/close.m:188 [error] expected an error but none was raised
+- plot/util/close.m:189 [error] expected an error but none was raised
+- plot/util/colstyle.m:78 [test] 'colstyle' undefined
+- plot/util/colstyle.m:85 [test] 'colstyle' undefined
+- plot/util/colstyle.m:92 [test] 'colstyle' undefined
+- plot/util/colstyle.m:97 [error] error ''colstyle' undefined' does not match <Invalid call>
+- plot/util/colstyle.m:99 [error] error ''colstyle' undefined' does not match <STYLE must be a string>
+- plot/util/copyobj.m:228 [test] 'axes' undefined
+- plot/util/figure.m:130 [test] get: unknown property 'visible'
+- plot/util/figure.m:144 [error] error 'figure: N must be a positive integer' does not match <N must be figure handle or figure number>
+- plot/util/figure.m:145 [error] expected an error but none was raised
+- plot/util/findall.m:58 [test] 'findall' undefined
+- plot/util/findobj.m:315 [test] 'findobj' undefined
+- plot/util/findobj.m:324 [test] set: unknown property 'tag' for line object
+- plot/util/findobj.m:335 [test] Invalid call to line
+- plot/util/findobj.m:348 [test] 'findobj' undefined
+- plot/util/findobj.m:368 [test] 'findobj' undefined
+- plot/util/findobj.m:381 [test] 'findobj' undefined
+- plot/util/findobj.m:394 [test] set: unknown property 'userdata' for axes object
+- plot/util/findobj.m:412 [test] 'axes' undefined
+- plot/util/findobj.m:425 [test] set: unknown property 'tag' for figure object
+- plot/util/findobj.m:439 [test] 'findobj' undefined
+- plot/util/findobj.m:452 [test] 'findobj' undefined
+- plot/util/findobj.m:461 [test] 'findobj' undefined
+- plot/util/findobj.m:470 [test] figure: unknown property 'tag' for figure object
+- plot/util/findobj.m:480 [error] error ''findobj' undefined' does not match <invalid graphics handles in input HLIST>
+- plot/util/findobj.m:481 [error] error ''findobj' undefined' does not match <properties and options must be strings>
+- plot/util/gca.m:68 [test] 'axes' undefined
+- plot/util/gcbf.m:45 [assert] 'gcbf' undefined
+- plot/util/gcbo.m:53 [test] 'gcbo' undefined
+- plot/util/gco.m:65 [error] error ''gco' undefined' does not match <HFIG must be a graphics handle>
+- plot/util/gnuplot_binary.m:68 [test] 'gnuplot_binary' undefined
+- plot/util/groot.m:66 [assert] 'groot' undefined
+- plot/util/hggroup.m:68 [test] 'hggroup' undefined
+- plot/util/hgload.m:114 [test] 'ftmp' undefined
+- plot/util/hgload.m:136 [error] error ''hgload' undefined' does not match <Invalid call>
+- plot/util/hgload.m:137 [error] error ''hgload' undefined' does not match <PROP_STRUCT must be a struct>
+- plot/util/hgload.m:138 [error] error ''hgload' undefined' does not match <unable to locate file>
+- plot/util/hgload.m:139 [error] error ''hgload' undefined' does not match <unable to locate file>
+- plot/util/hgsave.m:136 [error] error ''hgsave' undefined' does not match <Invalid call>
+- plot/util/hgsave.m:137 [error] error ''hgsave' undefined' does not match <no current figure to save>
+- plot/util/hold.m:171 [test] 'fill' undefined
+- plot/util/hold.m:187 [test] 'fill' undefined
+- plot/util/isaxes.m:50 [test] 'axes' undefined
+- plot/util/isaxes.m:60 [test] 'axes' undefined
+- plot/util/isaxes.m:69 [error] error ''isaxes' undefined' does not match <Invalid call>
+- plot/util/isfigure.m:60 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- plot/util/isgraphics.m:57 [test] assert (cond) failed
+- plot/util/isgraphics.m:103 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- plot/util/isgraphics.m:110 [error] expected an error but none was raised
+- plot/util/isgraphics.m:111 [error] expected an error but none was raised
+- plot/util/ishandle.m:53 [test] Invalid call to line
+- plot/util/ishandle.m:68 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- plot/util/ishold.m:69 [test] get: unknown property 'currentaxes'
+- plot/util/isprop.m:75 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- plot/util/isprop.m:76 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- plot/util/isprop.m:77 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- plot/util/isprop.m:79 [test] assert (cond) failed
+- plot/util/isprop.m:85 [error] expected an error but none was raised
+- plot/util/isprop.m:86 [error] expected an error but none was raised
+- plot/util/linkaxes.m:122 [test] 'axes' undefined
+- plot/util/linkaxes.m:168 [error] error ''linkaxes' undefined' does not match <Invalid call>
+- plot/util/linkaxes.m:169 [error] error ''linkaxes' undefined' does not match <HAX must be a vector of axes handles>
+- plot/util/linkprop.m:146 [test] 'linkprop' undefined
+- plot/util/linkprop.m:178 [error] error ''linkprop' undefined' does not match <Invalid call>
+- plot/util/linkprop.m:179 [error] error ''linkprop' undefined' does not match <Invalid call>
+- plot/util/linkprop.m:180 [error] error ''linkprop' undefined' does not match <H must contain at least 2 handles>
+- plot/util/linkprop.m:181 [error] error ''linkprop' undefined' does not match <invalid graphic handle in input H>
+- plot/util/linkprop.m:182 [error] error ''linkprop' undefined' does not match <PROP must be a string or cell string array>
+- plot/util/meshgrid.m:104 [test] element number 3 undefined in return list
+- plot/util/meshgrid.m:135 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- plot/util/meshgrid.m:148 [error] expected an error but none was raised
+- plot/util/meshgrid.m:149 [error] expected an error but none was raised
+- plot/util/meshgrid.m:150 [error] error 'element number 3 undefined in return list' does not match <X, Y, and Z must be vectors>
+- plot/util/ndgrid.m:90 [test] 'ndgrid' undefined
+- plot/util/ndgrid.m:94 [test] 'ndgrid' undefined
+- plot/util/ndgrid.m:101 [test] 'ndgrid' undefined
+- plot/util/ndgrid.m:112 [test] 'ndgrid' undefined
+- plot/util/ndgrid.m:127 [assert] 'ndgrid' undefined
+- plot/util/ndgrid.m:128 [assert] 'ndgrid' undefined
+- plot/util/ndgrid.m:131 [error] error ''ndgrid' undefined' does not match <Invalid call>
+- plot/util/ndgrid.m:132 [error] error ''ndgrid' undefined' does not match <wrong number of input arguments>
+- plot/util/ndgrid.m:133 [error] error ''ndgrid' undefined' does not match <arguments must be vectors>
+- plot/util/newplot.m:242 [test] 'newplot' undefined
+- plot/util/newplot.m:254 [test] 'axes' undefined
+- plot/util/newplot.m:267 [test] 'axes' undefined
+- plot/util/openfig.m:130 [test] 'hgsave' undefined
+- plot/util/openfig.m:148 [error] error ''openfig' undefined' does not match <cannot find file>
+- plot/util/openfig.m:149 [error] error ''openfig' undefined' does not match <cannot find file>
+- plot/util/openfig.m:150 [error] error ''hgsave' undefined' does not match <input argument 3 must be a string>
+- plot/util/openfig.m:160 [error] error ''hgsave' undefined' does not match <unknown option 'foobar'>
+- plot/util/print.m:851 [error] error ''plotyy' undefined' does not match <a graphics handle>
+- plot/util/printd.m:105 [test] 'printd' undefined
+- plot/util/rotate.m:178 [shared] Invalid call to line
+- plot/util/rotate.m:185 [error] error ''rotate' undefined' does not match <Invalid call>
+- plot/util/rotate.m:186 [error] error ''rotate' undefined' does not match <Invalid call>
+- plot/util/rotate.m:187 [error] error ''rotate' undefined' does not match <Invalid call>
+- plot/util/rotate.m:188 [error] error ''rotate' undefined' does not match <all handles must be children of the same axes object>
+- plot/util/rotate.m:189 [error] error ''rotate' undefined' does not match <invalid DIRECTION>
+- plot/util/rotate.m:190 [error] error ''rotate' undefined' does not match <invalid rotation angle>
+- plot/util/rotate.m:191 [error] error ''rotate' undefined' does not match <invalid ORIGIN>
+- plot/util/rotate.m:193 [error] error ''rotate' undefined' does not match <H must be an array of one or more graphics handles>
+- plot/util/rotate.m:194 [error] error ''rotate' undefined' does not match <expecting image, line, patch, or surface objects>
+- plot/util/saveas.m:158 [error] error 'saveas: invalid figure handle' does not match <Invalid call>
+- plot/util/saveas.m:159 [error] error 'saveas: invalid figure handle' does not match <H must be a graphics handle>
+- plot/util/saveas.m:160 [error] error 'saveas: invalid figure handle' does not match <FILENAME must be a string>
+- plot/util/saveas.m:161 [error] error 'saveas: invalid figure handle' does not match <FMT must be a string>
+- plot/util/savefig.m:103 [test] 'savefig' undefined
+- plot/util/savefig.m:126 [error] error ''savefig' undefined' does not match <must be a figure handle or filename>
+- plot/util/savefig.m:127 [error] error ''savefig' undefined' does not match <H must be a valid figure handle>
+- plot/util/savefig.m:128 [error] error ''savefig' undefined' does not match <FILENAME must be a string>
+- plot/util/savefig.m:135 [warning] 'savefig' undefined
+- plot/util/struct2hdl.m:793 [test] 'axes' undefined
+- plot/util/subplot.m:621 [test] delete: argument must be a string
+- plot/util/subplot.m:636 [test] delete: argument must be a string
+- plot/util/subplot.m:652 [test] delete: argument must be a string
+- plot/util/subplot.m:664 [test] delete: argument must be a string
+- polynomial/compan.m:86 [assert] 'compan' undefined
+- polynomial/compan.m:87 [assert] 'compan' undefined
+- polynomial/compan.m:88 [assert] 'compan' undefined
+- polynomial/compan.m:89 [assert] 'compan' undefined
+- polynomial/conv.m:84 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- polynomial/conv.m:109 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- polynomial/conv.m:115 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- polynomial/conv.m:124 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- polynomial/conv.m:125 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- polynomial/conv.m:127 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- polynomial/conv.m:128 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- polynomial/conv.m:133 [error] expected an error but none was raised
+- polynomial/conv.m:134 [error] expected an error but none was raised
+- polynomial/conv.m:135 [error] expected an error but none was raised
+- polynomial/deconv.m:107 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- polynomial/deconv.m:112 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- polynomial/deconv.m:117 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- polynomial/deconv.m:121 [error] expected an error but none was raised
+- polynomial/deconv.m:122 [error] expected an error but none was raised
+- polynomial/deconv.m:123 [error] expected an error but none was raised
+- polynomial/deconv.m:131 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (3)       -2.8944367876387964E+32        -2.89443678763879E+32       Abs err 6.485183463413514E+17 exceeds tol 6.426940729917318E+17
+- polynomial/deconv.m:145 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- polynomial/mkpp.m:120 [shared] 'mkpp' undefined
+- polynomial/mkpp.m:122 [assert] matrix cannot be indexed with .
+- polynomial/mkpp.m:123 [assert] matrix cannot be indexed with .
+- polynomial/mkpp.m:124 [assert] matrix cannot be indexed with .
+- polynomial/mkpp.m:125 [assert] matrix cannot be indexed with .
+- polynomial/mkpp.m:127 [assert] matrix cannot be indexed with .
+- polynomial/mkpp.m:128 [assert] matrix cannot be indexed with .
+- polynomial/mkpp.m:129 [assert] matrix cannot be indexed with .
+- polynomial/mkpp.m:130 [assert] matrix cannot be indexed with .
+- polynomial/mkpp.m:132 [assert] matrix cannot be indexed with .
+- polynomial/mkpp.m:133 [assert] matrix cannot be indexed with .
+- polynomial/mkpp.m:134 [assert] matrix cannot be indexed with .
+- polynomial/mkpp.m:135 [assert] matrix cannot be indexed with .
+- polynomial/mkpp.m:137 [assert] matrix cannot be indexed with .
+- polynomial/mkpp.m:138 [assert] matrix cannot be indexed with .
+- polynomial/mkpp.m:139 [assert] matrix cannot be indexed with .
+- polynomial/mkpp.m:140 [assert] matrix cannot be indexed with .
+- polynomial/mpoles.m:128 [test] 'mpoles' undefined
+- polynomial/mpoles.m:132 [test] 'mpoles' undefined
+- polynomial/mpoles.m:138 [test] 'mpoles' undefined
+- polynomial/mpoles.m:144 [test] 'mpoles' undefined
+- polynomial/mpoles.m:151 [test] 'mpoles' undefined
+- polynomial/mpoles.m:158 [error] error ''mpoles' undefined' does not match <Invalid call>
+- polynomial/mpoles.m:159 [error] error ''mpoles' undefined' does not match <P must be a single or double floating point vector>
+- polynomial/mpoles.m:160 [error] error ''mpoles' undefined' does not match <TOL must be a real scalar greater than 0>
+- polynomial/mpoles.m:161 [error] error ''mpoles' undefined' does not match <TOL must be a real scalar greater than 0>
+- polynomial/mpoles.m:162 [error] error ''mpoles' undefined' does not match <TOL must be a real scalar greater than 0>
+- polynomial/mpoles.m:163 [error] error ''mpoles' undefined' does not match <REORDER must be a numeric or logical scalar>
+- polynomial/mpoles.m:164 [error] error ''mpoles' undefined' does not match <REORDER must be a numeric or logical scalar>
+- polynomial/padecoef.m:114 [test] 'padecoef' undefined
+- polynomial/padecoef.m:121 [test] 'padecoef' undefined
+- polynomial/padecoef.m:128 [test] 'padecoef' undefined
+- polynomial/padecoef.m:137 [test] 'padecoef' undefined
+- polynomial/padecoef.m:146 [test] 'padecoef' undefined
+- polynomial/padecoef.m:155 [test] 'toeplitz' undefined
+- polynomial/padecoef.m:175 [error] error ''padecoef' undefined' does not match <Invalid call>
+- polynomial/padecoef.m:176 [error] error ''padecoef' undefined' does not match <T must be a non-negative scalar>
+- polynomial/padecoef.m:177 [error] error ''padecoef' undefined' does not match <T must be a non-negative scalar>
+- polynomial/padecoef.m:178 [error] error ''padecoef' undefined' does not match <T must be a non-negative scalar>
+- polynomial/padecoef.m:179 [error] error ''padecoef' undefined' does not match <N must be a non-negative scalar>
+- polynomial/padecoef.m:180 [error] error ''padecoef' undefined' does not match <N must be a non-negative scalar>
+- polynomial/padecoef.m:181 [error] error ''padecoef' undefined' does not match <N must be a non-negative scalar>
+- polynomial/pchip.m:152 [assert] 'pchip' undefined
+- polynomial/pchip.m:153 [assert] 'pchip' undefined
+- polynomial/pchip.m:154 [assert] 'pchip' undefined
+- polynomial/pchip.m:155 [assert] 'pchip' undefined
+- polynomial/pchip.m:156 [assert] 'pchip' undefined
+- polynomial/pchip.m:157 [assert] 'pchip' undefined
+- polynomial/pchip.m:158 [assert] 'pchip' undefined
+- polynomial/pchip.m:159 [assert] 'pchip' undefined
+- polynomial/pchip.m:160 [assert] 'pchip' undefined
+- polynomial/pchip.m:161 [assert] 'pchip' undefined
+- polynomial/pchip.m:162 [test] 'shiftdim' undefined
+- polynomial/pchip.m:169 [assert] matrix cannot be indexed with .
+- polynomial/pchip.m:170 [assert] matrix cannot be indexed with .
+- polynomial/pchip.m:171 [assert] matrix cannot be indexed with .
+- polynomial/pchip.m:172 [assert] matrix cannot be indexed with .
+- polynomial/pchip.m:173 [assert] 'ppval' undefined
+- polynomial/pchip.m:174 [assert] index (_,_,2): out of bound; value 2 out of bound 1
+- polynomial/pchip.m:175 [assert] ASSERT errors: dimensions mismatch
+- polynomial/pchip.m:176 [assert] index (1,_): out of bound 0 (dimensions are 0x0)
+- polynomial/pchip.m:177 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- polynomial/pchip.m:178 [assert] index (1,_,_): out of bound; value 1 out of bound 0
+- polynomial/poly.m:120 [error] expected an error but none was raised
+- polynomial/poly.m:121 [error] error 'poly: wrong type argument 'cell array'' does not match <input must be numeric>
+- polynomial/poly.m:122 [error] expected an error but none was raised
+- polynomial/poly.m:123 [error] expected an error but none was raised
+- polynomial/polyaffine.m:89 [test] 'polyaffine' undefined
+- polynomial/polyder.m:100 [assert] 'polyder' undefined
+- polynomial/polyder.m:101 [assert] 'polyder' undefined
+- polynomial/polyder.m:105 [error] error ''polyder' undefined' does not match <argument must be a vector>
+- polynomial/polyeig.m:96 [test] 'polyeig' undefined
+- polynomial/polyeig.m:100 [test] 'polyeig' undefined
+- polynomial/polyeig.m:108 [error] error ''polyeig' undefined' does not match <Invalid call>
+- polynomial/polyeig.m:109 [error] error ''polyeig' undefined' does not match <coefficients must be square matrices>
+- polynomial/polyeig.m:110 [error] error ''polyeig' undefined' does not match <coefficients must have the same dimensions>
+- polynomial/polyfit.m:233 [assert] ASSERT errors: dimensions mismatch
+- polynomial/polyfit.m:235 [assert] ASSERT errors: dimensions mismatch
+- polynomial/polyfit.m:238 [test] element number 2 undefined in return list
+- polynomial/polyfit.m:250 [test] element number 2 undefined in return list
+- polynomial/polyfit.m:261 [test] element number 2 undefined in return list
+- polynomial/polyfit.m:293 [test] element number 2 undefined in return list
+- polynomial/polyfit.m:302 [test] value on right hand side of assignment is undefined
+- polynomial/polyfit.m:324 [test] value on right hand side of assignment is undefined
+- polynomial/polyfit.m:346 [test] value on right hand side of assignment is undefined
+- polynomial/polyfit.m:364 [test] value on right hand side of assignment is undefined
+- polynomial/polyfit.m:379 [test] value on right hand side of assignment is undefined
+- polynomial/polyfit.m:393 [error] error 'All vectors must have the same dimensionality.' does not match <X and Y must have the same number of points>
+- polynomial/polyfit.m:394 [error] error 'Matrix dimensions must agree: 1x2.' does not match <X and Y must have the same number of points>
+- polynomial/polyfit.m:395 [error] error 'Matrix dimensions must agree: 1x2.' does not match <N must be a non-negative integer>
+- polynomial/polyfit.m:396 [error] expected an error but none was raised
+- polynomial/polyfit.m:397 [error] error 'Invalid call to polyfit' does not match <N must be a non-negative integer>
+- polynomial/polyfit.m:398 [error] error 'Matrix dimensions must agree: 1x2.' does not match <N must be a non-negative integer>
+- polynomial/polyfit.m:399 [test] 'fail' undefined
+- polynomial/polyfit.m:401 [error] error 'Matrix dimensions must agree: 1x4.' does not match <data points must be . 2 when scaling>
+- polynomial/polyfit.m:402 [error] error 'Matrix dimensions must agree: 2x4.' does not match <data points must be . 2 when scaling>
+- polynomial/polygcd.m:97 [test] 'polygcd' undefined
+- polynomial/polygcd.m:103 [assert] 'polygcd' undefined
+- polynomial/polygcd.m:104 [assert] 'polygcd' undefined
+- polynomial/polygcd.m:107 [test] 'polygcd' undefined
+- polynomial/polyint.m:70 [test] 'polyint' undefined
+- polynomial/polyint.m:77 [test] 'polyint' undefined
+- polynomial/polyint.m:82 [error] error ''polyint' undefined' does not match <Invalid call>
+- polynomial/polyout.m:109 [assert] 'polyout' undefined
+- polynomial/polyout.m:110 [assert] 'polyout' undefined
+- polynomial/polyout.m:111 [assert] 'polyout' undefined
+- polynomial/polyout.m:112 [assert] 'polyout' undefined
+- polynomial/polyreduce.m:52 [assert] 'polyreduce' undefined
+- polynomial/polyreduce.m:53 [assert] 'polyreduce' undefined
+- polynomial/polyreduce.m:54 [assert] 'polyreduce' undefined
+- polynomial/polyreduce.m:55 [assert] 'polyreduce' undefined
+- polynomial/polyreduce.m:57 [error] error ''polyreduce' undefined' does not match <Invalid call>
+- polynomial/polyreduce.m:58 [error] error ''polyreduce' undefined' does not match <C must be a non-empty vector>
+- polynomial/polyreduce.m:59 [error] error ''polyreduce' undefined' does not match <C must be a non-empty vector>
+- polynomial/polyval.m:114 [test] element number 2 undefined in return list
+- polynomial/polyval.m:126 [test] element number 2 undefined in return list
+- polynomial/polyval.m:167 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- polynomial/polyval.m:168 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- polynomial/polyval.m:172 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- polynomial/polyval.m:173 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- polynomial/polyval.m:174 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- polynomial/polyval.m:175 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- polynomial/polyval.m:180 [error] error 'element number 2 undefined in return list' does not match <Invalid call>
+- polynomial/polyval.m:181 [error] error 'polyval: wrong type argument 'cell array'' does not match <P must be a numeric floating point vector>
+- polynomial/polyval.m:182 [error] expected an error but none was raised
+- polynomial/polyval.m:183 [error] expected an error but none was raised
+- polynomial/polyval.m:184 [error] error 'polyval: wrong type argument 'cell array'' does not match <X must be numeric floating point>
+- polynomial/polyval.m:185 [error] expected an error but none was raised
+- polynomial/polyval.m:186 [error] error 'element number 2 undefined in return list' does not match <S input is required>
+- polynomial/polyval.m:187 [error] error 'element number 2 undefined in return list' does not match <S input is missing required fields>
+- polynomial/polyval.m:189 [error] error 'element number 2 undefined in return list' does not match <S input must be a structure>
+- polynomial/polyval.m:190 [error] expected an error but none was raised
+- polynomial/polyval.m:192 [error] expected an error but none was raised
+- polynomial/polyval.m:194 [error] expected an error but none was raised
+- polynomial/polyvalm.m:66 [assert] 'polyvalm' undefined
+- polynomial/polyvalm.m:67 [assert] 'polyvalm' undefined
+- polynomial/polyvalm.m:70 [error] error ''polyvalm' undefined' does not match <must be a square matrix>
+- polynomial/ppder.m:63 [shared] 'spline' undefined
+- polynomial/ppder.m:68 [assert] 'ppval' undefined
+- polynomial/ppder.m:69 [assert] matrix cannot be indexed with .
+- polynomial/ppder.m:71 [assert] 'ppval' undefined
+- polynomial/ppder.m:72 [assert] matrix cannot be indexed with .
+- polynomial/ppder.m:74 [assert] matrix cannot be indexed with .
+- polynomial/ppder.m:75 [assert] matrix cannot be indexed with .
+- polynomial/ppder.m:76 [assert] matrix cannot be indexed with .
+- polynomial/ppder.m:78 [assert] matrix cannot be indexed with .
+- polynomial/ppder.m:79 [assert] matrix cannot be indexed with .
+- polynomial/ppder.m:80 [assert] matrix cannot be indexed with .
+- polynomial/ppder.m:81 [assert] 'ppval' undefined
+- polynomial/ppint.m:64 [shared] 'spline' undefined
+- polynomial/ppint.m:69 [assert] 'ppval' undefined
+- polynomial/ppint.m:70 [assert] matrix cannot be indexed with .
+- polynomial/ppjumps.m:71 [test] 'spline' undefined
+- polynomial/ppjumps.m:79 [test] 'mkpp' undefined
+- polynomial/ppjumps.m:86 [test] 'mkpp' undefined
+- polynomial/ppval.m:113 [shared] 'mkpp' undefined
+- polynomial/ppval.m:121 [assert] 'ppval' undefined
+- polynomial/ppval.m:122 [assert] 'ppval' undefined
+- polynomial/ppval.m:123 [assert] 'ppval' undefined
+- polynomial/ppval.m:124 [assert] 'ppval' undefined
+- polynomial/ppval.m:125 [assert] 'ppval' undefined
+- polynomial/ppval.m:126 [assert] 'ppval' undefined
+- polynomial/ppval.m:127 [assert] 'ppval' undefined
+- polynomial/ppval.m:128 [assert] 'ppval' undefined
+- polynomial/ppval.m:129 [assert] 'ppval' undefined
+- polynomial/ppval.m:130 [assert] 'mkpp' undefined
+- polynomial/ppval.m:132 [test] 'mkpp' undefined
+- polynomial/ppval.m:142 [error] error ''ppval' undefined' does not match <Invalid call>
+- polynomial/ppval.m:143 [error] error ''ppval' undefined' does not match <Invalid call>
+- polynomial/ppval.m:144 [error] error ''ppval' undefined' does not match <argument must be a pp-form structure>
+- polynomial/ppval.m:145 [error] error ''ppval' undefined' does not match <argument must be a pp-form structure>
+- polynomial/ppval.m:146 [error] error ''ppval' undefined' does not match <argument must be a pp-form structure>
+- polynomial/residue.m:322 [test] 'residue' undefined
+- polynomial/residue.m:340 [test] 'residue' undefined
+- polynomial/residue.m:354 [test] 'residue' undefined
+- polynomial/residue.m:370 [test] 'residue' undefined
+- polynomial/residue.m:385 [test] 'residue' undefined
+- polynomial/residue.m:403 [test] 'residue' undefined
+- polynomial/residue.m:411 [test] 'residue' undefined
+- polynomial/residue.m:418 [test] 'residue' undefined
+- polynomial/roots.m:137 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- polynomial/roots.m:138 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- polynomial/roots.m:141 [error] expected an error but none was raised
+- polynomial/roots.m:142 [error] expected an error but none was raised
+- polynomial/roots.m:143 [error] expected an error but none was raised
+- polynomial/roots.m:144 [error] expected an error but none was raised
+- polynomial/spline.m:239 [assert] 'spline' undefined
+- polynomial/spline.m:240 [assert] 'spline' undefined
+- polynomial/spline.m:241 [assert] 'spline' undefined
+- polynomial/spline.m:242 [assert] 'spline' undefined
+- polynomial/spline.m:243 [assert] 'spline' undefined
+- polynomial/spline.m:244 [assert] 'spline' undefined
+- polynomial/spline.m:245 [assert] 'spline' undefined
+- polynomial/spline.m:246 [assert] 'spline' undefined
+- polynomial/spline.m:247 [assert] 'spline' undefined
+- polynomial/spline.m:248 [assert] 'spline' undefined
+- polynomial/spline.m:250 [assert] 'spline' undefined
+- polynomial/spline.m:251 [assert] 'spline' undefined
+- polynomial/spline.m:252 [assert] 'spline' undefined
+- polynomial/spline.m:253 [assert] 'spline' undefined
+- polynomial/spline.m:254 [assert] 'spline' undefined
+- polynomial/spline.m:255 [assert] 'spline' undefined
+- polynomial/spline.m:256 [assert] 'spline' undefined
+- polynomial/spline.m:257 [assert] 'spline' undefined
+- polynomial/spline.m:258 [assert] 'spline' undefined
+- polynomial/spline.m:259 [test] 'spline' undefined
+- polynomial/spline.m:264 [test] 'spline' undefined
+- polynomial/spline.m:267 [test] 'spline' undefined
+- polynomial/spline.m:271 [test] 'spline' undefined
+- polynomial/spline.m:275 [test] 'spline' undefined
+- polynomial/spline.m:281 [test] 'spline' undefined
+- polynomial/spline.m:289 [test] 'spline' undefined
+- polynomial/spline.m:297 [test] 'spline' undefined
+- polynomial/splinefit.m:243 [test] 'splinefit' undefined
+- polynomial/splinefit.m:246 [test] 'splinefit' undefined
+- polynomial/splinefit.m:249 [test] 'splinefit' undefined
+- polynomial/unmkpp.m:92 [test] 'mkpp' undefined
+- polynomial/unmkpp.m:104 [error] error ''unmkpp' undefined' does not match <Invalid call>
+- polynomial/unmkpp.m:105 [error] error ''unmkpp' undefined' does not match <piecewise polynomial structure>
+- polynomial/unmkpp.m:106 [error] error ''unmkpp' undefined' does not match <piecewise polynomial structure>
+- polynomial/unmkpp.m:107 [error] error ''unmkpp' undefined' does not match <piecewise polynomial structure>
+- prefs/addpref.m:83 [test] 'save_default_options' undefined
+- prefs/addpref.m:116 [error] error ''addpref' undefined' does not match <Invalid call>
+- prefs/addpref.m:117 [error] error ''addpref' undefined' does not match <Invalid call>
+- prefs/addpref.m:118 [error] error ''addpref' undefined' does not match <Invalid call>
+- prefs/addpref.m:119 [error] error ''addpref' undefined' does not match <GROUP must be a string>
+- prefs/addpref.m:120 [error] error ''addpref' undefined' does not match <PREF must be a string>
+- prefs/getpref.m:110 [test] 'save_default_options' undefined
+- prefs/getpref.m:158 [error] error ''getpref' undefined' does not match <GROUP must be a string>
+- prefs/getpref.m:159 [error] error ''getpref' undefined' does not match <PREF must be a string>
+- prefs/ispref.m:73 [test] 'save_default_options' undefined
+- prefs/ispref.m:101 [error] error ''ispref' undefined' does not match <Invalid call>
+- prefs/ispref.m:102 [error] error ''ispref' undefined' does not match <GROUP must be a string>
+- prefs/ispref.m:103 [error] error ''ispref' undefined' does not match <PREF must be a string>
+- prefs/preferences.m:42 [test] 'isguirunning' undefined
+- prefs/rmpref.m:81 [test] 'save_default_options' undefined
+- prefs/rmpref.m:116 [error] error ''rmpref' undefined' does not match <Invalid call>
+- prefs/rmpref.m:117 [error] error ''rmpref' undefined' does not match <GROUP must be a string>
+- prefs/rmpref.m:118 [error] error ''rmpref' undefined' does not match <PREF must be a string>
+- prefs/setpref.m:77 [test] 'setpref' undefined
+- prefs/setpref.m:108 [error] error ''setpref' undefined' does not match <Invalid call>
+- prefs/setpref.m:109 [error] error ''setpref' undefined' does not match <Invalid call>
+- prefs/setpref.m:110 [error] error ''setpref' undefined' does not match <Invalid call>
+- prefs/setpref.m:111 [error] error ''setpref' undefined' does not match <GROUP must be a string>
+- prefs/setpref.m:112 [error] error ''setpref' undefined' does not match <PREF must be a string>
+- profiler/profexport.m:318 [error] error ''profexport' undefined' does not match <Invalid call>
+- profiler/profexport.m:321 [error] error ''profexport' undefined' does not match <DIR must be a string>
+- profiler/profexport.m:322 [error] error ''profexport' undefined' does not match <NAME must be a string>
+- profiler/profile.m:123 [test] 'profile' undefined
+- profiler/profile.m:156 [error] error ''profile' undefined' does not match <Invalid call>
+- profiler/profshow.m:112 [error] error ''profshow' undefined' does not match <N must be a positive integer>
+- profiler/profshow.m:113 [error] error ''profshow' undefined' does not match <N must be a positive integer>
+- profiler/profshow.m:114 [error] error ''profshow' undefined' does not match <N must be a positive integer>
+- set/intersect.m:165 [assert] 'intersect' undefined
+- set/intersect.m:166 [assert] 'intersect' undefined
+- set/intersect.m:167 [assert] 'intersect' undefined
+- set/intersect.m:169 [test] 'intersect' undefined
+- set/intersect.m:176 [test] 'intersect' undefined
+- set/intersect.m:183 [test] 'intersect' undefined
+- set/intersect.m:194 [test] 'intersect' undefined
+- set/intersect.m:204 [test] 'intersect' undefined
+- set/intersect.m:212 [test] 'intersect' undefined
+- set/intersect.m:219 [test] 'intersect' undefined
+- set/intersect.m:227 [test] 'intersect' undefined
+- set/intersect.m:237 [test] 'intersect' undefined
+- set/intersect.m:247 [test] 'intersect' undefined
+- set/intersect.m:255 [test] 'intersect' undefined
+- set/intersect.m:267 [test] 'intersect' undefined
+- set/intersect.m:284 [assert] 'intersect' undefined
+- set/intersect.m:285 [assert] 'intersect' undefined
+- set/intersect.m:286 [assert] 'intersect' undefined
+- set/intersect.m:287 [assert] 'intersect' undefined
+- set/intersect.m:288 [assert] 'intersect' undefined
+- set/intersect.m:289 [assert] 'intersect' undefined
+- set/intersect.m:290 [assert] 'intersect' undefined
+- set/intersect.m:291 [assert] 'intersect' undefined
+- set/intersect.m:294 [assert] 'intersect' undefined
+- set/intersect.m:295 [assert] 'intersect' undefined
+- set/intersect.m:296 [assert] 'intersect' undefined
+- set/intersect.m:297 [assert] 'intersect' undefined
+- set/intersect.m:298 [assert] 'intersect' undefined
+- set/intersect.m:299 [assert] 'intersect' undefined
+- set/intersect.m:300 [assert] 'intersect' undefined
+- set/ismember.m:231 [fail] 'fail' undefined
+- set/ismember.m:232 [fail] 'fail' undefined
+- set/ismember.m:233 [fail] 'fail' undefined
+- set/ismember.m:234 [fail] 'fail' undefined
+- set/ismember.m:235 [fail] 'fail' undefined
+- set/ismember.m:236 [fail] 'fail' undefined
+- set/ismember.m:255 [test] ismember: wrong type argument 'cell array'
+- set/ismember.m:295 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/ismember.m:300 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/ismember.m:305 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/ismember.m:310 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/ismember.m:320 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/ismember.m:324 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/ismember.m:358 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/ismember.m:430 [error] expected an error but none was raised
+- set/ismember.m:431 [error] expected an error but none was raised
+- set/ismember.m:432 [error] expected an error but none was raised
+- set/ismember.m:433 [error] expected an error but none was raised
+- set/ismember.m:434 [error] expected an error but none was raised
+- set/ismember.m:435 [error] expected an error but none was raised
+- set/ismembertol.m:239 [assert] 'ismembertol' undefined
+- set/ismembertol.m:241 [test] 'ismembertol' undefined
+- set/ismembertol.m:246 [test] 'ismembertol' undefined
+- set/ismembertol.m:251 [test] 'ismembertol' undefined
+- set/ismembertol.m:256 [test] 'ismembertol' undefined
+- set/ismembertol.m:261 [test] 'ismembertol' undefined
+- set/ismembertol.m:266 [test] 'ismembertol' undefined
+- set/ismembertol.m:271 [test] 'ismembertol' undefined
+- set/ismembertol.m:277 [test] 'ismembertol' undefined
+- set/ismembertol.m:282 [test] 'ismembertol' undefined
+- set/ismembertol.m:287 [test] 'ismembertol' undefined
+- set/ismembertol.m:292 [test] 'ismembertol' undefined
+- set/ismembertol.m:297 [test] 'ismembertol' undefined
+- set/ismembertol.m:302 [test] 'ismembertol' undefined
+- set/ismembertol.m:307 [test] 'ismembertol' undefined
+- set/ismembertol.m:313 [test] 'ismembertol' undefined
+- set/ismembertol.m:318 [test] 'ismembertol' undefined
+- set/ismembertol.m:323 [test] 'ismembertol' undefined
+- set/ismembertol.m:329 [error] error ''ismembertol' undefined' does not match <Invalid call>
+- set/ismembertol.m:330 [error] error ''ismembertol' undefined' does not match <Invalid call>
+- set/ismembertol.m:331 [error] error ''ismembertol' undefined' does not match <unsupported property>
+- set/ismembertol.m:332 [error] error ''ismembertol' undefined' does not match <must contain numeric values>
+- set/ismembertol.m:333 [error] error ''ismembertol' undefined' does not match <must contain numeric values>
+- set/ismembertol.m:334 [error] error ''ismembertol' undefined' does not match <must contain numeric values>
+- set/ismembertol.m:335 [error] error ''ismembertol' undefined' does not match <must contain numeric values>
+- set/ismembertol.m:336 [error] error ''ismembertol' undefined' does not match <must contain numeric values>
+- set/ismembertol.m:337 [error] error ''ismembertol' undefined' does not match <number of columns .* must match>
+- set/powerset.m:103 [test] sort: argument must be a string
+- set/powerset.m:108 [test] sort: argument must be a string
+- set/powerset.m:113 [assert] 'powerset' undefined
+- set/powerset.m:116 [error] error ''powerset' undefined' does not match <Invalid call>
+- set/powerset.m:117 [error] error ''powerset' undefined' does not match <second argument must be "rows">
+- set/powerset.m:118 [error] error ''powerset' undefined' does not match <"rows" not valid for cell arrays>
+- set/powerset.m:119 [error] error ''powerset' undefined' does not match <cell arrays can only be used for character>
+- set/powerset.m:120 [error] error ''powerset' undefined' does not match <not implemented for more than 32 elements>
+- set/setdiff.m:127 [assert] 'setdiff' undefined
+- set/setdiff.m:128 [assert] 'setdiff' undefined
+- set/setdiff.m:129 [assert] 'setdiff' undefined
+- set/setdiff.m:130 [assert] 'setdiff' undefined
+- set/setdiff.m:131 [assert] 'setdiff' undefined
+- set/setdiff.m:132 [assert] 'setdiff' undefined
+- set/setdiff.m:133 [assert] 'setdiff' undefined
+- set/setdiff.m:137 [test] 'setdiff' undefined
+- set/setdiff.m:143 [test] 'setdiff' undefined
+- set/setdiff.m:150 [test] 'setdiff' undefined
+- set/setdiff.m:158 [test] 'setdiff' undefined
+- set/setdiff.m:165 [test] 'setdiff' undefined
+- set/setdiff.m:173 [assert] 'setdiff' undefined
+- set/setdiff.m:174 [assert] 'setdiff' undefined
+- set/setdiff.m:175 [assert] 'setdiff' undefined
+- set/setdiff.m:176 [assert] 'setdiff' undefined
+- set/setdiff.m:177 [assert] 'setdiff' undefined
+- set/setdiff.m:178 [assert] 'setdiff' undefined
+- set/setdiff.m:181 [test] 'setdiff' undefined
+- set/setdiff.m:192 [test] 'setdiff' undefined
+- set/setdiff.m:203 [assert] 'setdiff' undefined
+- set/setdiff.m:204 [assert] 'setdiff' undefined
+- set/setdiff.m:205 [assert] 'setdiff' undefined
+- set/setdiff.m:206 [assert] 'setdiff' undefined
+- set/setxor.m:153 [assert] 'setxor' undefined
+- set/setxor.m:154 [assert] 'setxor' undefined
+- set/setxor.m:155 [assert] 'setxor' undefined
+- set/setxor.m:157 [test] 'setxor' undefined
+- set/setxor.m:166 [test] 'intersect' undefined
+- set/setxor.m:173 [test] 'setxor' undefined
+- set/setxor.m:182 [test] 'setxor' undefined
+- set/setxor.m:190 [test] 'setxor' undefined
+- set/setxor.m:199 [assert] 'setxor' undefined
+- set/setxor.m:200 [assert] 'setxor' undefined
+- set/setxor.m:202 [test] 'setxor' undefined
+- set/setxor.m:207 [test] 'setxor' undefined
+- set/setxor.m:213 [test] 'setxor' undefined
+- set/setxor.m:220 [test] 'setxor' undefined
+- set/setxor.m:232 [assert] 'setxor' undefined
+- set/setxor.m:233 [assert] 'setxor' undefined
+- set/setxor.m:234 [assert] 'setxor' undefined
+- set/setxor.m:235 [assert] 'setxor' undefined
+- set/setxor.m:236 [assert] 'setxor' undefined
+- set/setxor.m:237 [assert] 'setxor' undefined
+- set/setxor.m:238 [assert] 'setxor' undefined
+- set/setxor.m:239 [assert] 'setxor' undefined
+- set/setxor.m:242 [test] 'setxor' undefined
+- set/setxor.m:254 [test] 'setxor' undefined
+- set/union.m:102 [assert] 'union' undefined
+- set/union.m:103 [assert] 'union' undefined
+- set/union.m:104 [assert] 'union' undefined
+- set/union.m:105 [assert] 'union' undefined
+- set/union.m:106 [assert] 'union' undefined
+- set/union.m:110 [test] 'union' undefined
+- set/union.m:116 [test] 'union' undefined
+- set/union.m:124 [assert] 'union' undefined
+- set/union.m:125 [assert] 'union' undefined
+- set/union.m:126 [assert] 'union' undefined
+- set/union.m:128 [test] 'union' undefined
+- set/union.m:137 [test] 'union' undefined
+- set/union.m:147 [test] 'union' undefined
+- set/union.m:158 [test] 'union' undefined
+- set/union.m:170 [test] 'union' undefined
+- set/union.m:187 [assert] 'union' undefined
+- set/union.m:188 [assert] 'union' undefined
+- set/union.m:189 [assert] 'union' undefined
+- set/union.m:190 [assert] 'union' undefined
+- set/union.m:191 [assert] 'union' undefined
+- set/union.m:192 [assert] 'union' undefined
+- set/union.m:193 [assert] 'union' undefined
+- set/union.m:194 [assert] 'union' undefined
+- set/union.m:200 [assert] 'union' undefined
+- set/union.m:201 [assert] 'union' undefined
+- set/union.m:202 [assert] 'union' undefined
+- set/union.m:203 [assert] 'union' undefined
+- set/union.m:204 [assert] 'union' undefined
+- set/union.m:205 [assert] 'union' undefined
+- set/union.m:208 [error] error ''union' undefined' does not match <cell array of strings cannot be combined>
+- set/union.m:209 [error] error ''union' undefined' does not match <A and B must be arrays or cell arrays>
+- set/union.m:210 [error] error ''union' undefined' does not match <cells not supported with "rows">
+- set/union.m:211 [error] error ''union' undefined' does not match <cells not supported with "rows">
+- set/union.m:212 [error] error ''union' undefined' does not match <A and B must be arrays or cell arrays>
+- set/union.m:213 [error] error ''union' undefined' does not match <A and B must be arrays or cell arrays>
+- set/union.m:214 [error] error ''union' undefined' does not match <A and B must be 2-dimensional matrices>
+- set/union.m:215 [error] error ''union' undefined' does not match <A and B must be 2-dimensional matrices>
+- set/union.m:216 [error] error ''union' undefined' does not match <A and B must be 2-dimensional matrices>
+- set/union.m:218 [error] error ''union' undefined' does not match <A and B must be 2-dimensional matrices>
+- set/union.m:220 [error] error ''union' undefined' does not match <number of columns in A and B must match>
+- set/union.m:221 [error] error ''union' undefined' does not match <number of columns in A and B must match>
+- set/union.m:222 [error] error ''union' undefined' does not match <number of columns in A and B must match>
+- set/union.m:224 [error] error ''union' undefined' does not match <number of columns in A and B must match>
+- set/union.m:226 [error] error ''union' undefined' does not match <invalid option: columns>
+- set/union.m:227 [error] error ''union' undefined' does not match <invalid option: columns>
+- set/union.m:228 [error] error ''union' undefined' does not match <only one of "sorted", "stable", or "legacy" may be specified>
+- set/union.m:230 [error] error ''union' undefined' does not match <only one of "sorted", "stable", or "legacy" may be specified>
+- set/unique.m:296 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/unique.m:301 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/unique.m:302 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/unique.m:304 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/unique.m:306 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/unique.m:307 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/unique.m:309 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/unique.m:310 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/unique.m:316 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/unique.m:319 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/unique.m:324 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/unique.m:330 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/unique.m:343 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/unique.m:349 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/unique.m:354 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/unique.m:361 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/unique.m:375 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/unique.m:382 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/unique.m:389 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/unique.m:396 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- set/unique.m:412 [test] 'gallery' undefined
+- set/unique.m:438 [error] error 'unique: argument must be a string' does not match <X must be an array or cell array of strings>
+- set/unique.m:439 [error] expected an error but none was raised
+- set/unique.m:440 [error] expected an error but none was raised
+- set/unique.m:441 [error] expected an error but none was raised
+- set/unique.m:443 [error] expected an error but none was raised
+- set/unique.m:445 [error] expected an error but none was raised
+- set/unique.m:447 [error] expected an error but none was raised
+- set/unique.m:449 [error] expected an error but none was raised
+- set/unique.m:451 [error] expected an error but none was raised
+- set/unique.m:452 [error] expected an error but none was raised
+- set/unique.m:453 [error] expected an error but none was raised
+- set/unique.m:454 [error] expected an error but none was raised
+- set/unique.m:455 [error] expected an error but none was raised
+- set/unique.m:456 [warning] expected a warning but none was issued
+- set/uniquetol.m:307 [assert] 'uniquetol' undefined
+- set/uniquetol.m:308 [assert] 'uniquetol' undefined
+- set/uniquetol.m:310 [assert] 'uniquetol' undefined
+- set/uniquetol.m:311 [assert] 'uniquetol' undefined
+- set/uniquetol.m:312 [assert] 'uniquetol' undefined
+- set/uniquetol.m:313 [assert] 'uniquetol' undefined
+- set/uniquetol.m:314 [assert] 'uniquetol' undefined
+- set/uniquetol.m:315 [assert] 'uniquetol' undefined
+- set/uniquetol.m:316 [assert] 'uniquetol' undefined
+- set/uniquetol.m:317 [assert] 'uniquetol' undefined
+- set/uniquetol.m:318 [assert] 'uniquetol' undefined
+- set/uniquetol.m:319 [assert] 'uniquetol' undefined
+- set/uniquetol.m:321 [assert] 'uniquetol' undefined
+- set/uniquetol.m:322 [assert] 'uniquetol' undefined
+- set/uniquetol.m:326 [test] 'uniquetol' undefined
+- set/uniquetol.m:332 [test] 'uniquetol' undefined
+- set/uniquetol.m:338 [test] 'uniquetol' undefined
+- set/uniquetol.m:345 [test] 'uniquetol' undefined
+- set/uniquetol.m:352 [test] 'uniquetol' undefined
+- set/uniquetol.m:359 [test] 'uniquetol' undefined
+- set/uniquetol.m:366 [test] 'uniquetol' undefined
+- set/uniquetol.m:372 [test] 'uniquetol' undefined
+- set/uniquetol.m:380 [assert] 'uniquetol' undefined
+- set/uniquetol.m:381 [assert] 'uniquetol' undefined
+- set/uniquetol.m:382 [assert] 'uniquetol' undefined
+- set/uniquetol.m:383 [assert] 'uniquetol' undefined
+- set/uniquetol.m:385 [test] 'uniquetol' undefined
+- set/uniquetol.m:419 [test] 'uniquetol' undefined
+- set/uniquetol.m:424 [test] 'uniquetol' undefined
+- set/uniquetol.m:429 [test] 'uniquetol' undefined
+- set/uniquetol.m:434 [test] 'uniquetol' undefined
+- set/uniquetol.m:439 [test] 'uniquetol' undefined
+- set/uniquetol.m:444 [test] 'uniquetol' undefined
+- set/uniquetol.m:449 [test] 'uniquetol' undefined
+- set/uniquetol.m:454 [test] 'uniquetol' undefined
+- set/uniquetol.m:459 [test] 'uniquetol' undefined
+- set/uniquetol.m:464 [test] 'uniquetol' undefined
+- set/uniquetol.m:469 [test] 'uniquetol' undefined
+- set/uniquetol.m:474 [test] 'uniquetol' undefined
+- set/uniquetol.m:482 [error] error ''uniquetol' undefined' does not match <Invalid call>
+- set/uniquetol.m:483 [error] error ''uniquetol' undefined' does not match <A must be a real floating point array>
+- set/uniquetol.m:484 [error] error ''uniquetol' undefined' does not match <A must be a real floating point array>
+- set/uniquetol.m:485 [error] error ''uniquetol' undefined' does not match <TOL must be a real floating point scalar>
+- set/uniquetol.m:486 [error] error ''uniquetol' undefined' does not match <TOL must be a real floating point scalar>
+- set/uniquetol.m:487 [error] error ''uniquetol' undefined' does not match <TOL must be a real floating point scalar>
+- set/uniquetol.m:488 [error] error ''uniquetol' undefined' does not match <arguments must occur in pairs>
+- set/uniquetol.m:489 [error] error ''uniquetol' undefined' does not match <PROPERTY must be a string>
+- set/uniquetol.m:490 [error] error ''uniquetol' undefined' does not match <A must be a 2-D array>
+- set/uniquetol.m:491 [error] error ''uniquetol' undefined' does not match <A must be a 2-D array>
+- set/uniquetol.m:492 [error] error ''uniquetol' undefined' does not match <A must be a 2-D array>
+- set/uniquetol.m:493 [error] error ''uniquetol' undefined' does not match <A must be a 2-D array>
+- set/uniquetol.m:494 [error] error ''uniquetol' undefined' does not match <DataScale must be a .* floating point>
+- set/uniquetol.m:495 [error] error ''uniquetol' undefined' does not match <DataScale must be .* positive>
+- set/uniquetol.m:496 [error] error ''uniquetol' undefined' does not match <DataScale must be .* positive>
+- set/uniquetol.m:497 [error] error ''uniquetol' undefined' does not match <DataScale must be .* without NaNs>
+- set/uniquetol.m:498 [error] error ''uniquetol' undefined' does not match <invalid DataScale size>
+- set/uniquetol.m:499 [error] error ''uniquetol' undefined' does not match <unknown property 'foo'>
+- set/uniquetol.m:500 [error] error ''uniquetol' undefined' does not match <unknown property 'foo'>
+- signal/__parse_movargs__.m:75 [test] '__parse_movargs__' undefined
+- signal/__parse_movargs__.m:86 [test] '__parse_movargs__' undefined
+- signal/__parse_movargs__.m:97 [test] '__parse_movargs__' undefined
+- signal/__parse_movargs__.m:107 [test] '__parse_movargs__' undefined
+- signal/autoreg_matrix.m:58 [test] 'autoreg_matrix' undefined
+- signal/autoreg_matrix.m:66 [error] error ''autoreg_matrix' undefined' does not match <Invalid call>
+- signal/autoreg_matrix.m:67 [error] error ''autoreg_matrix' undefined' does not match <Invalid call>
+- signal/bartlett.m:57 [assert] 'bartlett' undefined
+- signal/bartlett.m:58 [assert] 'bartlett' undefined
+- signal/bartlett.m:59 [assert] 'bartlett' undefined
+- signal/bartlett.m:60 [assert] 'bartlett' undefined
+- signal/bartlett.m:61 [test] 'bartlett' undefined
+- signal/bartlett.m:66 [error] error ''bartlett' undefined' does not match <Invalid call>
+- signal/blackman.m:76 [assert] 'blackman' undefined
+- signal/blackman.m:77 [assert] 'blackman' undefined
+- signal/blackman.m:78 [assert] 'blackman' undefined
+- signal/blackman.m:79 [assert] 'blackman' undefined
+- signal/blackman.m:80 [test] 'blackman' undefined
+- signal/blackman.m:86 [assert] 'blackman' undefined
+- signal/blackman.m:87 [assert] 'blackman' undefined
+- signal/blackman.m:88 [test] 'blackman' undefined
+- signal/blackman.m:93 [error] error ''blackman' undefined' does not match <Invalid call>
+- signal/detrend.m:77 [test] 'detrend' undefined
+- signal/detrend.m:83 [test] 'detrend' undefined
+- signal/detrend.m:90 [test] 'detrend' undefined
+- signal/detrend.m:97 [test] 'detrend' undefined
+- signal/detrend.m:104 [error] error ''detrend' undefined' does not match <Invalid call>
+- signal/fftconv.m:98 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- signal/fftconv.m:105 [error] error ''fftconv' undefined' does not match <Invalid call>
+- signal/fftfilt.m:191 [error] error ''fftfilt' undefined' does not match <Invalid call>
+- signal/fftshift.m:93 [test] 'fftshift' undefined
+- signal/fftshift.m:99 [test] 'fftshift' undefined
+- signal/fftshift.m:105 [test] 'fftshift' undefined
+- signal/fftshift.m:111 [test] 'fftshift' undefined
+- signal/fftshift.m:117 [test] 'fftshift' undefined
+- signal/fftshift.m:124 [test] 'fftshift' undefined
+- signal/fftshift.m:131 [test] 'fftshift' undefined
+- signal/fftshift.m:138 [test] 'fftshift' undefined
+- signal/fftshift.m:145 [test] 'fftshift' undefined
+- signal/fftshift.m:154 [error] error ''fftshift' undefined' does not match <Invalid call>
+- signal/hamming.m:74 [assert] 'hamming' undefined
+- signal/hamming.m:75 [assert] 'hamming' undefined
+- signal/hamming.m:76 [assert] 'hamming' undefined
+- signal/hamming.m:77 [assert] 'hamming' undefined
+- signal/hamming.m:78 [test] 'hamming' undefined
+- signal/hamming.m:83 [assert] 'hamming' undefined
+- signal/hamming.m:84 [assert] 'hamming' undefined
+- signal/hamming.m:85 [test] 'hamming' undefined
+- signal/hamming.m:90 [error] error ''hamming' undefined' does not match <Invalid call>
+- signal/hanning.m:74 [assert] 'hanning' undefined
+- signal/hanning.m:75 [assert] 'hanning' undefined
+- signal/hanning.m:76 [assert] 'hanning' undefined
+- signal/hanning.m:77 [assert] 'hanning' undefined
+- signal/hanning.m:78 [test] 'hanning' undefined
+- signal/hanning.m:83 [assert] 'hanning' undefined
+- signal/hanning.m:84 [assert] 'hanning' undefined
+- signal/hanning.m:85 [test] 'hanning' undefined
+- signal/hanning.m:90 [error] error ''hanning' undefined' does not match <Invalid call>
+- signal/ifftshift.m:76 [test] 'ifftshift' undefined
+- signal/ifftshift.m:82 [test] 'ifftshift' undefined
+- signal/ifftshift.m:88 [test] 'ifftshift' undefined
+- signal/ifftshift.m:94 [test] 'ifftshift' undefined
+- signal/ifftshift.m:100 [test] 'ifftshift' undefined
+- signal/ifftshift.m:107 [test] 'ifftshift' undefined
+- signal/ifftshift.m:114 [test] 'ifftshift' undefined
+- signal/ifftshift.m:121 [test] 'ifftshift' undefined
+- signal/ifftshift.m:128 [test] 'ifftshift' undefined
+- signal/ifftshift.m:137 [error] error ''ifftshift' undefined' does not match <Invalid call>
+- signal/movfun.m:1306 [test] 'movfun' undefined
+- signal/movfun.m:1316 [test] 'movfun' undefined
+- signal/movfun.m:1327 [test] 'movfun' undefined
+- signal/movfun.m:1332 [test] 'movfun' undefined
+- signal/movfun.m:1347 [assert] 'movfun' undefined
+- signal/movfun.m:1348 [assert] 'movfun' undefined
+- signal/movfun.m:1349 [assert] 'movfun' undefined
+- signal/movfun.m:1350 [assert] 'movfun' undefined
+- signal/movfun.m:1354 [assert] 'movfun' undefined
+- signal/movfun.m:1355 [assert] 'movfun' undefined
+- signal/movfun.m:1356 [assert] 'movfun' undefined
+- signal/movfun.m:1358 [assert] 'movfun' undefined
+- signal/movfun.m:1359 [assert] 'movfun' undefined
+- signal/movfun.m:1361 [assert] 'movfun' undefined
+- signal/movfun.m:1362 [assert] 'movfun' undefined
+- signal/movfun.m:1364 [assert] 'movfun' undefined
+- signal/movfun.m:1365 [assert] 'movfun' undefined
+- signal/movfun.m:1367 [assert] 'movfun' undefined
+- signal/movfun.m:1368 [assert] 'movfun' undefined
+- signal/movfun.m:1371 [assert] 'movfun' undefined
+- signal/movfun.m:1372 [assert] 'movfun' undefined
+- signal/movfun.m:1381 [test] 'movfun' undefined
+- signal/movfun.m:1389 [assert] 'movfun' undefined
+- signal/movfun.m:1391 [assert] 'movfun' undefined
+- signal/movfun.m:1393 [assert] 'movfun' undefined
+- signal/movfun.m:1395 [assert] 'movfun' undefined
+- signal/movfun.m:1397 [assert] 'movfun' undefined
+- signal/movfun.m:1399 [assert] 'movfun' undefined
+- signal/movfun.m:1400 [assert] 'movfun' undefined
+- signal/movfun.m:1403 [test] 'movfun' undefined
+- signal/movfun.m:1421 [assert] 'movfun' undefined
+- signal/movfun.m:1422 [assert] 'movfun' undefined
+- signal/movfun.m:1423 [assert] 'movfun' undefined
+- signal/movfun.m:1425 [assert] 'movfun' undefined
+- signal/movfun.m:1427 [assert] 'movfun' undefined
+- signal/movfun.m:1429 [assert] 'movfun' undefined
+- signal/movfun.m:1430 [assert] 'movfun' undefined
+- signal/movfun.m:1433 [assert] 'movfun' undefined
+- signal/movfun.m:1434 [assert] 'movfun' undefined
+- signal/movfun.m:1435 [assert] 'movfun' undefined
+- signal/movfun.m:1436 [assert] 'movfun' undefined
+- signal/movfun.m:1438 [assert] 'movfun' undefined
+- signal/movfun.m:1439 [assert] 'movfun' undefined
+- signal/movfun.m:1440 [assert] 'movfun' undefined
+- signal/movfun.m:1441 [assert] 'movfun' undefined
+- signal/movfun.m:1444 [assert] 'movfun' undefined
+- signal/movfun.m:1445 [assert] 'movfun' undefined
+- signal/movfun.m:1446 [assert] 'movfun' undefined
+- signal/movfun.m:1447 [assert] 'movfun' undefined
+- signal/movfun.m:1448 [assert] 'movfun' undefined
+- signal/movfun.m:1449 [assert] 'movfun' undefined
+- signal/movfun.m:1450 [assert] 'movfun' undefined
+- signal/movfun.m:1451 [assert] 'movfun' undefined
+- signal/movfun.m:1452 [assert] 'movfun' undefined
+- signal/movfun.m:1453 [assert] 'movfun' undefined
+- signal/movfun.m:1454 [assert] 'movfun' undefined
+- signal/movfun.m:1455 [assert] 'movfun' undefined
+- signal/movfun.m:1456 [assert] 'movfun' undefined
+- signal/movfun.m:1457 [assert] 'movfun' undefined
+- signal/movfun.m:1458 [assert] 'movfun' undefined
+- signal/movfun.m:1459 [assert] 'movfun' undefined
+- signal/movfun.m:1460 [assert] 'movfun' undefined
+- signal/movfun.m:1461 [assert] 'movfun' undefined
+- signal/movfun.m:1465 [assert] 'movfun' undefined
+- signal/movfun.m:1466 [assert] 'movfun' undefined
+- signal/movfun.m:1467 [assert] 'movfun' undefined
+- signal/movfun.m:1468 [assert] 'movfun' undefined
+- signal/movfun.m:1469 [assert] 'movfun' undefined
+- signal/movfun.m:1470 [assert] 'movfun' undefined
+- signal/movfun.m:1473 [assert] 'movfun' undefined
+- signal/movfun.m:1474 [assert] 'movfun' undefined
+- signal/movfun.m:1475 [assert] 'movfun' undefined
+- signal/movfun.m:1476 [assert] 'movfun' undefined
+- signal/movfun.m:1477 [assert] 'movfun' undefined
+- signal/movfun.m:1478 [assert] 'movfun' undefined
+- signal/movfun.m:1479 [assert] 'movfun' undefined
+- signal/movfun.m:1480 [assert] 'movfun' undefined
+- signal/movfun.m:1482 [assert] 'movfun' undefined
+- signal/movfun.m:1483 [assert] 'movfun' undefined
+- signal/movfun.m:1487 [assert] 'movfun' undefined
+- signal/movfun.m:1488 [assert] 'movfun' undefined
+- signal/movfun.m:1489 [assert] 'movfun' undefined
+- signal/movfun.m:1490 [assert] 'movfun' undefined
+- signal/movfun.m:1491 [assert] 'movfun' undefined
+- signal/movfun.m:1492 [assert] 'movfun' undefined
+- signal/movfun.m:1496 [assert] 'movfun' undefined
+- signal/movfun.m:1497 [assert] 'movfun' undefined
+- signal/movfun.m:1498 [assert] 'movfun' undefined
+- signal/movfun.m:1499 [assert] 'movfun' undefined
+- signal/movfun.m:1500 [assert] 'movfun' undefined
+- signal/movfun.m:1501 [assert] 'movfun' undefined
+- signal/movfun.m:1502 [assert] 'movfun' undefined
+- signal/movfun.m:1505 [assert] 'movfun' undefined
+- signal/movfun.m:1506 [assert] 'movfun' undefined
+- signal/movfun.m:1507 [assert] 'movfun' undefined
+- signal/movfun.m:1508 [assert] 'movfun' undefined
+- signal/movfun.m:1509 [assert] 'movfun' undefined
+- signal/movfun.m:1510 [assert] 'movfun' undefined
+- signal/movfun.m:1511 [assert] 'movfun' undefined
+- signal/movfun.m:1514 [assert] 'movfun' undefined
+- signal/movfun.m:1515 [assert] 'movfun' undefined
+- signal/movfun.m:1516 [assert] 'movfun' undefined
+- signal/movfun.m:1517 [assert] 'movfun' undefined
+- signal/movfun.m:1518 [assert] 'movfun' undefined
+- signal/movfun.m:1521 [assert] 'movfun' undefined
+- signal/movfun.m:1522 [assert] 'movfun' undefined
+- signal/movfun.m:1523 [assert] 'movfun' undefined
+- signal/movfun.m:1524 [assert] 'movfun' undefined
+- signal/movfun.m:1525 [assert] 'movfun' undefined
+- signal/movfun.m:1526 [assert] 'movfun' undefined
+- signal/movfun.m:1527 [assert] 'movfun' undefined
+- signal/movfun.m:1530 [assert] 'movfun' undefined
+- signal/movfun.m:1531 [assert] 'movfun' undefined
+- signal/movfun.m:1532 [assert] 'movfun' undefined
+- signal/movfun.m:1533 [assert] 'movfun' undefined
+- signal/movfun.m:1534 [assert] 'movfun' undefined
+- signal/movfun.m:1535 [assert] 'movfun' undefined
+- signal/movfun.m:1536 [assert] 'movfun' undefined
+- signal/movfun.m:1542 [assert] 'movfun' undefined
+- signal/movfun.m:1543 [assert] 'movfun' undefined
+- signal/movfun.m:1544 [assert] 'movfun' undefined
+- signal/movfun.m:1545 [assert] 'movfun' undefined
+- signal/movfun.m:1546 [assert] 'movfun' undefined
+- signal/movfun.m:1547 [assert] 'movfun' undefined
+- signal/movfun.m:1548 [assert] 'movfun' undefined
+- signal/movfun.m:1551 [assert] 'movfun' undefined
+- signal/movfun.m:1552 [assert] 'movfun' undefined
+- signal/movfun.m:1553 [assert] 'movfun' undefined
+- signal/movfun.m:1554 [assert] 'movfun' undefined
+- signal/movfun.m:1555 [assert] 'movfun' undefined
+- signal/movfun.m:1556 [assert] 'movfun' undefined
+- signal/movfun.m:1559 [assert] 'movfun' undefined
+- signal/movfun.m:1560 [assert] 'movfun' undefined
+- signal/movfun.m:1566 [assert] 'movfun' undefined
+- signal/movfun.m:1567 [assert] 'movfun' undefined
+- signal/movfun.m:1570 [assert] 'movfun' undefined
+- signal/movfun.m:1573 [assert] 'movfun' undefined
+- signal/movfun.m:1574 [assert] 'movfun' undefined
+- signal/movfun.m:1575 [assert] 'movfun' undefined
+- signal/movfun.m:1576 [assert] 'movfun' undefined
+- signal/movfun.m:1577 [assert] 'movfun' undefined
+- signal/movfun.m:1578 [assert] 'movfun' undefined
+- signal/movfun.m:1579 [assert] 'movfun' undefined
+- signal/movfun.m:1580 [assert] 'movfun' undefined
+- signal/movfun.m:1581 [assert] 'movfun' undefined
+- signal/movfun.m:1582 [assert] 'movfun' undefined
+- signal/movfun.m:1583 [assert] 'movfun' undefined
+- signal/movfun.m:1584 [assert] 'movfun' undefined
+- signal/movfun.m:1585 [assert] 'movfun' undefined
+- signal/movfun.m:1589 [test] value on right hand side of assignment is undefined
+- signal/movfun.m:1605 [assert] 'movfun' undefined
+- signal/movfun.m:1606 [assert] 'movfun' undefined
+- signal/movfun.m:1610 [assert] 'movfun' undefined
+- signal/movfun.m:1611 [assert] 'movfun' undefined
+- signal/movfun.m:1612 [assert] 'movfun' undefined
+- signal/movfun.m:1613 [assert] 'movfun' undefined
+- signal/movfun.m:1614 [assert] 'movfun' undefined
+- signal/movfun.m:1617 [assert] 'movfun' undefined
+- signal/movfun.m:1618 [assert] 'movfun' undefined
+- signal/movfun.m:1619 [assert] 'movfun' undefined
+- signal/movfun.m:1620 [assert] 'movfun' undefined
+- signal/movfun.m:1621 [assert] 'movfun' undefined
+- signal/movfun.m:1622 [assert] 'movfun' undefined
+- signal/movfun.m:1623 [assert] 'movfun' undefined
+- signal/movfun.m:1629 [assert] 'movfun' undefined
+- signal/movfun.m:1630 [assert] 'movfun' undefined
+- signal/movfun.m:1631 [assert] 'movfun' undefined
+- signal/movfun.m:1632 [assert] 'movfun' undefined
+- signal/movfun.m:1633 [assert] 'movfun' undefined
+- signal/movfun.m:1634 [assert] 'movfun' undefined
+- signal/movfun.m:1635 [assert] 'movfun' undefined
+- signal/movfun.m:1637 [assert] 'movfun' undefined
+- signal/movfun.m:1638 [assert] 'movfun' undefined
+- signal/movfun.m:1639 [assert] 'movfun' undefined
+- signal/movfun.m:1640 [assert] 'movfun' undefined
+- signal/movfun.m:1641 [assert] 'movfun' undefined
+- signal/movfun.m:1642 [assert] 'movfun' undefined
+- signal/movfun.m:1643 [assert] 'movfun' undefined
+- signal/movfun.m:1645 [assert] 'movfun' undefined
+- signal/movfun.m:1646 [assert] 'movfun' undefined
+- signal/movfun.m:1647 [assert] 'movfun' undefined
+- signal/movfun.m:1648 [assert] 'movfun' undefined
+- signal/movfun.m:1649 [assert] 'movfun' undefined
+- signal/movfun.m:1650 [assert] 'movfun' undefined
+- signal/movfun.m:1652 [assert] 'movfun' undefined
+- signal/movfun.m:1653 [assert] 'movfun' undefined
+- signal/movfun.m:1654 [assert] 'movfun' undefined
+- signal/movfun.m:1655 [assert] 'movfun' undefined
+- signal/movfun.m:1656 [assert] 'movfun' undefined
+- signal/movfun.m:1657 [assert] 'movfun' undefined
+- signal/movfun.m:1658 [assert] 'movfun' undefined
+- signal/movfun.m:1660 [assert] 'movfun' undefined
+- signal/movfun.m:1661 [assert] 'movfun' undefined
+- signal/movfun.m:1662 [assert] 'movfun' undefined
+- signal/movfun.m:1663 [assert] 'movfun' undefined
+- signal/movfun.m:1664 [assert] 'movfun' undefined
+- signal/movfun.m:1665 [assert] 'movfun' undefined
+- signal/movfun.m:1666 [assert] 'movfun' undefined
+- signal/movfun.m:1668 [assert] 'movfun' undefined
+- signal/movfun.m:1669 [assert] 'movfun' undefined
+- signal/movfun.m:1670 [assert] 'movfun' undefined
+- signal/movfun.m:1673 [assert] 'movfun' undefined
+- signal/movfun.m:1674 [assert] 'movfun' undefined
+- signal/movfun.m:1675 [assert] 'movfun' undefined
+- signal/movfun.m:1676 [assert] 'movfun' undefined
+- signal/movfun.m:1677 [assert] 'movfun' undefined
+- signal/movfun.m:1680 [assert] 'movfun' undefined
+- signal/movfun.m:1681 [assert] 'movfun' undefined
+- signal/movfun.m:1682 [assert] 'movfun' undefined
+- signal/movfun.m:1683 [assert] 'movfun' undefined
+- signal/movfun.m:1684 [assert] 'movfun' undefined
+- signal/movfun.m:1685 [assert] 'movfun' undefined
+- signal/movfun.m:1686 [assert] 'movfun' undefined
+- signal/movfun.m:1689 [assert] 'movfun' undefined
+- signal/movfun.m:1690 [assert] 'movfun' undefined
+- signal/movfun.m:1691 [assert] 'movfun' undefined
+- signal/movfun.m:1692 [assert] 'movfun' undefined
+- signal/movfun.m:1693 [assert] 'movfun' undefined
+- signal/movfun.m:1694 [assert] 'movfun' undefined
+- signal/movfun.m:1697 [assert] 'movfun' undefined
+- signal/movfun.m:1698 [assert] 'movfun' undefined
+- signal/movfun.m:1699 [assert] 'movfun' undefined
+- signal/movfun.m:1700 [assert] 'movfun' undefined
+- signal/movfun.m:1701 [assert] 'movfun' undefined
+- signal/movfun.m:1702 [assert] 'movfun' undefined
+- signal/movfun.m:1703 [assert] 'movfun' undefined
+- signal/movfun.m:1704 [assert] 'movfun' undefined
+- signal/movfun.m:1707 [assert] 'movfun' undefined
+- signal/movfun.m:1708 [assert] 'movfun' undefined
+- signal/movfun.m:1711 [assert] 'movfun' undefined
+- signal/movfun.m:1715 [error] error ''movfun' undefined' does not match <Invalid call>
+- signal/movfun.m:1716 [error] error ''movfun' undefined' does not match <Invalid call>
+- signal/movfun.m:1717 [error] error ''movfun' undefined' does not match <Invalid call>
+- signal/movfun.m:1718 [error] error ''movfun' undefined' does not match <FCN must be a valid function handle>
+- signal/movfun.m:1719 [error] error ''movfun' undefined' does not match <FCN must be a valid function handle>
+- signal/movfun.m:1720 [error] error ''movfun' undefined' does not match <FCN must be a valid function handle>
+- signal/movfun.m:1721 [error] error ''movfun' undefined' does not match <FCN must be a valid function handle>
+- signal/movfun.m:1722 [error] error ''movfun' undefined' does not match <WLEN must be numeric>
+- signal/movfun.m:1723 [error] error ''movfun' undefined' does not match <WLEN must be numeric>
+- signal/movfun.m:1724 [error] error ''movfun' undefined' does not match <Each PROPERTY must have a VALUE>
+- signal/movfun.m:1725 [error] error ''movfun' undefined' does not match <Each PROPERTY must have a VALUE>
+- signal/movfun.m:1726 [error] error ''movfun' undefined' does not match <Each PROPERTY must have a VALUE>
+- signal/movfun.m:1727 [error] error ''movfun' undefined' does not match <PROPERTY name must be>
+- signal/movfun.m:1728 [error] error ''movfun' undefined' does not match <PROPERTY name must be>
+- signal/movfun.m:1729 [error] error ''movfun' undefined' does not match <PROPERTY name must be>
+- signal/movfun.m:1730 [error] error ''movfun' undefined' does not match <PROPERTY name must be>
+- signal/movfun.m:1731 [error] error ''movfun' undefined' does not match <PROPERTY name must be>
+- signal/movfun.m:1732 [error] error ''movfun' undefined' does not match <unknown PROPERTY 'foo'>
+- signal/movfun.m:1733 [error] error ''movfun' undefined' does not match <DIM must be a >
+- signal/movfun.m:1734 [error] error ''movfun' undefined' does not match <DIM must be a >
+- signal/movfun.m:1735 [error] error ''movfun' undefined' does not match <DIM must be a >
+- signal/movfun.m:1736 [error] error ''movfun' undefined' does not match <DIM must be a >
+- signal/movfun.m:1737 [error] error ''movfun' undefined' does not match <DIM must be a >
+- signal/movfun.m:1738 [error] error ''movfun' undefined' does not match <DIM must be a >
+- signal/movfun.m:1739 [error] error ''movfun' undefined' does not match <DIM must be a >
+- signal/movfun.m:1740 [error] error ''movfun' undefined' does not match <ENDPOINTS must be a >
+- signal/movfun.m:1741 [error] error ''movfun' undefined' does not match <ENDPOINTS must be a >
+- signal/movfun.m:1742 [error] error ''movfun' undefined' does not match <ENDPOINTS must be a >
+- signal/movfun.m:1743 [error] error ''movfun' undefined' does not match <ENDPOINTS must be a >
+- signal/movfun.m:1744 [error] error ''movfun' undefined' does not match <ENDPOINTS must be a >
+- signal/movfun.m:1745 [error] error ''movfun' undefined' does not match <ENDPOINTS must be a >
+- signal/movfun.m:1746 [error] error ''movfun' undefined' does not match <ENDPOINTS must be a >
+- signal/movfun.m:1747 [error] error ''movfun' undefined' does not match <ENDPOINTS must be a >
+- signal/movfun.m:1748 [error] error ''movfun' undefined' does not match <NANCOND must be>
+- signal/movfun.m:1749 [error] error ''movfun' undefined' does not match <NANCOND must be>
+- signal/movfun.m:1750 [error] error ''movfun' undefined' does not match <NANCOND must be>
+- signal/movfun.m:1751 [error] error ''movfun' undefined' does not match <NANVAL must be a>
+- signal/movfun.m:1752 [error] error ''movfun' undefined' does not match <NANVAL must be a>
+- signal/movfun.m:1753 [error] error ''movfun' undefined' does not match <NANVAL must be a>
+- signal/movfun.m:1754 [error] error ''movfun' undefined' does not match <NANVAL must be a>
+- signal/movfun.m:1755 [error] error ''movfun' undefined' does not match <OUTDIM must be a>
+- signal/movfun.m:1756 [error] error ''movfun' undefined' does not match <OUTDIM must be a>
+- signal/movfun.m:1757 [error] error ''movfun' undefined' does not match <OUTDIM must be a>
+- signal/movfun.m:1758 [error] error ''movfun' undefined' does not match <OUTDIM must be a>
+- signal/movfun.m:1759 [error] error ''movfun' undefined' does not match <OUTDIM must be a>
+- signal/movfun.m:1760 [error] error ''movfun' undefined' does not match <OUTDIM must be a>
+- signal/movfun.m:1761 [error] error ''movfun' undefined' does not match <OUTDIM must be a>
+- signal/movfun.m:1762 [error] error ''movfun' undefined' does not match <SAMPLEPOINTS must be a>
+- signal/movfun.m:1763 [error] error ''movfun' undefined' does not match <SAMPLEPOINTS must be a>
+- signal/movfun.m:1764 [error] error ''movfun' undefined' does not match <SAMPLEPOINTS must be a>
+- signal/movfun.m:1765 [error] error ''movfun' undefined' does not match <SAMPLEPOINTS must be a>
+- signal/movfun.m:1766 [error] error ''movfun' undefined' does not match <SAMPLEPOINTS must be a>
+- signal/movfun.m:1767 [error] error ''movfun' undefined' does not match <when SamplePoints are not uniformly spaced>
+- signal/movfun.m:1768 [error] error ''movfun' undefined' does not match <when SamplePoints are not uniformly spaced>
+- signal/movfun.m:1769 [error] error ''movfun' undefined' does not match <SamplePoints must be the same size as x>
+- signal/movfun.m:1770 [error] error ''movfun' undefined' does not match <SamplePoints must be the same size as x>
+- signal/movfun.m:1771 [error] error ''movfun' undefined' does not match <WLEN must be numeric>
+- signal/movslice.m:315 [assert] 'movslice' undefined
+- signal/movslice.m:316 [assert] 'movslice' undefined
+- signal/movslice.m:317 [assert] 'movslice' undefined
+- signal/movslice.m:318 [assert] 'movslice' undefined
+- signal/movslice.m:319 [assert] 'movslice' undefined
+- signal/movslice.m:320 [assert] 'movslice' undefined
+- signal/movslice.m:322 [test] 'movslice' undefined
+- signal/movslice.m:332 [test] 'movslice' undefined
+- signal/movslice.m:342 [test] 'movslice' undefined
+- signal/movslice.m:352 [test] 'movslice' undefined
+- signal/movslice.m:362 [test] 'movslice' undefined
+- signal/movslice.m:374 [test] 'movslice' undefined
+- signal/movslice.m:386 [assert] 'movslice' undefined
+- signal/movslice.m:387 [assert] 'movslice' undefined
+- signal/movslice.m:388 [assert] 'movslice' undefined
+- signal/movslice.m:389 [assert] 'movslice' undefined
+- signal/movslice.m:390 [assert] 'movslice' undefined
+- signal/movslice.m:393 [test] 'movslice' undefined
+- signal/movslice.m:403 [test] 'movslice' undefined
+- signal/movslice.m:413 [test] 'movslice' undefined
+- signal/movslice.m:423 [test] 'movslice' undefined
+- signal/movslice.m:434 [test] 'movslice' undefined
+- signal/movslice.m:444 [test] 'movslice' undefined
+- signal/movslice.m:455 [test] 'movslice' undefined
+- signal/movslice.m:466 [test] 'movslice' undefined
+- signal/movslice.m:477 [test] 'movslice' undefined
+- signal/movslice.m:488 [test] 'movslice' undefined
+- signal/movslice.m:498 [test] 'movslice' undefined
+- signal/movslice.m:508 [test] 'movslice' undefined
+- signal/movslice.m:518 [test] 'movslice' undefined
+- signal/movslice.m:528 [test] 'movslice' undefined
+- signal/movslice.m:540 [error] error ''movslice' undefined' does not match <Invalid call>
+- signal/movslice.m:541 [error] error ''movslice' undefined' does not match <Invalid call>
+- signal/movslice.m:542 [error] error ''movslice' undefined' does not match <N must be a positive integer>
+- signal/movslice.m:543 [error] error ''movslice' undefined' does not match <N must be a positive integer>
+- signal/movslice.m:544 [error] error ''movslice' undefined' does not match <N must be a positive integer>
+- signal/movslice.m:545 [error] error ''movslice' undefined' does not match <N must be a positive integer>
+- signal/movslice.m:546 [error] error ''movslice' undefined' does not match <WLEN must be a positive scalar or 2-element array>
+- signal/movslice.m:547 [error] error ''movslice' undefined' does not match <WLEN must be a positive scalar or 2-element array>
+- signal/movslice.m:548 [error] error ''movslice' undefined' does not match <WLEN must be a positive scalar or 2-element array>
+- signal/movslice.m:549 [error] error ''movslice' undefined' does not match <WLEN must be a positive scalar or 2-element array>
+- signal/movslice.m:550 [error] error ''movslice' undefined' does not match <WLEN must be a positive scalar or 2-element array>
+- signal/movslice.m:551 [error] error ''movslice' undefined' does not match <WLEN must be a positive scalar or 2-element array>
+- signal/movslice.m:552 [error] error ''movslice' undefined' does not match <WLEN must be a positive scalar or 2-element array>
+- signal/movslice.m:553 [error] error ''movslice' undefined' does not match <SamplePoints must have length N>
+- signal/periodogram.m:213 [error] error ''periodogram' undefined' does not match <Invalid call>
+- signal/periodogram.m:214 [error] error ''periodogram' undefined' does not match <Invalid call>
+- signal/periodogram.m:215 [error] error ''periodogram' undefined' does not match <X must be a real or complex vector>
+- signal/periodogram.m:216 [error] error ''periodogram' undefined' does not match <WIN must be a vector.*same length>
+- signal/periodogram.m:217 [error] error ''periodogram' undefined' does not match <WIN must be a vector.*same length>
+- signal/periodogram.m:218 [error] error ''periodogram' undefined' does not match <NFFT must be a scalar>
+- signal/periodogram.m:219 [error] error ''periodogram' undefined' does not match <FS must be a scalar>
+- signal/periodogram.m:220 [error] error ''periodogram' undefined' does not match <"centered" range type is not implemented>
+- signal/sinc.m:57 [assert] 'sinc' undefined
+- signal/sinc.m:58 [assert] 'sinc' undefined
+- signal/sinc.m:59 [assert] 'sinc' undefined
+- signal/sinc.m:62 [error] error ''sinc' undefined' does not match <Invalid call>
+- signal/sinetone.m:64 [assert] 'sinetone' undefined
+- signal/sinewave.m:55 [assert] 'sinewave' undefined
+- signal/sinewave.m:56 [assert] 'sinewave' undefined
+- signal/sinewave.m:57 [assert] 'sinewave' undefined
+- signal/sinewave.m:58 [assert] 'sinewave' undefined
+- signal/sinewave.m:59 [assert] 'sinewave' undefined
+- signal/sinewave.m:60 [assert] 'sinewave' undefined
+- signal/sinewave.m:61 [assert] 'sinewave' undefined
+- signal/sinewave.m:63 [error] error ''sinewave' undefined' does not match <Invalid call>
+- signal/spectral_adf.m:77 [error] error ''spectral_adf' undefined' does not match <Invalid call>
+- signal/spectral_adf.m:78 [error] error ''spectral_adf' undefined' does not match <WIN must be a string>
+- signal/spectral_adf.m:79 [error] error ''spectral_adf' undefined' does not match <unable to find function for @invalid_lw>
+- signal/spectral_xdf.m:79 [error] error ''spectral_xdf' undefined' does not match <Invalid call>
+- signal/spectral_xdf.m:80 [error] error ''spectral_xdf' undefined' does not match <WIN must be a string>
+- signal/spectral_xdf.m:81 [error] error ''spectral_xdf' undefined' does not match <unable to find function for @invalid_sw>
+- signal/unwrap.m:207 [assert] 'unwrap' undefined
+- signal/unwrap.m:208 [assert] 'unwrap' undefined
+- signal/unwrap.m:209 [assert] 'unwrap' undefined
+- signal/unwrap.m:210 [assert] 'unwrap' undefined
+- signal/unwrap.m:211 [assert] 'unwrap' undefined
+- signal/unwrap.m:213 [assert] 'unwrap' undefined
+- signal/unwrap.m:214 [assert] 'unwrap' undefined
+- signal/unwrap.m:215 [assert] 'unwrap' undefined
+- signal/unwrap.m:218 [assert] 'unwrap' undefined
+- signal/unwrap.m:219 [assert] 'unwrap' undefined
+- signal/unwrap.m:224 [assert] 'unwrap' undefined
+- signal/unwrap.m:225 [assert] 'unwrap' undefined
+- signal/unwrap.m:226 [assert] 'unwrap' undefined
+- signal/unwrap.m:227 [assert] 'unwrap' undefined
+- signal/unwrap.m:228 [assert] 'unwrap' undefined
+- signal/unwrap.m:229 [assert] 'unwrap' undefined
+- signal/unwrap.m:230 [assert] 'unwrap' undefined
+- signal/unwrap.m:231 [assert] 'unwrap' undefined
+- signal/unwrap.m:233 [test] 'unwrap' undefined
+- signal/unwrap.m:239 [test] 'unwrap' undefined
+- signal/unwrap.m:250 [test] 'unwrap' undefined
+- signal/unwrap.m:257 [assert] 'unwrap' undefined
+- signal/unwrap.m:258 [assert] 'unwrap' undefined
+- signal/unwrap.m:259 [assert] 'unwrap' undefined
+- signal/unwrap.m:260 [assert] 'unwrap' undefined
+- signal/unwrap.m:263 [assert] 'unwrap' undefined
+- signal/unwrap.m:264 [assert] 'unwrap' undefined
+- signal/unwrap.m:265 [assert] 'unwrap' undefined
+- signal/unwrap.m:266 [assert] 'unwrap' undefined
+- signal/unwrap.m:267 [assert] 'unwrap' undefined
+- signal/unwrap.m:270 [assert] 'unwrap' undefined
+- signal/unwrap.m:271 [assert] 'unwrap' undefined
+- signal/unwrap.m:273 [test] 'unwrap' undefined
+- signal/unwrap.m:278 [test] 'unwrap' undefined
+- signal/unwrap.m:286 [error] error ''unwrap' undefined' does not match <Invalid call>
+- signal/unwrap.m:288 [error] error ''unwrap' undefined' does not match <X must be numeric>
+- signal/unwrap.m:289 [error] error ''unwrap' undefined' does not match <X must be numeric>
+- signal/unwrap.m:290 [error] error ''unwrap' undefined' does not match <X must be numeric>
+- signal/unwrap.m:291 [error] error ''unwrap' undefined' does not match <DIM must be an>
+- signal/unwrap.m:292 [error] error ''unwrap' undefined' does not match <DIM must be an>
+- signal/unwrap.m:293 [error] error ''unwrap' undefined' does not match <DIM must be an>
+- signal/unwrap.m:294 [error] error ''unwrap' undefined' does not match <DIM must be an>
+- signal/unwrap.m:295 [error] error ''unwrap' undefined' does not match <DIM must be an>
+- sparse/bicg.m:404 [test] 'toeplitz' undefined
+- sparse/bicg.m:437 [test] 'bicg' undefined
+- sparse/bicg.m:457 [test] 'bicg' undefined
+- sparse/bicg.m:470 [test] 'bicg' undefined
+- sparse/bicg.m:479 [test] 'toeplitz' undefined
+- sparse/bicg.m:487 [test] 'bicg' undefined
+- sparse/bicg.m:494 [test] 'toeplitz' undefined
+- sparse/bicg.m:502 [test] 'bicg' undefined
+- sparse/bicg.m:508 [test] 'bicg' undefined
+- sparse/bicg.m:514 [test] 'bicg' undefined
+- sparse/bicg.m:533 [test] 'toeplitz' undefined
+- sparse/bicg.m:552 [test] 'bicg' undefined
+- sparse/bicgstab.m:402 [test] 'toeplitz' undefined
+- sparse/bicgstab.m:442 [test] 'bicgstab' undefined
+- sparse/bicgstab.m:450 [test] 'bicgstab' undefined
+- sparse/bicgstab.m:455 [test] 'bicgstab' undefined
+- sparse/bicgstab.m:462 [test] 'bicgstab' undefined
+- sparse/bicgstab.m:469 [test] 'bicgstab' undefined
+- sparse/bicgstab.m:478 [test] 'bicgstab' undefined
+- sparse/bicgstab.m:485 [test] 'bicgstab' undefined
+- sparse/bicgstab.m:491 [test] 'bicgstab' undefined
+- sparse/bicgstab.m:497 [test] 'bicgstab' undefined
+- sparse/bicgstab.m:513 [test] 'toeplitz' undefined
+- sparse/cgs.m:371 [test] 'toeplitz' undefined
+- sparse/cgs.m:404 [test] 'cgs' undefined
+- sparse/cgs.m:415 [test] 'cgs' undefined
+- sparse/cgs.m:420 [test] 'cgs' undefined
+- sparse/cgs.m:427 [test] 'toeplitz' undefined
+- sparse/cgs.m:435 [test] 'cgs' undefined
+- sparse/cgs.m:441 [test] 'cgs' undefined
+- sparse/cgs.m:447 [test] 'cgs' undefined
+- sparse/cgs.m:461 [test] 'toeplitz' undefined
+- sparse/cgs.m:469 [test] 'toeplitz' undefined
+- sparse/colperm.m:48 [assert] 'colperm' undefined
+- sparse/eigs.m:469 [shared] 'onCleanup' undefined
+- sparse/eigs.m:588 [shared] 'onCleanup' undefined
+- sparse/eigs.m:718 [shared] 'onCleanup' undefined
+- sparse/eigs.m:968 [shared] 'onCleanup' undefined
+- sparse/eigs.m:1082 [shared] 'onCleanup' undefined
+- sparse/eigs.m:1211 [shared] 'onCleanup' undefined
+- sparse/eigs.m:1435 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- sparse/eigs.m:1666 [error] expected an error but none was raised
+- sparse/eigs.m:1667 [error] error 'eigs: argument must be a scalar, not empty' does not match <requested number of eigenvalues K \(2\) exceeds available eigenvalues \(1\)>
+- sparse/eigs.m:1669 [error] expected an error but none was raised
+- sparse/eigs.m:1670 [error] expected an error but none was raised
+- sparse/eigs.m:1671 [error] expected an error but none was raised
+- sparse/eigs.m:1672 [error] expected an error but none was raised
+- sparse/eigs.m:1673 [error] expected an error but none was raised
+- sparse/eigs.m:1674 [error] expected an error but none was raised
+- sparse/eigs.m:1675 [error] expected an error but none was raised
+- sparse/eigs.m:1676 [error] expected an error but none was raised
+- sparse/eigs.m:1677 [error] expected an error but none was raised
+- sparse/eigs.m:1678 [error] expected an error but none was raised
+- sparse/eigs.m:1679 [error] error 'eigs: unrecognized sigma value 'foobar'' does not match <unrecognized value for SIGMA: foobar>
+- sparse/etreeplot.m:49 [error] error ''etreeplot' undefined' does not match <Invalid call>
+- sparse/etreeplot.m:50 [error] error ''etreeplot' undefined' does not match <Invalid call>
+- sparse/gmres.m:511 [test] 'toeplitz' undefined
+- sparse/gmres.m:541 [test] 'gmres' undefined
+- sparse/gmres.m:550 [test] 'gmres' undefined
+- sparse/gmres.m:566 [test] 'toeplitz' undefined
+- sparse/gmres.m:575 [test] 'hilb' undefined
+- sparse/gmres.m:582 [test] 'gmres' undefined
+- sparse/gmres.m:591 [test] 'gmres' undefined
+- sparse/gmres.m:597 [test] 'gmres' undefined
+- sparse/gmres.m:603 [test] 'toeplitz' undefined
+- sparse/gmres.m:610 [test] 'gmres' undefined
+- sparse/gmres.m:616 [test] 'hilb' undefined
+- sparse/gmres.m:622 [test] 'gmres' undefined
+- sparse/gmres.m:628 [test] 'gmres' undefined
+- sparse/gmres.m:634 [test] 'gmres' undefined
+- sparse/gmres.m:648 [test] 'toeplitz' undefined
+- sparse/ichol.m:259 [shared] 'gallery' undefined
+- sparse/ichol.m:289 [test] 'ichol' undefined
+- sparse/ichol.m:298 [test] 'ichol' undefined
+- sparse/ichol.m:310 [test] 'ichol' undefined
+- sparse/ichol.m:324 [test] 'ichol' undefined
+- sparse/ichol.m:333 [test] 'ichol' undefined
+- sparse/ichol.m:342 [test] 'ichol' undefined
+- sparse/ichol.m:351 [test] 'ichol' undefined
+- sparse/ichol.m:361 [error] error ''ichol' undefined' does not match <negative pivot>
+- sparse/ichol.m:364 [error] error ''ichol' undefined' does not match <non-real pivot>
+- sparse/ichol.m:395 [test] 'ichol' undefined
+- sparse/ichol.m:405 [test] 'ichol' undefined
+- sparse/ichol.m:415 [test] 'ichol' undefined
+- sparse/ichol.m:425 [test] 'ichol' undefined
+- sparse/ichol.m:436 [error] error ''ichol' undefined' does not match <A must be a sparse square matrix>
+- sparse/ichol.m:437 [error] error ''ichol' undefined' does not match <A must be a sparse square matrix>
+- sparse/ichol.m:438 [error] error ''ichol' undefined' does not match <pivot equal to 0>
+- sparse/ichol.m:439 [error] error ''ichol' undefined' does not match <pivot equal to 0>
+- sparse/ichol.m:440 [error] error ''ichol' undefined' does not match <negative pivot>
+- sparse/ichol.m:441 [test] 'fail' undefined
+- sparse/ichol.m:448 [test] 'fail' undefined
+- sparse/ichol.m:455 [test] 'fail' undefined
+- sparse/ichol.m:462 [test] 'fail' undefined
+- sparse/ichol.m:469 [test] 'fail' undefined
+- sparse/ilu.m:267 [shared] 'gallery' undefined
+- sparse/ilu.m:272 [test] 'ilu' undefined
+- sparse/ilu.m:277 [test] 'ilu' undefined
+- sparse/ilu.m:284 [test] 'ilu' undefined
+- sparse/ilu.m:291 [test] 'ilu' undefined
+- sparse/ilu.m:300 [test] 'ilu' undefined
+- sparse/ilu.m:312 [test] 'ilu' undefined
+- sparse/ilu.m:323 [shared] 'onCleanup' undefined
+- sparse/ilu.m:332 [shared] 'spconvert' undefined
+- sparse/ilu.m:344 [test] 'ilu' undefined
+- sparse/ilu.m:348 [test] 'ilu' undefined
+- sparse/ilu.m:352 [test] 'ilu' undefined
+- sparse/ilu.m:356 [test] 'ilu' undefined
+- sparse/ilu.m:361 [test] 'ilu' undefined
+- sparse/ilu.m:365 [test] 'ilu' undefined
+- sparse/ilu.m:369 [test] 'ilu' undefined
+- sparse/ilu.m:373 [test] 'ilu' undefined
+- sparse/ilu.m:378 [test] 'ilu' undefined
+- sparse/ilu.m:384 [test] 'ilu' undefined
+- sparse/ilu.m:390 [test] 'ilu' undefined
+- sparse/ilu.m:396 [test] 'ilu' undefined
+- sparse/ilu.m:404 [shared] 'spconvert' undefined
+- sparse/ilu.m:420 [test] 'ilu' undefined
+- sparse/ilu.m:424 [test] 'ilu' undefined
+- sparse/ilu.m:428 [test] 'ilu' undefined
+- sparse/ilu.m:432 [test] 'ilu' undefined
+- sparse/ilu.m:437 [test] 'ilu' undefined
+- sparse/ilu.m:441 [test] 'ilu' undefined
+- sparse/ilu.m:445 [test] 'ilu' undefined
+- sparse/ilu.m:449 [test] 'ilu' undefined
+- sparse/ilu.m:454 [test] 'ilu' undefined
+- sparse/ilu.m:460 [test] 'ilu' undefined
+- sparse/ilu.m:466 [test] 'ilu' undefined
+- sparse/ilu.m:472 [test] 'ilu' undefined
+- sparse/ilu.m:483 [test] 'ilu' undefined
+- sparse/ilu.m:491 [error] error ''ilu' undefined' does not match <encountered a pivot equal to 0>
+- sparse/ilu.m:498 [error] error ''ilu' undefined' does not match <encountered a pivot equal to 0>
+- sparse/ilu.m:506 [test] 'ilu' undefined
+- sparse/ilu.m:513 [shared] 'spconvert' undefined
+- sparse/ilu.m:516 [test] 'ilu' undefined
+- sparse/ilu.m:529 [error] error ''ilu' undefined' does not match <A must be a sparse square matrix>
+- sparse/ilu.m:530 [error] error ''ilu' undefined' does not match <A must be a sparse square matrix>
+- sparse/ilu.m:531 [error] error ''ilu' undefined' does not match <zero on the diagonal>
+- sparse/ilu.m:533 [error] error ''ilu' undefined' does not match <invalid TYPE specified>
+- sparse/ilu.m:536 [error] error ''ilu' undefined' does not match <invalid TYPE specified>
+- sparse/ilu.m:539 [error] error ''ilu' undefined' does not match <invalid TYPE specified>
+- sparse/ilu.m:543 [error] error ''ilu' undefined' does not match <DROPTOL must be a non-negative real scalar>
+- sparse/ilu.m:547 [error] error ''ilu' undefined' does not match <DROPTOL must be a non-negative real scalar>
+- sparse/ilu.m:550 [error] error ''ilu' undefined' does not match <DROPTOL must be a non-negative real scalar>
+- sparse/ilu.m:554 [error] error ''ilu' undefined' does not match <MILU must be one of "off", "col", or "row">
+- sparse/ilu.m:558 [error] error ''ilu' undefined' does not match <MILU must be one of "off", "col", or "row">
+- sparse/ilu.m:561 [error] error ''ilu' undefined' does not match <MILU must be one of "off", "col", or "row">
+- sparse/ilu.m:565 [error] error ''ilu' undefined' does not match <UDIAG must be 0 or 1>
+- sparse/ilu.m:569 [error] error ''ilu' undefined' does not match <UDIAG must be 0 or 1>
+- sparse/ilu.m:572 [error] error ''ilu' undefined' does not match <UDIAG must be 0 or 1>
+- sparse/ilu.m:576 [error] error ''ilu' undefined' does not match <THRESH must be a scalar in the range \[0, 1\]>
+- sparse/ilu.m:580 [error] error ''ilu' undefined' does not match <THRESH must be a scalar in the range \[0, 1\]>
+- sparse/ilu.m:583 [error] error ''ilu' undefined' does not match <THRESH must be a scalar in the range \[0, 1\]>
+- sparse/pcg.m:505 [test] 'toeplitz' undefined
+- sparse/pcg.m:539 [test] 'pcg' undefined
+- sparse/pcg.m:547 [test] 'pcg' undefined
+- sparse/pcg.m:555 [test] 'pcg' undefined
+- sparse/pcg.m:567 [warning] 'pcg' undefined
+- sparse/pcg.m:582 [test] 'pcg' undefined
+- sparse/pcg.m:592 [test] 'pcg' undefined
+- sparse/pcg.m:601 [test] 'toeplitz' undefined
+- sparse/pcg.m:629 [test] 'toeplitz' undefined
+- sparse/pcg.m:637 [test] 'pcg' undefined
+- sparse/pcg.m:644 [test] 'pcg' undefined
+- sparse/pcg.m:650 [test] 'pcg' undefined
+- sparse/pcg.m:656 [test] 'pcg' undefined
+- sparse/pcg.m:670 [test] 'toeplitz' undefined
+- sparse/pcg.m:678 [test] 'pcg' undefined
+- sparse/pcr.m:410 [test] 'pcr' undefined
+- sparse/pcr.m:420 [test] 'pcr' undefined
+- sparse/pcr.m:436 [test] 'pcr' undefined
+- sparse/qmr.m:282 [test] 'qmr' undefined
+- sparse/qmr.m:302 [test] 'qmr' undefined
+- sparse/qmr.m:315 [test] 'qmr' undefined
+- sparse/qmr.m:324 [test] 'qmr' undefined
+- sparse/spconvert.m:62 [test] 'spconvert' undefined
+- sparse/spconvert.m:76 [error] error ''spconvert' undefined' does not match <Invalid call>
+- sparse/speye.m:82 [assert] Invalid call to speye
+- sparse/speye.m:85 [error] expected an error but none was raised
+- sparse/speye.m:86 [error] expected an error but none was raised
+- sparse/speye.m:87 [error] expected an error but none was raised
+- sparse/speye.m:88 [error] expected an error but none was raised
+- sparse/spfun.m:104 [error] error 'spfun: wrong type argument 'cell'' does not match <S must be numeric>
+- sparse/spfun.m:105 [error] expected an error but none was raised
+- sparse/sprand.m:72 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       5.578413903273513        5       Abs err 0.5784139032735132 exceeds tol 1.4901161193847656E-08
+- sparse/sprand.m:104 [error] error 'Index was outside the bounds of the array.' does not match <M must be a non-negative integer>
+- sparse/sprand.m:105 [error] expected an error but none was raised
+- sparse/sprand.m:106 [error] expected an error but none was raised
+- sparse/sprand.m:107 [error] expected an error but none was raised
+- sparse/sprand.m:108 [error] expected an error but none was raised
+- sparse/sprand.m:109 [error] expected an error but none was raised
+- sparse/sprand.m:110 [error] error 'Index was outside the bounds of the array.' does not match <N must be a non-negative integer>
+- sparse/sprand.m:113 [error] expected an error but none was raised
+- sparse/sprand.m:114 [error] expected an error but none was raised
+- sparse/sprand.m:115 [error] expected an error but none was raised
+- sparse/sprandn.m:72 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       12.878246611209539        5       Abs err 7.878246611209539 exceeds tol 1.4901161193847656E-08
+- sparse/sprandn.m:103 [error] error 'Index was outside the bounds of the array.' does not match <M must be a non-negative integer>
+- sparse/sprandn.m:104 [error] expected an error but none was raised
+- sparse/sprandn.m:105 [error] expected an error but none was raised
+- sparse/sprandn.m:106 [error] expected an error but none was raised
+- sparse/sprandn.m:107 [error] expected an error but none was raised
+- sparse/sprandn.m:108 [error] expected an error but none was raised
+- sparse/sprandn.m:109 [error] error 'Index was outside the bounds of the array.' does not match <N must be a non-negative integer>
+- sparse/sprandn.m:112 [error] expected an error but none was raised
+- sparse/sprandn.m:113 [error] expected an error but none was raised
+- sparse/sprandn.m:114 [error] expected an error but none was raised
+- sparse/sprandsym.m:167 [test] 'issymmetric' undefined
+- sparse/sprandsym.m:175 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- sparse/sprandsym.m:186 [error] expected an error but none was raised
+- sparse/sprandsym.m:187 [error] expected an error but none was raised
+- sparse/spstats.m:69 [test] 'spstats' undefined
+- sparse/spy.m:88 [error] expected an error but none was raised
+- sparse/tfqmr.m:351 [test] 'toeplitz' undefined
+- sparse/tfqmr.m:384 [test] 'tfqmr' undefined
+- sparse/tfqmr.m:407 [test] 'hilb' undefined
+- sparse/tfqmr.m:422 [test] 'tfqmr' undefined
+- sparse/tfqmr.m:429 [test] 'tfqmr' undefined
+- sparse/tfqmr.m:442 [test] 'tfqmr' undefined
+- sparse/tfqmr.m:448 [test] 'tfqmr' undefined
+- sparse/tfqmr.m:454 [test] 'tfqmr' undefined
+- sparse/tfqmr.m:468 [test] 'toeplitz' undefined
+- sparse/treelayout.m:218 [test] 'treelayout' undefined
+- sparse/treelayout.m:226 [test] 'treelayout' undefined
+- sparse/treelayout.m:234 [test] 'treelayout' undefined
+- sparse/treeplot.m:220 [error] error ''treeplot' undefined' does not match <Invalid call>
+- sparse/treeplot.m:221 [error] error ''treeplot' undefined' does not match <TREE must be a row vector>
+- sparse/treeplot.m:222 [error] error ''treeplot' undefined' does not match <TREE must be a row vector>
+- sparse/treeplot.m:223 [error] error ''treeplot' undefined' does not match <TREE must be a row vector>
+- specfun/beta.m:68 [test] 'beta' undefined
+- specfun/beta.m:77 [assert] 'beta' undefined
+- specfun/beta.m:79 [test] 'beta' undefined
+- specfun/beta.m:85 [test] 'beta' undefined
+- specfun/beta.m:91 [error] error ''beta' undefined' does not match <Invalid call>
+- specfun/beta.m:92 [error] error ''beta' undefined' does not match <Invalid call>
+- specfun/beta.m:93 [error] error ''beta' undefined' does not match <A and B must be real>
+- specfun/beta.m:94 [error] error ''beta' undefined' does not match <A and B must be real>
+- specfun/beta.m:95 [error] error ''beta' undefined' does not match <A and B must have consistent sizes>
+- specfun/beta.m:96 [error] error ''beta' undefined' does not match <A and B must have consistent sizes>
+- specfun/beta.m:97 [error] error ''beta' undefined' does not match <A and B must have consistent sizes>
+- specfun/betainc.m:217 [test] 'betainc' undefined
+- specfun/betainc.m:229 [test] 'betainc' undefined
+- specfun/betainc.m:241 [test] 'betainc' undefined
+- specfun/betainc.m:252 [test] 'betainc' undefined
+- specfun/betainc.m:257 [assert] 'betainc' undefined
+- specfun/betainc.m:258 [assert] 'betainc' undefined
+- specfun/betainc.m:259 [assert] 'betainc' undefined
+- specfun/betainc.m:261 [assert] 'betainc' undefined
+- specfun/betainc.m:262 [assert] 'betainc' undefined
+- specfun/betainc.m:263 [assert] 'betainc' undefined
+- specfun/betainc.m:266 [test] 'ndgrid' undefined
+- specfun/betainc.m:275 [test] 'betainc' undefined
+- specfun/betainc.m:279 [test] 'betainc' undefined
+- specfun/betainc.m:286 [error] error ''betainc' undefined' does not match <Invalid call>
+- specfun/betainc.m:287 [error] error ''betainc' undefined' does not match <Invalid call>
+- specfun/betainc.m:288 [error] error ''betainc' undefined' does not match <Invalid call>
+- specfun/betainc.m:289 [error] error ''betainc' undefined' does not match <must be of common size or scalars>
+- specfun/betainc.m:290 [error] error ''betainc' undefined' does not match <all inputs must be real>
+- specfun/betainc.m:291 [error] error ''betainc' undefined' does not match <all inputs must be real>
+- specfun/betainc.m:292 [error] error ''betainc' undefined' does not match <all inputs must be real>
+- specfun/betainc.m:293 [error] error ''betainc' undefined' does not match <all inputs must be numeric>
+- specfun/betainc.m:294 [error] error ''betainc' undefined' does not match <all inputs must be numeric>
+- specfun/betainc.m:295 [error] error ''betainc' undefined' does not match <all inputs must be numeric>
+- specfun/betainc.m:296 [error] error ''betainc' undefined' does not match <X must be in the range \[0, 1\]>
+- specfun/betainc.m:297 [error] error ''betainc' undefined' does not match <X must be in the range \[0, 1\]>
+- specfun/betainc.m:298 [error] error ''betainc' undefined' does not match <X must be in the range \[0, 1\]>
+- specfun/betainc.m:302 [error] error ''betainc' undefined' does not match <A must be strictly positive>
+- specfun/betainc.m:303 [error] error ''betainc' undefined' does not match <A must be strictly positive>
+- specfun/betainc.m:307 [error] error ''betainc' undefined' does not match <B must be strictly positive>
+- specfun/betainc.m:308 [error] error ''betainc' undefined' does not match <B must be strictly positive>
+- specfun/betainc.m:312 [error] error ''betainc' undefined' does not match <invalid value for TAIL>
+- specfun/betaincinv.m:239 [test] 'ndgrid' undefined
+- specfun/betaincinv.m:246 [test] 'ndgrid' undefined
+- specfun/betaincinv.m:253 [test] 'ndgrid' undefined
+- specfun/betaincinv.m:260 [test] 'ndgrid' undefined
+- specfun/betaincinv.m:268 [assert] 'betaincinv' undefined
+- specfun/betaincinv.m:269 [assert] 'betaincinv' undefined
+- specfun/betaincinv.m:270 [assert] 'betaincinv' undefined
+- specfun/betaincinv.m:271 [assert] 'betaincinv' undefined
+- specfun/betaincinv.m:274 [assert] 'betaincinv' undefined
+- specfun/betaincinv.m:275 [assert] 'betaincinv' undefined
+- specfun/betaincinv.m:276 [assert] 'betaincinv' undefined
+- specfun/betaincinv.m:277 [assert] 'betaincinv' undefined
+- specfun/betaincinv.m:278 [assert] 'betaincinv' undefined
+- specfun/betaincinv.m:279 [assert] 'betaincinv' undefined
+- specfun/betaincinv.m:280 [assert] 'betaincinv' undefined
+- specfun/betaincinv.m:281 [assert] 'betaincinv' undefined
+- specfun/betaincinv.m:282 [assert] 'betaincinv' undefined
+- specfun/betaincinv.m:283 [assert] 'betaincinv' undefined
+- specfun/betaincinv.m:284 [assert] 'betaincinv' undefined
+- specfun/betaincinv.m:286 [assert] 'betaincinv' undefined
+- specfun/betaincinv.m:288 [assert] 'betaincinv' undefined
+- specfun/betaincinv.m:290 [assert] 'betaincinv' undefined
+- specfun/betaincinv.m:294 [error] error ''betaincinv' undefined' does not match <Invalid call>
+- specfun/betaincinv.m:295 [error] error ''betaincinv' undefined' does not match <Invalid call>
+- specfun/betaincinv.m:296 [error] error ''betaincinv' undefined' does not match <Invalid call>
+- specfun/betaincinv.m:297 [error] error ''betaincinv' undefined' does not match <must be of common size or scalars>
+- specfun/betaincinv.m:299 [error] error ''betaincinv' undefined' does not match <must be .* floating point>
+- specfun/betaincinv.m:300 [error] error ''betaincinv' undefined' does not match <must be .* floating point>
+- specfun/betaincinv.m:301 [error] error ''betaincinv' undefined' does not match <must be .* floating point>
+- specfun/betaincinv.m:302 [error] error ''betaincinv' undefined' does not match <must be real>
+- specfun/betaincinv.m:303 [error] error ''betaincinv' undefined' does not match <must be real>
+- specfun/betaincinv.m:304 [error] error ''betaincinv' undefined' does not match <must be real>
+- specfun/betaincinv.m:305 [error] error ''betaincinv' undefined' does not match <Y must be in the range \[0, 1\]>
+- specfun/betaincinv.m:306 [error] error ''betaincinv' undefined' does not match <Y must be in the range \[0, 1\]>
+- specfun/betaincinv.m:307 [error] error ''betaincinv' undefined' does not match <Y must be in the range \[0, 1\]>
+- specfun/betaincinv.m:311 [error] error ''betaincinv' undefined' does not match <A must be strictly positive>
+- specfun/betaincinv.m:312 [error] error ''betaincinv' undefined' does not match <A must be strictly positive>
+- specfun/betaincinv.m:316 [error] error ''betaincinv' undefined' does not match <B must be strictly positive>
+- specfun/betaincinv.m:317 [error] error ''betaincinv' undefined' does not match <B must be strictly positive>
+- specfun/betaincinv.m:321 [error] error ''betaincinv' undefined' does not match <invalid value for TAIL>
+- specfun/betaln.m:66 [assert] 'betaln' undefined
+- specfun/betaln.m:69 [error] error ''betaln' undefined' does not match <Invalid call>
+- specfun/betaln.m:70 [error] error ''betaln' undefined' does not match <Invalid call>
+- specfun/betaln.m:71 [error] error ''betaln' undefined' does not match <A and B must be real>
+- specfun/betaln.m:72 [error] error ''betaln' undefined' does not match <A and B must be real>
+- specfun/cosint.m:164 [assert] 'cosint' undefined
+- specfun/cosint.m:166 [test] 'cosint' undefined
+- specfun/cosint.m:173 [assert] 'cosint' undefined
+- specfun/cosint.m:174 [assert] 'cosint' undefined
+- specfun/cosint.m:175 [assert] 'cosint' undefined
+- specfun/cosint.m:176 [assert] 'cosint' undefined
+- specfun/cosint.m:177 [assert] 'cosint' undefined
+- specfun/cosint.m:178 [assert] 'cosint' undefined
+- specfun/cosint.m:179 [assert] 'cosint' undefined
+- specfun/cosint.m:180 [assert] 'cosint' undefined
+- specfun/cosint.m:182 [assert] 'cosint' undefined
+- specfun/cosint.m:185 [assert] 'cosint' undefined
+- specfun/cosint.m:186 [assert] 'cosint' undefined
+- specfun/cosint.m:187 [assert] 'cosint' undefined
+- specfun/cosint.m:188 [assert] 'cosint' undefined
+- specfun/cosint.m:189 [assert] 'cosint' undefined
+- specfun/cosint.m:190 [assert] 'cosint' undefined
+- specfun/cosint.m:191 [assert] 'cosint' undefined
+- specfun/cosint.m:193 [test] 'cosint' undefined
+- specfun/cosint.m:202 [test] 'cosint' undefined
+- specfun/cosint.m:210 [test] 'cosint' undefined
+- specfun/cosint.m:218 [test] 'cosint' undefined
+- specfun/cosint.m:226 [test] 'cosint' undefined
+- specfun/cosint.m:235 [test] 'cosint' undefined
+- specfun/cosint.m:243 [test] 'cosint' undefined
+- specfun/cosint.m:258 [test] 'cosint' undefined
+- specfun/cosint.m:270 [error] error ''cosint' undefined' does not match <Invalid call>
+- specfun/cosint.m:271 [error] error ''cosint' undefined' does not match <X must be numeric>
+- specfun/ellipke.m:156 [test] 'ellipke' undefined
+- specfun/ellipke.m:172 [test] 'ellipke' undefined
+- specfun/ellipke.m:220 [error] error ''ellipke' undefined' does not match <Invalid call>
+- specfun/ellipke.m:221 [error] error ''ellipke' undefined' does not match <M must be real>
+- specfun/ellipke.m:222 [error] error ''ellipke' undefined' does not match <M must be .= 1>
+- specfun/ellipke.m:223 [error] error ''ellipke' undefined' does not match <TOL must be a real scalar . 0>
+- specfun/ellipke.m:224 [error] error ''ellipke' undefined' does not match <TOL must be a real scalar . 0>
+- specfun/ellipke.m:225 [error] error ''ellipke' undefined' does not match <TOL must be a real scalar . 0>
+- specfun/expint.m:197 [test] 'expint' undefined
+- specfun/expint.m:243 [test] 'expint' undefined
+- specfun/expint.m:249 [test] 'expint' undefined
+- specfun/expint.m:255 [test] 'expint' undefined
+- specfun/expint.m:259 [assert] 'expint' undefined
+- specfun/expint.m:260 [assert] 'expint' undefined
+- specfun/expint.m:261 [assert] 'expint' undefined
+- specfun/expint.m:262 [assert] 'expint' undefined
+- specfun/expint.m:263 [assert] 'expint' undefined
+- specfun/expint.m:264 [assert] 'expint' undefined
+- specfun/expint.m:265 [assert] 'expint' undefined
+- specfun/expint.m:266 [assert] 'expint' undefined
+- specfun/expint.m:267 [assert] 'expint' undefined
+- specfun/expint.m:268 [assert] 'expint' undefined
+- specfun/expint.m:271 [assert] 'expint' undefined
+- specfun/expint.m:272 [assert] 'expint' undefined
+- specfun/expint.m:275 [error] error ''expint' undefined' does not match <Invalid call>
+- specfun/expint.m:276 [error] error ''expint' undefined' does not match <X must be numeric>
+- specfun/factor.m:189 [test] element number 2 undefined in return list
+- specfun/factor.m:217 [test] element number 2 undefined in return list
+- specfun/factor.m:224 [error] expected an error but none was raised
+- specfun/factor.m:225 [error] expected an error but none was raised
+- specfun/factor.m:226 [error] expected an error but none was raised
+- specfun/factor.m:227 [error] expected an error but none was raised
+- specfun/factor.m:228 [error] expected an error but none was raised
+- specfun/factor.m:229 [error] expected an error but none was raised
+- specfun/factorial.m:67 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       1.1978571669967992E+100        1.1978571669969933E+100       Abs err 1.9407262233335033E+87 exceeds tol 3.404514833951547E+86
+- specfun/factorial.m:71 [error] expected an error but none was raised
+- specfun/gammainc.m:461 [assert] 'gammainc' undefined
+- specfun/gammainc.m:462 [assert] 'gammainc' undefined
+- specfun/gammainc.m:463 [assert] 'gammainc' undefined
+- specfun/gammainc.m:464 [assert] 'gammainc' undefined
+- specfun/gammainc.m:467 [assert] 'gammainc' undefined
+- specfun/gammainc.m:468 [assert] 'gammainc' undefined
+- specfun/gammainc.m:469 [assert] 'gammainc' undefined
+- specfun/gammainc.m:470 [assert] 'gammainc' undefined
+- specfun/gammainc.m:474 [assert] 'gammainc' undefined
+- specfun/gammainc.m:477 [assert] 'gammainc' undefined
+- specfun/gammainc.m:478 [assert] 'gammainc' undefined
+- specfun/gammainc.m:479 [assert] 'gammainc' undefined
+- specfun/gammainc.m:481 [assert] 'gammainc' undefined
+- specfun/gammainc.m:484 [assert] 'gammainc' undefined
+- specfun/gammainc.m:485 [assert] 'gammainc' undefined
+- specfun/gammainc.m:486 [assert] 'gammainc' undefined
+- specfun/gammainc.m:487 [assert] 'gammainc' undefined
+- specfun/gammainc.m:488 [assert] 'gammainc' undefined
+- specfun/gammainc.m:490 [assert] 'gammainc' undefined
+- specfun/gammainc.m:491 [assert] 'gammainc' undefined
+- specfun/gammainc.m:494 [assert] 'gammainc' undefined
+- specfun/gammainc.m:496 [assert] 'gammainc' undefined
+- specfun/gammainc.m:497 [assert] 'gammainc' undefined
+- specfun/gammainc.m:499 [assert] 'gammainc' undefined
+- specfun/gammainc.m:501 [assert] 'gammainc' undefined
+- specfun/gammainc.m:502 [assert] 'gammainc' undefined
+- specfun/gammainc.m:503 [assert] 'gammainc' undefined
+- specfun/gammainc.m:504 [assert] 'gammainc' undefined
+- specfun/gammainc.m:507 [assert] 'gammainc' undefined
+- specfun/gammainc.m:508 [assert] 'gammainc' undefined
+- specfun/gammainc.m:511 [test] 'gammainc' undefined
+- specfun/gammainc.m:515 [assert] 'gammainc' undefined
+- specfun/gammainc.m:516 [assert] 'gammainc' undefined
+- specfun/gammainc.m:517 [assert] 'gammainc' undefined
+- specfun/gammainc.m:518 [assert] 'gammainc' undefined
+- specfun/gammainc.m:520 [assert] 'gammainc' undefined
+- specfun/gammainc.m:521 [assert] 'gammainc' undefined
+- specfun/gammainc.m:523 [assert] 'gammainc' undefined
+- specfun/gammainc.m:525 [assert] 'gammainc' undefined
+- specfun/gammainc.m:526 [assert] 'gammainc' undefined
+- specfun/gammainc.m:527 [assert] 'gammainc' undefined
+- specfun/gammainc.m:530 [assert] 'gammainc' undefined
+- specfun/gammainc.m:534 [assert] 'gammainc' undefined
+- specfun/gammainc.m:539 [assert] 'gammainc' undefined
+- specfun/gammainc.m:544 [assert] 'gammainc' undefined
+- specfun/gammainc.m:548 [test] 'gammainc' undefined
+- specfun/gammainc.m:552 [test] 'gammainc' undefined
+- specfun/gammainc.m:557 [assert] 'gammainc' undefined
+- specfun/gammainc.m:558 [assert] 'gammainc' undefined
+- specfun/gammainc.m:559 [assert] 'gammainc' undefined
+- specfun/gammainc.m:560 [assert] 'gammainc' undefined
+- specfun/gammainc.m:561 [assert] 'gammainc' undefined
+- specfun/gammainc.m:562 [assert] 'gammainc' undefined
+- specfun/gammainc.m:563 [assert] 'gammainc' undefined
+- specfun/gammainc.m:564 [assert] 'gammainc' undefined
+- specfun/gammainc.m:565 [assert] 'gammainc' undefined
+- specfun/gammainc.m:566 [assert] 'gammainc' undefined
+- specfun/gammainc.m:567 [assert] 'gammainc' undefined
+- specfun/gammainc.m:568 [assert] 'gammainc' undefined
+- specfun/gammainc.m:569 [assert] 'gammainc' undefined
+- specfun/gammainc.m:570 [assert] 'gammainc' undefined
+- specfun/gammainc.m:571 [assert] 'gammainc' undefined
+- specfun/gammainc.m:572 [assert] 'gammainc' undefined
+- specfun/gammainc.m:573 [assert] 'gammainc' undefined
+- specfun/gammainc.m:574 [assert] 'gammainc' undefined
+- specfun/gammainc.m:575 [assert] 'gammainc' undefined
+- specfun/gammainc.m:576 [assert] 'gammainc' undefined
+- specfun/gammainc.m:577 [assert] 'gammainc' undefined
+- specfun/gammainc.m:578 [assert] 'gammainc' undefined
+- specfun/gammainc.m:579 [assert] 'gammainc' undefined
+- specfun/gammainc.m:580 [assert] 'gammainc' undefined
+- specfun/gammainc.m:581 [assert] 'gammainc' undefined
+- specfun/gammainc.m:582 [assert] 'gammainc' undefined
+- specfun/gammainc.m:583 [assert] 'gammainc' undefined
+- specfun/gammainc.m:584 [assert] 'gammainc' undefined
+- specfun/gammainc.m:585 [assert] 'gammainc' undefined
+- specfun/gammainc.m:586 [assert] 'gammainc' undefined
+- specfun/gammainc.m:589 [error] error ''gammainc' undefined' does not match <Invalid call>
+- specfun/gammainc.m:590 [error] error ''gammainc' undefined' does not match <Invalid call>
+- specfun/gammainc.m:591 [error] error ''gammainc' undefined' does not match <must be of common size or scalars>
+- specfun/gammainc.m:592 [error] error ''gammainc' undefined' does not match <must be of common size or scalars>
+- specfun/gammainc.m:593 [error] error ''gammainc' undefined' does not match <all inputs must be real>
+- specfun/gammainc.m:594 [error] error ''gammainc' undefined' does not match <all inputs must be real>
+- specfun/gammainc.m:595 [error] error ''gammainc' undefined' does not match <A must be non-negative>
+- specfun/gammainc.m:596 [error] error ''gammainc' undefined' does not match <A must be non-negative>
+- specfun/gammainc.m:600 [error] error ''gammainc' undefined' does not match <invalid value for TAIL>
+- specfun/gammaincinv.m:275 [test] 'ndgrid' undefined
+- specfun/gammaincinv.m:282 [test] 'ndgrid' undefined
+- specfun/gammaincinv.m:289 [test] 'ndgrid' undefined
+- specfun/gammaincinv.m:296 [test] 'ndgrid' undefined
+- specfun/gammaincinv.m:303 [test] 'gammaincinv' undefined
+- specfun/gammaincinv.m:308 [assert] 'gammaincinv' undefined
+- specfun/gammaincinv.m:309 [assert] 'gammaincinv' undefined
+- specfun/gammaincinv.m:310 [assert] 'gammaincinv' undefined
+- specfun/gammaincinv.m:311 [assert] 'gammaincinv' undefined
+- specfun/gammaincinv.m:312 [assert] 'gammaincinv' undefined
+- specfun/gammaincinv.m:313 [assert] 'gammaincinv' undefined
+- specfun/gammaincinv.m:314 [assert] 'gammaincinv' undefined
+- specfun/gammaincinv.m:317 [error] error ''gammaincinv' undefined' does not match <Invalid call>
+- specfun/gammaincinv.m:318 [error] error ''gammaincinv' undefined' does not match <Invalid call>
+- specfun/gammaincinv.m:319 [error] error ''gammaincinv' undefined' does not match <must be of common size or scalars>
+- specfun/gammaincinv.m:321 [error] error ''gammaincinv' undefined' does not match <all inputs must be real>
+- specfun/gammaincinv.m:322 [error] error ''gammaincinv' undefined' does not match <all inputs must be real>
+- specfun/gammaincinv.m:323 [error] error ''gammaincinv' undefined' does not match <Y must be in the range \[0, 1\]>
+- specfun/gammaincinv.m:324 [error] error ''gammaincinv' undefined' does not match <Y must be in the range \[0, 1\]>
+- specfun/gammaincinv.m:325 [error] error ''gammaincinv' undefined' does not match <Y must be in the range \[0, 1\]>
+- specfun/gammaincinv.m:329 [error] error ''gammaincinv' undefined' does not match <A must be strictly positive>
+- specfun/gammaincinv.m:330 [error] error ''gammaincinv' undefined' does not match <A must be strictly positive>
+- specfun/gammaincinv.m:334 [error] error ''gammaincinv' undefined' does not match <invalid value for TAIL>
+- specfun/isprime.m:197 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- specfun/isprime.m:199 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- specfun/isprime.m:200 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- specfun/isprime.m:201 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- specfun/isprime.m:204 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- specfun/isprime.m:210 [error] expected an error but none was raised
+- specfun/isprime.m:211 [error] expected an error but none was raised
+- specfun/lcm.m:94 [error] expected an error but none was raised
+- specfun/lcm.m:95 [error] error 'operator lcm: nonconformant arguments (op1 is 1x2, op2 is 1x3)' does not match <same size or scalar>
+- specfun/lcm.m:96 [error] error 'lcm: wrong type argument 'cell array'' does not match <arguments must be numeric>
+- specfun/lcm.m:97 [warning] expected a warning but none was issued
+- specfun/lcm.m:98 [warning] expected a warning but none was issued
+- specfun/lcm.m:99 [warning] expected a warning but none was issued
+- specfun/lcm.m:100 [warning] expected a warning but none was issued
+- specfun/lcm.m:101 [warning] expected a warning but none was issued
+- specfun/lcm.m:102 [warning] expected a warning but none was issued
+- specfun/lcm.m:103 [warning] expected a warning but none was issued
+- specfun/lcm.m:104 [warning] expected a warning but none was issued
+- specfun/lcm.m:105 [warning] expected a warning but none was issued
+- specfun/lcm.m:106 [warning] expected a warning but none was issued
+- specfun/legendre.m:250 [test] 'legendre' undefined
+- specfun/legendre.m:260 [test] 'legendre' undefined
+- specfun/legendre.m:270 [test] 'legendre' undefined
+- specfun/legendre.m:280 [test] 'legendre' undefined
+- specfun/legendre.m:285 [test] 'legendre' undefined
+- specfun/legendre.m:290 [test] 'legendre' undefined
+- specfun/legendre.m:294 [test] 'legendre' undefined
+- specfun/legendre.m:302 [test] 'legendre' undefined
+- specfun/legendre.m:309 [error] error ''legendre' undefined' does not match <Invalid call>
+- specfun/legendre.m:310 [error] error ''legendre' undefined' does not match <Invalid call>
+- specfun/legendre.m:311 [error] error ''legendre' undefined' does not match <must be a real non-negative integer>
+- specfun/legendre.m:312 [error] error ''legendre' undefined' does not match <must be a real non-negative integer>
+- specfun/legendre.m:313 [error] error ''legendre' undefined' does not match <must be a real non-negative integer>
+- specfun/legendre.m:314 [error] error ''legendre' undefined' does not match <must be a real non-negative integer>
+- specfun/legendre.m:315 [error] error ''legendre' undefined' does not match <must be real-valued vector>
+- specfun/legendre.m:316 [error] error ''legendre' undefined' does not match <in the range -1 .= X .= 1>
+- specfun/legendre.m:317 [error] error ''legendre' undefined' does not match <in the range -1 .= X .= 1>
+- specfun/legendre.m:318 [error] error ''legendre' undefined' does not match <NORMALIZATION option must be>
+- specfun/nchoosek.m:205 [assert] 'bincoeff' undefined
+- specfun/nchoosek.m:206 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- specfun/nchoosek.m:212 [assert] nchoosek: wrong type argument 'cell array'
+- specfun/nchoosek.m:213 [test] nchoosek: wrong type argument 'struct'
+- specfun/nchoosek.m:220 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- specfun/nchoosek.m:228 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- specfun/nchoosek.m:236 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- specfun/nchoosek.m:244 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- specfun/nchoosek.m:252 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- specfun/nchoosek.m:260 [test] nchoosek: wrong type argument 'cell array'
+- specfun/nchoosek.m:268 [test] nchoosek: wrong type argument 'struct'
+- specfun/nchoosek.m:280 [test] nchoosek: wrong type argument 'struct'
+- specfun/nchoosek.m:298 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- specfun/nchoosek.m:317 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- specfun/nchoosek.m:324 [error] expected an error but none was raised
+- specfun/nchoosek.m:325 [error] expected an error but none was raised
+- specfun/nchoosek.m:326 [error] expected an error but none was raised
+- specfun/nchoosek.m:327 [error] expected an error but none was raised
+- specfun/nchoosek.m:328 [error] expected an error but none was raised
+- specfun/nchoosek.m:329 [error] expected an error but none was raised
+- specfun/nchoosek.m:330 [error] expected an error but none was raised
+- specfun/nchoosek.m:331 [error] expected an error but none was raised
+- specfun/nchoosek.m:332 [error] expected an error but none was raised
+- specfun/nchoosek.m:333 [error] expected an error but none was raised
+- specfun/nchoosek.m:334 [warning] expected a warning but none was issued
+- specfun/nchoosek.m:335 [warning] expected a warning but none was issued
+- specfun/nchoosek.m:336 [warning] expected a warning but none was issued
+- specfun/nchoosek.m:337 [warning] expected a warning but none was issued
+- specfun/nchoosek.m:338 [warning] expected a warning but none was issued
+- specfun/nchoosek.m:339 [warning] expected a warning but none was issued
+- specfun/nchoosek.m:340 [warning] expected a warning but none was issued
+- specfun/nchoosek.m:341 [warning] expected a warning but none was issued
+- specfun/nchoosek.m:342 [warning] expected a warning but none was issued
+- specfun/nthroot.m:96 [assert] 'nthroot' undefined
+- specfun/nthroot.m:97 [assert] 'nthroot' undefined
+- specfun/nthroot.m:98 [assert] 'nthroot' undefined
+- specfun/nthroot.m:99 [assert] 'nthroot' undefined
+- specfun/nthroot.m:100 [assert] 'nthroot' undefined
+- specfun/nthroot.m:103 [test] 'nthroot' undefined
+- specfun/nthroot.m:109 [error] error ''nthroot' undefined' does not match <Invalid call>
+- specfun/nthroot.m:110 [error] error ''nthroot' undefined' does not match <Invalid call>
+- specfun/nthroot.m:111 [error] error ''nthroot' undefined' does not match <X must not contain complex values>
+- specfun/nthroot.m:112 [error] error ''nthroot' undefined' does not match <N must be a real nonzero scalar>
+- specfun/nthroot.m:113 [error] error ''nthroot' undefined' does not match <N must be a real nonzero scalar>
+- specfun/nthroot.m:114 [error] error ''nthroot' undefined' does not match <N must be a real nonzero scalar>
+- specfun/nthroot.m:115 [error] error ''nthroot' undefined' does not match <N must be an odd integer>
+- specfun/primes.m:120 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- specfun/primes.m:121 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- specfun/primes.m:122 [assert] Invalid call to primes
+- specfun/primes.m:125 [error] expected an error but none was raised
+- specfun/primes.m:126 [error] expected an error but none was raised
+- specfun/primes.m:127 [error] timeout
+- specfun/reallog.m:48 [assert] 'reallog' undefined
+- specfun/reallog.m:49 [test] 'reallog' undefined
+- specfun/reallog.m:53 [error] error ''reallog' undefined' does not match <Invalid call>
+- specfun/reallog.m:54 [error] error ''reallog' undefined' does not match <produced complex result>
+- specfun/reallog.m:55 [error] error ''reallog' undefined' does not match <produced complex result>
+- specfun/realpow.m:49 [assert] 'realpow' undefined
+- specfun/realpow.m:50 [assert] 'realpow' undefined
+- specfun/realpow.m:51 [test] 'realpow' undefined
+- specfun/realpow.m:55 [assert] 'realpow' undefined
+- specfun/realpow.m:57 [error] error ''realpow' undefined' does not match <Invalid call>
+- specfun/realpow.m:58 [error] error ''realpow' undefined' does not match <Invalid call>
+- specfun/realpow.m:59 [error] error ''realpow' undefined' does not match <produced complex result>
+- specfun/realsqrt.m:48 [assert] 'realsqrt' undefined
+- specfun/realsqrt.m:49 [test] 'realsqrt' undefined
+- specfun/realsqrt.m:53 [error] error ''realsqrt' undefined' does not match <Invalid call>
+- specfun/realsqrt.m:54 [error] error ''realsqrt' undefined' does not match <produced complex result>
+- specfun/sinint.m:129 [assert] 'sinint' undefined
+- specfun/sinint.m:131 [test] 'sinint' undefined
+- specfun/sinint.m:139 [assert] 'sinint' undefined
+- specfun/sinint.m:140 [assert] 'sinint' undefined
+- specfun/sinint.m:141 [assert] 'sinint' undefined
+- specfun/sinint.m:142 [assert] 'sinint' undefined
+- specfun/sinint.m:143 [assert] 'sinint' undefined
+- specfun/sinint.m:146 [assert] 'sinint' undefined
+- specfun/sinint.m:149 [assert] 'sinint' undefined
+- specfun/sinint.m:150 [assert] 'sinint' undefined
+- specfun/sinint.m:151 [assert] 'sinint' undefined
+- specfun/sinint.m:152 [assert] 'sinint' undefined
+- specfun/sinint.m:153 [assert] 'sinint' undefined
+- specfun/sinint.m:154 [assert] 'sinint' undefined
+- specfun/sinint.m:155 [assert] 'sinint' undefined
+- specfun/sinint.m:157 [test] 'sinint' undefined
+- specfun/sinint.m:166 [test] 'sinint' undefined
+- specfun/sinint.m:175 [test] 'sinint' undefined
+- specfun/sinint.m:184 [test] 'sinint' undefined
+- specfun/sinint.m:193 [test] 'sinint' undefined
+- specfun/sinint.m:213 [error] error ''sinint' undefined' does not match <Invalid call>
+- specfun/sinint.m:214 [error] error ''sinint' undefined' does not match <X must be numeric>
+- special-matrix/gallery.m:3016 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3017 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3020 [error] error ''gallery' undefined' does not match <Invalid call>
+- special-matrix/gallery.m:3021 [error] error ''gallery' undefined' does not match <NAME must be a string>
+- special-matrix/gallery.m:3022 [error] error ''gallery' undefined' does not match <matrix binomial not implemented>
+- special-matrix/gallery.m:3023 [error] error ''gallery' undefined' does not match <unknown matrix with NAME foobar>
+- special-matrix/gallery.m:3026 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3027 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3028 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3029 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3031 [test] 'gallery' undefined
+- special-matrix/gallery.m:3069 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3070 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3071 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3073 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3074 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3075 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3077 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3078 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3079 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3081 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3082 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3084 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3085 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3086 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3088 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3089 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3090 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3092 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3093 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3094 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3096 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3097 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3098 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3099 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3101 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3102 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3104 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3105 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3107 [test] 'gallery' undefined
+- special-matrix/gallery.m:3119 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3120 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3121 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3123 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3124 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3126 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3128 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3129 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3130 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3132 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3133 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3135 [error] error ''gallery' undefined' does not match <N must be even>
+- special-matrix/gallery.m:3136 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3137 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3139 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3140 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3142 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3143 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3145 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3147 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3149 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3150 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3151 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3153 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3154 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3155 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3157 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3158 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3159 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3160 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3162 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3163 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3165 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3166 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3167 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3169 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3170 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3172 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3174 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3176 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3178 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3180 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3181 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3183 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3185 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3187 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3188 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3189 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3191 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3193 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3194 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3196 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3197 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3198 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3200 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3201 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3203 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3204 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3206 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3207 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3209 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3210 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3212 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3213 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3214 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3216 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3217 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3218 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3220 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3222 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3224 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3225 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3226 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3228 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3230 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3232 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3234 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3235 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3236 [assert] 'gallery' undefined
+- special-matrix/gallery.m:3237 [assert] 'gallery' undefined
+- special-matrix/hadamard.m:173 [assert] 'hadamard' undefined
+- special-matrix/hadamard.m:174 [assert] 'hadamard' undefined
+- special-matrix/hadamard.m:175 [test] 'hadamard' undefined
+- special-matrix/hadamard.m:181 [error] error ''hadamard' undefined' does not match <Invalid call>
+- special-matrix/hadamard.m:183 [error] error ''hadamard' undefined' does not match <N must be 2\^k\*p>
+- special-matrix/hankel.m:93 [assert] 'hankel' undefined
+- special-matrix/hankel.m:94 [assert] 'hankel' undefined
+- special-matrix/hankel.m:95 [assert] 'hankel' undefined
+- special-matrix/hankel.m:96 [assert] 'hankel' undefined
+- special-matrix/hankel.m:97 [assert] 'hankel' undefined
+- special-matrix/hankel.m:98 [assert] 'hankel' undefined
+- special-matrix/hankel.m:99 [warning] 'hankel' undefined
+- special-matrix/hankel.m:102 [error] error ''hankel' undefined' does not match <Invalid call>
+- special-matrix/hankel.m:103 [error] error ''hankel' undefined' does not match <C must be a vector>
+- special-matrix/hankel.m:104 [error] error ''hankel' undefined' does not match <C and R must be vectors>
+- special-matrix/hilb.m:77 [assert] 'hilb' undefined
+- special-matrix/hilb.m:78 [assert] 'hilb' undefined
+- special-matrix/hilb.m:80 [error] error ''hilb' undefined' does not match <Invalid call>
+- special-matrix/hilb.m:81 [error] error ''hilb' undefined' does not match <N must be a scalar integer>
+- special-matrix/invhilb.m:121 [assert] 'invhilb' undefined
+- special-matrix/invhilb.m:122 [assert] 'invhilb' undefined
+- special-matrix/invhilb.m:123 [test] 'invhilb' undefined
+- special-matrix/invhilb.m:129 [assert] 'invhilb' undefined
+- special-matrix/invhilb.m:131 [error] error ''invhilb' undefined' does not match <Invalid call>
+- special-matrix/invhilb.m:132 [error] error ''invhilb' undefined' does not match <N must be a scalar integer>
+- special-matrix/magic.m:98 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- special-matrix/magic.m:109 [error] expected an error but none was raised
+- special-matrix/pascal.m:85 [assert] 'pascal' undefined
+- special-matrix/pascal.m:86 [assert] 'pascal' undefined
+- special-matrix/pascal.m:87 [assert] 'pascal' undefined
+- special-matrix/pascal.m:88 [assert] 'pascal' undefined
+- special-matrix/pascal.m:89 [assert] 'pascal' undefined
+- special-matrix/pascal.m:90 [assert] 'pascal' undefined
+- special-matrix/pascal.m:93 [error] error ''pascal' undefined' does not match <Invalid call>
+- special-matrix/pascal.m:94 [error] error ''pascal' undefined' does not match <N and T must be scalars>
+- special-matrix/pascal.m:95 [error] error ''pascal' undefined' does not match <N and T must be scalars>
+- special-matrix/pascal.m:96 [error] error ''pascal' undefined' does not match <T must be -1>
+- special-matrix/pascal.m:97 [error] error ''pascal' undefined' does not match <T must be .* or 2>
+- special-matrix/rosser.m:48 [assert] 'rosser' undefined
+- special-matrix/rosser.m:49 [assert] 'rosser' undefined
+- special-matrix/toeplitz.m:131 [assert] 'toeplitz' undefined
+- special-matrix/toeplitz.m:132 [assert] 'toeplitz' undefined
+- special-matrix/toeplitz.m:133 [assert] 'toeplitz' undefined
+- special-matrix/toeplitz.m:137 [error] error ''toeplitz' undefined' does not match <Invalid call>
+- special-matrix/toeplitz.m:138 [error] error ''toeplitz' undefined' does not match <C must be a vector>
+- special-matrix/toeplitz.m:139 [error] error ''toeplitz' undefined' does not match <C and R must be vectors>
+- special-matrix/toeplitz.m:140 [error] error ''toeplitz' undefined' does not match <C and R must be vectors>
+- special-matrix/vander.m:89 [test] 'vander' undefined
+- special-matrix/vander.m:94 [assert] 'vander' undefined
+- special-matrix/vander.m:95 [assert] 'vander' undefined
+- special-matrix/vander.m:96 [assert] 'vander' undefined
+- special-matrix/vander.m:97 [assert] 'vander' undefined
+- special-matrix/vander.m:99 [assert] 'vander' undefined
+- special-matrix/vander.m:100 [assert] 'vander' undefined
+- special-matrix/vander.m:103 [error] error ''vander' undefined' does not match <Invalid call>
+- special-matrix/vander.m:104 [error] error ''vander' undefined' does not match <polynomial C must be a vector>
+- special-matrix/vander.m:105 [error] error ''vander' undefined' does not match <N must be a positive scalar integer>
+- special-matrix/wilkinson.m:54 [assert] 'wilkinson' undefined
+- special-matrix/wilkinson.m:55 [assert] 'wilkinson' undefined
+- special-matrix/wilkinson.m:56 [assert] 'wilkinson' undefined
+- special-matrix/wilkinson.m:57 [assert] 'wilkinson' undefined
+- special-matrix/wilkinson.m:58 [assert] 'wilkinson' undefined
+- special-matrix/wilkinson.m:61 [error] error ''wilkinson' undefined' does not match <Invalid call>
+- special-matrix/wilkinson.m:62 [error] error ''wilkinson' undefined' does not match <N must be a non-negative integer>
+- special-matrix/wilkinson.m:63 [error] error ''wilkinson' undefined' does not match <N must be a non-negative integer>
+- special-matrix/wilkinson.m:64 [error] error ''wilkinson' undefined' does not match <N must be a non-negative integer>
+- statistics/bounds.m:99 [test] 'bounds' undefined
+- statistics/bounds.m:102 [test] 'bounds' undefined
+- statistics/bounds.m:105 [test] 'bounds' undefined
+- statistics/bounds.m:108 [assert] 'bounds' undefined
+- statistics/bounds.m:109 [assert] 'bounds' undefined
+- statistics/bounds.m:110 [test] 'bounds' undefined
+- statistics/bounds.m:119 [test] 'bounds' undefined
+- statistics/bounds.m:124 [test] 'bounds' undefined
+- statistics/bounds.m:129 [test] 'bounds' undefined
+- statistics/bounds.m:134 [test] 'bounds' undefined
+- statistics/bounds.m:139 [test] 'bounds' undefined
+- statistics/bounds.m:144 [test] 'bounds' undefined
+- statistics/bounds.m:150 [test] 'bounds' undefined
+- statistics/bounds.m:156 [test] 'bounds' undefined
+- statistics/bounds.m:162 [test] 'bounds' undefined
+- statistics/bounds.m:168 [test] 'bounds' undefined
+- statistics/bounds.m:176 [error] error ''bounds' undefined' does not match <Invalid call>
+- statistics/bounds.m:177 [error] error ''bounds' undefined' does not match <Invalid call>
+- statistics/bounds.m:178 [error] error ''bounds' undefined' does not match <bounds: X must be a numeric array>
+- statistics/bounds.m:179 [error] error ''bounds' undefined' does not match <bounds: X must be a numeric array>
+- statistics/bounds.m:180 [error] error ''bounds' undefined' does not match <bounds: X must be a numeric array>
+- statistics/center.m:119 [assert] 'center' undefined
+- statistics/center.m:120 [assert] 'center' undefined
+- statistics/center.m:121 [assert] 'center' undefined
+- statistics/center.m:122 [assert] 'center' undefined
+- statistics/center.m:123 [assert] 'center' undefined
+- statistics/center.m:124 [assert] 'center' undefined
+- statistics/center.m:125 [assert] 'center' undefined
+- statistics/center.m:126 [assert] 'center' undefined
+- statistics/center.m:128 [assert] 'center' undefined
+- statistics/center.m:129 [assert] 'center' undefined
+- statistics/center.m:132 [error] error ''center' undefined' does not match <Invalid call>
+- statistics/center.m:133 [error] error ''center' undefined' does not match <Invalid call>
+- statistics/center.m:134 [error] error ''center' undefined' does not match <center: X must be a numeric array>
+- statistics/center.m:135 [error] error ''center' undefined' does not match <center: X must be a numeric array>
+- statistics/center.m:136 [error] error ''center' undefined' does not match <center: X must be a numeric array>
+- statistics/corr.m:149 [test] 'corr' undefined
+- statistics/corr.m:156 [test] 'corr' undefined
+- statistics/corr.m:163 [test] 'corr' undefined
+- statistics/corr.m:171 [assert] 'corr' undefined
+- statistics/corr.m:172 [assert] 'corr' undefined
+- statistics/corr.m:175 [assert] 'corr' undefined
+- statistics/corr.m:176 [assert] 'corr' undefined
+- statistics/corr.m:178 [test] 'corr' undefined
+- statistics/corr.m:185 [test] 'corr' undefined
+- statistics/corr.m:192 [test] 'corr' undefined
+- statistics/corr.m:199 [assert] 'corr' undefined
+- statistics/corr.m:200 [assert] 'corr' undefined
+- statistics/corr.m:201 [assert] 'corr' undefined
+- statistics/corr.m:202 [assert] 'corr' undefined
+- statistics/corr.m:203 [assert] 'corr' undefined
+- statistics/corr.m:204 [assert] 'corr' undefined
+- statistics/corr.m:205 [assert] 'corr' undefined
+- statistics/corr.m:208 [error] error ''corr' undefined' does not match <Invalid call>
+- statistics/corr.m:210 [error] error ''corr' undefined' does not match <X must be a numeric or logical>
+- statistics/corr.m:211 [error] error ''corr' undefined' does not match <X must be a numeric or logical>
+- statistics/corr.m:212 [error] error ''corr' undefined' does not match <Y must be a numeric or logical>
+- statistics/corr.m:213 [error] error ''corr' undefined' does not match <Y must be a numeric or logical>
+- statistics/corr.m:214 [error] error ''corr' undefined' does not match <Y must be a numeric or logical>
+- statistics/corr.m:215 [error] error ''corr' undefined' does not match <X and Y must have the same number of rows>
+- statistics/corr.m:216 [error] error ''corr' undefined' does not match <X and Y must have the same number of rows>
+- statistics/corr.m:217 [error] error ''corr' undefined' does not match <X and Y must have the same number of rows>
+- statistics/corr.m:218 [error] error ''corr' undefined' does not match <X and Y must have the same number of rows>
+- statistics/corr.m:219 [error] error ''corr' undefined' does not match <X and Y must be two-dimensional unless>
+- statistics/corrcoef.m:247 [test] 'corrcoef' undefined
+- statistics/corrcoef.m:252 [test] 'corrcoef' undefined
+- statistics/corrcoef.m:257 [assert] 'corrcoef' undefined
+- statistics/corrcoef.m:258 [assert] 'corrcoef' undefined
+- statistics/corrcoef.m:259 [assert] 'corrcoef' undefined
+- statistics/corrcoef.m:261 [test] 'corrcoef' undefined
+- statistics/corrcoef.m:266 [test] 'corrcoef' undefined
+- statistics/corrcoef.m:272 [test] 'corrcoef' undefined
+- statistics/corrcoef.m:281 [test] 'corrcoef' undefined
+- statistics/corrcoef.m:287 [test] 'corrcoef' undefined
+- statistics/corrcoef.m:293 [test] 'corrcoef' undefined
+- statistics/corrcoef.m:299 [error] error ''corrcoef' undefined' does not match <Invalid call>
+- statistics/corrcoef.m:300 [error] error ''corrcoef' undefined' does not match <Invalid call>
+- statistics/corrcoef.m:301 [error] error ''corrcoef' undefined' does not match <parameter 1 must be a string>
+- statistics/corrcoef.m:302 [error] error ''corrcoef' undefined' does not match <parameter "alpha" missing value>
+- statistics/corrcoef.m:303 [error] error ''corrcoef' undefined' does not match <"alpha" must be a scalar>
+- statistics/corrcoef.m:304 [error] error ''corrcoef' undefined' does not match <"alpha" must be a scalar>
+- statistics/corrcoef.m:305 [error] error ''corrcoef' undefined' does not match <"alpha" must be a scalar between 0 and 1>
+- statistics/corrcoef.m:306 [error] error ''corrcoef' undefined' does not match <"alpha" must be a scalar between 0 and 1>
+- statistics/corrcoef.m:307 [error] error ''corrcoef' undefined' does not match <"rows" must be "all"...>
+- statistics/corrcoef.m:308 [error] error ''corrcoef' undefined' does not match <Unknown option "foobar">
+- statistics/corrcov.m:94 [assert] 'corrcov' undefined
+- statistics/corrcov.m:95 [assert] 'corrcov' undefined
+- statistics/corrcov.m:96 [assert] 'corrcov' undefined
+- statistics/corrcov.m:98 [assert] 'corrcov' undefined
+- statistics/corrcov.m:99 [assert] 'corrcov' undefined
+- statistics/corrcov.m:100 [assert] 'corrcov' undefined
+- statistics/corrcov.m:101 [assert] 'corrcov' undefined
+- statistics/corrcov.m:103 [assert] 'cov' undefined
+- statistics/corrcov.m:104 [assert] 'cov' undefined
+- statistics/corrcov.m:106 [assert] 'corrcov' undefined
+- statistics/corrcov.m:108 [assert] 'corrcov' undefined
+- statistics/corrcov.m:109 [assert] 'corrcov' undefined
+- statistics/corrcov.m:112 [assert] 'cov' undefined
+- statistics/corrcov.m:114 [error] error ''corrcov' undefined' does not match <Invalid call>
+- statistics/corrcov.m:115 [error] error ''corrcov' undefined' does not match <C must be a floating>
+- statistics/corrcov.m:116 [error] error ''corrcov' undefined' does not match <C must be a floating>
+- statistics/corrcov.m:117 [error] error ''corrcov' undefined' does not match <C must be a floating>
+- statistics/corrcov.m:118 [error] error ''corrcov' undefined' does not match <C must be square and symmetric>
+- statistics/corrcov.m:119 [error] error ''corrcov' undefined' does not match <C must be square and symmetric>
+- statistics/corrcov.m:120 [error] error ''corrcov' undefined' does not match <C must be square and symmetric>
+- statistics/corrcov.m:121 [error] error ''corrcov' undefined' does not match <C must be square and symmetric>
+- statistics/corrcov.m:122 [error] error ''corrcov' undefined' does not match <C must be square and symmetric>
+- statistics/corrcov.m:123 [error] error ''corrcov' undefined' does not match <C must be positive semi-definite>
+- statistics/cov.m:307 [test] 'cov' undefined
+- statistics/cov.m:314 [test] 'cov' undefined
+- statistics/cov.m:322 [test] 'cov' undefined
+- statistics/cov.m:330 [test] 'cov' undefined
+- statistics/cov.m:336 [test] 'cov' undefined
+- statistics/cov.m:345 [test] 'cov' undefined
+- statistics/cov.m:357 [assert] 'cov' undefined
+- statistics/cov.m:358 [assert] 'cov' undefined
+- statistics/cov.m:359 [assert] 'cov' undefined
+- statistics/cov.m:360 [assert] 'cov' undefined
+- statistics/cov.m:361 [assert] 'cov' undefined
+- statistics/cov.m:362 [assert] 'cov' undefined
+- statistics/cov.m:363 [assert] 'cov' undefined
+- statistics/cov.m:364 [assert] 'cov' undefined
+- statistics/cov.m:365 [assert] 'cov' undefined
+- statistics/cov.m:366 [assert] 'cov' undefined
+- statistics/cov.m:367 [assert] 'cov' undefined
+- statistics/cov.m:368 [assert] 'cov' undefined
+- statistics/cov.m:369 [assert] 'cov' undefined
+- statistics/cov.m:370 [assert] 'cov' undefined
+- statistics/cov.m:371 [assert] 'cov' undefined
+- statistics/cov.m:372 [assert] 'cov' undefined
+- statistics/cov.m:375 [test] 'cov' undefined
+- statistics/cov.m:383 [assert] 'cov' undefined
+- statistics/cov.m:384 [assert] 'cov' undefined
+- statistics/cov.m:385 [assert] 'cov' undefined
+- statistics/cov.m:386 [assert] 'cov' undefined
+- statistics/cov.m:387 [assert] 'cov' undefined
+- statistics/cov.m:388 [assert] 'cov' undefined
+- statistics/cov.m:391 [assert] 'cov' undefined
+- statistics/cov.m:392 [assert] 'cov' undefined
+- statistics/cov.m:393 [assert] 'cov' undefined
+- statistics/cov.m:394 [assert] 'cov' undefined
+- statistics/cov.m:395 [assert] 'cov' undefined
+- statistics/cov.m:396 [assert] 'cov' undefined
+- statistics/cov.m:397 [assert] 'cov' undefined
+- statistics/cov.m:398 [assert] 'cov' undefined
+- statistics/cov.m:402 [assert] 'cov' undefined
+- statistics/cov.m:403 [assert] 'cov' undefined
+- statistics/cov.m:404 [assert] 'cov' undefined
+- statistics/cov.m:405 [assert] 'cov' undefined
+- statistics/cov.m:406 [assert] 'cov' undefined
+- statistics/cov.m:407 [assert] 'cov' undefined
+- statistics/cov.m:408 [assert] 'cov' undefined
+- statistics/cov.m:409 [assert] 'cov' undefined
+- statistics/cov.m:410 [assert] 'cov' undefined
+- statistics/cov.m:411 [assert] 'cov' undefined
+- statistics/cov.m:412 [assert] 'cov' undefined
+- statistics/cov.m:413 [assert] 'cov' undefined
+- statistics/cov.m:414 [assert] 'cov' undefined
+- statistics/cov.m:415 [assert] 'cov' undefined
+- statistics/cov.m:416 [assert] 'cov' undefined
+- statistics/cov.m:417 [assert] 'cov' undefined
+- statistics/cov.m:418 [assert] 'cov' undefined
+- statistics/cov.m:419 [assert] 'cov' undefined
+- statistics/cov.m:420 [assert] 'cov' undefined
+- statistics/cov.m:421 [assert] 'cov' undefined
+- statistics/cov.m:422 [assert] 'cov' undefined
+- statistics/cov.m:423 [assert] 'cov' undefined
+- statistics/cov.m:424 [assert] 'cov' undefined
+- statistics/cov.m:425 [assert] 'cov' undefined
+- statistics/cov.m:428 [test] 'cov' undefined
+- statistics/cov.m:450 [assert] 'cov' undefined
+- statistics/cov.m:451 [assert] 'cov' undefined
+- statistics/cov.m:452 [assert] 'cov' undefined
+- statistics/cov.m:453 [assert] 'cov' undefined
+- statistics/cov.m:454 [assert] 'cov' undefined
+- statistics/cov.m:455 [assert] 'cov' undefined
+- statistics/cov.m:456 [assert] 'cov' undefined
+- statistics/cov.m:457 [assert] 'cov' undefined
+- statistics/cov.m:458 [assert] 'cov' undefined
+- statistics/cov.m:459 [test] 'cov' undefined
+- statistics/cov.m:465 [assert] 'cov' undefined
+- statistics/cov.m:466 [assert] 'cov' undefined
+- statistics/cov.m:467 [assert] 'cov' undefined
+- statistics/cov.m:468 [assert] 'cov' undefined
+- statistics/cov.m:469 [test] 'cov' undefined
+- statistics/cov.m:484 [assert] 'cov' undefined
+- statistics/cov.m:485 [assert] 'cov' undefined
+- statistics/cov.m:486 [assert] 'cov' undefined
+- statistics/cov.m:487 [assert] 'cov' undefined
+- statistics/cov.m:488 [assert] 'cov' undefined
+- statistics/cov.m:489 [test] 'cov' undefined
+- statistics/cov.m:506 [error] error ''cov' undefined' does not match <Invalid call>
+- statistics/cov.m:507 [error] error ''cov' undefined' does not match <Invalid call>
+- statistics/cov.m:508 [error] error ''cov' undefined' does not match <X must be a numeric or logical>
+- statistics/cov.m:509 [error] error ''cov' undefined' does not match <X must be a numeric or logical>
+- statistics/cov.m:510 [error] error ''cov' undefined' does not match <X must be a 2-D>
+- statistics/cov.m:511 [error] error ''cov' undefined' does not match <X must be a 2-D>
+- statistics/cov.m:512 [error] error ''cov' undefined' does not match <only one NANFLAG>
+- statistics/cov.m:513 [error] error ''cov' undefined' does not match <only one NANFLAG>
+- statistics/cov.m:514 [error] error ''cov' undefined' does not match <normalization parameter OPT must be>
+- statistics/cov.m:515 [error] error ''cov' undefined' does not match <normalization parameter OPT must be>
+- statistics/cov.m:516 [error] error ''cov' undefined' does not match <normalization parameter OPT must be>
+- statistics/cov.m:517 [error] error ''cov' undefined' does not match <normalization parameter OPT must be>
+- statistics/cov.m:518 [error] error ''cov' undefined' does not match <Y must be a>
+- statistics/cov.m:519 [error] error ''cov' undefined' does not match <Y must be a>
+- statistics/cov.m:520 [error] error ''cov' undefined' does not match <X and Y must have the same number>
+- statistics/cov.m:521 [error] error ''cov' undefined' does not match <X and Y must have the same number>
+- statistics/cov.m:522 [error] error ''cov' undefined' does not match <X and Y must have the same number>
+- statistics/cov.m:523 [error] error ''cov' undefined' does not match <X and Y must have the same number>
+- statistics/cov.m:524 [error] error ''cov' undefined' does not match <X and Y must have the same number>
+- statistics/cov.m:525 [error] error ''cov' undefined' does not match <unknown NANFLAG parameter 'foo'>
+- statistics/cov.m:526 [error] error ''cov' undefined' does not match <unknown NANFLAG parameter 'foo'>
+- statistics/cov.m:527 [error] error ''cov' undefined' does not match <unknown NANFLAG parameter 'foo'>
+- statistics/cov.m:528 [error] error ''cov' undefined' does not match <unknown NANFLAG parameter 'foo'>
+- statistics/cov.m:529 [error] error ''cov' undefined' does not match <unknown NANFLAG parameter ''>
+- statistics/cov.m:530 [error] error ''cov' undefined' does not match <NANFLAG parameter must be the last>
+- statistics/cov.m:531 [error] error ''cov' undefined' does not match <NANFLAG parameter must be the last>
+- statistics/discrete_cdf.m:69 [assert] 'discrete_cdf' undefined
+- statistics/discrete_cdf.m:72 [assert] 'discrete_cdf' undefined
+- statistics/discrete_cdf.m:74 [assert] 'discrete_cdf' undefined
+- statistics/discrete_cdf.m:76 [assert] 'discrete_cdf' undefined
+- statistics/discrete_cdf.m:80 [error] error ''discrete_cdf' undefined' does not match <Invalid call>
+- statistics/discrete_cdf.m:81 [error] error ''discrete_cdf' undefined' does not match <Invalid call>
+- statistics/discrete_cdf.m:82 [error] error ''discrete_cdf' undefined' does not match <Invalid call>
+- statistics/discrete_inv.m:81 [assert] 'discrete_inv' undefined
+- statistics/discrete_inv.m:84 [assert] 'discrete_inv' undefined
+- statistics/discrete_inv.m:86 [assert] 'discrete_inv' undefined
+- statistics/discrete_inv.m:88 [assert] 'discrete_inv' undefined
+- statistics/discrete_inv.m:92 [error] error ''discrete_inv' undefined' does not match <Invalid call>
+- statistics/discrete_inv.m:93 [error] error ''discrete_inv' undefined' does not match <Invalid call>
+- statistics/discrete_inv.m:94 [error] error ''discrete_inv' undefined' does not match <Invalid call>
+- statistics/discrete_pdf.m:70 [assert] 'discrete_pdf' undefined
+- statistics/discrete_pdf.m:73 [assert] 'discrete_pdf' undefined
+- statistics/discrete_pdf.m:75 [assert] 'discrete_pdf' undefined
+- statistics/discrete_pdf.m:77 [assert] 'discrete_pdf' undefined
+- statistics/discrete_pdf.m:81 [error] error ''discrete_pdf' undefined' does not match <Invalid call>
+- statistics/discrete_pdf.m:82 [error] error ''discrete_pdf' undefined' does not match <Invalid call>
+- statistics/discrete_pdf.m:83 [error] error ''discrete_pdf' undefined' does not match <Invalid call>
+- statistics/discrete_rnd.m:83 [assert] 'discrete_rnd' undefined
+- statistics/discrete_rnd.m:84 [assert] 'discrete_rnd' undefined
+- statistics/discrete_rnd.m:85 [assert] 'discrete_rnd' undefined
+- statistics/discrete_rnd.m:88 [assert] 'discrete_rnd' undefined
+- statistics/discrete_rnd.m:89 [assert] 'discrete_rnd' undefined
+- statistics/discrete_rnd.m:94 [error] error ''discrete_rnd' undefined' does not match <Invalid call>
+- statistics/discrete_rnd.m:95 [error] error ''discrete_rnd' undefined' does not match <Invalid call>
+- statistics/empirical_cdf.m:52 [assert] 'empirical_cdf' undefined
+- statistics/empirical_cdf.m:53 [assert] 'empirical_cdf' undefined
+- statistics/empirical_cdf.m:56 [assert] 'empirical_cdf' undefined
+- statistics/empirical_cdf.m:57 [assert] 'empirical_cdf' undefined
+- statistics/empirical_cdf.m:58 [assert] 'empirical_cdf' undefined
+- statistics/empirical_cdf.m:61 [error] error ''empirical_cdf' undefined' does not match <Invalid call>
+- statistics/empirical_cdf.m:62 [error] error ''empirical_cdf' undefined' does not match <Invalid call>
+- statistics/empirical_inv.m:52 [assert] 'empirical_inv' undefined
+- statistics/empirical_inv.m:55 [assert] 'empirical_inv' undefined
+- statistics/empirical_inv.m:56 [assert] 'empirical_inv' undefined
+- statistics/empirical_inv.m:57 [assert] 'empirical_inv' undefined
+- statistics/empirical_inv.m:60 [error] error ''empirical_inv' undefined' does not match <Invalid call>
+- statistics/empirical_inv.m:61 [error] error ''empirical_inv' undefined' does not match <Invalid call>
+- statistics/empirical_pdf.m:61 [assert] 'empirical_pdf' undefined
+- statistics/empirical_pdf.m:64 [assert] 'empirical_pdf' undefined
+- statistics/empirical_pdf.m:65 [assert] 'empirical_pdf' undefined
+- statistics/empirical_pdf.m:68 [assert] 'empirical_pdf' undefined
+- statistics/empirical_pdf.m:71 [error] error ''empirical_pdf' undefined' does not match <Invalid call>
+- statistics/empirical_pdf.m:72 [error] error ''empirical_pdf' undefined' does not match <Invalid call>
+- statistics/empirical_rnd.m:59 [assert] 'empirical_rnd' undefined
+- statistics/empirical_rnd.m:60 [assert] 'empirical_rnd' undefined
+- statistics/empirical_rnd.m:61 [assert] 'empirical_rnd' undefined
+- statistics/empirical_rnd.m:64 [assert] 'empirical_rnd' undefined
+- statistics/empirical_rnd.m:65 [assert] 'empirical_rnd' undefined
+- statistics/empirical_rnd.m:68 [error] error ''empirical_rnd' undefined' does not match <Invalid call>
+- statistics/histc.m:186 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/histc.m:194 [error] expected an error but none was raised
+- statistics/histc.m:195 [warning] expected a warning but none was issued
+- statistics/histc.m:196 [error] expected an error but none was raised
+- statistics/iqr.m:232 [assert] 'iqr' undefined
+- statistics/iqr.m:233 [assert] 'iqr' undefined
+- statistics/iqr.m:234 [assert] 'iqr' undefined
+- statistics/iqr.m:235 [assert] 'iqr' undefined
+- statistics/iqr.m:236 [assert] 'iqr' undefined
+- statistics/iqr.m:237 [assert] 'iqr' undefined
+- statistics/iqr.m:238 [assert] 'iqr' undefined
+- statistics/iqr.m:239 [assert] 'iqr' undefined
+- statistics/iqr.m:240 [assert] 'iqr' undefined
+- statistics/iqr.m:241 [assert] 'iqr' undefined
+- statistics/iqr.m:242 [assert] 'iqr' undefined
+- statistics/iqr.m:243 [assert] 'iqr' undefined
+- statistics/iqr.m:244 [assert] 'iqr' undefined
+- statistics/iqr.m:246 [test] 'iqr' undefined
+- statistics/iqr.m:254 [test] 'iqr' undefined
+- statistics/iqr.m:268 [assert] 'iqr' undefined
+- statistics/iqr.m:269 [assert] 'iqr' undefined
+- statistics/iqr.m:270 [assert] 'iqr' undefined
+- statistics/iqr.m:271 [assert] 'iqr' undefined
+- statistics/iqr.m:272 [test] 'iqr' undefined
+- statistics/iqr.m:295 [assert] 'iqr' undefined
+- statistics/iqr.m:296 [assert] 'iqr' undefined
+- statistics/iqr.m:297 [assert] 'iqr' undefined
+- statistics/iqr.m:298 [assert] 'iqr' undefined
+- statistics/iqr.m:299 [assert] 'iqr' undefined
+- statistics/iqr.m:300 [assert] 'iqr' undefined
+- statistics/iqr.m:301 [assert] 'iqr' undefined
+- statistics/iqr.m:302 [assert] 'iqr' undefined
+- statistics/iqr.m:303 [assert] 'iqr' undefined
+- statistics/iqr.m:304 [assert] 'iqr' undefined
+- statistics/iqr.m:305 [assert] 'iqr' undefined
+- statistics/iqr.m:306 [assert] 'iqr' undefined
+- statistics/iqr.m:307 [assert] 'iqr' undefined
+- statistics/iqr.m:308 [assert] 'iqr' undefined
+- statistics/iqr.m:309 [assert] 'iqr' undefined
+- statistics/iqr.m:312 [assert] parse error near line 1, column 12: unexpected ','
+- statistics/iqr.m:313 [assert] parse error near line 1, column 12: unexpected ','
+- statistics/iqr.m:314 [assert] parse error near line 1, column 12: unexpected ','
+- statistics/iqr.m:315 [assert] parse error near line 1, column 12: unexpected ','
+- statistics/iqr.m:316 [assert] parse error near line 1, column 12: unexpected ','
+- statistics/iqr.m:317 [assert] parse error near line 1, column 12: unexpected ','
+- statistics/iqr.m:320 [assert] 'iqr' undefined
+- statistics/iqr.m:321 [assert] 'iqr' undefined
+- statistics/iqr.m:322 [assert] 'iqr' undefined
+- statistics/iqr.m:323 [assert] 'iqr' undefined
+- statistics/iqr.m:324 [assert] 'iqr' undefined
+- statistics/iqr.m:325 [assert] 'iqr' undefined
+- statistics/iqr.m:326 [assert] 'iqr' undefined
+- statistics/iqr.m:327 [assert] 'iqr' undefined
+- statistics/iqr.m:328 [assert] 'iqr' undefined
+- statistics/iqr.m:329 [assert] 'iqr' undefined
+- statistics/iqr.m:330 [assert] 'iqr' undefined
+- statistics/iqr.m:331 [assert] 'iqr' undefined
+- statistics/iqr.m:332 [assert] 'iqr' undefined
+- statistics/iqr.m:333 [assert] 'iqr' undefined
+- statistics/iqr.m:334 [assert] 'iqr' undefined
+- statistics/iqr.m:335 [assert] 'iqr' undefined
+- statistics/iqr.m:336 [assert] 'iqr' undefined
+- statistics/iqr.m:337 [assert] 'iqr' undefined
+- statistics/iqr.m:338 [assert] 'iqr' undefined
+- statistics/iqr.m:339 [assert] 'iqr' undefined
+- statistics/iqr.m:340 [assert] 'iqr' undefined
+- statistics/iqr.m:341 [assert] 'iqr' undefined
+- statistics/iqr.m:342 [assert] 'iqr' undefined
+- statistics/iqr.m:343 [assert] 'iqr' undefined
+- statistics/iqr.m:344 [assert] 'iqr' undefined
+- statistics/iqr.m:345 [assert] 'iqr' undefined
+- statistics/iqr.m:346 [assert] 'iqr' undefined
+- statistics/iqr.m:347 [assert] parse error near line 1, column 12: unexpected ','
+- statistics/iqr.m:348 [assert] parse error near line 1, column 12: unexpected ','
+- statistics/iqr.m:349 [assert] parse error near line 1, column 12: unexpected ','
+- statistics/iqr.m:350 [assert] parse error near line 1, column 12: unexpected ','
+- statistics/iqr.m:351 [assert] parse error near line 1, column 12: unexpected ','
+- statistics/iqr.m:352 [assert] parse error near line 1, column 12: unexpected ','
+- statistics/iqr.m:353 [assert] parse error near line 1, column 12: unexpected ','
+- statistics/iqr.m:354 [assert] parse error near line 1, column 12: unexpected ','
+- statistics/iqr.m:355 [assert] parse error near line 1, column 12: unexpected ','
+- statistics/iqr.m:356 [assert] parse error near line 1, column 12: unexpected ','
+- statistics/iqr.m:357 [assert] parse error near line 1, column 12: unexpected ','
+- statistics/iqr.m:358 [assert] parse error near line 1, column 12: unexpected ','
+- statistics/iqr.m:359 [assert] parse error near line 1, column 12: unexpected ','
+- statistics/iqr.m:360 [assert] parse error near line 1, column 12: unexpected ','
+- statistics/iqr.m:361 [assert] parse error near line 1, column 12: unexpected ','
+- statistics/iqr.m:362 [assert] parse error near line 1, column 12: unexpected ','
+- statistics/iqr.m:363 [assert] parse error near line 1, column 12: unexpected ','
+- statistics/iqr.m:364 [assert] parse error near line 1, column 12: unexpected ','
+- statistics/iqr.m:365 [assert] parse error near line 1, column 12: unexpected ','
+- statistics/iqr.m:366 [assert] parse error near line 1, column 12: unexpected ','
+- statistics/iqr.m:367 [assert] parse error near line 1, column 12: unexpected ','
+- statistics/iqr.m:368 [assert] parse error near line 1, column 12: unexpected ','
+- statistics/iqr.m:369 [assert] parse error near line 1, column 12: unexpected ','
+- statistics/iqr.m:370 [assert] parse error near line 1, column 12: unexpected ','
+- statistics/iqr.m:371 [assert] parse error near line 1, column 12: unexpected ','
+- statistics/iqr.m:372 [assert] parse error near line 1, column 12: unexpected ','
+- statistics/iqr.m:373 [assert] parse error near line 1, column 12: unexpected ','
+- statistics/iqr.m:376 [error] error ''iqr' undefined' does not match <Invalid call>
+- statistics/iqr.m:377 [error] error ''iqr' undefined' does not match <iqr: function called with too many inputs>
+- statistics/iqr.m:378 [error] error ''iqr' undefined' does not match <iqr: X must be a numeric array>
+- statistics/iqr.m:379 [error] error ''iqr' undefined' does not match <iqr: X must be a numeric array>
+- statistics/iqr.m:380 [error] error ''iqr' undefined' does not match <iqr: X must be a numeric array>
+- statistics/iqr.m:381 [error] error ''iqr' undefined' does not match <VECDIM must contain non-repeating>
+- statistics/iqr.m:382 [error] error ''iqr' undefined' does not match <DIM must be a positive integer>
+- statistics/iqr.m:383 [error] error ''iqr' undefined' does not match <DIM must be a positive integer>
+- statistics/iqr.m:384 [error] error ''iqr' undefined' does not match <DIM must be a positive integer>
+- statistics/iqr.m:385 [error] error ''iqr' undefined' does not match <DIM must be a positive integer>
+- statistics/iqr.m:386 [error] error ''iqr' undefined' does not match <DIM must be .* positive integer>
+- statistics/iqr.m:387 [error] error ''iqr' undefined' does not match <DIM must be .* positive integer>
+- statistics/iqr.m:388 [error] error ''iqr' undefined' does not match <DIM must be .* positive integer>
+- statistics/iqr.m:389 [error] error ''iqr' undefined' does not match <DIM must be .* positive integer>
+- statistics/iqr.m:390 [error] error ''iqr' undefined' does not match <DIM must be .* positive integer>
+- statistics/iqr.m:391 [error] error ''iqr' undefined' does not match <DIM must be .* positive integer>
+- statistics/iqr.m:392 [error] error ''iqr' undefined' does not match <DIM must be .* scalar, vector>
+- statistics/kendall.m:140 [test] 'kendall' undefined
+- statistics/kendall.m:146 [assert] 'kendall' undefined
+- statistics/kendall.m:147 [assert] 'kendall' undefined
+- statistics/kendall.m:150 [error] error ''kendall' undefined' does not match <Invalid call>
+- statistics/kurtosis.m:158 [test] 'kurtosis' undefined
+- statistics/kurtosis.m:163 [assert] 'kurtosis' undefined
+- statistics/kurtosis.m:164 [assert] 'kurtosis' undefined
+- statistics/kurtosis.m:165 [assert] 'kurtosis' undefined
+- statistics/kurtosis.m:167 [assert] 'kurtosis' undefined
+- statistics/kurtosis.m:169 [assert] 'kurtosis' undefined
+- statistics/kurtosis.m:171 [assert] 'kurtosis' undefined
+- statistics/kurtosis.m:175 [assert] 'kurtosis' undefined
+- statistics/kurtosis.m:176 [assert] 'kurtosis' undefined
+- statistics/kurtosis.m:179 [test] 'kurtosis' undefined
+- statistics/kurtosis.m:194 [test] 'kurtosis' undefined
+- statistics/kurtosis.m:208 [test] 'kurtosis' undefined
+- statistics/kurtosis.m:214 [error] error ''kurtosis' undefined' does not match <Invalid call>
+- statistics/kurtosis.m:215 [error] error ''kurtosis' undefined' does not match <kurtosis: function called with too many inputs>
+- statistics/kurtosis.m:216 [error] error ''kurtosis' undefined' does not match <kurtosis: X must be a numeric array>
+- statistics/kurtosis.m:217 [error] error ''kurtosis' undefined' does not match <kurtosis: X must be a numeric array>
+- statistics/kurtosis.m:218 [error] error ''kurtosis' undefined' does not match <kurtosis: X must be a numeric array>
+- statistics/kurtosis.m:219 [error] error ''kurtosis' undefined' does not match <FLAG must be 0 or 1>
+- statistics/kurtosis.m:220 [error] error ''kurtosis' undefined' does not match <FLAG must be 0 or 1>
+- statistics/mad.m:130 [assert] 'mad' undefined
+- statistics/mad.m:131 [assert] 'mad' undefined
+- statistics/mad.m:132 [assert] 'mad' undefined
+- statistics/mad.m:133 [assert] 'mad' undefined
+- statistics/mad.m:134 [assert] 'mad' undefined
+- statistics/mad.m:135 [assert] 'mad' undefined
+- statistics/mad.m:136 [assert] 'mad' undefined
+- statistics/mad.m:137 [assert] 'mad' undefined
+- statistics/mad.m:138 [assert] 'mad' undefined
+- statistics/mad.m:139 [assert] 'mad' undefined
+- statistics/mad.m:140 [assert] 'mad' undefined
+- statistics/mad.m:141 [assert] 'mad' undefined
+- statistics/mad.m:142 [assert] 'mad' undefined
+- statistics/mad.m:143 [assert] 'mad' undefined
+- statistics/mad.m:144 [assert] 'mad' undefined
+- statistics/mad.m:145 [assert] 'mad' undefined
+- statistics/mad.m:148 [assert] 'mad' undefined
+- statistics/mad.m:149 [assert] 'mad' undefined
+- statistics/mad.m:150 [assert] 'mad' undefined
+- statistics/mad.m:151 [assert] 'mad' undefined
+- statistics/mad.m:152 [assert] 'mad' undefined
+- statistics/mad.m:153 [assert] 'mad' undefined
+- statistics/mad.m:154 [assert] 'mad' undefined
+- statistics/mad.m:155 [assert] 'mad' undefined
+- statistics/mad.m:156 [assert] 'mad' undefined
+- statistics/mad.m:157 [assert] 'mad' undefined
+- statistics/mad.m:160 [assert] 'mad' undefined
+- statistics/mad.m:161 [assert] 'mad' undefined
+- statistics/mad.m:162 [assert] 'mad' undefined
+- statistics/mad.m:163 [assert] 'mad' undefined
+- statistics/mad.m:164 [assert] 'mad' undefined
+- statistics/mad.m:165 [assert] 'mad' undefined
+- statistics/mad.m:166 [assert] 'mad' undefined
+- statistics/mad.m:169 [assert] 'mad' undefined
+- statistics/mad.m:170 [assert] 'mad' undefined
+- statistics/mad.m:171 [assert] 'mad' undefined
+- statistics/mad.m:172 [assert] 'mad' undefined
+- statistics/mad.m:173 [assert] 'mad' undefined
+- statistics/mad.m:174 [assert] 'mad' undefined
+- statistics/mad.m:175 [assert] 'mad' undefined
+- statistics/mad.m:176 [assert] 'mad' undefined
+- statistics/mad.m:177 [assert] 'mad' undefined
+- statistics/mad.m:178 [assert] 'mad' undefined
+- statistics/mad.m:179 [assert] 'mad' undefined
+- statistics/mad.m:180 [assert] 'mad' undefined
+- statistics/mad.m:181 [assert] 'mad' undefined
+- statistics/mad.m:182 [assert] 'mad' undefined
+- statistics/mad.m:183 [assert] 'mad' undefined
+- statistics/mad.m:184 [assert] 'mad' undefined
+- statistics/mad.m:185 [assert] 'mad' undefined
+- statistics/mad.m:186 [assert] 'mad' undefined
+- statistics/mad.m:187 [assert] 'mad' undefined
+- statistics/mad.m:188 [assert] 'mad' undefined
+- statistics/mad.m:189 [assert] 'mad' undefined
+- statistics/mad.m:190 [assert] 'mad' undefined
+- statistics/mad.m:191 [assert] 'mad' undefined
+- statistics/mad.m:194 [assert] 'mad' undefined
+- statistics/mad.m:195 [assert] 'mad' undefined
+- statistics/mad.m:196 [assert] 'mad' undefined
+- statistics/mad.m:197 [assert] 'mad' undefined
+- statistics/mad.m:198 [assert] 'mad' undefined
+- statistics/mad.m:199 [assert] 'mad' undefined
+- statistics/mad.m:200 [assert] 'mad' undefined
+- statistics/mad.m:201 [assert] 'mad' undefined
+- statistics/mad.m:202 [assert] 'mad' undefined
+- statistics/mad.m:203 [assert] 'mad' undefined
+- statistics/mad.m:205 [assert] 'mad' undefined
+- statistics/mad.m:206 [assert] 'mad' undefined
+- statistics/mad.m:207 [assert] 'mad' undefined
+- statistics/mad.m:208 [assert] 'mad' undefined
+- statistics/mad.m:209 [assert] 'mad' undefined
+- statistics/mad.m:210 [assert] 'mad' undefined
+- statistics/mad.m:211 [assert] 'mad' undefined
+- statistics/mad.m:212 [assert] 'mad' undefined
+- statistics/mad.m:213 [assert] 'mad' undefined
+- statistics/mad.m:215 [assert] 'mad' undefined
+- statistics/mad.m:216 [assert] 'mad' undefined
+- statistics/mad.m:217 [assert] 'mad' undefined
+- statistics/mad.m:218 [assert] 'mad' undefined
+- statistics/mad.m:220 [assert] 'mad' undefined
+- statistics/mad.m:221 [assert] 'mad' undefined
+- statistics/mad.m:222 [assert] 'mad' undefined
+- statistics/mad.m:223 [assert] 'mad' undefined
+- statistics/mad.m:224 [assert] 'mad' undefined
+- statistics/mad.m:225 [assert] 'mad' undefined
+- statistics/mad.m:226 [assert] 'mad' undefined
+- statistics/mad.m:227 [assert] 'mad' undefined
+- statistics/mad.m:228 [assert] 'mad' undefined
+- statistics/mad.m:229 [assert] 'mad' undefined
+- statistics/mad.m:230 [assert] 'mad' undefined
+- statistics/mad.m:231 [assert] 'mad' undefined
+- statistics/mad.m:232 [assert] 'mad' undefined
+- statistics/mad.m:233 [assert] 'mad' undefined
+- statistics/mad.m:234 [assert] 'mad' undefined
+- statistics/mad.m:235 [assert] 'mad' undefined
+- statistics/mad.m:236 [assert] 'mad' undefined
+- statistics/mad.m:237 [assert] 'mad' undefined
+- statistics/mad.m:238 [assert] 'mad' undefined
+- statistics/mad.m:241 [assert] 'mad' undefined
+- statistics/mad.m:242 [assert] 'mad' undefined
+- statistics/mad.m:245 [error] error ''mad' undefined' does not match <Invalid call>
+- statistics/mad.m:246 [error] error ''mad' undefined' does not match <X must be a numeric or logical>
+- statistics/mad.m:247 [error] error ''mad' undefined' does not match <OPT must be 0 or 1>
+- statistics/mape.m:630 [test] 'mape' undefined
+- statistics/mape.m:638 [test] 'mape' undefined
+- statistics/mape.m:648 [test] 'mape' undefined
+- statistics/mape.m:656 [test] 'mape' undefined
+- statistics/mape.m:670 [assert] 'mape' undefined
+- statistics/mape.m:671 [assert] 'mape' undefined
+- statistics/mape.m:674 [test] 'mape' undefined
+- statistics/mape.m:682 [test] 'mape' undefined
+- statistics/mape.m:691 [test] 'mape' undefined
+- statistics/mape.m:699 [test] 'mape' undefined
+- statistics/mape.m:713 [test] 'mape' undefined
+- statistics/mape.m:722 [test] 'mape' undefined
+- statistics/mape.m:732 [test] 'mape' undefined
+- statistics/mape.m:744 [test] 'mape' undefined
+- statistics/mape.m:758 [test] 'mape' undefined
+- statistics/mape.m:772 [test] 'mape' undefined
+- statistics/mape.m:796 [test] reshape: can't reshape 2x2 array to 2x4x1 array
+- statistics/mape.m:819 [error] error ''mape' undefined' does not match <Invalid call>
+- statistics/mape.m:820 [error] error ''mape' undefined' does not match <Invalid call>
+- statistics/mape.m:821 [error] error ''mape' undefined' does not match <Invalid call>
+- statistics/mape.m:822 [error] error ''mape' undefined' does not match <F must be a floating point numeric array>
+- statistics/mape.m:823 [error] error ''mape' undefined' does not match <F must be a floating point numeric array>
+- statistics/mape.m:824 [error] error ''mape' undefined' does not match <A must be a floating point numeric array>
+- statistics/mape.m:825 [error] error ''mape' undefined' does not match <A must be a floating point numeric array>
+- statistics/mape.m:826 [error] error ''mape' undefined' does not match <WEIGHTS must be single or double>
+- statistics/mape.m:827 [error] error ''mape' undefined' does not match <WEIGHTS must be single or double>
+- statistics/mape.m:828 [error] error ''mape' undefined' does not match <WEIGHTS must be nonnegative>
+- statistics/mape.m:829 [error] error ''mape' undefined' does not match <paired input argument for 'Weights' is missing>
+- statistics/mape.m:830 [error] error ''mape' undefined' does not match <Invalid call>
+- statistics/mape.m:831 [error] error ''mape' undefined' does not match <Invalid call>
+- statistics/mape.m:832 [error] error ''mape' undefined' does not match <Invalid call>
+- statistics/mape.m:833 [error] error ''mape' undefined' does not match <WEIGHTS vector must have the same length as the operating dimension>
+- statistics/mape.m:835 [error] error ''mape' undefined' does not match <WEIGHTS vector must have the same length as the operating dimension>
+- statistics/mape.m:837 [error] error ''mape' undefined' does not match <WEIGHTS array must have the same size as the difference>
+- statistics/mape.m:839 [error] error ''mape' undefined' does not match <WEIGHTS array must have the same size as the difference>
+- statistics/mape.m:841 [error] error ''mape' undefined' does not match <WEIGHTS vector must have the same length as the operating dimension>
+- statistics/mape.m:843 [error] error ''mape' undefined' does not match <WEIGHTS vector must have the same length as the operating dimension>
+- statistics/mape.m:845 [error] error ''mape' undefined' does not match <WEIGHTS vector must have the same length as the operating dimension>
+- statistics/mape.m:847 [error] error ''mape' undefined' does not match <WEIGHTS vector must have the same length as the operating dimension>
+- statistics/mape.m:849 [error] error ''mape' undefined' does not match <WEIGHTS array must have the same size as the difference>
+- statistics/mape.m:851 [error] error ''mape' undefined' does not match <WEIGHTS array must have the same size as the difference>
+- statistics/mape.m:853 [error] error ''mape' undefined' does not match <DIM must be a positive integer>
+- statistics/mape.m:854 [error] error ''mape' undefined' does not match <DIM must be a positive integer>
+- statistics/mape.m:855 [error] error ''mape' undefined' does not match <DIM must be a positive integer>
+- statistics/mape.m:856 [error] error ''mape' undefined' does not match <DIM must be a positive integer>
+- statistics/mape.m:857 [error] error ''mape' undefined' does not match <DIM must be a positive integer>
+- statistics/mape.m:858 [error] error ''mape' undefined' does not match <DIM must be a positive integer>
+- statistics/mape.m:859 [error] error ''mape' undefined' does not match <DIM must be a positive integer>
+- statistics/mape.m:860 [error] error ''mape' undefined' does not match <DIM must be a positive integer>
+- statistics/mape.m:861 [error] error ''mape' undefined' does not match <DIM must be a positive integer>
+- statistics/mape.m:862 [error] error ''mape' undefined' does not match <DIM must be a positive integer>
+- statistics/mape.m:863 [error] error ''mape' undefined' does not match <DIM must be a positive integer>
+- statistics/mape.m:864 [error] error ''mape' undefined' does not match <WEIGHTS array must have the same size as 'A - F', when 'DIM>
+- statistics/mape.m:866 [error] error ''mape' undefined' does not match <WEIGHTS vector must have the same length as the operating dimension>
+- statistics/mape.m:868 [error] error ''mape' undefined' does not match <WEIGHTS array must have the same size as the difference>
+- statistics/mape.m:870 [error] error ''mape' undefined' does not match <VECDIM must contain non-repeating>
+- statistics/mape.m:871 [error] error ''mape' undefined' does not match <WEIGHTS array must have the same size as 'A - F', when 'all>
+- statistics/mape.m:873 [error] error ''mape' undefined' does not match <WEIGHTS vector must have the same length as the operating dimension>
+- statistics/mape.m:875 [error] error ''mape' undefined' does not match <WEIGHTS array must have the same size as the difference>
+- statistics/mape.m:877 [error] error ''mape' undefined' does not match <WEIGHTS array must have the same size as the difference>
+- statistics/mape.m:879 [error] error ''mape' undefined' does not match <WEIGHTS array must have the same size as the operating page>
+- statistics/mape.m:881 [error] error ''mape' undefined' does not match <WEIGHTS array must have the same size as the operating page>
+- statistics/mean.m:699 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mean.m:707 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mean.m:715 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       1        0.6666666666666666       Abs err 0.33333333333333337 exceeds tol 2.220446049250313E-16
+- statistics/mean.m:723 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mean.m:731 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       0        1.5       Abs err 1.5 exceeds tol 2.220446049250313E-16
+- statistics/mean.m:741 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mean.m:750 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mean.m:760 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mean.m:790 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mean.m:820 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mean.m:842 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mean.m:853 [test] ASSERT errors: dimensions mismatch
+- statistics/mean.m:866 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mean.m:867 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mean.m:868 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mean.m:869 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mean.m:870 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mean.m:871 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mean.m:873 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mean.m:875 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mean.m:876 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mean.m:879 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mean.m:880 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mean.m:881 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mean.m:882 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mean.m:883 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mean.m:884 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mean.m:885 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mean.m:886 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mean.m:889 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mean.m:905 [test] ASSERT errors: dimensions mismatch
+- statistics/mean.m:916 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mean.m:917 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mean.m:918 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mean.m:928 [test] ASSERT errors: dimensions mismatch
+- statistics/mean.m:937 [test] ASSERT errors: dimensions mismatch
+- statistics/mean.m:952 [test] ASSERT errors: dimensions mismatch
+- statistics/mean.m:965 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mean.m:969 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mean.m:975 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       35184372088832        35184372088833       Abs err 1 exceeds tol 0.0078125
+- statistics/mean.m:977 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       35184372088832        35184372088833       Abs err 1 exceeds tol 0.0078125
+- statistics/mean.m:980 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       9007199254740992        35184372088833       Abs err 8972014882652159 exceeds tol 0.0078125
+- statistics/mean.m:982 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       9007199254740992        35184372088833       Abs err 8972014882652159 exceeds tol 0.0078125
+- statistics/mean.m:984 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       35184372088832        35184372088833       Abs err 1 exceeds tol 0.0078125
+- statistics/mean.m:986 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       35184372088832        35184372088833       Abs err 1 exceeds tol 0.0078125
+- statistics/mean.m:988 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       4503599627370496        35184372088833       Abs err 4468415255281663 exceeds tol 0.0078125
+- statistics/mean.m:993 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mean.m:1004 [error] expected an error but none was raised
+- statistics/mean.m:1005 [error] error 'mean: wrong type argument 'cell array'' does not match <X must be a numeric or logical array>
+- statistics/mean.m:1006 [error] expected an error but none was raised
+- statistics/mean.m:1007 [error] expected an error but none was raised
+- statistics/mean.m:1008 [error] expected an error but none was raised
+- statistics/mean.m:1009 [error] expected an error but none was raised
+- statistics/mean.m:1010 [error] expected an error but none was raised
+- statistics/mean.m:1011 [error] expected an error but none was raised
+- statistics/mean.m:1012 [error] expected an error but none was raised
+- statistics/mean.m:1013 [error] expected an error but none was raised
+- statistics/mean.m:1014 [error] expected an error but none was raised
+- statistics/mean.m:1015 [error] expected an error but none was raised
+- statistics/mean.m:1016 [error] expected an error but none was raised
+- statistics/mean.m:1018 [error] expected an error but none was raised
+- statistics/mean.m:1020 [error] expected an error but none was raised
+- statistics/mean.m:1022 [error] expected an error but none was raised
+- statistics/mean.m:1024 [error] expected an error but none was raised
+- statistics/mean.m:1026 [error] expected an error but none was raised
+- statistics/mean.m:1028 [error] expected an error but none was raised
+- statistics/mean.m:1030 [error] expected an error but none was raised
+- statistics/mean.m:1032 [error] expected an error but none was raised
+- statistics/mean.m:1033 [error] expected an error but none was raised
+- statistics/mean.m:1034 [error] error 'mean: DIM must be a valid dimension' does not match <DIM must be a positive integer>
+- statistics/mean.m:1035 [error] expected an error but none was raised
+- statistics/mean.m:1036 [error] error 'mean: DIM must be a valid dimension' does not match <DIM must be a positive integer>
+- statistics/mean.m:1037 [error] error 'mean: DIM must be a valid dimension' does not match <DIM must be a positive integer>
+- statistics/mean.m:1038 [error] error 'mean: DIM must be a valid dimension' does not match <DIM must be a positive integer>
+- statistics/mean.m:1039 [error] error 'Array dimensions exceeded supported range.' does not match <DIM must be a positive integer>
+- statistics/mean.m:1040 [error] error 'mean: DIM must be a valid dimension' does not match <DIM must be a positive integer>
+- statistics/mean.m:1041 [error] expected an error but none was raised
+- statistics/mean.m:1042 [error] expected an error but none was raised
+- statistics/mean.m:1043 [error] expected an error but none was raised
+- statistics/meansq.m:137 [assert] 'meansq' undefined
+- statistics/meansq.m:138 [assert] 'meansq' undefined
+- statistics/meansq.m:139 [assert] 'meansq' undefined
+- statistics/meansq.m:140 [assert] 'meansq' undefined
+- statistics/meansq.m:141 [assert] 'meansq' undefined
+- statistics/meansq.m:144 [test] 'meansq' undefined
+- statistics/meansq.m:164 [test] 'meansq' undefined
+- statistics/meansq.m:173 [assert] 'meansq' undefined
+- statistics/meansq.m:174 [assert] 'meansq' undefined
+- statistics/meansq.m:175 [assert] 'meansq' undefined
+- statistics/meansq.m:176 [assert] 'meansq' undefined
+- statistics/meansq.m:177 [assert] 'meansq' undefined
+- statistics/meansq.m:180 [test] 'meansq' undefined
+- statistics/meansq.m:189 [error] error ''meansq' undefined' does not match <Invalid call>
+- statistics/meansq.m:190 [error] error ''meansq' undefined' does not match <Invalid call>
+- statistics/meansq.m:191 [error] error ''meansq' undefined' does not match <meansq: X must be a numeric array>
+- statistics/meansq.m:192 [error] error ''meansq' undefined' does not match <meansq: X must be a numeric array>
+- statistics/meansq.m:193 [error] error ''meansq' undefined' does not match <meansq: X must be a numeric array>
+- statistics/median.m:591 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:596 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:603 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:610 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:619 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:633 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:634 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:637 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:649 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:665 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:673 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:674 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:675 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:676 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:677 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:678 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:679 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:680 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:681 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:682 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:683 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:684 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:685 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:686 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:687 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:688 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:689 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:690 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:691 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:692 [assert] ASSERT errors: dimensions mismatch
+- statistics/median.m:693 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:694 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:695 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:697 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:698 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:699 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:700 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:704 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:709 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:710 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:711 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:712 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:713 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:714 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:715 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:716 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:717 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:718 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:719 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:720 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:721 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:722 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:723 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:726 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:727 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:728 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:729 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:730 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:731 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:732 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:733 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:734 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:735 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:738 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:750 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:759 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:765 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:766 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:767 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:768 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:769 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:770 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:772 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:773 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:774 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:775 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:776 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:777 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:779 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:781 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:784 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:785 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:786 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:787 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:790 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:791 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:794 [shared] 'onCleanup' undefined
+- statistics/median.m:802 [assert] index (_,_,_,3): out of bound; value 3 out of bound 1
+- statistics/median.m:803 [assert] index (_,_,3): out of bound; value 3 out of bound 1
+- statistics/median.m:807 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:813 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:814 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:816 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:819 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:821 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:825 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:826 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:828 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:832 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:837 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:842 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:845 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:848 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:851 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:858 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:860 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:862 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:866 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:867 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:868 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:876 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:877 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:878 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:879 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:882 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:883 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:884 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:885 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:886 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:887 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:888 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/median.m:892 [error] expected an error but none was raised
+- statistics/median.m:893 [error] expected an error but none was raised
+- statistics/median.m:894 [error] expected an error but none was raised
+- statistics/median.m:895 [error] expected an error but none was raised
+- statistics/median.m:896 [error] expected an error but none was raised
+- statistics/median.m:897 [error] expected an error but none was raised
+- statistics/median.m:898 [error] expected an error but none was raised
+- statistics/median.m:899 [error] error 'median: wrong type argument 'cell array'' does not match <X must be either numeric or logical>
+- statistics/median.m:900 [error] expected an error but none was raised
+- statistics/median.m:901 [error] expected an error but none was raised
+- statistics/median.m:902 [error] expected an error but none was raised
+- statistics/median.m:903 [error] expected an error but none was raised
+- statistics/median.m:904 [error] error 'median: DIM must be a valid dimension' does not match <DIM must be a positive integer>
+- statistics/median.m:905 [error] error 'median: DIM must be a valid dimension' does not match <DIM must be a positive integer>
+- statistics/median.m:906 [error] expected an error but none was raised
+- statistics/mode.m:301 [test] 'toeplitz' undefined
+- statistics/mode.m:306 [test] 'toeplitz' undefined
+- statistics/mode.m:311 [test] element number 2 undefined in return list
+- statistics/mode.m:332 [test] element number 2 undefined in return list
+- statistics/mode.m:339 [test] element number 2 undefined in return list
+- statistics/mode.m:348 [shared] 'toeplitz' undefined
+- statistics/mode.m:352 [test] element number 2 undefined in return list
+- statistics/mode.m:360 [test] element number 2 undefined in return list
+- statistics/mode.m:368 [test] element number 2 undefined in return list
+- statistics/mode.m:379 [test] element number 2 undefined in return list
+- statistics/mode.m:384 [test] element number 2 undefined in return list
+- statistics/mode.m:389 [test] element number 2 undefined in return list
+- statistics/mode.m:394 [test] element number 2 undefined in return list
+- statistics/mode.m:399 [test] element number 2 undefined in return list
+- statistics/mode.m:404 [test] element number 2 undefined in return list
+- statistics/mode.m:409 [test] element number 2 undefined in return list
+- statistics/mode.m:414 [test] element number 2 undefined in return list
+- statistics/mode.m:419 [test] element number 2 undefined in return list
+- statistics/mode.m:424 [test] element number 2 undefined in return list
+- statistics/mode.m:429 [test] element number 2 undefined in return list
+- statistics/mode.m:434 [test] element number 2 undefined in return list
+- statistics/mode.m:439 [test] element number 2 undefined in return list
+- statistics/mode.m:444 [test] element number 2 undefined in return list
+- statistics/mode.m:449 [test] element number 2 undefined in return list
+- statistics/mode.m:454 [test] element number 2 undefined in return list
+- statistics/mode.m:459 [test] element number 2 undefined in return list
+- statistics/mode.m:464 [test] element number 2 undefined in return list
+- statistics/mode.m:469 [test] element number 2 undefined in return list
+- statistics/mode.m:474 [test] element number 2 undefined in return list
+- statistics/mode.m:479 [test] element number 2 undefined in return list
+- statistics/mode.m:484 [test] element number 2 undefined in return list
+- statistics/mode.m:489 [test] element number 2 undefined in return list
+- statistics/mode.m:496 [test] element number 2 undefined in return list
+- statistics/mode.m:501 [test] element number 2 undefined in return list
+- statistics/mode.m:506 [test] element number 2 undefined in return list
+- statistics/mode.m:511 [test] element number 2 undefined in return list
+- statistics/mode.m:516 [test] element number 2 undefined in return list
+- statistics/mode.m:521 [test] element number 2 undefined in return list
+- statistics/mode.m:526 [test] element number 2 undefined in return list
+- statistics/mode.m:531 [test] element number 2 undefined in return list
+- statistics/mode.m:536 [test] element number 2 undefined in return list
+- statistics/mode.m:541 [test] element number 2 undefined in return list
+- statistics/mode.m:546 [test] element number 2 undefined in return list
+- statistics/mode.m:551 [test] element number 2 undefined in return list
+- statistics/mode.m:556 [test] element number 2 undefined in return list
+- statistics/mode.m:561 [test] element number 2 undefined in return list
+- statistics/mode.m:566 [test] element number 2 undefined in return list
+- statistics/mode.m:571 [test] element number 2 undefined in return list
+- statistics/mode.m:576 [test] element number 2 undefined in return list
+- statistics/mode.m:581 [test] element number 2 undefined in return list
+- statistics/mode.m:586 [test] element number 2 undefined in return list
+- statistics/mode.m:591 [test] element number 2 undefined in return list
+- statistics/mode.m:596 [test] element number 2 undefined in return list
+- statistics/mode.m:601 [test] element number 2 undefined in return list
+- statistics/mode.m:608 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mode.m:618 [error] error 'mode: wrong type argument 'cell array'' does not match <mode: X must be a numeric array>
+- statistics/mode.m:619 [error] expected an error but none was raised
+- statistics/mode.m:620 [error] expected an error but none was raised
+- statistics/mode.m:621 [error] error 'mode: DIM must be a valid dimension' does not match <mode: DIM must be a positive integer>
+- statistics/mode.m:622 [error] expected an error but none was raised
+- statistics/mode.m:624 [error] expected an error but none was raised
+- statistics/mode.m:626 [error] expected an error but none was raised
+- statistics/moment.m:200 [assert] 'moment' undefined
+- statistics/moment.m:201 [assert] 'moment' undefined
+- statistics/moment.m:202 [assert] 'moment' undefined
+- statistics/moment.m:203 [assert] 'moment' undefined
+- statistics/moment.m:204 [assert] 'moment' undefined
+- statistics/moment.m:205 [assert] 'moment' undefined
+- statistics/moment.m:206 [assert] 'moment' undefined
+- statistics/moment.m:207 [assert] 'moment' undefined
+- statistics/moment.m:208 [assert] 'moment' undefined
+- statistics/moment.m:209 [assert] 'moment' undefined
+- statistics/moment.m:210 [assert] 'moment' undefined
+- statistics/moment.m:211 [assert] 'moment' undefined
+- statistics/moment.m:213 [assert] 'moment' undefined
+- statistics/moment.m:216 [assert] 'moment' undefined
+- statistics/moment.m:217 [assert] 'moment' undefined
+- statistics/moment.m:218 [assert] 'moment' undefined
+- statistics/moment.m:219 [assert] 'moment' undefined
+- statistics/moment.m:220 [assert] 'moment' undefined
+- statistics/moment.m:221 [assert] 'moment' undefined
+- statistics/moment.m:222 [assert] 'moment' undefined
+- statistics/moment.m:223 [assert] 'moment' undefined
+- statistics/moment.m:225 [assert] 'moment' undefined
+- statistics/moment.m:228 [error] error ''moment' undefined' does not match <Invalid call>
+- statistics/moment.m:229 [error] error ''moment' undefined' does not match <Invalid call>
+- statistics/moment.m:230 [error] error ''moment' undefined' does not match <moment: X must be a non-empty numeric array>
+- statistics/moment.m:231 [error] error ''moment' undefined' does not match <moment: X must be a non-empty numeric array>
+- statistics/moment.m:232 [error] error ''moment' undefined' does not match <moment: X must be a non-empty numeric array>
+- statistics/moment.m:233 [error] error ''moment' undefined' does not match <moment: P must be a numeric scalar>
+- statistics/moment.m:234 [error] error ''moment' undefined' does not match <moment: P must be a numeric scalar>
+- statistics/moment.m:235 [error] error ''moment' undefined' does not match <moment: P must be a numeric scalar>
+- statistics/moment.m:236 [error] error ''moment' undefined' does not match <moment: TYPE must be a character vector>
+- statistics/movmad.m:131 [assert] 'movmad' undefined
+- statistics/movmad.m:132 [assert] 'movmad' undefined
+- statistics/movmad.m:133 [assert] 'movmad' undefined
+- statistics/movmad.m:134 [assert] 'movmad' undefined
+- statistics/movmad.m:135 [assert] 'movmad' undefined
+- statistics/movmad.m:137 [assert] 'movmad' undefined
+- statistics/movmad.m:140 [assert] 'movmad' undefined
+- statistics/movmad.m:143 [assert] 'movmad' undefined
+- statistics/movmad.m:146 [assert] 'movmad' undefined
+- statistics/movmad.m:148 [assert] 'movmad' undefined
+- statistics/movmad.m:150 [assert] 'movmad' undefined
+- statistics/movmad.m:151 [assert] 'movmad' undefined
+- statistics/movmad.m:152 [assert] 'movmad' undefined
+- statistics/movmad.m:155 [assert] 'movmad' undefined
+- statistics/movmad.m:156 [assert] 'movmad' undefined
+- statistics/movmad.m:157 [assert] 'movmad' undefined
+- statistics/movmad.m:158 [assert] 'movmad' undefined
+- statistics/movmad.m:159 [assert] 'movmad' undefined
+- statistics/movmad.m:160 [assert] 'movmad' undefined
+- statistics/movmad.m:162 [assert] 'movmad' undefined
+- statistics/movmad.m:165 [assert] 'movmad' undefined
+- statistics/movmad.m:168 [assert] 'movmad' undefined
+- statistics/movmad.m:171 [assert] 'movmad' undefined
+- statistics/movmad.m:173 [assert] 'movmad' undefined
+- statistics/movmad.m:175 [assert] 'movmad' undefined
+- statistics/movmad.m:176 [assert] 'movmad' undefined
+- statistics/movmad.m:177 [assert] 'movmad' undefined
+- statistics/movmad.m:179 [assert] 'movmad' undefined
+- statistics/movmad.m:180 [assert] 'movmad' undefined
+- statistics/movmad.m:183 [error] error ''movmad' undefined' does not match <Invalid call>
+- statistics/movmad.m:184 [error] error ''movmad' undefined' does not match <Invalid call>
+- statistics/movmad.m:185 [error] error ''movmad' undefined' does not match <METHOD must be either>
+- statistics/movmax.m:88 [assert] 'movmax' undefined
+- statistics/movmax.m:89 [assert] 'movmax' undefined
+- statistics/movmax.m:90 [assert] 'movmax' undefined
+- statistics/movmax.m:91 [assert] 'movmax' undefined
+- statistics/movmax.m:92 [assert] 'movmax' undefined
+- statistics/movmax.m:94 [assert] 'movmax' undefined
+- statistics/movmax.m:96 [assert] 'movmax' undefined
+- statistics/movmax.m:98 [assert] 'movmax' undefined
+- statistics/movmax.m:100 [assert] 'movmax' undefined
+- statistics/movmax.m:102 [assert] 'movmax' undefined
+- statistics/movmax.m:104 [assert] 'movmax' undefined
+- statistics/movmax.m:105 [assert] 'movmax' undefined
+- statistics/movmax.m:106 [assert] 'movmax' undefined
+- statistics/movmax.m:108 [assert] 'movmax' undefined
+- statistics/movmax.m:111 [error] error ''movmax' undefined' does not match <Invalid call>
+- statistics/movmax.m:112 [error] error ''movmax' undefined' does not match <Invalid call>
+- statistics/movmean.m:81 [assert] 'movmean' undefined
+- statistics/movmean.m:82 [assert] 'movmean' undefined
+- statistics/movmean.m:83 [assert] 'movmean' undefined
+- statistics/movmean.m:84 [assert] 'movmean' undefined
+- statistics/movmean.m:85 [assert] 'movmean' undefined
+- statistics/movmean.m:87 [assert] 'movmean' undefined
+- statistics/movmean.m:90 [assert] 'movmean' undefined
+- statistics/movmean.m:93 [assert] 'movmean' undefined
+- statistics/movmean.m:96 [assert] 'movmean' undefined
+- statistics/movmean.m:98 [assert] 'movmean' undefined
+- statistics/movmean.m:100 [assert] 'movmean' undefined
+- statistics/movmean.m:101 [assert] 'movmean' undefined
+- statistics/movmean.m:102 [assert] 'movmean' undefined
+- statistics/movmean.m:105 [error] error ''movmean' undefined' does not match <Invalid call>
+- statistics/movmean.m:106 [error] error ''movmean' undefined' does not match <Invalid call>
+- statistics/movmedian.m:82 [assert] 'movmedian' undefined
+- statistics/movmedian.m:83 [assert] 'movmedian' undefined
+- statistics/movmedian.m:84 [assert] 'movmedian' undefined
+- statistics/movmedian.m:85 [assert] 'movmedian' undefined
+- statistics/movmedian.m:86 [assert] 'movmedian' undefined
+- statistics/movmedian.m:88 [assert] 'movmedian' undefined
+- statistics/movmedian.m:91 [assert] 'movmedian' undefined
+- statistics/movmedian.m:94 [assert] 'movmedian' undefined
+- statistics/movmedian.m:96 [assert] 'movmedian' undefined
+- statistics/movmedian.m:98 [assert] 'movmedian' undefined
+- statistics/movmedian.m:100 [assert] 'movmedian' undefined
+- statistics/movmedian.m:101 [assert] 'movmedian' undefined
+- statistics/movmedian.m:102 [assert] 'movmedian' undefined
+- statistics/movmedian.m:105 [error] error ''movmedian' undefined' does not match <Invalid call>
+- statistics/movmedian.m:106 [error] error ''movmedian' undefined' does not match <Invalid call>
+- statistics/movmin.m:88 [assert] 'movmin' undefined
+- statistics/movmin.m:89 [assert] 'movmin' undefined
+- statistics/movmin.m:90 [assert] 'movmin' undefined
+- statistics/movmin.m:91 [assert] 'movmin' undefined
+- statistics/movmin.m:92 [assert] 'movmin' undefined
+- statistics/movmin.m:94 [assert] 'movmin' undefined
+- statistics/movmin.m:96 [assert] 'movmin' undefined
+- statistics/movmin.m:98 [assert] 'movmin' undefined
+- statistics/movmin.m:100 [assert] 'movmin' undefined
+- statistics/movmin.m:102 [assert] 'movmin' undefined
+- statistics/movmin.m:104 [assert] 'movmin' undefined
+- statistics/movmin.m:105 [assert] 'movmin' undefined
+- statistics/movmin.m:106 [assert] 'movmin' undefined
+- statistics/movmin.m:108 [assert] 'movmin' undefined
+- statistics/movmin.m:111 [error] error ''movmin' undefined' does not match <Invalid call>
+- statistics/movmin.m:112 [error] error ''movmin' undefined' does not match <Invalid call>
+- statistics/movprod.m:88 [assert] 'movprod' undefined
+- statistics/movprod.m:89 [assert] 'movprod' undefined
+- statistics/movprod.m:90 [assert] 'movprod' undefined
+- statistics/movprod.m:91 [assert] 'movprod' undefined
+- statistics/movprod.m:92 [assert] 'movprod' undefined
+- statistics/movprod.m:94 [assert] 'movprod' undefined
+- statistics/movprod.m:97 [assert] 'movprod' undefined
+- statistics/movprod.m:100 [assert] 'movprod' undefined
+- statistics/movprod.m:103 [assert] 'movprod' undefined
+- statistics/movprod.m:105 [assert] 'movprod' undefined
+- statistics/movprod.m:108 [assert] 'movprod' undefined
+- statistics/movprod.m:109 [assert] 'movprod' undefined
+- statistics/movprod.m:110 [assert] 'movprod' undefined
+- statistics/movprod.m:112 [assert] 'movprod' undefined
+- statistics/movprod.m:115 [error] error ''movprod' undefined' does not match <Invalid call>
+- statistics/movprod.m:116 [error] error ''movprod' undefined' does not match <Invalid call>
+- statistics/movstd.m:116 [assert] 'movstd' undefined
+- statistics/movstd.m:117 [assert] 'movstd' undefined
+- statistics/movstd.m:118 [assert] 'movstd' undefined
+- statistics/movstd.m:119 [assert] 'movstd' undefined
+- statistics/movstd.m:120 [assert] 'movstd' undefined
+- statistics/movstd.m:121 [assert] 'movstd' undefined
+- statistics/movstd.m:122 [assert] 'movstd' undefined
+- statistics/movstd.m:123 [assert] 'movstd' undefined
+- statistics/movstd.m:124 [assert] 'movstd' undefined
+- statistics/movstd.m:125 [assert] 'movstd' undefined
+- statistics/movstd.m:127 [assert] 'movstd' undefined
+- statistics/movstd.m:130 [assert] 'movstd' undefined
+- statistics/movstd.m:133 [assert] 'movstd' undefined
+- statistics/movstd.m:136 [assert] 'movstd' undefined
+- statistics/movstd.m:138 [assert] 'movstd' undefined
+- statistics/movstd.m:140 [assert] 'movstd' undefined
+- statistics/movstd.m:141 [assert] 'movstd' undefined
+- statistics/movstd.m:142 [assert] 'movstd' undefined
+- statistics/movstd.m:144 [test] 'movstd' undefined
+- statistics/movstd.m:153 [error] error ''movstd' undefined' does not match <Invalid call>
+- statistics/movstd.m:154 [error] error ''movstd' undefined' does not match <Invalid call>
+- statistics/movstd.m:155 [error] error ''movstd' undefined' does not match <OPT must be 0 or 1>
+- statistics/movstd.m:156 [error] error ''movstd' undefined' does not match <OPT must be 0 or 1>
+- statistics/movstd.m:157 [error] error ''movstd' undefined' does not match <OPT must be 0 or 1>
+- statistics/movstd.m:158 [error] error ''movstd' undefined' does not match <OPT must be 0 or 1>
+- statistics/movstd.m:159 [error] error ''movstd' undefined' does not match <OPT must be 0 or 1>
+- statistics/movstd.m:160 [error] error ''movstd' undefined' does not match <OPT must be 0 or 1>
+- statistics/movstd.m:161 [error] error ''movstd' undefined' does not match <OPT must be 0 or 1>
+- statistics/movstd.m:162 [error] error ''movstd' undefined' does not match <OPT must be 0 or 1>
+- statistics/movstd.m:163 [error] error ''movstd' undefined' does not match <OPT must be 0 or 1>
+- statistics/movstd.m:164 [error] error ''movstd' undefined' does not match <OPT must be 0 or 1>
+- statistics/movsum.m:88 [assert] 'movsum' undefined
+- statistics/movsum.m:89 [assert] 'movsum' undefined
+- statistics/movsum.m:90 [assert] 'movsum' undefined
+- statistics/movsum.m:91 [assert] 'movsum' undefined
+- statistics/movsum.m:92 [assert] 'movsum' undefined
+- statistics/movsum.m:94 [assert] 'movsum' undefined
+- statistics/movsum.m:96 [assert] 'movsum' undefined
+- statistics/movsum.m:98 [assert] 'movsum' undefined
+- statistics/movsum.m:100 [assert] 'movsum' undefined
+- statistics/movsum.m:102 [assert] 'movsum' undefined
+- statistics/movsum.m:104 [assert] 'movsum' undefined
+- statistics/movsum.m:105 [assert] 'movsum' undefined
+- statistics/movsum.m:106 [assert] 'movsum' undefined
+- statistics/movsum.m:108 [assert] 'movsum' undefined
+- statistics/movsum.m:111 [error] error ''movsum' undefined' does not match <Invalid call>
+- statistics/movsum.m:112 [error] error ''movsum' undefined' does not match <Invalid call>
+- statistics/movvar.m:116 [assert] 'movvar' undefined
+- statistics/movvar.m:117 [assert] 'movvar' undefined
+- statistics/movvar.m:118 [assert] 'movvar' undefined
+- statistics/movvar.m:119 [assert] 'movvar' undefined
+- statistics/movvar.m:120 [assert] 'movvar' undefined
+- statistics/movvar.m:121 [assert] 'movvar' undefined
+- statistics/movvar.m:122 [assert] 'movvar' undefined
+- statistics/movvar.m:123 [assert] 'movvar' undefined
+- statistics/movvar.m:124 [assert] 'movvar' undefined
+- statistics/movvar.m:125 [assert] 'movvar' undefined
+- statistics/movvar.m:127 [assert] 'movvar' undefined
+- statistics/movvar.m:130 [assert] 'movvar' undefined
+- statistics/movvar.m:133 [assert] 'movvar' undefined
+- statistics/movvar.m:136 [assert] 'movvar' undefined
+- statistics/movvar.m:138 [assert] 'movvar' undefined
+- statistics/movvar.m:140 [test] 'movvar' undefined
+- statistics/movvar.m:148 [assert] 'movvar' undefined
+- statistics/movvar.m:149 [assert] 'movvar' undefined
+- statistics/movvar.m:150 [assert] 'movvar' undefined
+- statistics/movvar.m:154 [error] error ''movvar' undefined' does not match <Invalid call>
+- statistics/movvar.m:155 [error] error ''movvar' undefined' does not match <Invalid call>
+- statistics/movvar.m:156 [error] error ''movvar' undefined' does not match <OPT must be 0 or 1>
+- statistics/movvar.m:157 [error] error ''movvar' undefined' does not match <OPT must be 0 or 1>
+- statistics/movvar.m:158 [error] error ''movvar' undefined' does not match <OPT must be 0 or 1>
+- statistics/movvar.m:159 [error] error ''movvar' undefined' does not match <OPT must be 0 or 1>
+- statistics/movvar.m:160 [error] error ''movvar' undefined' does not match <OPT must be 0 or 1>
+- statistics/movvar.m:161 [error] error ''movvar' undefined' does not match <OPT must be 0 or 1>
+- statistics/movvar.m:162 [error] error ''movvar' undefined' does not match <OPT must be 0 or 1>
+- statistics/movvar.m:163 [error] error ''movvar' undefined' does not match <OPT must be 0 or 1>
+- statistics/movvar.m:164 [error] error ''movvar' undefined' does not match <OPT must be 0 or 1>
+- statistics/movvar.m:165 [error] error ''movvar' undefined' does not match <OPT must be 0 or 1>
+- statistics/normalize.m:470 [assert] 'normalize' undefined
+- statistics/normalize.m:471 [assert] 'normalize' undefined
+- statistics/normalize.m:472 [assert] 'normalize' undefined
+- statistics/normalize.m:473 [assert] 'normalize' undefined
+- statistics/normalize.m:474 [assert] 'normalize' undefined
+- statistics/normalize.m:475 [assert] 'normalize' undefined
+- statistics/normalize.m:478 [assert] 'normalize' undefined
+- statistics/normalize.m:479 [assert] 'normalize' undefined
+- statistics/normalize.m:480 [assert] 'normalize' undefined
+- statistics/normalize.m:481 [assert] 'normalize' undefined
+- statistics/normalize.m:482 [assert] 'normalize' undefined
+- statistics/normalize.m:483 [assert] 'normalize' undefined
+- statistics/normalize.m:486 [assert] 'normalize' undefined
+- statistics/normalize.m:487 [assert] 'normalize' undefined
+- statistics/normalize.m:488 [assert] 'normalize' undefined
+- statistics/normalize.m:489 [assert] 'normalize' undefined
+- statistics/normalize.m:490 [assert] 'normalize' undefined
+- statistics/normalize.m:491 [assert] 'normalize' undefined
+- statistics/normalize.m:492 [assert] 'normalize' undefined
+- statistics/normalize.m:493 [assert] 'normalize' undefined
+- statistics/normalize.m:496 [assert] 'normalize' undefined
+- statistics/normalize.m:497 [assert] 'normalize' undefined
+- statistics/normalize.m:498 [assert] 'normalize' undefined
+- statistics/normalize.m:501 [assert] 'normalize' undefined
+- statistics/normalize.m:502 [assert] 'normalize' undefined
+- statistics/normalize.m:503 [assert] 'normalize' undefined
+- statistics/normalize.m:505 [assert] 'normalize' undefined
+- statistics/normalize.m:506 [assert] 'normalize' undefined
+- statistics/normalize.m:507 [assert] 'normalize' undefined
+- statistics/normalize.m:509 [assert] 'normalize' undefined
+- statistics/normalize.m:510 [assert] 'normalize' undefined
+- statistics/normalize.m:511 [assert] 'normalize' undefined
+- statistics/normalize.m:512 [assert] 'normalize' undefined
+- statistics/normalize.m:513 [test] 'normalize' undefined
+- statistics/normalize.m:520 [assert] 'normalize' undefined
+- statistics/normalize.m:521 [assert] 'normalize' undefined
+- statistics/normalize.m:522 [assert] 'normalize' undefined
+- statistics/normalize.m:523 [assert] 'normalize' undefined
+- statistics/normalize.m:526 [assert] 'normalize' undefined
+- statistics/normalize.m:527 [assert] 'normalize' undefined
+- statistics/normalize.m:528 [assert] 'normalize' undefined
+- statistics/normalize.m:529 [assert] 'normalize' undefined
+- statistics/normalize.m:530 [assert] 'normalize' undefined
+- statistics/normalize.m:533 [assert] 'normalize' undefined
+- statistics/normalize.m:534 [assert] 'normalize' undefined
+- statistics/normalize.m:535 [assert] 'normalize' undefined
+- statistics/normalize.m:536 [assert] 'normalize' undefined
+- statistics/normalize.m:539 [assert] 'normalize' undefined
+- statistics/normalize.m:540 [assert] 'normalize' undefined
+- statistics/normalize.m:541 [assert] 'normalize' undefined
+- statistics/normalize.m:542 [assert] 'normalize' undefined
+- statistics/normalize.m:543 [assert] 'normalize' undefined
+- statistics/normalize.m:544 [assert] 'normalize' undefined
+- statistics/normalize.m:545 [assert] 'normalize' undefined
+- statistics/normalize.m:546 [assert] 'normalize' undefined
+- statistics/normalize.m:547 [assert] 'normalize' undefined
+- statistics/normalize.m:548 [assert] 'normalize' undefined
+- statistics/normalize.m:549 [assert] 'normalize' undefined
+- statistics/normalize.m:550 [assert] 'normalize' undefined
+- statistics/normalize.m:551 [assert] 'normalize' undefined
+- statistics/normalize.m:554 [assert] 'normalize' undefined
+- statistics/normalize.m:555 [assert] 'normalize' undefined
+- statistics/normalize.m:558 [test] 'normalize' undefined
+- statistics/normalize.m:593 [test] 'normalize' undefined
+- statistics/normalize.m:598 [test] 'normalize' undefined
+- statistics/normalize.m:603 [test] 'normalize' undefined
+- statistics/normalize.m:608 [test] 'normalize' undefined
+- statistics/normalize.m:613 [test] 'normalize' undefined
+- statistics/normalize.m:620 [assert] 'normalize' undefined
+- statistics/normalize.m:621 [assert] 'normalize' undefined
+- statistics/normalize.m:622 [assert] 'normalize' undefined
+- statistics/normalize.m:623 [assert] 'normalize' undefined
+- statistics/normalize.m:624 [assert] 'normalize' undefined
+- statistics/normalize.m:625 [assert] 'normalize' undefined
+- statistics/normalize.m:626 [assert] 'normalize' undefined
+- statistics/normalize.m:627 [assert] 'normalize' undefined
+- statistics/normalize.m:628 [assert] 'normalize' undefined
+- statistics/normalize.m:629 [assert] 'normalize' undefined
+- statistics/normalize.m:630 [assert] 'normalize' undefined
+- statistics/normalize.m:631 [assert] 'normalize' undefined
+- statistics/normalize.m:632 [assert] 'normalize' undefined
+- statistics/normalize.m:633 [assert] 'normalize' undefined
+- statistics/normalize.m:634 [assert] 'normalize' undefined
+- statistics/normalize.m:635 [assert] 'normalize' undefined
+- statistics/normalize.m:638 [error] error ''normalize' undefined' does not match <Invalid call>
+- statistics/normalize.m:639 [error] error ''normalize' undefined' does not match <Invalid call>
+- statistics/normalize.m:640 [error] error ''normalize' undefined' does not match <X must be a numeric>
+- statistics/normalize.m:641 [error] error ''normalize' undefined' does not match <X must be double or single data type>
+- statistics/normalize.m:642 [error] error ''normalize' undefined' does not match <DIM must be an integer>
+- statistics/normalize.m:643 [error] error ''normalize' undefined' does not match <DIM must be an integer>
+- statistics/normalize.m:644 [error] error ''normalize' undefined' does not match <DIM must be .* a valid dimension>
+- statistics/normalize.m:645 [error] error ''normalize' undefined' does not match <'DataVariables' optional paired argument is only>
+- statistics/normalize.m:646 [error] error ''normalize' undefined' does not match <more than two methods specified>
+- statistics/normalize.m:647 [error] error ''normalize' undefined' does not match <methods .* may not be combined>
+- statistics/normalize.m:648 [error] error ''normalize' undefined' does not match <unknown method 'foo'>
+- statistics/normalize.m:649 [error] error ''normalize' undefined' does not match <'norm' must be specified as a positive scalar or Inf>
+- statistics/normalize.m:650 [error] error ''normalize' undefined' does not match <'norm' must be specified as a positive scalar or Inf>
+- statistics/normalize.m:651 [error] error ''normalize' undefined' does not match <'range' must be specified as>
+- statistics/normalize.m:652 [error] error ''normalize' undefined' does not match <'range' must be specified as>
+- statistics/normalize.m:653 [error] error ''normalize' undefined' does not match <'range' must be specified as>
+- statistics/normalize.m:654 [error] error ''normalize' undefined' does not match <scale value must be a scalar>
+- statistics/normalize.m:655 [error] error ''normalize' undefined' does not match <center shift must be a scalar value>
+- statistics/normalize.m:656 [error] error ''normalize' undefined' does not match <unknown method 'foo'>
+- statistics/prctile.m:194 [test] 'prctile' undefined
+- statistics/prctile.m:206 [test] 'prctile' undefined
+- statistics/prctile.m:218 [test] 'prctile' undefined
+- statistics/prctile.m:233 [test] 'prctile' undefined
+- statistics/prctile.m:254 [test] 'prctile' undefined
+- statistics/prctile.m:270 [test] 'prctile' undefined
+- statistics/prctile.m:291 [assert] 'prctile' undefined
+- statistics/prctile.m:294 [error] error ''prctile' undefined' does not match <Invalid call>
+- statistics/prctile.m:295 [error] error ''prctile' undefined' does not match <prctile: X must be a numeric array>
+- statistics/prctile.m:296 [error] error ''prctile' undefined' does not match <prctile: X must be a numeric array>
+- statistics/prctile.m:297 [error] error ''prctile' undefined' does not match <prctile: X must be a numeric array>
+- statistics/prctile.m:298 [error] error ''prctile' undefined' does not match <prctile: P must be a numeric vector>
+- statistics/prctile.m:299 [error] error ''prctile' undefined' does not match <prctile: P must be a numeric vector>
+- statistics/prctile.m:300 [error] error ''prctile' undefined' does not match <prctile: P values must range from 0 to 100>
+- statistics/quantile.m:407 [test] 'quantile' undefined
+- statistics/quantile.m:419 [test] 'quantile' undefined
+- statistics/quantile.m:431 [test] 'quantile' undefined
+- statistics/quantile.m:440 [test] 'quantile' undefined
+- statistics/quantile.m:457 [test] 'quantile' undefined
+- statistics/quantile.m:474 [test] 'quantile' undefined
+- statistics/quantile.m:491 [test] 'quantile' undefined
+- statistics/quantile.m:508 [test] 'quantile' undefined
+- statistics/quantile.m:525 [test] 'quantile' undefined
+- statistics/quantile.m:543 [test] 'quantile' undefined
+- statistics/quantile.m:561 [test] 'quantile' undefined
+- statistics/quantile.m:570 [assert] 'quantile' undefined
+- statistics/quantile.m:571 [assert] 'quantile' undefined
+- statistics/quantile.m:572 [assert] 'quantile' undefined
+- statistics/quantile.m:573 [assert] 'quantile' undefined
+- statistics/quantile.m:574 [assert] 'quantile' undefined
+- statistics/quantile.m:575 [assert] 'quantile' undefined
+- statistics/quantile.m:578 [assert] 'quantile' undefined
+- statistics/quantile.m:579 [assert] 'quantile' undefined
+- statistics/quantile.m:580 [assert] 'quantile' undefined
+- statistics/quantile.m:581 [assert] 'quantile' undefined
+- statistics/quantile.m:582 [assert] 'quantile' undefined
+- statistics/quantile.m:583 [assert] 'quantile' undefined
+- statistics/quantile.m:584 [assert] 'quantile' undefined
+- statistics/quantile.m:585 [assert] 'quantile' undefined
+- statistics/quantile.m:586 [assert] 'quantile' undefined
+- statistics/quantile.m:587 [assert] 'quantile' undefined
+- statistics/quantile.m:588 [assert] 'quantile' undefined
+- statistics/quantile.m:589 [assert] 'quantile' undefined
+- statistics/quantile.m:590 [assert] 'quantile' undefined
+- statistics/quantile.m:591 [assert] 'quantile' undefined
+- statistics/quantile.m:592 [assert] 'quantile' undefined
+- statistics/quantile.m:593 [assert] 'quantile' undefined
+- statistics/quantile.m:594 [assert] 'quantile' undefined
+- statistics/quantile.m:595 [assert] 'quantile' undefined
+- statistics/quantile.m:596 [assert] 'quantile' undefined
+- statistics/quantile.m:597 [assert] 'quantile' undefined
+- statistics/quantile.m:598 [assert] 'quantile' undefined
+- statistics/quantile.m:599 [assert] 'quantile' undefined
+- statistics/quantile.m:600 [assert] 'quantile' undefined
+- statistics/quantile.m:601 [assert] 'quantile' undefined
+- statistics/quantile.m:602 [assert] 'quantile' undefined
+- statistics/quantile.m:603 [assert] 'quantile' undefined
+- statistics/quantile.m:604 [assert] 'quantile' undefined
+- statistics/quantile.m:605 [assert] 'quantile' undefined
+- statistics/quantile.m:606 [assert] 'quantile' undefined
+- statistics/quantile.m:607 [assert] 'quantile' undefined
+- statistics/quantile.m:610 [assert] 'quantile' undefined
+- statistics/quantile.m:612 [assert] 'quantile' undefined
+- statistics/quantile.m:614 [assert] 'quantile' undefined
+- statistics/quantile.m:616 [assert] 'quantile' undefined
+- statistics/quantile.m:618 [assert] 'quantile' undefined
+- statistics/quantile.m:620 [assert] 'quantile' undefined
+- statistics/quantile.m:624 [assert] 'quantile' undefined
+- statistics/quantile.m:625 [assert] 'quantile' undefined
+- statistics/quantile.m:628 [assert] 'quantile' undefined
+- statistics/quantile.m:629 [assert] 'quantile' undefined
+- statistics/quantile.m:630 [assert] 'quantile' undefined
+- statistics/quantile.m:631 [assert] 'quantile' undefined
+- statistics/quantile.m:634 [assert] 'quantile' undefined
+- statistics/quantile.m:635 [assert] 'quantile' undefined
+- statistics/quantile.m:636 [assert] 'quantile' undefined
+- statistics/quantile.m:637 [assert] 'quantile' undefined
+- statistics/quantile.m:640 [error] error ''quantile' undefined' does not match <Invalid call>
+- statistics/quantile.m:641 [error] error ''quantile' undefined' does not match <quantile: X must be a numeric array>
+- statistics/quantile.m:642 [error] error ''quantile' undefined' does not match <quantile: X must be a numeric array>
+- statistics/quantile.m:643 [error] error ''quantile' undefined' does not match <quantile: X must be a numeric array>
+- statistics/quantile.m:644 [error] error ''quantile' undefined' does not match <P must be a numeric vector>
+- statistics/quantile.m:645 [error] error ''quantile' undefined' does not match <P must be a numeric vector>
+- statistics/quantile.m:646 [error] error ''quantile' undefined' does not match <quantile: P values must range from 0 to 1, unless specifying N evenly spaced cumulative probabilities>
+- statistics/quantile.m:648 [error] error ''quantile' undefined' does not match <quantile: P values must range from 0 to 1, unless specifying N evenly spaced cumulative probabilities>
+- statistics/quantile.m:650 [error] error ''quantile' undefined' does not match <quantile: DIM must be a positive integer>
+- statistics/quantile.m:651 [error] error ''quantile' undefined' does not match <quantile: DIM must be a positive integer>
+- statistics/quantile.m:652 [error] error ''quantile' undefined' does not match <quantile: VECDIM must be a vector of non-repeating positive integers>
+- statistics/quantile.m:654 [error] error ''quantile' undefined' does not match <quantile: VECDIM must be a vector of non-repeating positive integers>
+- statistics/quantile.m:656 [error] error ''quantile' undefined' does not match <quantile: DIM must be a positive integer scalar, vector, or 'all'>
+- statistics/range.m:96 [assert] 'range' undefined
+- statistics/range.m:97 [assert] 'range' undefined
+- statistics/range.m:98 [assert] 'range' undefined
+- statistics/range.m:99 [assert] 'range' undefined
+- statistics/range.m:100 [assert] 'range' undefined
+- statistics/range.m:101 [test] 'range' undefined
+- statistics/range.m:110 [test] 'range' undefined
+- statistics/range.m:113 [test] 'range' undefined
+- statistics/range.m:116 [test] 'range' undefined
+- statistics/range.m:119 [test] 'range' undefined
+- statistics/range.m:122 [test] 'range' undefined
+- statistics/range.m:125 [test] 'range' undefined
+- statistics/range.m:129 [test] 'range' undefined
+- statistics/range.m:133 [test] 'range' undefined
+- statistics/range.m:137 [test] 'range' undefined
+- statistics/range.m:143 [test] 'range' undefined
+- statistics/range.m:150 [error] error ''range' undefined' does not match <Invalid call>
+- statistics/range.m:151 [error] error ''range' undefined' does not match <Invalid call>
+- statistics/range.m:152 [error] error ''range' undefined' does not match <range: X must be a numeric array>
+- statistics/range.m:153 [error] error ''range' undefined' does not match <range: X must be a numeric array>
+- statistics/ranks.m:157 [assert] 'ranks' undefined
+- statistics/ranks.m:158 [assert] 'ranks' undefined
+- statistics/ranks.m:159 [assert] 'ranks' undefined
+- statistics/ranks.m:160 [assert] 'ranks' undefined
+- statistics/ranks.m:161 [assert] 'ranks' undefined
+- statistics/ranks.m:162 [assert] 'ranks' undefined
+- statistics/ranks.m:164 [assert] 'ranks' undefined
+- statistics/ranks.m:165 [assert] 'ranks' undefined
+- statistics/ranks.m:166 [assert] 'ranks' undefined
+- statistics/ranks.m:167 [assert] 'ranks' undefined
+- statistics/ranks.m:168 [assert] 'ranks' undefined
+- statistics/ranks.m:171 [error] error ''ranks' undefined' does not match <Invalid call>
+- statistics/ranks.m:172 [error] error ''ranks' undefined' does not match <X must be a numeric or logical>
+- statistics/ranks.m:173 [error] error ''ranks' undefined' does not match <X must be a numeric or logical>
+- statistics/ranks.m:174 [error] error ''ranks' undefined' does not match <DIM must be an integer>
+- statistics/ranks.m:175 [error] error ''ranks' undefined' does not match <DIM must be .* a valid dimension>
+- statistics/ranks.m:176 [error] error ''ranks' undefined' does not match <unknown RTYPE 'foobar'>
+- statistics/rms.m:104 [assert] 'rms' undefined
+- statistics/rms.m:105 [assert] 'rms' undefined
+- statistics/rms.m:106 [assert] 'rms' undefined
+- statistics/rms.m:107 [assert] 'rms' undefined
+- statistics/rms.m:108 [assert] 'rms' undefined
+- statistics/rms.m:111 [test] 'rms' undefined
+- statistics/rms.m:131 [test] 'rms' undefined
+- statistics/rms.m:140 [assert] 'rms' undefined
+- statistics/rms.m:141 [assert] 'rms' undefined
+- statistics/rms.m:142 [assert] 'rms' undefined
+- statistics/rms.m:143 [assert] 'rms' undefined
+- statistics/rms.m:144 [assert] 'rms' undefined
+- statistics/rms.m:147 [test] 'rms' undefined
+- statistics/rms.m:156 [error] error ''rms' undefined' does not match <Invalid call>
+- statistics/rms.m:157 [error] error ''rms' undefined' does not match <Invalid call>
+- statistics/rms.m:158 [error] error ''rms' undefined' does not match <X must be a numeric array>
+- statistics/rms.m:159 [error] error ''rms' undefined' does not match <X must be a numeric array>
+- statistics/rms.m:160 [error] error ''rms' undefined' does not match <X must be a numeric array>
+- statistics/rmse.m:513 [test] 'rmse' undefined
+- statistics/rmse.m:521 [test] 'rmse' undefined
+- statistics/rmse.m:528 [test] 'rmse' undefined
+- statistics/rmse.m:536 [test] 'rmse' undefined
+- statistics/rmse.m:552 [test] 'rmse' undefined
+- statistics/rmse.m:560 [test] 'rmse' undefined
+- statistics/rmse.m:567 [test] 'rmse' undefined
+- statistics/rmse.m:575 [test] 'rmse' undefined
+- statistics/rmse.m:581 [test] 'rmse' undefined
+- statistics/rmse.m:592 [test] 'rmse' undefined
+- statistics/rmse.m:606 [test] 'rmse' undefined
+- statistics/rmse.m:622 [test] reshape: can't reshape 2x2 array to 2x4x1 array
+- statistics/rmse.m:638 [test] 'rmse' undefined
+- statistics/rmse.m:646 [error] error ''rmse' undefined' does not match <Invalid call>
+- statistics/rmse.m:647 [error] error ''rmse' undefined' does not match <Invalid call>
+- statistics/rmse.m:648 [error] error ''rmse' undefined' does not match <Invalid call>
+- statistics/rmse.m:649 [error] error ''rmse' undefined' does not match <F must be a floating point numeric array>
+- statistics/rmse.m:650 [error] error ''rmse' undefined' does not match <F must be a floating point numeric array>
+- statistics/rmse.m:651 [error] error ''rmse' undefined' does not match <A must be a floating point numeric array>
+- statistics/rmse.m:652 [error] error ''rmse' undefined' does not match <A must be a floating point numeric array>
+- statistics/rmse.m:653 [error] error ''rmse' undefined' does not match <WEIGHTS must be single or double>
+- statistics/rmse.m:654 [error] error ''rmse' undefined' does not match <WEIGHTS must be single or double>
+- statistics/rmse.m:655 [error] error ''rmse' undefined' does not match <WEIGHTS must be nonnegative>
+- statistics/rmse.m:656 [error] error ''rmse' undefined' does not match <paired input argument for 'Weights' is missing>
+- statistics/rmse.m:657 [error] error ''rmse' undefined' does not match <Invalid call>
+- statistics/rmse.m:658 [error] error ''rmse' undefined' does not match <Invalid call>
+- statistics/rmse.m:659 [error] error ''rmse' undefined' does not match <Invalid call>
+- statistics/rmse.m:660 [error] error ''rmse' undefined' does not match <WEIGHTS vector must have the same length as the operating dimension>
+- statistics/rmse.m:662 [error] error ''rmse' undefined' does not match <WEIGHTS vector must have the same length as the operating dimension>
+- statistics/rmse.m:664 [error] error ''rmse' undefined' does not match <WEIGHTS array must have the same size as the difference>
+- statistics/rmse.m:666 [error] error ''rmse' undefined' does not match <WEIGHTS array must have the same size as the difference>
+- statistics/rmse.m:668 [error] error ''rmse' undefined' does not match <WEIGHTS vector must have the same length as the operating dimension>
+- statistics/rmse.m:670 [error] error ''rmse' undefined' does not match <WEIGHTS vector must have the same length as the operating dimension>
+- statistics/rmse.m:672 [error] error ''rmse' undefined' does not match <WEIGHTS vector must have the same length as the operating dimension>
+- statistics/rmse.m:674 [error] error ''rmse' undefined' does not match <WEIGHTS vector must have the same length as the operating dimension>
+- statistics/rmse.m:676 [error] error ''rmse' undefined' does not match <WEIGHTS array must have the same size as the difference>
+- statistics/rmse.m:678 [error] error ''rmse' undefined' does not match <WEIGHTS array must have the same size as the difference>
+- statistics/rmse.m:680 [error] error ''rmse' undefined' does not match <DIM must be a positive integer>
+- statistics/rmse.m:681 [error] error ''rmse' undefined' does not match <DIM must be a positive integer>
+- statistics/rmse.m:682 [error] error ''rmse' undefined' does not match <DIM must be a positive integer>
+- statistics/rmse.m:683 [error] error ''rmse' undefined' does not match <DIM must be a positive integer>
+- statistics/rmse.m:684 [error] error ''rmse' undefined' does not match <DIM must be a positive integer>
+- statistics/rmse.m:685 [error] error ''rmse' undefined' does not match <DIM must be a positive integer>
+- statistics/rmse.m:686 [error] error ''rmse' undefined' does not match <DIM must be a positive integer>
+- statistics/rmse.m:687 [error] error ''rmse' undefined' does not match <DIM must be a positive integer>
+- statistics/rmse.m:688 [error] error ''rmse' undefined' does not match <DIM must be a positive integer>
+- statistics/rmse.m:689 [error] error ''rmse' undefined' does not match <DIM must be a positive integer>
+- statistics/rmse.m:690 [error] error ''rmse' undefined' does not match <DIM must be a positive integer>
+- statistics/rmse.m:691 [error] error ''rmse' undefined' does not match <WEIGHTS array must have the same size as 'A - F', when 'DIM>
+- statistics/rmse.m:693 [error] error ''rmse' undefined' does not match <WEIGHTS vector must have the same length as the operating dimension>
+- statistics/rmse.m:695 [error] error ''rmse' undefined' does not match <WEIGHTS array must have the same size as the difference>
+- statistics/rmse.m:697 [error] error ''rmse' undefined' does not match <VECDIM must contain non-repeating>
+- statistics/rmse.m:698 [error] error ''rmse' undefined' does not match <WEIGHTS array must have the same size as 'A - F', when 'all>
+- statistics/rmse.m:700 [error] error ''rmse' undefined' does not match <WEIGHTS vector must have the same length as the operating dimension>
+- statistics/rmse.m:702 [error] error ''rmse' undefined' does not match <WEIGHTS array must have the same size as the difference>
+- statistics/rmse.m:704 [error] error ''rmse' undefined' does not match <WEIGHTS array must have the same size as the difference>
+- statistics/rmse.m:706 [error] error ''rmse' undefined' does not match <WEIGHTS array must have the same size as the operating page>
+- statistics/rmse.m:708 [error] error ''rmse' undefined' does not match <WEIGHTS array must have the same size as the operating page>
+- statistics/run_count.m:100 [assert] 'run_count' undefined
+- statistics/run_count.m:101 [assert] 'run_count' undefined
+- statistics/run_count.m:102 [assert] 'run_count' undefined
+- statistics/run_count.m:103 [assert] 'run_count' undefined
+- statistics/run_count.m:106 [error] error ''run_count' undefined' does not match <Invalid call>
+- statistics/run_count.m:107 [error] error ''run_count' undefined' does not match <Invalid call>
+- statistics/run_count.m:108 [error] error ''run_count' undefined' does not match <must be a numeric or logical>
+- statistics/run_count.m:109 [error] error ''run_count' undefined' does not match <must be a numeric or logical>
+- statistics/runlength.m:68 [assert] 'runlength' undefined
+- statistics/runlength.m:69 [assert] 'runlength' undefined
+- statistics/runlength.m:70 [test] 'runlength' undefined
+- statistics/runlength.m:76 [error] error ''runlength' undefined' does not match <Invalid call>
+- statistics/runlength.m:77 [error] error ''runlength' undefined' does not match <must be a numeric or logical>
+- statistics/runlength.m:78 [error] error ''runlength' undefined' does not match <must be a .* vector>
+- statistics/skewness.m:154 [assert] 'skewness' undefined
+- statistics/skewness.m:155 [assert] 'skewness' undefined
+- statistics/skewness.m:156 [assert] 'skewness' undefined
+- statistics/skewness.m:157 [assert] 'skewness' undefined
+- statistics/skewness.m:158 [assert] 'skewness' undefined
+- statistics/skewness.m:159 [assert] 'skewness' undefined
+- statistics/skewness.m:161 [test] 'skewness' undefined
+- statistics/skewness.m:166 [assert] 'skewness' undefined
+- statistics/skewness.m:167 [assert] 'skewness' undefined
+- statistics/skewness.m:168 [assert] 'skewness' undefined
+- statistics/skewness.m:171 [assert] 'skewness' undefined
+- statistics/skewness.m:172 [assert] 'skewness' undefined
+- statistics/skewness.m:175 [test] 'skewness' undefined
+- statistics/skewness.m:190 [test] 'skewness' undefined
+- statistics/skewness.m:204 [test] 'skewness' undefined
+- statistics/skewness.m:210 [error] error ''skewness' undefined' does not match <Invalid call>
+- statistics/skewness.m:211 [error] error ''skewness' undefined' does not match <skewness: X must be a numeric array>
+- statistics/skewness.m:212 [error] error ''skewness' undefined' does not match <skewness: X must be a numeric array>
+- statistics/skewness.m:213 [error] error ''skewness' undefined' does not match <skewness: X must be a numeric array>
+- statistics/skewness.m:214 [error] error ''skewness' undefined' does not match <skewness: FLAG must be 0 or 1>
+- statistics/skewness.m:215 [error] error ''skewness' undefined' does not match <skewness: FLAG must be 0 or 1>
+- statistics/spearman.m:108 [test] 'spearman' undefined
+- statistics/spearman.m:114 [assert] 'spearman' undefined
+- statistics/spearman.m:116 [assert] 'spearman' undefined
+- statistics/spearman.m:117 [assert] 'spearman' undefined
+- statistics/spearman.m:120 [error] error ''spearman' undefined' does not match <Invalid call>
+- statistics/statistics.m:164 [test] 'statistics' undefined
+- statistics/statistics.m:175 [test] 'statistics' undefined
+- statistics/statistics.m:187 [test] 'statistics' undefined
+- statistics/statistics.m:194 [test] 'statistics' undefined
+- statistics/statistics.m:220 [error] error ''statistics' undefined' does not match <Invalid call>
+- statistics/statistics.m:221 [error] error ''statistics' undefined' does not match <statistics: X must be a numeric array>
+- statistics/statistics.m:222 [error] error ''statistics' undefined' does not match <statistics: X must be a numeric array>
+- statistics/statistics.m:223 [error] error ''statistics' undefined' does not match <statistics: X must be a numeric array>
+- statistics/statistics.m:224 [error] error ''statistics' undefined' does not match <statistics: dimension of X is too small \(<2\)>
+- statistics/statistics.m:225 [error] error ''statistics' undefined' does not match <statistics: dimension of X is too small \(<2\)>
+- statistics/var.m:577 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:578 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:579 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       0.22222222222222224        0.1388888888888889       Abs err 0.08333333333333334 exceeds tol 2.220446049250313E-16
+- statistics/var.m:581 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:582 [assert] ASSERT errors: dimensions mismatch
+- statistics/var.m:583 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       0        0.8       Abs err 0.8 exceeds tol 2.220446049250313E-16
+- statistics/var.m:586 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       25        54.19354838709678       Abs err 29.193548387096783 exceeds tol 1E-14
+- statistics/var.m:603 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       0        0.75       Abs err 0.75 exceeds tol 2.220446049250313E-16
+- statistics/var.m:604 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       0        0.75       Abs err 0.75 exceeds tol 2.220446049250313E-16
+- statistics/var.m:605 [assert] ASSERT errors: dimensions mismatch
+- statistics/var.m:606 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       0        0.75       Abs err 0.75 exceeds tol 2.220446049250313E-16
+- statistics/var.m:607 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       0        0.75       Abs err 0.75 exceeds tol 2.220446049250313E-16
+- statistics/var.m:608 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       0        0.75       Abs err 0.75 exceeds tol 2.220446049250313E-16
+- statistics/var.m:610 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       0.6666666666666666        0.75       Abs err 0.08333333333333337 exceeds tol 2.220446049250313E-16
+- statistics/var.m:611 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       4.666666666666667        3       Abs err 1.666666666666667 exceeds tol 2.220446049250313E-16
+- statistics/var.m:612 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       8.666666666666666        0.75       Abs err 7.916666666666666 exceeds tol 2.220446049250313E-16
+- statistics/var.m:613 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (2)       1        0.75       Abs err 0.25 exceeds tol 2.220446049250313E-16
+- statistics/var.m:614 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:615 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (2)       1        0.75       Abs err 0.25 exceeds tol 2.220446049250313E-16
+- statistics/var.m:616 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:617 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:618 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:622 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:623 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:628 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:640 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:652 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:655 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:657 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:658 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:661 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:664 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:667 [test] ASSERT errors: dimensions mismatch
+- statistics/var.m:684 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       0        6.666666666666667       Abs err 6.666666666666667 exceeds tol 1E-14
+- statistics/var.m:695 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:696 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:697 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:698 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:699 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:700 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:701 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:703 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:705 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:706 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:707 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:713 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/var.m:715 [test] element number 2 undefined in return list
+- statistics/var.m:720 [test] element number 2 undefined in return list
+- statistics/var.m:735 [test] element number 2 undefined in return list
+- statistics/var.m:748 [test] element number 2 undefined in return list
+- statistics/var.m:754 [test] element number 2 undefined in return list
+- statistics/var.m:767 [test] element number 2 undefined in return list
+- statistics/var.m:775 [test] element number 2 undefined in return list
+- statistics/var.m:782 [test] element number 2 undefined in return list
+- statistics/var.m:786 [test] element number 2 undefined in return list
+- statistics/var.m:790 [test] element number 2 undefined in return list
+- statistics/var.m:794 [test] element number 2 undefined in return list
+- statistics/var.m:798 [test] element number 2 undefined in return list
+- statistics/var.m:802 [test] element number 2 undefined in return list
+- statistics/var.m:806 [test] element number 2 undefined in return list
+- statistics/var.m:810 [test] element number 2 undefined in return list
+- statistics/var.m:814 [test] element number 2 undefined in return list
+- statistics/var.m:818 [test] element number 2 undefined in return list
+- statistics/var.m:822 [test] element number 2 undefined in return list
+- statistics/var.m:826 [test] element number 2 undefined in return list
+- statistics/var.m:830 [test] element number 2 undefined in return list
+- statistics/var.m:834 [test] element number 2 undefined in return list
+- statistics/var.m:838 [test] element number 2 undefined in return list
+- statistics/var.m:842 [test] element number 2 undefined in return list
+- statistics/var.m:846 [test] element number 2 undefined in return list
+- statistics/var.m:850 [test] element number 2 undefined in return list
+- statistics/var.m:854 [test] element number 2 undefined in return list
+- statistics/var.m:858 [test] element number 2 undefined in return list
+- statistics/var.m:862 [test] element number 2 undefined in return list
+- statistics/var.m:866 [test] element number 2 undefined in return list
+- statistics/var.m:870 [test] element number 2 undefined in return list
+- statistics/var.m:874 [test] element number 2 undefined in return list
+- statistics/var.m:878 [test] element number 2 undefined in return list
+- statistics/var.m:882 [test] element number 2 undefined in return list
+- statistics/var.m:888 [test] element number 2 undefined in return list
+- statistics/var.m:892 [test] element number 2 undefined in return list
+- statistics/var.m:896 [test] element number 2 undefined in return list
+- statistics/var.m:900 [test] element number 2 undefined in return list
+- statistics/var.m:904 [test] element number 2 undefined in return list
+- statistics/var.m:908 [test] element number 2 undefined in return list
+- statistics/var.m:915 [error] expected an error but none was raised
+- statistics/var.m:916 [error] expected an error but none was raised
+- statistics/var.m:917 [error] expected an error but none was raised
+- statistics/var.m:918 [error] expected an error but none was raised
+- statistics/var.m:919 [error] expected an error but none was raised
+- statistics/var.m:920 [error] expected an error but none was raised
+- statistics/var.m:921 [error] expected an error but none was raised
+- statistics/var.m:922 [error] expected an error but none was raised
+- statistics/var.m:923 [error] expected an error but none was raised
+- statistics/var.m:924 [error] expected an error but none was raised
+- statistics/var.m:925 [error] expected an error but none was raised
+- statistics/var.m:927 [error] expected an error but none was raised
+- statistics/var.m:928 [error] error 'var: wrong type argument 'cell array'' does not match <X must be a floating point numeric vector or matrix>
+- statistics/var.m:929 [error] expected an error but none was raised
+- statistics/var.m:930 [error] expected an error but none was raised
+- statistics/var.m:931 [error] expected an error but none was raised
+- statistics/var.m:932 [error] expected an error but none was raised
+- statistics/var.m:933 [error] error 'var: DIM must be a valid dimension' does not match <DIM must be a positive integer>
+- statistics/var.m:934 [error] expected an error but none was raised
+- statistics/var.m:935 [error] error 'var: DIM must be a valid dimension' does not match <DIM must be a positive integer>
+- statistics/var.m:936 [error] expected an error but none was raised
+- statistics/var.m:938 [error] expected an error but none was raised
+- statistics/var.m:940 [error] expected an error but none was raised
+- statistics/var.m:942 [error] expected an error but none was raised
+- statistics/var.m:944 [error] expected an error but none was raised
+- statistics/var.m:946 [error] expected an error but none was raised
+- statistics/var.m:948 [error] expected an error but none was raised
+- statistics/var.m:950 [error] expected an error but none was raised
+- statistics/var.m:952 [error] expected an error but none was raised
+- statistics/var.m:953 [error] expected an error but none was raised
+- statistics/var.m:954 [error] expected an error but none was raised
+- statistics/var.m:955 [error] expected an error but none was raised
+- statistics/var.m:956 [error] expected an error but none was raised
+- statistics/var.m:957 [error] expected an error but none was raised
+- statistics/var.m:958 [error] expected an error but none was raised
+- statistics/var.m:960 [error] expected an error but none was raised
+- statistics/var.m:962 [error] expected an error but none was raised
+- statistics/zscore.m:121 [assert] 'zscore' undefined
+- statistics/zscore.m:122 [assert] 'zscore' undefined
+- statistics/zscore.m:123 [assert] 'zscore' undefined
+- statistics/zscore.m:124 [assert] 'zscore' undefined
+- statistics/zscore.m:125 [assert] 'zscore' undefined
+- statistics/zscore.m:126 [assert] 'zscore' undefined
+- statistics/zscore.m:127 [assert] 'zscore' undefined
+- statistics/zscore.m:128 [assert] 'zscore' undefined
+- statistics/zscore.m:129 [test] 'zscore' undefined
+- statistics/zscore.m:134 [assert] 'zscore' undefined
+- statistics/zscore.m:135 [assert] 'zscore' undefined
+- statistics/zscore.m:136 [assert] 'zscore' undefined
+- statistics/zscore.m:138 [assert] 'zscore' undefined
+- statistics/zscore.m:140 [assert] 'zscore' undefined
+- statistics/zscore.m:142 [assert] 'zscore' undefined
+- statistics/zscore.m:143 [assert] 'zscore' undefined
+- statistics/zscore.m:144 [assert] 'zscore' undefined
+- statistics/zscore.m:146 [assert] 'zscore' undefined
+- statistics/zscore.m:147 [assert] 'zscore' undefined
+- statistics/zscore.m:149 [test] 'zscore' undefined
+- statistics/zscore.m:156 [error] error ''zscore' undefined' does not match <Invalid call>
+- statistics/zscore.m:158 [error] error ''zscore' undefined' does not match <X must be a numeric or logical>
+- statistics/zscore.m:159 [error] error ''zscore' undefined' does not match <OPT must be empty, 0, or 1>
+- statistics/zscore.m:160 [error] error ''zscore' undefined' does not match <OPT must be empty, 0, or 1>
+- statistics/zscore.m:161 [error] error ''zscore' undefined' does not match <DIM must be .* scalar or vector>
+- statistics/zscore.m:162 [error] error ''zscore' undefined' does not match <DIM must be .* integer>
+- statistics/zscore.m:163 [error] error ''zscore' undefined' does not match <DIM must be .* positive>
+- strings/base2dec.m:124 [assert] 'base2dec' undefined
+- strings/base2dec.m:125 [assert] 'base2dec' undefined
+- strings/base2dec.m:126 [assert] 'base2dec' undefined
+- strings/base2dec.m:127 [assert] 'base2dec' undefined
+- strings/base2dec.m:129 [assert] 'base2dec' undefined
+- strings/base2dec.m:132 [error] error ''base2dec' undefined' does not match <Invalid call>
+- strings/base2dec.m:135 [error] error ''base2dec' undefined' does not match <symbols .* must be unique>
+- strings/base2dec.m:136 [error] error ''base2dec' undefined' does not match <whitespace characters are not valid>
+- strings/base2dec.m:137 [error] error ''base2dec' undefined' does not match <cannot convert from several bases>
+- strings/base2dec.m:138 [error] error ''base2dec' undefined' does not match <BASE must be between 2 and 36>
+- strings/base2dec.m:139 [error] error ''base2dec' undefined' does not match <BASE must be between 2 and 36>
+- strings/base2dec.m:140 [error] error ''base2dec' undefined' does not match <BASE must be between 2 and 36>
+- strings/bin2dec.m:79 [error] error 'Could not find any recognizable digits.' does not match <STR must be a string>
+- strings/blanks.m:67 [error] expected an error but none was raised
+- strings/blanks.m:68 [error] expected an error but none was raised
+- strings/cstrcat.m:68 [assert] 'cstrcat' undefined
+- strings/cstrcat.m:70 [assert] 'cstrcat' undefined
+- strings/cstrcat.m:72 [assert] 'cstrcat' undefined
+- strings/cstrcat.m:73 [assert] 'cstrcat' undefined
+- strings/cstrcat.m:76 [assert] 'cstrcat' undefined
+- strings/cstrcat.m:79 [error] error ''cstrcat' undefined' does not match <arguments must be character strings>
+- strings/deblank.m:93 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/deblank.m:102 [assert] deblank: argument must be a string
+- strings/deblank.m:105 [error] expected an error but none was raised
+- strings/dec2base.m:250 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/dec2base.m:251 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/dec2base.m:252 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/dec2base.m:253 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/dec2base.m:254 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/dec2base.m:255 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/dec2base.m:258 [assert] Invalid call to dec2base
+- strings/dec2base.m:259 [assert] Invalid call to dec2base
+- strings/dec2base.m:260 [assert] Invalid call to dec2base
+- strings/dec2base.m:261 [assert] Invalid call to dec2base
+- strings/dec2base.m:262 [assert] Invalid call to dec2base
+- strings/dec2base.m:263 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/dec2base.m:264 [assert] Invalid call to dec2base
+- strings/dec2base.m:265 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/dec2base.m:266 [assert] Invalid call to dec2base
+- strings/dec2base.m:267 [assert] Invalid call to dec2base
+- strings/dec2base.m:270 [assert] Invalid call to dec2base
+- strings/dec2base.m:273 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/dec2base.m:274 [assert] Invalid call to dec2base
+- strings/dec2base.m:275 [assert] Invalid call to dec2base
+- strings/dec2base.m:284 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/dec2base.m:285 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/dec2base.m:286 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/dec2base.m:287 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/dec2base.m:304 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/dec2base.m:308 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/dec2base.m:309 [assert] dec2base: wrong type argument 'cell array'
+- strings/dec2base.m:311 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/dec2base.m:315 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/dec2base.m:320 [error] expected an error but none was raised
+- strings/dec2base.m:321 [error] expected an error but none was raised
+- strings/dec2base.m:322 [error] expected an error but none was raised
+- strings/dec2base.m:323 [error] expected an error but none was raised
+- strings/dec2base.m:324 [error] timeout
+- strings/dec2bin.m:117 [assert] dec2bin: wrong type argument 'cell array'
+- strings/dec2bin.m:118 [assert] dec2bin: wrong type argument 'cell array'
+- strings/dec2bin.m:121 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/dec2bin.m:122 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/dec2bin.m:123 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/dec2bin.m:124 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/dec2bin.m:125 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/dec2bin.m:136 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/dec2bin.m:138 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/dec2bin.m:140 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/dec2bin.m:142 [assert] dec2bin: wrong type argument 'cell array'
+- strings/dec2bin.m:147 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/dec2bin.m:149 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/dec2bin.m:153 [error] expected an error but none was raised
+- strings/dec2hex.m:106 [assert] dec2hex: wrong type argument 'cell array'
+- strings/dec2hex.m:107 [assert] dec2hex: wrong type argument 'cell array'
+- strings/dec2hex.m:110 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/dec2hex.m:111 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/dec2hex.m:112 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/dec2hex.m:113 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/dec2hex.m:114 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/dec2hex.m:120 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/dec2hex.m:121 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/dec2hex.m:122 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/dec2hex.m:123 [assert] dec2hex: wrong type argument 'cell array'
+- strings/dec2hex.m:129 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/endsWith.m:127 [assert] 'endsWith' undefined
+- strings/endsWith.m:128 [assert] 'endsWith' undefined
+- strings/endsWith.m:129 [assert] 'endsWith' undefined
+- strings/endsWith.m:130 [assert] 'endsWith' undefined
+- strings/endsWith.m:133 [test] 'endsWith' undefined
+- strings/endsWith.m:141 [test] 'endsWith' undefined
+- strings/endsWith.m:148 [test] 'endsWith' undefined
+- strings/endsWith.m:159 [error] error ''endsWith' undefined' does not match <Invalid call>
+- strings/endsWith.m:163 [error] error ''endsWith' undefined' does not match <STR must be a string>
+- strings/endsWith.m:164 [error] error ''endsWith' undefined' does not match <STR must be a .* cell array of strings>
+- strings/endsWith.m:165 [error] error ''endsWith' undefined' does not match <PATTERN must be a string>
+- strings/endsWith.m:166 [error] error ''endsWith' undefined' does not match <PATTERN must be a .* cell array of strings>
+- strings/endsWith.m:167 [error] error ''endsWith' undefined' does not match <third input must be "IgnoreCase">
+- strings/endsWith.m:168 [error] error ''endsWith' undefined' does not match <third input must be "IgnoreCase">
+- strings/endsWith.m:169 [error] error ''endsWith' undefined' does not match <third input must be "IgnoreCase">
+- strings/endsWith.m:170 [error] error ''endsWith' undefined' does not match <"IgnoreCase" value must be a logical scalar>
+- strings/endsWith.m:172 [error] error ''endsWith' undefined' does not match <"IgnoreCase" value must be a logical scalar>
+- strings/erase.m:117 [assert] 'erase' undefined
+- strings/erase.m:118 [assert] 'erase' undefined
+- strings/erase.m:119 [assert] 'erase' undefined
+- strings/erase.m:120 [assert] 'erase' undefined
+- strings/erase.m:121 [assert] 'erase' undefined
+- strings/erase.m:125 [assert] 'erase' undefined
+- strings/erase.m:126 [assert] 'erase' undefined
+- strings/erase.m:127 [assert] 'erase' undefined
+- strings/erase.m:128 [assert] 'erase' undefined
+- strings/erase.m:129 [assert] 'erase' undefined
+- strings/erase.m:130 [assert] 'erase' undefined
+- strings/erase.m:131 [assert] 'erase' undefined
+- strings/erase.m:132 [assert] 'erase' undefined
+- strings/erase.m:133 [assert] 'erase' undefined
+- strings/erase.m:134 [assert] 'erase' undefined
+- strings/erase.m:135 [assert] 'erase' undefined
+- strings/erase.m:136 [assert] 'erase' undefined
+- strings/erase.m:137 [assert] 'erase' undefined
+- strings/erase.m:138 [assert] 'erase' undefined
+- strings/erase.m:139 [assert] 'erase' undefined
+- strings/erase.m:140 [assert] 'erase' undefined
+- strings/erase.m:141 [assert] 'erase' undefined
+- strings/erase.m:142 [assert] 'erase' undefined
+- strings/erase.m:143 [assert] 'erase' undefined
+- strings/erase.m:146 [error] error ''erase' undefined' does not match <Invalid call>
+- strings/erase.m:149 [error] error ''erase' undefined' does not match <STR must be a string>
+- strings/erase.m:150 [error] error ''erase' undefined' does not match <PTN must be a string>
+- strings/erase.m:151 [warning] 'erase' undefined
+- strings/hex2dec.m:69 [error] error 'Could not find any recognizable digits.' does not match <STR must be a string>
+- strings/index.m:101 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/index.m:102 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/index.m:103 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/index.m:104 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/index.m:107 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/index.m:118 [error] expected an error but none was raised
+- strings/index.m:120 [error] expected an error but none was raised
+- strings/isletter.m:47 [error] expected an error but none was raised
+- strings/isstring.m:54 [assert] 'isstring' undefined
+- strings/isstring.m:55 [assert] 'isstring' undefined
+- strings/isstring.m:56 [assert] 'isstring' undefined
+- strings/isstring.m:59 [assert] 'isstring' undefined
+- strings/isstring.m:60 [assert] 'isstring' undefined
+- strings/isstring.m:62 [error] error ''isstring' undefined' does not match <Invalid call>
+- strings/isstrprop.m:153 [assert] isstrprop: invalid string type: "graphic"
+- strings/isstrprop.m:155 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/isstrprop.m:157 [assert] ischar: wrong type argument 'cell array'
+- strings/isstrprop.m:163 [error] expected an error but none was raised
+- strings/isstrprop.m:164 [error] expected an error but none was raised
+- strings/isstrprop.m:166 [error] expected an error but none was raised
+- strings/isstrprop.m:168 [error] expected an error but none was raised
+- strings/isstrprop.m:170 [error] expected an error but none was raised
+- strings/isstrprop.m:172 [error] error 'isstrprop: invalid string type: "foo"' does not match <invalid string property>
+- strings/mat2str.m:158 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/mat2str.m:160 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/mat2str.m:162 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/mat2str.m:164 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/mat2str.m:170 [test] 'Infi' undefined
+- strings/mat2str.m:178 [error] expected an error but none was raised
+- strings/mat2str.m:179 [error] expected an error but none was raised
+- strings/mat2str.m:180 [error] expected an error but none was raised
+- strings/native2unicode.m:86 [assert] 'native2unicode' undefined
+- strings/native2unicode.m:87 [assert] 'native2unicode' undefined
+- strings/native2unicode.m:94 [error] error ''native2unicode' undefined' does not match <Invalid call>
+- strings/native2unicode.m:95 [error] error ''native2unicode' undefined' does not match <called with too many inputs>
+- strings/native2unicode.m:96 [error] error ''native2unicode' undefined' does not match <NATIVE_BYTES must be a numeric vector>
+- strings/native2unicode.m:97 [error] error ''native2unicode' undefined' does not match <NATIVE_BYTES must be a numeric vector>
+- strings/native2unicode.m:98 [error] error ''native2unicode' undefined' does not match <CODEPAGE must be a string>
+- strings/native2unicode.m:99 [error] error ''native2unicode' undefined' does not match <CODEPAGE must be a string>
+- strings/ostrsplit.m:115 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/ostrsplit.m:116 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/ostrsplit.m:119 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/ostrsplit.m:124 [error] expected an error but none was raised
+- strings/ostrsplit.m:125 [error] error 'ostrsplit: argument must be a string' does not match <S and SEP must be string values>
+- strings/ostrsplit.m:126 [error] error 'ostrsplit: argument must be a string' does not match <S and SEP must be string values>
+- strings/ostrsplit.m:127 [error] expected an error but none was raised
+- strings/regexptranslate.m:86 [assert] 'regexptranslate' undefined
+- strings/regexptranslate.m:87 [assert] 'regexptranslate' undefined
+- strings/regexptranslate.m:90 [error] error ''regexptranslate' undefined' does not match <Invalid call to regexptranslate>
+- strings/regexptranslate.m:91 [error] error ''regexptranslate' undefined' does not match <Invalid call to regexptranslate>
+- strings/regexptranslate.m:92 [error] error ''regexptranslate' undefined' does not match <called with too many inputs>
+- strings/regexptranslate.m:93 [error] error ''regexptranslate' undefined' does not match <invalid operation>
+- strings/regexptranslate.m:94 [error] error ''regexptranslate' undefined' does not match <operation OP must be a string>
+- strings/rindex.m:63 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/rindex.m:72 [error] expected an error but none was raised
+- strings/startsWith.m:126 [assert] 'startsWith' undefined
+- strings/startsWith.m:127 [assert] 'startsWith' undefined
+- strings/startsWith.m:128 [assert] 'startsWith' undefined
+- strings/startsWith.m:129 [assert] 'startsWith' undefined
+- strings/startsWith.m:132 [test] 'startsWith' undefined
+- strings/startsWith.m:140 [test] 'startsWith' undefined
+- strings/startsWith.m:147 [test] 'startsWith' undefined
+- strings/startsWith.m:158 [error] error ''startsWith' undefined' does not match <Invalid call>
+- strings/startsWith.m:162 [error] error ''startsWith' undefined' does not match <STR must be a string>
+- strings/startsWith.m:163 [error] error ''startsWith' undefined' does not match <STR must be a .* cell array of strings>
+- strings/startsWith.m:164 [error] error ''startsWith' undefined' does not match <PATTERN must be a string>
+- strings/startsWith.m:165 [error] error ''startsWith' undefined' does not match <PATTERN must be a .* cell array of strings>
+- strings/startsWith.m:166 [error] error ''startsWith' undefined' does not match <third input must be "IgnoreCase">
+- strings/startsWith.m:167 [error] error ''startsWith' undefined' does not match <third input must be "IgnoreCase">
+- strings/startsWith.m:168 [error] error ''startsWith' undefined' does not match <third input must be "IgnoreCase">
+- strings/startsWith.m:169 [error] error ''startsWith' undefined' does not match <"IgnoreCase" value must be a logical scalar>
+- strings/startsWith.m:171 [error] error ''startsWith' undefined' does not match <"IgnoreCase" value must be a logical scalar>
+- strings/str2num.m:98 [error] error 'str2num: argument must be a string' does not match <S must be a string>
+- strings/strcat.m:134 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/strcat.m:135 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/strcat.m:140 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/strcat.m:144 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/strcat.m:150 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/strcat.m:160 [assert] strcat: argument must be a string
+- strings/strcat.m:161 [assert] strcat: argument must be a string
+- strings/strcat.m:162 [assert] strcat: argument must be a string
+- strings/strchr.m:80 [assert] 'strchr' undefined
+- strings/strchr.m:81 [assert] 'strchr' undefined
+- strings/strchr.m:83 [assert] 'strchr' undefined
+- strings/strchr.m:87 [error] error ''strchr' undefined' does not match <Invalid call>
+- strings/strchr.m:88 [error] error ''strchr' undefined' does not match <Invalid call>
+- strings/strchr.m:89 [error] error ''strchr' undefined' does not match <Invalid call>
+- strings/strchr.m:90 [error] error ''strchr' undefined' does not match <STR argument must be a string>
+- strings/strchr.m:91 [error] error ''strchr' undefined' does not match <CHARS argument must be a string>
+- strings/strjoin.m:94 [assert] strjoin: argument must be a string
+- strings/strjoin.m:97 [assert] strjoin: argument must be a string
+- strings/strjust.m:106 [assert] 'strjust' undefined
+- strings/strjust.m:108 [assert] 'strjust' undefined
+- strings/strjust.m:110 [assert] 'strjust' undefined
+- strings/strjust.m:112 [assert] 'strjust' undefined
+- strings/strjust.m:115 [error] error ''strjust' undefined' does not match <Invalid call to strjust>
+- strings/strjust.m:116 [error] error 'vertical dimensions mismatch (1x1 vs 1x2)' does not match <called with too many inputs>
+- strings/strjust.m:117 [error] error ''strjust' undefined' does not match <S must be a string>
+- strings/strjust.m:118 [error] error ''strjust' undefined' does not match <S must be a string>
+- strings/strsplit.m:239 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/strsplit.m:243 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/strsplit.m:247 [test] element number 2 undefined in return list
+- strings/strsplit.m:253 [test] element number 2 undefined in return list
+- strings/strsplit.m:263 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/strsplit.m:272 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/strsplit.m:274 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/strsplit.m:276 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/strsplit.m:283 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/strsplit.m:285 [assert] strsplit: argument must be a string
+- strings/strsplit.m:292 [test] element number 2 undefined in return list
+- strings/strsplit.m:297 [test] element number 2 undefined in return list
+- strings/strsplit.m:301 [test] element number 2 undefined in return list
+- strings/strsplit.m:305 [test] element number 2 undefined in return list
+- strings/strsplit.m:309 [test] strsplit: argument must be a string
+- strings/strsplit.m:327 [error] expected an error but none was raised
+- strings/strsplit.m:328 [error] expected an error but none was raised
+- strings/strsplit.m:329 [error] error 'strsplit: argument must be a string' does not match <S and DEL must be string values>
+- strings/strsplit.m:330 [error] expected an error but none was raised
+- strings/strsplit.m:331 [error] expected an error but none was raised
+- strings/strsplit.m:332 [error] expected an error but none was raised
+- strings/strsplit.m:333 [error] expected an error but none was raised
+- strings/strtok.m:174 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/strtok.m:186 [test] strtok: argument must be a string
+- strings/strtok.m:217 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/strtok.m:220 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/strtok.m:221 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/strtok.m:224 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/strtok.m:233 [error] error 'strtok: argument must be a string' does not match <STR must be a string>
+- strings/strtok.m:234 [error] expected an error but none was raised
+- strings/strtrim.m:88 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/strtrim.m:90 [assert] strtrim: argument must be a string
+- strings/strtrim.m:93 [error] expected an error but none was raised
+- strings/strtrim.m:95 [error] expected an error but none was raised
+- strings/strtrunc.m:67 [assert] 'strtrunc' undefined
+- strings/strtrunc.m:68 [assert] 'strtrunc' undefined
+- strings/strtrunc.m:69 [assert] 'strtrunc' undefined
+- strings/strtrunc.m:70 [assert] 'strtrunc' undefined
+- strings/strtrunc.m:71 [assert] 'strtrunc' undefined
+- strings/strtrunc.m:72 [assert] 'strtrunc' undefined
+- strings/strtrunc.m:73 [test] 'strtrunc' undefined
+- strings/strtrunc.m:81 [error] error ''strtrunc' undefined' does not match <Invalid call>
+- strings/strtrunc.m:84 [error] error ''strtrunc' undefined' does not match <N must be a positive integer>
+- strings/strtrunc.m:85 [error] error ''strtrunc' undefined' does not match <N must be a positive integer>
+- strings/strtrunc.m:86 [error] error ''strtrunc' undefined' does not match <S must be a character string or a cell array of strings>
+- strings/substr.m:100 [assert] Invalid call to substr
+- strings/substr.m:101 [assert] Invalid call to substr
+- strings/substr.m:102 [assert] Invalid call to substr
+- strings/substr.m:103 [assert] Invalid call to substr
+- strings/substr.m:110 [error] expected an error but none was raised
+- strings/substr.m:111 [error] expected an error but none was raised
+- strings/unicode2native.m:80 [assert] 'unicode2native' undefined
+- strings/unicode2native.m:155 [error] error ''unicode2native' undefined' does not match <Invalid call>
+- strings/unicode2native.m:156 [error] error ''unicode2native' undefined' does not match <called with too many inputs>
+- strings/unicode2native.m:157 [error] error ''unicode2native' undefined' does not match <UTF8_STR must be a character vector>
+- strings/unicode2native.m:158 [error] error ''unicode2native' undefined' does not match <UTF8_STR must be a character vector>
+- strings/unicode2native.m:159 [error] error ''unicode2native' undefined' does not match <CODEPAGE must be a string>
+- strings/unicode2native.m:160 [error] error ''unicode2native' undefined' does not match <CODEPAGE must be a string>
+- strings/untabify.m:107 [test] 'untabify' undefined
+- strings/untabify.m:111 [test] 'untabify' undefined
+- strings/untabify.m:115 [test] 'untabify' undefined
+- strings/untabify.m:119 [assert] 'untabify' undefined
+- strings/untabify.m:121 [test] 'untabify' undefined
+- strings/untabify.m:126 [error] error ''untabify' undefined' does not match <Invalid call>
+- strings/untabify.m:127 [error] error ''untabify' undefined' does not match <must be a string>
+- strings/validatestring.m:151 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- strings/validatestring.m:157 [error] error 'validatestring: 'xyz' does not match any valid string' does not match <DUMMY_TEST: 'xyz' does not match any>
+- strings/validatestring.m:159 [error] error 'validatestring: 'xyz' does not match any valid string' does not match <DUMMY_TEST: 'xyz' \(variable DUMMY_VAR\) does not match>
+- strings/validatestring.m:161 [error] error 'validatestring: 'xyz' does not match any valid string' does not match <DUMMY_TEST: 'xyz' \(variable DUMMY_VAR, argument #5\) does>
+- strings/validatestring.m:163 [error] expected an error but none was raised
+- strings/validatestring.m:167 [error] expected an error but none was raised
+- strings/validatestring.m:168 [error] expected an error but none was raised
+- strings/validatestring.m:169 [error] expected an error but none was raised
+- strings/validatestring.m:171 [error] error 'validatestring: argument must be a string' does not match <STR must be a single character string>
+- strings/validatestring.m:173 [error] error 'validatestring: 'xyzdef' does not match any valid string' does not match <STR must be a single character string>
+- strings/validatestring.m:175 [error] error 'validatestring: wrong type argument' does not match <STRARRAY must be a cellstr>
+- strings/validatestring.m:176 [error] expected an error but none was raised
+- strings/validatestring.m:178 [error] expected an error but none was raised
+- testfun/__have_feature__.m:51 [assert] '__have_feature__' undefined
+- testfun/__have_feature__.m:52 [assert] '__have_feature__' undefined
+- testfun/__have_feature__.m:53 [assert] '__have_feature__' undefined
+- testfun/__have_feature__.m:56 [assert] '__have_feature__' undefined
+- testfun/assert.m:511 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ' does not match <O\(3x0\)\s+E\(0x2\)>
+- testfun/assert.m:512 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ' does not match <Dimensions don't match>
+- testfun/assert.m:513 [error] expected an error but none was raised
+- testfun/assert.m:526 [error] error 'TST:msg_id' does not match <2-part error>
+- testfun/assert.m:529 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ' does not match <Dimensions don't match>
+- testfun/assert.m:530 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ' does not match <Dimensions don't match>
+- testfun/assert.m:531 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ' does not match <Dimensions don't match>
+- testfun/assert.m:533 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ' does not match <Abs err 1 exceeds tol>
+- testfun/assert.m:536 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       3.0000000000000004        3       Abs err 4.440892098500626E-16 exceeds tol 2.220446049250313E-16' does not match <Abs err 4.4409e-0?16 exceeds tol>
+- testfun/assert.m:537 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       3        3.0000000000000004       Abs err 4.440892098500626E-16 exceeds tol 2.220446049250313E-16' does not match <Abs err 4.4409e-0?16 exceeds tol>
+- testfun/assert.m:542 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ' does not match <Abs err 1 exceeds tol 0>
+- testfun/assert.m:544 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       2        1       Abs err 1 exceeds tol 0.1' does not match <Rel err 1 exceeds tol 0.1>
+- testfun/assert.m:545 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ' does not match <Abs err 1 exceeds tol 0>
+- testfun/assert.m:547 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       6        5       Abs err 1 exceeds tol 0.5' does not match <Rel err .* exceeds tol 0.1>
+- testfun/assert.m:548 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ' does not match <Dimensions don't match>
+- testfun/assert.m:549 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ' does not match <Dimensions don't match>
+- testfun/assert.m:550 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ' does not match <Dimensions don't match>
+- testfun/assert.m:554 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ' does not match <\(1,2\)\s+4\s+2>
+- testfun/assert.m:555 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ' does not match <Dimensions don't match>
+- testfun/assert.m:556 [test] 'fail' undefined
+- testfun/assert.m:560 [test] 'fail' undefined
+- testfun/assert.m:569 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       100.00000000000007        100       Abs err 7.105427357601002E-14 exceeds tol 4.440892098500626E-14' does not match <Rel err .* exceeds tol>
+- testfun/assert.m:570 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       100        100.00000000000007       Abs err 7.105427357601002E-14 exceeds tol 4.4408920985006293E-14' does not match <Rel err .* exceeds tol>
+- testfun/assert.m:574 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       0.10000000000000023        0.1       Abs err 2.220446049250313E-16 exceeds tol 4.4408920985006264E-17' does not match <Rel err 2.2204e-0?15 exceeds tol>
+- testfun/assert.m:576 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       100.00000000000003        100       Abs err 2.842170943040401E-14 exceeds tol 4.440892098500626E-16' does not match <Abs err 2.8422e-0?14 exceeds tol>
+- testfun/assert.m:579 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       2        0       Abs err 2 exceeds tol 0' does not match <Abs err 2 exceeds tol 0.1>
+- testfun/assert.m:582 [error] expected an error but none was raised
+- testfun/assert.m:583 [error] expected an error but none was raised
+- testfun/assert.m:584 [error] expected an error but none was raised
+- testfun/assert.m:585 [error] expected an error but none was raised
+- testfun/assert.m:586 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ' does not match <complex != real>
+- testfun/assert.m:587 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ' does not match <real != complex>
+- testfun/assert.m:592 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ' does not match <'NaN' mismatch>
+- testfun/assert.m:593 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ' does not match <'NaN' mismatch>
+- testfun/assert.m:594 [test] Too many errors reported for NaN assert
+- testfun/assert.m:608 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ' does not match <'NA' mismatch>
+- testfun/assert.m:610 [test] Too many errors reported for NA assert
+- testfun/assert.m:625 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ' does not match <'Inf' mismatch>
+- testfun/assert.m:626 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ' does not match <'Inf' mismatch>
+- testfun/assert.m:627 [test] Abs err reported for Inf assert
+- testfun/assert.m:638 [error] expected an error but none was raised
+- testfun/assert.m:642 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ' does not match <Strings don't match>
+- testfun/assert.m:643 [error] expected an error but none was raised
+- testfun/assert.m:644 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ' does not match <Class char != double>
+- testfun/assert.m:645 [error] error 'wrong type argument 'cell array'' does not match <Expected string, but observed cell>
+- testfun/assert.m:646 [error] error 'wrong type argument 'struct'' does not match <Expected string, but observed struct>
+- testfun/assert.m:649 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ' does not match <Expected cell, but observed double>
+- testfun/assert.m:650 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ' does not match <Dimensions don't match>
+- testfun/assert.m:651 [test] 'fail' undefined
+- testfun/assert.m:660 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ' does not match <Function handles don't match>
+- testfun/assert.m:661 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ' does not match <Expected function handle, but observed double>
+- testfun/assert.m:662 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ' does not match <Class function_handle != double>
+- testfun/assert.m:664 [test] conversion to cell array from double not possible; use '{' instead of '('
+- testfun/assert.m:680 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ' does not match <Expected struct, but observed double>
+- testfun/assert.m:681 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ' does not match <Structure sizes don't match>
+- testfun/assert.m:685 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ' does not match <Structure sizes don't match>
+- testfun/assert.m:689 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ' does not match <Structure sizes don't match>
+- testfun/assert.m:694 [error] error 'ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ' does not match <Structure fieldname mismatch>
+- testfun/assert.m:699 [test] 'fail' undefined
+- testfun/assert.m:713 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (2)       9.999999999999999E-79        1E-78       Abs err 1.1985091468012028E-94 exceeds tol 7.490682167507517E-96
+- testfun/assert.m:723 [test] Incorrect number of errors reported
+- testfun/assert.m:762 [error] expected an error but none was raised
+- testfun/assert_equal.m:535 [error] error ''assert_equal' undefined' does not match <O\(3x0\)\s+E\(0x2\)>
+- testfun/assert_equal.m:536 [error] error ''assert_equal' undefined' does not match <Dimensions don't match>
+- testfun/assert_equal.m:537 [error] error ''assert_equal' undefined' does not match <Dimensions don't match>
+- testfun/assert_equal.m:540 [error] error ''assert_equal' undefined' does not match <Dimensions don't match>
+- testfun/assert_equal.m:541 [error] error ''assert_equal' undefined' does not match <Dimensions don't match>
+- testfun/assert_equal.m:542 [error] error ''assert_equal' undefined' does not match <Dimensions don't match>
+- testfun/assert_equal.m:544 [error] error ''assert_equal' undefined' does not match <Abs err 1 exceeds tol>
+- testfun/assert_equal.m:547 [error] error ''assert_equal' undefined' does not match <Abs err 4.4409e-0?16 exceeds tol>
+- testfun/assert_equal.m:548 [error] error ''assert_equal' undefined' does not match <Abs err 4.4409e-0?16 exceeds tol>
+- testfun/assert_equal.m:553 [error] error ''assert_equal' undefined' does not match <Abs err 1 exceeds tol 0>
+- testfun/assert_equal.m:554 [error] error ''assert_equal' undefined' does not match <Abs err 1 exceeds tol 0.5>
+- testfun/assert_equal.m:555 [error] error ''assert_equal' undefined' does not match <Rel err 1 exceeds tol 0.1>
+- testfun/assert_equal.m:556 [error] error ''assert_equal' undefined' does not match <Abs err 1 exceeds tol 0>
+- testfun/assert_equal.m:557 [error] error ''assert_equal' undefined' does not match <Abs err 1 exceeds tol 0.5>
+- testfun/assert_equal.m:558 [error] error ''assert_equal' undefined' does not match <Rel err .* exceeds tol 0.1>
+- testfun/assert_equal.m:559 [error] error ''assert_equal' undefined' does not match <Dimensions don't match>
+- testfun/assert_equal.m:560 [error] error ''assert_equal' undefined' does not match <Dimensions don't match>
+- testfun/assert_equal.m:561 [error] error ''assert_equal' undefined' does not match <Dimensions don't match>
+- testfun/assert_equal.m:565 [error] error ''assert_equal' undefined' does not match <\(1,2\)\s+4\s+2>
+- testfun/assert_equal.m:566 [error] error ''assert_equal' undefined' does not match <Dimensions don't match>
+- testfun/assert_equal.m:567 [test] 'assert_equal' undefined
+- testfun/assert_equal.m:571 [test] 'fail' undefined
+- testfun/assert_equal.m:580 [error] error ''assert_equal' undefined' does not match <Rel err .* exceeds tol>
+- testfun/assert_equal.m:581 [error] error ''assert_equal' undefined' does not match <Rel err .* exceeds tol>
+- testfun/assert_equal.m:584 [test] 'assert_equal' undefined
+- testfun/assert_equal.m:585 [error] error ''assert_equal' undefined' does not match <Rel err 2.2204e-0?15 exceeds tol>
+- testfun/assert_equal.m:586 [test] 'assert_equal' undefined
+- testfun/assert_equal.m:587 [error] error ''assert_equal' undefined' does not match <Abs err 2.8422e-0?14 exceeds tol>
+- testfun/assert_equal.m:590 [error] error ''assert_equal' undefined' does not match <Abs err 2 exceeds tol 0.1>
+- testfun/assert_equal.m:593 [error] error ''assert_equal' undefined' does not match <Class single != double>
+- testfun/assert_equal.m:594 [error] error ''assert_equal' undefined' does not match <Class uint8 != uint16>
+- testfun/assert_equal.m:595 [error] error ''assert_equal' undefined' does not match <sparse != non-sparse>
+- testfun/assert_equal.m:596 [error] error ''assert_equal' undefined' does not match <non-sparse != sparse>
+- testfun/assert_equal.m:597 [error] error ''assert_equal' undefined' does not match <complex != real>
+- testfun/assert_equal.m:598 [error] error ''assert_equal' undefined' does not match <real != complex>
+- testfun/assert_equal.m:603 [error] error ''assert_equal' undefined' does not match <'NaN' mismatch>
+- testfun/assert_equal.m:604 [error] error ''assert_equal' undefined' does not match <'NaN' mismatch>
+- testfun/assert_equal.m:605 [test] Too many errors reported for NaN assert_equal
+- testfun/assert_equal.m:619 [error] error ''assert_equal' undefined' does not match <'NA' mismatch>
+- testfun/assert_equal.m:621 [test] Too many errors reported for NA assert_equal
+- testfun/assert_equal.m:636 [error] error ''assert_equal' undefined' does not match <'Inf' mismatch>
+- testfun/assert_equal.m:637 [error] error ''assert_equal' undefined' does not match <'Inf' mismatch>
+- testfun/assert_equal.m:638 [test] Too many errors reported for Inf assert_equal
+- testfun/assert_equal.m:649 [error] error ''assert_equal' undefined' does not match <Abs err>
+- testfun/assert_equal.m:653 [error] error ''assert_equal' undefined' does not match <Strings don't match>
+- testfun/assert_equal.m:654 [error] error ''assert_equal' undefined' does not match <Expected string, but observed number>
+- testfun/assert_equal.m:655 [error] error ''assert_equal' undefined' does not match <Class char != double>
+- testfun/assert_equal.m:656 [error] error ''assert_equal' undefined' does not match <Expected string, but observed cell>
+- testfun/assert_equal.m:657 [error] error ''assert_equal' undefined' does not match <Expected string, but observed struct>
+- testfun/assert_equal.m:660 [error] error ''assert_equal' undefined' does not match <Expected cell, but observed double>
+- testfun/assert_equal.m:661 [error] error ''assert_equal' undefined' does not match <Dimensions don't match>
+- testfun/assert_equal.m:662 [test] 'assert_equal' undefined
+- testfun/assert_equal.m:668 [test] Incorrect number of errors reported
+- testfun/assert_equal.m:681 [error] error ''assert_equal' undefined' does not match <Function handles don't match>
+- testfun/assert_equal.m:682 [error] error ''assert_equal' undefined' does not match <Expected function handle, but observed double>
+- testfun/assert_equal.m:683 [error] error ''assert_equal' undefined' does not match <Class function_handle != double>
+- testfun/assert_equal.m:685 [test] 'assert_equal' undefined
+- testfun/assert_equal.m:701 [error] error ''assert_equal' undefined' does not match <Expected struct, but observed double>
+- testfun/assert_equal.m:702 [error] error ''assert_equal' undefined' does not match <Structure sizes don't match>
+- testfun/assert_equal.m:706 [error] error ''assert_equal' undefined' does not match <Structure sizes don't match>
+- testfun/assert_equal.m:710 [error] error ''assert_equal' undefined' does not match <Structure sizes don't match>
+- testfun/assert_equal.m:715 [error] error ''assert_equal' undefined' does not match <Structure fieldname mismatch>
+- testfun/assert_equal.m:719 [error] error ''assert_equal' undefined' does not match <Abs err 1 exceeds tol 0 by 1>
+- testfun/assert_equal.m:724 [test] 'assert_equal' undefined
+- testfun/assert_equal.m:738 [test] 'assert_equal' undefined
+- testfun/assert_equal.m:748 [test] Incorrect number of errors reported
+- testfun/assert_equal.m:765 [test] 'assert_equal' undefined
+- testfun/assert_equal.m:786 [error] error ''assert_equal' undefined' does not match <Expected classdef object, but observed double>
+- testfun/assert_equal.m:788 [error] error ''assert_equal' undefined' does not match <Expected classdef object does not have an 'eq' method>
+- testfun/assert_equal.m:791 [error] error ''assert_equal' undefined' does not match <Expected classdef object does not have an 'eq' method>
+- testfun/assert_equal.m:794 [test] 'assert_equal' undefined
+- testfun/assert_equal.m:805 [error] error ''assert_equal' undefined' does not match <Invalid call>
+- testfun/assert_equal.m:806 [error] error ''assert_equal' undefined' does not match <assert_equal: function called with too many inputs>
+- testfun/demo.m:189 [error] error ''demo' undefined' does not match <Invalid call>
+- testfun/demo.m:190 [error] error ''demo' undefined' does not match <N must be a scalar integer>
+- testfun/demo.m:191 [error] error ''demo' undefined' does not match <N must be a scalar integer>
+- testfun/demo.m:192 [error] error ''demo' undefined' does not match <N must be a scalar integer>
+- testfun/demo.m:193 [warning] 'demo' undefined
+- testfun/demo.m:194 [warning] 'demo' undefined
+- testfun/example.m:113 [assert] 'example' undefined
+- testfun/example.m:115 [test] 'example' undefined
+- testfun/example.m:122 [error] error ''example' undefined' does not match <Invalid call>
+- testfun/example.m:123 [error] error ''example' undefined' does not match <N must be a scalar integer>
+- testfun/example.m:124 [error] error ''example' undefined' does not match <N must be a scalar integer>
+- testfun/example.m:125 [error] error ''example' undefined' does not match <N must be a scalar integer>
+- testfun/example.m:126 [warning] 'example' undefined
+- testfun/example.m:127 [warning] 'example' undefined
+- testfun/fail.m:147 [fail] 'fail' undefined
+- testfun/fail.m:148 [fail] 'fail' undefined
+- testfun/fail.m:149 [fail] 'fail' undefined
+- testfun/fail.m:150 [fail] 'fail' undefined
+- testfun/fail.m:151 [fail] 'fail' undefined
+- testfun/fail.m:154 [error] error ''fail' undefined' does not match <expected error>
+- testfun/fail.m:155 [error] error ''fail' undefined' does not match <'__a__' undefined>
+- testfun/fail.m:156 [error] error ''fail' undefined' does not match <expected error .usage:>
+- testfun/fail.m:157 [error] error ''fail' undefined' does not match <warning failure>
+- testfun/fail.m:160 [error] error ''fail' undefined' does not match <Invalid call>
+- testfun/oruntests.m:197 [error] error ''oruntests' undefined' does not match <DIRECTORY argument>
+- testfun/rundemos.m:121 [error] error ''rundemos' undefined' does not match <DIRECTORY argument>
+- testfun/speed.m:430 [test] 'speed' undefined
+- testfun/speed.m:442 [test] 'speed' undefined
+- testfun/speed.m:456 [error] error ''speed' undefined' does not match <Invalid call>
+- testfun/test.m:965 [fail] 'fail' undefined
+- testfun/test.m:966 [fail] 'fail' undefined
+- testfun/test.m:967 [fail] 'fail' undefined
+- testfun/test.m:968 [fail] 'fail' undefined
+- testfun/test.m:969 [fail] 'fail' undefined
+- testfun/test.m:970 [test] 'fail' undefined
+- testfun/test.m:971 [fail] 'fail' undefined
+- testfun/test.m:972 [test] 'toeplitz' undefined
+- testfun/test.m:973 [assert] 'toeplitz' undefined
+- testfun/test.m:1004 [fail] 'fail' undefined
+- testfun/test.m:1005 [fail] 'fail' undefined
+- testfun/test.m:1006 [fail] 'fail' undefined
+- testfun/test.m:1007 [fail] 'fail' undefined
+- testfun/test.m:1010 [error] error ''test' undefined' does not match <Invalid call>
+- testfun/test.m:1011 [error] error ''test' undefined' does not match <unknown flag>
+- testfun/test.m:1071 [test] 'test' undefined
+- testfun/test.m:1084 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- testfun/test.m:1094 [error] error ''test' undefined' does not match <NAME must be a string>
+- testfun/test.m:1095 [error] error ''test' undefined' does not match <second argument must be a string>
+- time/addtodate.m:88 [shared] 'datenum' undefined
+- time/addtodate.m:91 [assert] 'addtodate' undefined
+- time/addtodate.m:92 [assert] 'addtodate' undefined
+- time/addtodate.m:93 [assert] 'addtodate' undefined
+- time/addtodate.m:94 [assert] 'addtodate' undefined
+- time/addtodate.m:95 [assert] 'addtodate' undefined
+- time/addtodate.m:96 [assert] 'addtodate' undefined
+- time/addtodate.m:97 [assert] 'addtodate' undefined
+- time/addtodate.m:100 [assert] 'addtodate' undefined
+- time/addtodate.m:101 [assert] 'addtodate' undefined
+- time/addtodate.m:102 [assert] 'addtodate' undefined
+- time/addtodate.m:103 [assert] 'addtodate' undefined
+- time/addtodate.m:104 [assert] 'addtodate' undefined
+- time/addtodate.m:105 [assert] 'addtodate' undefined
+- time/addtodate.m:106 [assert] 'addtodate' undefined
+- time/addtodate.m:108 [assert] 'addtodate' undefined
+- time/addtodate.m:109 [assert] 'addtodate' undefined
+- time/addtodate.m:110 [assert] 'addtodate' undefined
+- time/addtodate.m:111 [assert] 'addtodate' undefined
+- time/addtodate.m:112 [assert] 'addtodate' undefined
+- time/addtodate.m:113 [assert] 'addtodate' undefined
+- time/addtodate.m:114 [assert] 'addtodate' undefined
+- time/addtodate.m:116 [assert] 'addtodate' undefined
+- time/addtodate.m:117 [assert] 'addtodate' undefined
+- time/addtodate.m:119 [assert] 'addtodate' undefined
+- time/addtodate.m:120 [assert] 'addtodate' undefined
+- time/addtodate.m:121 [assert] 'addtodate' undefined
+- time/addtodate.m:122 [assert] 'addtodate' undefined
+- time/addtodate.m:123 [assert] 'addtodate' undefined
+- time/addtodate.m:124 [assert] 'addtodate' undefined
+- time/addtodate.m:127 [assert] 'datenum' undefined
+- time/addtodate.m:128 [assert] 'datenum' undefined
+- time/addtodate.m:129 [assert] 'datenum' undefined
+- time/addtodate.m:130 [assert] 'datenum' undefined
+- time/addtodate.m:131 [assert] 'datenum' undefined
+- time/addtodate.m:132 [assert] 'datenum' undefined
+- time/addtodate.m:133 [assert] 'datenum' undefined
+- time/addtodate.m:134 [assert] 'datenum' undefined
+- time/addtodate.m:135 [assert] 'datenum' undefined
+- time/addtodate.m:136 [assert] 'datenum' undefined
+- time/addtodate.m:137 [assert] 'datenum' undefined
+- time/addtodate.m:141 [error] error ''addtodate' undefined' does not match <Invalid call>
+- time/addtodate.m:142 [error] error ''addtodate' undefined' does not match <Invalid call>
+- time/addtodate.m:143 [error] error ''addtodate' undefined' does not match <Invalid call>
+- time/addtodate.m:144 [error] error ''addtodate' undefined' does not match <F must be a single character string>
+- time/addtodate.m:145 [error] error ''addtodate' undefined' does not match <F must be a single character string>
+- time/addtodate.m:146 [error] error ''addtodate' undefined' does not match <Invalid time unit>
+- time/asctime.m:55 [test] 'asctime' undefined
+- time/asctime.m:59 [assert] 'asctime' undefined
+- time/asctime.m:61 [error] error ''asctime' undefined' does not match <Invalid call>
+- time/calendar.m:101 [assert] 'calendar' undefined
+- time/calendar.m:102 [assert] 'calendar' undefined
+- time/clock.m:69 [test] 'etime' undefined
+- time/ctime.m:55 [test] 'asctime' undefined
+- time/ctime.m:59 [assert] 'ctime' undefined
+- time/ctime.m:61 [error] error ''ctime' undefined' does not match <Invalid call>
+- time/datenum.m:252 [assert] 'datenum' undefined
+- time/datenum.m:253 [assert] 'datenum' undefined
+- time/datenum.m:254 [assert] 'datenum' undefined
+- time/datenum.m:255 [assert] 'datenum' undefined
+- time/datenum.m:256 [assert] 'datenum' undefined
+- time/datenum.m:259 [test] 'datenum' undefined
+- time/datenum.m:268 [assert] 'datenum' undefined
+- time/datenum.m:271 [assert] 'datenum' undefined
+- time/datenum.m:272 [assert] 'datenum' undefined
+- time/datenum.m:275 [assert] 'datenum' undefined
+- time/datenum.m:276 [assert] 'datenum' undefined
+- time/datenum.m:280 [assert] 'datenum' undefined
+- time/datenum.m:281 [assert] 'datenum' undefined
+- time/datenum.m:282 [assert] 'datenum' undefined
+- time/datenum.m:283 [assert] 'datenum' undefined
+- time/datenum.m:285 [assert] 'datenum' undefined
+- time/datenum.m:287 [assert] 'datenum' undefined
+- time/datenum.m:289 [assert] 'datenum' undefined
+- time/datenum.m:290 [assert] 'datenum' undefined
+- time/datenum.m:291 [assert] 'datenum' undefined
+- time/datenum.m:292 [assert] 'datenum' undefined
+- time/datenum.m:294 [assert] 'datenum' undefined
+- time/datenum.m:296 [assert] 'datenum' undefined
+- time/datenum.m:299 [assert] 'datenum' undefined
+- time/datenum.m:300 [assert] 'datenum' undefined
+- time/datenum.m:301 [assert] 'datenum' undefined
+- time/datenum.m:302 [assert] 'datenum' undefined
+- time/datenum.m:305 [assert] 'datenum' undefined
+- time/datenum.m:308 [error] error ''datenum' undefined' does not match <Invalid call>
+- time/datenum.m:309 [error] error ''datenum' undefined' does not match <expected date vector containing>
+- time/datenum.m:310 [error] error ''datenum' undefined' does not match <expected date vector containing>
+- time/datenum.m:311 [error] error ''datenum' undefined' does not match <all inputs must be of class double>
+- time/datestr.m:316 [assert] 'datestr' undefined
+- time/datestr.m:317 [assert] 'datestr' undefined
+- time/datestr.m:318 [assert] 'datestr' undefined
+- time/datestr.m:319 [assert] 'datestr' undefined
+- time/datestr.m:320 [assert] 'datestr' undefined
+- time/datestr.m:321 [assert] 'datestr' undefined
+- time/datestr.m:322 [assert] 'datestr' undefined
+- time/datestr.m:323 [assert] 'datestr' undefined
+- time/datestr.m:324 [assert] 'datestr' undefined
+- time/datestr.m:325 [assert] 'datestr' undefined
+- time/datestr.m:326 [assert] 'datestr' undefined
+- time/datestr.m:327 [assert] 'datestr' undefined
+- time/datestr.m:328 [assert] 'datestr' undefined
+- time/datestr.m:329 [assert] 'datestr' undefined
+- time/datestr.m:332 [test] 'datestr' undefined
+- time/datestr.m:335 [assert] 'datestr' undefined
+- time/datestr.m:336 [test] 'datestr' undefined
+- time/datestr.m:339 [test] 'datestr' undefined
+- time/datestr.m:344 [assert] 'datestr' undefined
+- time/datestr.m:345 [assert] 'datestr' undefined
+- time/datestr.m:346 [assert] 'datestr' undefined
+- time/datestr.m:347 [assert] 'datestr' undefined
+- time/datestr.m:348 [assert] 'datestr' undefined
+- time/datestr.m:349 [assert] 'datestr' undefined
+- time/datestr.m:350 [assert] 'datestr' undefined
+- time/datestr.m:351 [assert] 'datestr' undefined
+- time/datestr.m:352 [assert] 'datestr' undefined
+- time/datestr.m:353 [assert] 'datestr' undefined
+- time/datestr.m:354 [assert] 'datestr' undefined
+- time/datestr.m:355 [assert] 'datestr' undefined
+- time/datestr.m:356 [assert] 'datestr' undefined
+- time/datestr.m:357 [assert] 'datestr' undefined
+- time/datestr.m:358 [assert] 'datestr' undefined
+- time/datestr.m:359 [assert] 'datestr' undefined
+- time/datestr.m:361 [assert] 'datestr' undefined
+- time/datestr.m:363 [assert] 'datestr' undefined
+- time/datestr.m:365 [assert] 'datestr' undefined
+- time/datestr.m:368 [assert] 'datenum' undefined
+- time/datestr.m:372 [error] error ''datestr' undefined' does not match <Invalid call>
+- time/datevec.m:407 [shared] 'datevec' undefined
+- time/datevec.m:410 [assert] 'datevec' undefined
+- time/datevec.m:411 [assert] 'datevec' undefined
+- time/datevec.m:412 [assert] 'datevec' undefined
+- time/datevec.m:413 [assert] 'datevec' undefined
+- time/datevec.m:414 [assert] 'datevec' undefined
+- time/datevec.m:415 [assert] 'datevec' undefined
+- time/datevec.m:416 [assert] 'datevec' undefined
+- time/datevec.m:417 [assert] 'datevec' undefined
+- time/datevec.m:418 [assert] 'datevec' undefined
+- time/datevec.m:421 [assert] 'datevec' undefined
+- time/datevec.m:422 [assert] 'datevec' undefined
+- time/datevec.m:423 [assert] 'datevec' undefined
+- time/datevec.m:426 [assert] 'datevec' undefined
+- time/datevec.m:428 [assert] 'datevec' undefined
+- time/datevec.m:430 [assert] 'datevec' undefined
+- time/datevec.m:432 [assert] 'datevec' undefined
+- time/datevec.m:434 [assert] 'datevec' undefined
+- time/datevec.m:436 [assert] 'datevec' undefined
+- time/datevec.m:438 [assert] 'datevec' undefined
+- time/datevec.m:442 [assert] 'datevec' undefined
+- time/datevec.m:443 [assert] 'datevec' undefined
+- time/datevec.m:444 [assert] 'datevec' undefined
+- time/datevec.m:445 [assert] 'datevec' undefined
+- time/datevec.m:448 [test] 'datevec' undefined
+- time/datevec.m:453 [assert] 'datevec' undefined
+- time/datevec.m:454 [test] 'datevec' undefined
+- time/datevec.m:457 [assert] 'datenum' undefined
+- time/datevec.m:459 [assert] 'datenum' undefined
+- time/datevec.m:495 [test] 'fail' undefined
+- time/datevec.m:506 [assert] 'datevec' undefined
+- time/datevec.m:507 [assert] 'datevec' undefined
+- time/datevec.m:508 [assert] 'datevec' undefined
+- time/datevec.m:511 [assert] 'datevec' undefined
+- time/datevec.m:512 [assert] 'datevec' undefined
+- time/datevec.m:513 [assert] 'datevec' undefined
+- time/datevec.m:514 [assert] 'datevec' undefined
+- time/datevec.m:517 [assert] 'datevec' undefined
+- time/datevec.m:518 [assert] 'datevec' undefined
+- time/datevec.m:519 [assert] 'datevec' undefined
+- time/datevec.m:520 [assert] 'datevec' undefined
+- time/datevec.m:523 [assert] 'datevec' undefined
+- time/datevec.m:524 [assert] 'datevec' undefined
+- time/datevec.m:525 [assert] 'datevec' undefined
+- time/datevec.m:530 [assert] 'datevec' undefined
+- time/datevec.m:531 [assert] 'datevec' undefined
+- time/datevec.m:532 [assert] 'datevec' undefined
+- time/datevec.m:533 [assert] 'datevec' undefined
+- time/datevec.m:536 [assert] 'datevec' undefined
+- time/datevec.m:537 [assert] 'datevec' undefined
+- time/datevec.m:538 [assert] 'datevec' undefined
+- time/datevec.m:539 [assert] 'datevec' undefined
+- time/datevec.m:542 [assert] 'datevec' undefined
+- time/datevec.m:543 [assert] 'datevec' undefined
+- time/datevec.m:544 [assert] 'datevec' undefined
+- time/datevec.m:545 [assert] 'datevec' undefined
+- time/datevec.m:548 [assert] 'datevec' undefined
+- time/datevec.m:549 [assert] 'datevec' undefined
+- time/datevec.m:550 [assert] 'datevec' undefined
+- time/datevec.m:555 [assert] 'datevec' undefined
+- time/datevec.m:556 [assert] 'datevec' undefined
+- time/datevec.m:557 [assert] 'datevec' undefined
+- time/datevec.m:558 [assert] 'datevec' undefined
+- time/datevec.m:561 [assert] 'datevec' undefined
+- time/datevec.m:562 [assert] 'datevec' undefined
+- time/datevec.m:563 [assert] 'datevec' undefined
+- time/datevec.m:564 [assert] 'datevec' undefined
+- time/datevec.m:567 [assert] 'datevec' undefined
+- time/datevec.m:568 [assert] 'datevec' undefined
+- time/datevec.m:569 [assert] 'datevec' undefined
+- time/datevec.m:570 [assert] 'datevec' undefined
+- time/datevec.m:573 [assert] 'datevec' undefined
+- time/datevec.m:574 [assert] 'datevec' undefined
+- time/datevec.m:575 [assert] 'datevec' undefined
+- time/datevec.m:576 [assert] 'datevec' undefined
+- time/datevec.m:579 [assert] 'datevec' undefined
+- time/datevec.m:580 [assert] 'datevec' undefined
+- time/datevec.m:581 [assert] 'datevec' undefined
+- time/datevec.m:582 [assert] 'datevec' undefined
+- time/datevec.m:583 [assert] 'datevec' undefined
+- time/datevec.m:586 [assert] 'datevec' undefined
+- time/datevec.m:587 [assert] 'datevec' undefined
+- time/datevec.m:588 [assert] 'datevec' undefined
+- time/datevec.m:589 [assert] 'datevec' undefined
+- time/datevec.m:592 [assert] 'datevec' undefined
+- time/datevec.m:593 [assert] 'datevec' undefined
+- time/datevec.m:594 [assert] 'datevec' undefined
+- time/datevec.m:595 [assert] 'datevec' undefined
+- time/datevec.m:602 [assert] 'datevec' undefined
+- time/datevec.m:603 [assert] 'datevec' undefined
+- time/datevec.m:604 [assert] 'datevec' undefined
+- time/datevec.m:607 [assert] 'datevec' undefined
+- time/datevec.m:608 [assert] 'datevec' undefined
+- time/datevec.m:609 [assert] 'datevec' undefined
+- time/datevec.m:610 [assert] 'datevec' undefined
+- time/datevec.m:613 [assert] 'datevec' undefined
+- time/datevec.m:614 [assert] 'datevec' undefined
+- time/datevec.m:615 [assert] 'datevec' undefined
+- time/datevec.m:616 [assert] 'datevec' undefined
+- time/datevec.m:619 [assert] 'datevec' undefined
+- time/datevec.m:620 [assert] 'datevec' undefined
+- time/datevec.m:621 [assert] 'datevec' undefined
+- time/datevec.m:622 [assert] 'datevec' undefined
+- time/datevec.m:625 [assert] 'datevec' undefined
+- time/datevec.m:626 [assert] 'datevec' undefined
+- time/datevec.m:627 [assert] 'datevec' undefined
+- time/datevec.m:628 [assert] 'datevec' undefined
+- time/datevec.m:631 [assert] 'datevec' undefined
+- time/datevec.m:632 [assert] 'datevec' undefined
+- time/datevec.m:633 [assert] 'datevec' undefined
+- time/datevec.m:636 [assert] 'datevec' undefined
+- time/datevec.m:637 [assert] 'datevec' undefined
+- time/datevec.m:638 [assert] 'datevec' undefined
+- time/datevec.m:639 [assert] 'datevec' undefined
+- time/datevec.m:642 [assert] 'datevec' undefined
+- time/datevec.m:643 [assert] 'datevec' undefined
+- time/datevec.m:644 [assert] 'datevec' undefined
+- time/datevec.m:645 [assert] 'datevec' undefined
+- time/datevec.m:650 [assert] 'datevec' undefined
+- time/datevec.m:651 [assert] 'datevec' undefined
+- time/datevec.m:652 [assert] 'datevec' undefined
+- time/datevec.m:653 [assert] 'datevec' undefined
+- time/datevec.m:656 [assert] 'datevec' undefined
+- time/datevec.m:657 [assert] 'datevec' undefined
+- time/datevec.m:658 [assert] 'datevec' undefined
+- time/datevec.m:659 [assert] 'datevec' undefined
+- time/datevec.m:662 [assert] 'datevec' undefined
+- time/datevec.m:663 [assert] 'datevec' undefined
+- time/datevec.m:664 [assert] 'datevec' undefined
+- time/datevec.m:667 [assert] 'datevec' undefined
+- time/datevec.m:668 [assert] 'datevec' undefined
+- time/datevec.m:669 [assert] 'datevec' undefined
+- time/datevec.m:670 [assert] 'datevec' undefined
+- time/datevec.m:673 [assert] 'datevec' undefined
+- time/datevec.m:674 [assert] 'datevec' undefined
+- time/datevec.m:675 [assert] 'datevec' undefined
+- time/datevec.m:676 [assert] 'datevec' undefined
+- time/datevec.m:679 [assert] 'datevec' undefined
+- time/datevec.m:680 [assert] 'datevec' undefined
+- time/datevec.m:681 [assert] 'datevec' undefined
+- time/datevec.m:682 [assert] 'datevec' undefined
+- time/datevec.m:685 [assert] 'datevec' undefined
+- time/datevec.m:686 [assert] 'datevec' undefined
+- time/datevec.m:687 [assert] 'datevec' undefined
+- time/datevec.m:688 [assert] 'datevec' undefined
+- time/datevec.m:691 [assert] 'datevec' undefined
+- time/datevec.m:692 [assert] 'datevec' undefined
+- time/datevec.m:693 [assert] 'datevec' undefined
+- time/datevec.m:694 [assert] 'datevec' undefined
+- time/datevec.m:697 [assert] 'datevec' undefined
+- time/datevec.m:698 [assert] 'datevec' undefined
+- time/datevec.m:699 [assert] 'datevec' undefined
+- time/datevec.m:700 [assert] 'datevec' undefined
+- time/datevec.m:703 [assert] 'datevec' undefined
+- time/datevec.m:704 [assert] 'datevec' undefined
+- time/datevec.m:705 [assert] 'datevec' undefined
+- time/datevec.m:706 [assert] 'datevec' undefined
+- time/datevec.m:709 [assert] 'datevec' undefined
+- time/datevec.m:710 [assert] 'datevec' undefined
+- time/datevec.m:711 [assert] 'datevec' undefined
+- time/datevec.m:712 [assert] 'datevec' undefined
+- time/datevec.m:715 [assert] 'datevec' undefined
+- time/datevec.m:716 [assert] 'datevec' undefined
+- time/datevec.m:717 [assert] 'datevec' undefined
+- time/datevec.m:718 [assert] 'datevec' undefined
+- time/datevec.m:721 [assert] 'datevec' undefined
+- time/datevec.m:722 [assert] 'datevec' undefined
+- time/datevec.m:723 [assert] 'datevec' undefined
+- time/datevec.m:724 [assert] 'datevec' undefined
+- time/datevec.m:727 [assert] 'datevec' undefined
+- time/datevec.m:728 [assert] 'datevec' undefined
+- time/datevec.m:729 [assert] 'datevec' undefined
+- time/datevec.m:730 [assert] 'datevec' undefined
+- time/datevec.m:733 [assert] 'datevec' undefined
+- time/datevec.m:734 [assert] 'datevec' undefined
+- time/datevec.m:735 [assert] 'datevec' undefined
+- time/datevec.m:736 [assert] 'datevec' undefined
+- time/datevec.m:739 [assert] 'datevec' undefined
+- time/datevec.m:740 [assert] 'datevec' undefined
+- time/datevec.m:741 [assert] 'datevec' undefined
+- time/datevec.m:742 [assert] 'datevec' undefined
+- time/datevec.m:745 [assert] 'datevec' undefined
+- time/datevec.m:746 [assert] 'datevec' undefined
+- time/datevec.m:747 [assert] 'datevec' undefined
+- time/datevec.m:748 [assert] 'datevec' undefined
+- time/datevec.m:751 [assert] 'datevec' undefined
+- time/datevec.m:752 [assert] 'datevec' undefined
+- time/datevec.m:753 [assert] 'datevec' undefined
+- time/datevec.m:756 [assert] 'datevec' undefined
+- time/datevec.m:757 [assert] 'datevec' undefined
+- time/datevec.m:758 [assert] 'datevec' undefined
+- time/datevec.m:762 [error] error ''datevec' undefined' does not match <Invalid call>
+- time/datevec.m:763 [error] error ''datevec' undefined' does not match <none of the standard formats match>
+- time/datevec.m:764 [error] error ''datevec' undefined' does not match <DATE not parsed correctly with given format>
+- time/datevec.m:765 [error] error ''datevec' undefined' does not match <multiple year specifiers>
+- time/datevec.m:766 [error] error ''datevec' undefined' does not match <multiple month specifiers>
+- time/datevec.m:767 [error] error ''datevec' undefined' does not match <multiple day specifiers>
+- time/datevec.m:768 [error] error ''datevec' undefined' does not match <multiple hour specifiers>
+- time/datevec.m:769 [error] error ''datevec' undefined' does not match <multiple minute specifiers>
+- time/datevec.m:770 [error] error ''datevec' undefined' does not match <multiple second specifiers>
+- time/datevec.m:771 [fail] 'fail' undefined
+- time/datevec.m:773 [fail] 'fail' undefined
+- time/eomday.m:51 [assert] 'eomday' undefined
+- time/eomday.m:52 [assert] 'eomday' undefined
+- time/eomday.m:53 [assert] 'eomday' undefined
+- time/eomday.m:54 [assert] 'eomday' undefined
+- time/eomday.m:55 [assert] 'eomday' undefined
+- time/eomday.m:56 [assert] 'eomday' undefined
+- time/eomday.m:57 [assert] 'eomday' undefined
+- time/eomday.m:58 [assert] 'eomday' undefined
+- time/eomday.m:59 [assert] 'eomday' undefined
+- time/eomday.m:60 [assert] 'eomday' undefined
+- time/eomday.m:62 [assert] 'eomday' undefined
+- time/eomday.m:65 [error] error ''eomday' undefined' does not match <Invalid call>
+- time/eomday.m:66 [error] error ''eomday' undefined' does not match <Invalid call>
+- time/etime.m:61 [assert] 'etime' undefined
+- time/etime.m:62 [assert] 'etime' undefined
+- time/etime.m:63 [assert] 'etime' undefined
+- time/etime.m:64 [assert] 'etime' undefined
+- time/etime.m:65 [test] 'etime' undefined
+- time/etime.m:70 [test] 'etime' undefined
+- time/etime.m:83 [error] error ''etime' undefined' does not match <Invalid call>
+- time/etime.m:84 [error] error ''etime' undefined' does not match <Invalid call>
+- time/is_leap_year.m:56 [assert] 'is_leap_year' undefined
+- time/is_leap_year.m:57 [assert] 'is_leap_year' undefined
+- time/is_leap_year.m:58 [assert] 'is_leap_year' undefined
+- time/is_leap_year.m:59 [assert] 'is_leap_year' undefined
+- time/is_leap_year.m:60 [assert] 'is_leap_year' undefined
+- time/weekday.m:101 [assert] 'weekday' undefined
+- time/weekday.m:103 [assert] 'weekday' undefined
+- time/weekday.m:104 [assert] 'weekday' undefined
+- time/weekday.m:106 [assert] 'weekday' undefined
+- time/weekday.m:107 [assert] 'weekday' undefined
+- time/weekday.m:108 [assert] 'weekday' undefined
+- time/weekday.m:109 [assert] 'weekday' undefined
+- time/weekday.m:110 [assert] 'weekday' undefined
+- time/weekday.m:111 [assert] 'weekday' undefined
+- time/weekday.m:112 [assert] 'weekday' undefined
+- time/weekday.m:114 [assert] 'weekday' undefined
+- time/weekday.m:116 [assert] 'weekday' undefined
+- time/weekday.m:117 [assert] 'weekday' undefined
+- time/weekday.m:118 [assert] 'weekday' undefined
+- time/weekday.m:119 [assert] 'weekday' undefined
+- time/weekday.m:120 [assert] 'weekday' undefined
+- time/weekday.m:121 [assert] 'weekday' undefined
+- time/weekday.m:122 [assert] 'weekday' undefined
+- time/weekday.m:124 [assert] 'weekday' undefined
+- time/weekday.m:126 [test] 'weekday' undefined
+- web/web.m:120 [error] error ''web' undefined' does not match <URL must be a string>
+- web/web.m:121 [error] error ''web' undefined' does not match <URL must be a string>
+- web/web.m:122 [error] error ''web' undefined' does not match <'-invalid_Option' does not match>
+- web/webread.m:107 [error] error ''webread' undefined' does not match <Invalid call>
+- web/webread.m:108 [error] error ''webread' undefined' does not match <URL must be a string>
+- web/webread.m:109 [error] error ''webread' undefined' does not match <URL must be a string>
+- web/webread.m:110 [error] error ''webread' undefined' does not match <NAMES/VALUES must occur in pairs>
+- web/webread.m:111 [error] error ''webread' undefined' does not match <NAMES and VALUES must be strings>
+- web/webwrite.m:122 [error] error ''webwrite' undefined' does not match <Invalid call>
+- web/webwrite.m:123 [error] error ''webwrite' undefined' does not match <Invalid call>
+- web/webwrite.m:124 [error] error ''webwrite' undefined' does not match <URL must be a string>
+- web/webwrite.m:125 [error] error ''webwrite' undefined' does not match <URL must be a string>
+- web/webwrite.m:126 [error] error ''weboptions' undefined' does not match <missing DATA or NAMES/VALUES>
+- web/webwrite.m:127 [error] error ''webwrite' undefined' does not match <DATA must be a string>
+- web/webwrite.m:128 [error] error ''weboptions' undefined' does not match <DATA must be a string>
+- web/webwrite.m:129 [error] error ''webwrite' undefined' does not match <DATA not a valid query string>
+- web/webwrite.m:130 [error] error ''webwrite' undefined' does not match <NAMES/VALUES must occur in pairs>
+- web/webwrite.m:131 [error] error ''webwrite' undefined' does not match <NAMES and VALUES must be strings>

@@ -9,6 +9,36 @@ public static class Concat
 
     static Value Join(List<Value> items, bool horiz)
     {
+        if (items.Any(v => v is ObjectValue || v is ObjectArrayValue))
+        {
+            var parts = items.Where(v => !(v is MatrixValue em && em.Numel == 0))
+                .Select(v => v is ObjectValue o ? ObjectArrayValue.Of(o) : v as ObjectArrayValue
+                    ?? throw new OctaveException($"concatenation operator not implemented for '{v.ClassName}' by object operations")).ToList();
+            if (parts.Count == 0) return MatrixValue.Empty();
+            var cls = parts[0].Cls;
+            if (parts.Any(q => q.Cls != cls)) throw new OctaveException("concatenation of objects of different classes is not supported");
+            if (horiz)
+            {
+                int r = parts[0].R; if (parts.Any(q => q.R != r)) throw new OctaveException("horizontal dimensions mismatch");
+                var list = parts.SelectMany(q => Enumerable.Range(0, q.Numel).Select(q.At)).Cast<ObjectValue?>().ToArray();
+                var res = new ObjectArrayValue(cls, r, parts.Sum(q => q.C), list);
+                return res.Simplify();
+            }
+            else
+            {
+                int c = parts[0].C; if (parts.Any(q => q.C != c)) throw new OctaveException("vertical dimensions mismatch");
+                int RR = parts.Sum(q => q.R); var res = new ObjectArrayValue(cls, RR, c);
+                int r0 = 0;
+                foreach (var q in parts) { for (int j = 0; j < c; j++) for (int i = 0; i < q.R; i++) res.Items[r0 + i + j * RR] = q.At(i + j * q.R); r0 += q.R; }
+                return res.Simplify();
+            }
+        }
+        if (items.Any(v => v is Sparse.SparseValue))
+        {
+            var dense = items.Select(v => v is Sparse.SparseValue sv ? sv.ToDense() : v).ToList();
+            var r = Join(dense, horiz);
+            return r is MatrixValue rm && rm.ND == null && !rm.IsChar ? Sparse.SparseValue.FromDense(rm) : r;
+        }
         if (items.Count == 1) return items[0];
         if (items.Any(v => v.NDims > 2)) return NDArray.Cat(horiz ? 2 : 1, items);
         if (items.Any(v => v is FunctionHandleValue))

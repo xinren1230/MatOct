@@ -117,6 +117,137 @@ namespace MatRewrite.Core.Builtins
                 return n > 0 ? Out(H(s)) : Array.Empty<Value>();
             };
             RegG("surf", surfFn(false, "surf"));
+            // surfc / meshc: surface plus contour lines on the floor (z = min Z)
+            BuiltinFn withContour(bool mesh, string fn) => (it, a, n) =>
+            {
+                var r = surfFn(mesh, fn)(it, a, 1);
+                var ax = it.Graphics.Gca();
+                var sf = ax.Children.OfType<SurfaceSeries>().Last();
+                var Z = sf.Z; int R = Z.GetLength(0), C = Z.GetLength(1);
+                var xs = Enumerable.Range(0, C).Select(j => sf.X[0, j]).ToArray();
+                var ys = Enumerable.Range(0, R).Select(i => sf.Y[i, 0]).ToArray();
+                double zmin = double.PositiveInfinity; foreach (var v in Z) if (double.IsFinite(v)) zmin = Math.Min(zmin, v);
+                var levels = Contour.AutoLevels(Z);
+                var cs = new ContourSeries { X = xs, Y = ys, Z = Z, Levels = levels, Lines = Contour.All(xs, ys, Z, levels), ZPlane = zmin };
+                it.Graphics.Add(ax, cs);
+                return n > 0 ? new Value[] { MatrixValue.Col(new[] { sf.Handle, cs.Handle }) } : Array.Empty<Value>();
+            };
+            RegG("surfc", withContour(false, "surfc"));
+            RegG("meshc", withContour(true, "meshc"));
+            RegG("contour3", (it, a, n) =>
+            {
+                var r = ContourCall(it, a, Math.Max(n, 2), false, "contour3");
+                var ax = it.Graphics.Gca();
+                var cs = ax.Children.OfType<ContourSeries>().Last();
+                cs.Contour3 = true;
+                Set3DView(ax);
+                return n switch { 0 => Array.Empty<Value>(), 1 => new[] { r[0] }, _ => r };
+            });
+            RegG("clabel", (it, a, n) =>
+            {
+                if (a.Length == 0) throw new OctaveException("Invalid call to clabel");
+                var C = M(a[0], "clabel");
+                if (C.R != 2) throw new OctaveException("clabel: CTBL must be a 2-row contour matrix");
+                ContourSeries? owner = null;
+                int k = 1;
+                if (a.Length > 1 && !IsString(a[1]) && M(a[1], "clabel").Numel == 1 && it.Graphics.Lookup(D(a[1], "clabel")) is ContourSeries cso) { owner = cso; k = 2; }
+                HashSet<double>? only = null;
+                if (k < a.Length && !IsString(a[k])) { only = M(a[k], "clabel").Re.ToHashSet(); k++; }
+                var ax = it.Graphics.Gca();
+                var hs = new List<double>();
+                int col = 0, total = C.C;
+                while (col < total)
+                {
+                    double lev = C.Re[2 * col]; int np = (int)C.Re[2 * col + 1];
+                    if (np <= 0 || col + np >= total + 1) break;
+                    if (only == null || only.Contains(lev))
+                    {
+                        int mid = col + 1 + np / 2;
+                        var t = new TextSeries { X = C.Re[2 * mid], Y = C.Re[2 * mid + 1], Text = lev.ToString("G4", System.Globalization.CultureInfo.InvariantCulture), FontSize = 8, HAlign = "center" };
+                        if (owner != null && owner.Contour3) t.Z = lev;
+                        else if (owner?.ZPlane is double zp) t.Z = zp;
+                        it.Graphics.Add(ax, t); hs.Add(t.Handle);
+                    }
+                    col += np + 1;
+                }
+                if (k < a.Length) foreach (var h in hs) SetProps(it, it.Graphics.Lookup(h)!, a.Skip(k).ToArray(), "clabel");
+                it.Graphics.Touch(ax.Figure);
+                return n > 0 ? Out(MatrixValue.Col(hs)) : Array.Empty<Value>();
+            });
+            RegG("light", (it, a, n) =>
+            {
+                var ax = it.Graphics.Gca();
+                var lo = new LightObject { Az = -37.5 + 90 + 45, El = 45 };
+                // default position [1 0 1]
+                lo.Az = 90; lo.El = 45;
+                it.Graphics.Add(ax, lo);
+                if (a.Length > 0) SetProps(it, lo, a, "light");
+                it.Graphics.Touch(ax.Figure);
+                return n > 0 ? Out(H(lo)) : Array.Empty<Value>();
+            });
+            RegG("camlight", (it, a, n) =>
+            {
+                var ax = it.Graphics.Gca();
+                LightObject? lo = null;
+                int k = 0;
+                if (k < a.Length && !IsString(a[k]) && it.Graphics.Lookup(D(a[k], "camlight")) is LightObject existing) { lo = existing; k++; }
+                lo ??= it.Graphics.Add(ax, new LightObject());
+                lo.CameraRelative = true; lo.Az = 30; lo.El = 30; // 'right' is the default
+                var nums = new List<double>();
+                for (; k < a.Length; k++)
+                {
+                    if (IsString(a[k]))
+                    {
+                        var s = S(a[k], "camlight").ToLowerInvariant();
+                        switch (s)
+                        {
+                            case "headlight": lo.Az = 0; lo.El = 0; break;
+                            case "right": lo.Az = 30; lo.El = 30; break;
+                            case "left": lo.Az = -30; lo.El = 30; break;
+                            case "infinite" or "local": break;
+                            default: throw new OctaveException($"camlight: invalid argument '{s}'");
+                        }
+                    }
+                    else nums.AddRange(M(a[k], "camlight").Re);
+                }
+                if (nums.Count >= 2) { lo.Az = nums[0]; lo.El = nums[1]; }
+                it.Graphics.Touch(ax.Figure);
+                return n > 0 ? Out(H(lo)) : Array.Empty<Value>();
+            });
+            Reg("peaks", (it, a, n) =>
+            {
+                MatrixValue X, Y;
+                if (a.Length >= 2) { X = M(a[0], "peaks"); Y = M(a[1], "peaks"); }
+                else
+                {
+                    double[] v = a.Length == 1 && M(a[0], "peaks").Numel > 1 ? M(a[0], "peaks").Re.ToArray()
+                        : Enumerable.Range(0, a.Length == 1 ? (int)D(a[0], "peaks") : 49).Select((k, _) => 0.0).ToArray();
+                    if (!(a.Length == 1 && M(a[0], "peaks").Numel > 1)) { int cnt = v.Length; for (int k = 0; k < cnt; k++) v[k] = cnt == 1 ? -3 : -3 + 6.0 * k / (cnt - 1); }
+                    int N = v.Length; X = new MatrixValue(N, N); Y = new MatrixValue(N, N);
+                    for (int j = 0; j < N; j++) for (int i = 0; i < N; i++) { X.Re[i + j * N] = v[j]; Y.Re[i + j * N] = v[i]; }
+                }
+                if (X.Numel != Y.Numel) throw new OctaveException("peaks: X and Y must be the same size");
+                var Z = new MatrixValue(X.R, X.C);
+                for (int k = 0; k < Z.Re.Length; k++)
+                {
+                    double x = X.Re[k], y = Y.Re[k];
+                    Z.Re[k] = 3 * (1 - x) * (1 - x) * Math.Exp(-x * x - (y + 1) * (y + 1)) - 10 * (x / 5 - x * x * x - Math.Pow(y, 5)) * Math.Exp(-x * x - y * y) - 1.0 / 3 * Math.Exp(-(x + 1) * (x + 1) - y * y);
+                }
+                if (n <= 1 || a.Length >= 2) return Out(Z);
+                return new Value[] { X, Y, Z };
+            });
+            RegG("material", (it, a, n) => Array.Empty<Value>()); // shiny/dull/metal: accepted, fixed material
+            RegG("lighting", (it, a, n) =>
+            {
+                var ax = it.Graphics.Gca();
+                var mode = S(a[^1], "lighting").ToLowerInvariant();
+                if (mode == "phong") mode = "gouraud";
+                if (mode is not ("none" or "flat" or "gouraud")) throw new OctaveException($"lighting: invalid lighting mode '{mode}'");
+                ax.Lighting = mode;
+                foreach (var sf in ax.Children.OfType<SurfaceSeries>()) sf.FaceLighting = mode;
+                it.Graphics.Touch(ax.Figure);
+                return Array.Empty<Value>();
+            });
             RegG("mesh", surfFn(true, "mesh"));
             RegG("shading", (it, a, n) =>
             {

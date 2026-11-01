@@ -11,6 +11,7 @@ public sealed class UserFunction
 {
     public string Name = "";
     public List<string> Params = new();
+    public List<Expr?>? Defaults;
     public List<string> Outputs = new();
     public List<Stmt> Body = new();
     public string? File;
@@ -25,7 +26,7 @@ public sealed class UserFunction
 
     public static UserFunction From(FunctionDef d, string? file, UserFunction? parent = null)
     {
-        var f = new UserFunction { Name = d.Name, Params = d.Params, Outputs = d.Outputs, Body = d.Body, File = file, Parent = parent, Line = d.Line };
+        var f = new UserFunction { Defaults = d.Defaults, Name = d.Name, Params = d.Params, Outputs = d.Outputs, Body = d.Body, File = file, Parent = parent, Line = d.Line };
         foreach (var n in d.Nested) f.Nested[n.Name] = From(n, file, f);
         return f;
     }
@@ -83,9 +84,19 @@ public sealed partial class Interpreter
         BuiltinLibrary.RegisterAll(this);
         Ops.Warn = msg => Warning(msg);
         InputReader = DefaultReader;
+        ObjectArrayValue.DefaultFactory = ci => NewObject(ci);
     }
 
-    public void Warning(string msg) { Out.Flush(); Out.WriteLine("warning: " + msg); }
+    public void Warning(string msg) => Warning(msg, "");
+    public string LastWarning = "", LastWarningId = "";
+    public readonly HashSet<string> DisabledWarnings = new(StringComparer.Ordinal);
+    public void Warning(string msg, string id)
+    {
+        if (DisabledWarnings.Count > 0 && (DisabledWarnings.Contains("all") ? !EnabledWarnings.Contains(id ?? "") : (id != null && id != "" && DisabledWarnings.Contains(id)))) return;
+        LastWarning = msg; LastWarningId = id ?? "";
+        Out.Flush(); Out.WriteLine("warning: " + msg);
+    }
+    public readonly HashSet<string> EnabledWarnings = new(StringComparer.Ordinal);
 
     // ------------------------------------------------------------ public API
     /// <summary>Execute code in the base workspace (like typing at the prompt).</summary>
@@ -471,12 +482,11 @@ public sealed partial class Interpreter
             {
                 var name = FieldName(op);
                 if (cur is ObjectValue ob)
+                    return WriteProp(ob, name, old => AssignChain(old, ops, k + 1, rhs), !last);
+                if (cur is ObjectArrayValue oarr)
                 {
-                    if (!ob.Props.ContainsKey(name))
-                        throw new OctaveException(ob.Cls.Chain().Any(c => c.Constants.ContainsKey(name)) ? $"subsasgn: cannot set constant property '{name}'" : $"subsasgn: unknown property: {name}");
-                    var target = ob.CopyForWrite();
-                    target.Props[name] = AssignChain(ob.Props[name], ops, k + 1, rhs);
-                    return target;
+                    if (oarr.Numel != 1) throw new OctaveException("invalid use of a N-D object array in indexed assignment");
+                    return WriteProp(oarr.At(0), name, old => AssignChain(old, ops, k + 1, rhs), !last);
                 }
                 StructValue s = cur switch
                 {
@@ -502,6 +512,23 @@ public sealed partial class Interpreter
                     map.Set(ka[0], last ? rhs : AssignChain(old, ops, k + 1, rhs));
                     return map;
                 }
+                if (cur is Sparse.SparseValue spc)
+                {
+                    var sargs = EvalIndexArgs(op.Args!, spc);
+                    Value srhs = rhs;
+                    if (!last)
+                    {
+                        Value? old = null;
+                        try { old = Sparse.SparseIndex.Read(spc, sargs); } catch (OctaveException) { }
+                        srhs = AssignChain(old, ops, k + 1, rhs);
+                    }
+                    if (srhs is Sparse.SparseValue sr2) srhs = sr2.ToDense();
+                    if (srhs is not ArrayValue sra) throw new OctaveException($"operator = undefined for 'sparse matrix' by '{srhs.ClassName}' operations");
+                    return Sparse.SparseIndex.Assign(spc, sargs, sra);
+                }
+                if (rhs is Sparse.SparseValue rsp && last) rhs = rsp.ToDense();
+                if (last && rhs is ObjectValue robj) rhs = ObjectArrayValue.Of(robj);
+                if (cur is ObjectValue cobj) cur = ObjectArrayValue.Of(cobj);
                 var curArr = cur as ArrayValue;
                 var args = EvalIndexArgs(op.Args!, cur ?? MatrixValue.Empty());
                 if (last)
@@ -511,18 +538,19 @@ public sealed partial class Interpreter
                         if (curArr == null && args.All(a => a is MatrixValue m && m.Numel == 1 && m.Re[0] == 1)) return rhs;
                         throw new OctaveException($"operator = undefined for '{cur?.ClassName ?? "matrix"}' by '{rhs.ClassName}' operations");
                     }
-                    return Indexing.Assign(curArr, args, ra);
+                    return SimplifyObj(Indexing.Assign(curArr, args, ra));
                 }
                 Value? elem = null;
                 if (curArr != null && curArr.Numel > 0)
                 {
-                    try { var e = Indexing.Read(curArr, args); if (e.Numel == 1) elem = e; } catch (OctaveException) { }
+                    try { var e = Indexing.Read(curArr, args); if (e.Numel == 1) elem = e is ObjectArrayValue eo ? eo.At(0) : e; } catch (OctaveException) { }
                 }
                 if (elem == null && ops[k + 1].Kind == '.') elem = new StructValue();
                 var newElem = AssignChain(elem, ops, k + 1, rhs);
+                if (newElem is ObjectValue neo) newElem = ObjectArrayValue.Of(neo);
                 if (newElem is not ArrayValue na) throw new OctaveException("invalid indexed assignment");
                 if (curArr is MatrixValue cm && cm.Numel == 0) curArr = null;
-                return Indexing.Assign(curArr, args, na);
+                return SimplifyObj(Indexing.Assign(curArr, args, na));
             }
             case '{':
             {
@@ -554,6 +582,13 @@ public sealed partial class Interpreter
             case BinaryExpr b: return EvalBinary(b);
             case UnaryExpr u: return Ops.Unary(u.Op, Eval(u.Operand));
             case ParenExpr p: return Eval(p.Inner);
+            case AssignExpr ae:
+            {
+                var old = ae.PostOld ? Eval(ae.Target) : null;
+                var v = Eval(ae.Value);
+                AssignTo(ae.Target, v);
+                return old ?? v;
+            }
         }
         var vals = EvalMulti(e, 1);
         if (vals.Count == 0)
@@ -575,7 +610,7 @@ public sealed partial class Interpreter
             return MatrixValue.Bool(LogicalScalar(Eval(b.Right), b.Op));
         }
         var lv2 = Eval(b.Left); var rv2 = Eval(b.Right);
-        if (lv2 is ObjectValue || rv2 is ObjectValue) return ObjectBinary(b.Op, lv2, rv2);
+        if (lv2 is ObjectValue || rv2 is ObjectValue || lv2 is ObjectArrayValue || rv2 is ObjectArrayValue) return ObjectBinary(b.Op, lv2, rv2);
         return Ops.Binary(b.Op, lv2, rv2);
     }
 
@@ -597,11 +632,24 @@ public sealed partial class Interpreter
                     if (res.Length == 0) throw new OctaveException($"{mname}: method returned no value");
                     return res[0];
                 }
+            if (mname is "eq" or "ne" && l is ObjectValue ea && ea.EnumName != null)
+            {
+                bool eq = r switch
+                {
+                    ObjectValue eb => eb.Cls == ea.Cls && eb.EnumName == ea.EnumName,
+                    MatrixValue es when es.IsChar => es.AsString() == ea.EnumName,
+                    _ => false
+                };
+                return MatrixValue.Bool(eq == (mname == "eq"));
+            }
+            if (mname is "eq" or "ne" && r is ObjectValue ra2 && ra2.EnumName != null) return ObjectBinary(op, r, l);
             if (mname is "eq" or "ne" && l is ObjectValue a && r is ObjectValue b2 && a.Cls.IsHandle)
                 return MatrixValue.Bool(ReferenceEquals(a, b2) == (mname == "eq"));
         }
         throw new OctaveException($"binary operator '{op}' not implemented for '{l.ClassName}' by '{r.ClassName}' operations");
     }
+
+    static Value SimplifyObj(Value v) => v is ObjectArrayValue oa ? oa.Simplify() : v;
 
     static bool LogicalScalar(Value v, string op)
     {
@@ -632,6 +680,7 @@ public sealed partial class Interpreter
             case PostfixExpr pf:
             {
                 var v = Eval(pf.Operand);
+                if (v is Sparse.SparseValue spt) return new List<Value> { spt.Transpose(pf.Op == "'") };
                 if (v is ArrayValue av) return new List<Value> { Ops.Transpose(av, pf.Op == "'") };
                 return new List<Value> { v };
             }
@@ -647,6 +696,7 @@ public sealed partial class Interpreter
             case AnonFuncExpr af: return new List<Value> { MakeAnon(af) };
             case FuncHandleExpr fh:
                 return new List<Value> { new FunctionHandleValue { Name = fh.Name, Context = Current.Func } };
+            case AssignExpr: return new List<Value> { Eval(e) };
             case IdentExpr or IndexExpr or FieldExpr:
                 return EvalChain(e, nargout);
         }
@@ -674,6 +724,7 @@ public sealed partial class Interpreter
             case UnaryExpr u: foreach (var x in CollectIdents(u.Operand)) yield return x; break;
             case PostfixExpr p: foreach (var x in CollectIdents(p.Operand)) yield return x; break;
             case ParenExpr pe: foreach (var x in CollectIdents(pe.Inner)) yield return x; break;
+            case AssignExpr ae: foreach (var x in CollectIdents(ae.Target).Concat(CollectIdents(ae.Value))) yield return x; break;
             case RangeExpr r:
                 foreach (var x in CollectIdents(r.Start)) yield return x;
                 if (r.Step != null) foreach (var x in CollectIdents(r.Step)) yield return x;
@@ -760,11 +811,20 @@ public sealed partial class Interpreter
                 if (start == ops.Count) return cur;
             }
             else if (ops.Count > 0 && ops[0].Kind == '.' && ops[0].Field != null && !Builtins.ContainsKey(id.Name) && FindClassQuiet(id.Name) is ClassInfo sci
-                     && (sci.Static.Contains(ops[0].Field!) || sci.Chain().Any(c => c.Constants.ContainsKey(ops[0].Field!))))
+                     && (sci.Static.Contains(ops[0].Field!) || sci.Chain().Any(c => c.Constants.ContainsKey(ops[0].Field!) || c.Enums.Any(en => en.Name == ops[0].Field) || c.Static.Contains(ops[0].Field!))))
             {
                 var mname = ops[0].Field!;
                 start = 1;
-                if (sci.Static.Contains(mname))
+                if (sci.Chain().Any(c => c.Enums.Any(en => en.Name == mname))) cur = new List<Value> { EnumMember(sci, mname) };
+                else if (sci.FindMethod(mname, out var smOwner) is UserFunction smf && smOwner!.Static.Contains(mname))
+                {
+                    if (sci.MethodAccess.TryGetValue(mname, out var sacc) && !CanAccess(smOwner, sacc))
+                        throw new OctaveException($"{sci.Name}: method '{mname}' has {sacc} access and cannot be called from this context");
+                    Value[] sargs = Array.Empty<Value>();
+                    if (ops.Count > 1 && ops[1].Kind == '(') { sargs = EvalArgs(ops[1].Args!); start = 2; }
+                    cur = CallUser(smf, sargs, start == ops.Count ? nargout : 1).ToList();
+                }
+                else if (sci.Static.Contains(mname))
                 {
                     Value[] sargs = Array.Empty<Value>();
                     if (ops.Count > 1 && ops[1].Kind == '(') { sargs = EvalArgs(ops[1].Args!); start = 2; }
@@ -811,8 +871,9 @@ public sealed partial class Interpreter
                     }
                     if (v is ObjectValue && op.Args!.Count == 1 && EvalArgs(op.Args) is var oa && oa.Length == 1 && oa[0] is MatrixValue om && om.Numel == 1 && om.Re[0] == 1)
                     { cur = new List<Value> { v }; break; }
+                    if (v is Sparse.SparseValue spv) { cur = new List<Value> { Sparse.SparseIndex.Read(spv, EvalIndexArgs(op.Args!, v)) }; break; }
                     if (v is not ArrayValue av) throw new OctaveException($"'{v.ClassName}' object cannot be indexed with (");
-                    cur = new List<Value> { Indexing.Read(av, EvalIndexArgs(op.Args!, v)) };
+                    cur = new List<Value> { SimplifyObj(Indexing.Read(av, EvalIndexArgs(op.Args!, v))) };
                     break;
                 case '{':
                 {
@@ -839,11 +900,26 @@ public sealed partial class Interpreter
                         };
                         break;
                     }
+                    if (v is ObjectArrayValue oav)
+                    {
+                        var am = oav.Cls.FindMethod(name, out _);
+                        if (am != null && oav.Cls.FindProp(name, out _) == null)
+                        {
+                            Value[] margs = Array.Empty<Value>();
+                            if (!last && ops[k + 1].Kind == '(') { margs = EvalArgs(ops[k + 1].Args!); k++; }
+                            cur = CallUser(am, new Value[] { oav }.Concat(margs).ToArray(), k == ops.Count - 1 ? nargout : 1).ToList();
+                            break;
+                        }
+                        cur = Enumerable.Range(0, oav.Numel).Select(i => ReadProp(oav.At(i), name)).ToList();
+                        break;
+                    }
                     if (v is ObjectValue ov)
                     {
                         var meth = ov.Cls.FindMethod(name, out _);
-                        if (meth != null && !ov.Props.ContainsKey(name))
+                        if (meth != null && !ov.Props.ContainsKey(name) && ov.Cls.FindProp(name, out _) == null)
                         {
+                            if (ov.Cls.MethodAccess.TryGetValue(name, out var macc) && !CanAccess(meth.OwnerClass ?? ov.Cls, macc))
+                                throw new OctaveException($"{ov.Cls.Name}: method '{name}' has {macc} access and cannot be called from this context");
                             Value[] margs = Array.Empty<Value>();
                             if (!last && ops[k + 1].Kind == '(') { margs = EvalArgs(ops[k + 1].Args!); k++; }
                             bool isLast = k == ops.Count - 1;
@@ -851,7 +927,7 @@ public sealed partial class Interpreter
                             cur = CallUser(meth, all, isLast ? nargout : 1).ToList();
                             break;
                         }
-                        cur = new List<Value> { GetProp(ov, name) };
+                        cur = new List<Value> { ReadProp(ov, name) };
                         break;
                     }
                     if (v is not StructValue sv)
@@ -883,7 +959,31 @@ public sealed partial class Interpreter
             }
             return CallUser(uf, args, nargout);
         }
-        if (Builtins.TryGetValue(name, out var bf)) return bf(this, args, nargout);
+        if (Builtins.TryGetValue(name, out var bf))
+        {
+            try
+            {
+                Value[] r = (!args.Any(a => a is Sparse.SparseValue) || Sparse.SparseBridge.Aware.Contains(name))
+                    ? bf(this, args, nargout)
+                    : Sparse.SparseBridge.Call(name, args, a => bf(this, a, nargout));
+                if (PreferBuiltins && nargout > 1 && r.Length < nargout)
+                {
+                    // the builtin can't supply every requested output: fall back to the library m-file
+                    var mf = FindOnPath(name);
+                    if (mf != null && !mf.IsScript && mf.Class == null) return CallUser(mf, args, nargout);
+                }
+                return r;
+            }
+            catch (Exception ex) when (ex is IndexOutOfRangeException or ArgumentOutOfRangeException)
+            {
+                // a builtin indexed past its argument list: report it the way Octave's print_usage does
+                throw new OctaveException($"Invalid call to {name}", "Octave:invalid-fun-call");
+            }
+            catch (InvalidCastException)
+            {
+                throw new OctaveException($"{name}: wrong type argument", "Octave:invalid-input-type");
+            }
+        }
         throw new OctaveException($"'{name}' undefined", "Octave:undefined-function");
     }
 
@@ -903,8 +1003,24 @@ public sealed partial class Interpreter
         }
         if (context != null && context.Siblings.TryGetValue(name, out var sib)) return sib;
         if (CommandLineFunctions.TryGetValue(name, out var cl)) return cl;
+        // private/ functions are visible to functions in the parent directory (and to each other)
+        if (context?.File is { } cf)
+        {
+            var d = Path.GetDirectoryName(cf);
+            if (d != null)
+            {
+                var pd = Path.GetFileName(d) == "private" ? d : Path.Combine(d, "private");
+                var pf = Path.Combine(pd, name + ".m");
+                if (File.Exists(pf)) return LoadFile(pf, name);
+            }
+        }
+        if (PreferBuiltins && Builtins.ContainsKey(name)) return null;
         return FindOnPath(name);
     }
+
+    /// <summary>When set, built-in functions take precedence over same-named m-files on the search path
+    /// (used by the compatibility runner when Octave's own m-file library is on the path).</summary>
+    public bool PreferBuiltins;
 
     public string? FindFile(string name)
     {
@@ -912,6 +1028,8 @@ public sealed partial class Interpreter
         {
             var p = Path.Combine(dir, name + ".m");
             if (File.Exists(p)) return p;
+            var pf = Path.Combine(dir, "@" + name, name + ".m");
+            if (File.Exists(pf)) return pf;
         }
         return null;
     }
@@ -995,11 +1113,18 @@ public sealed partial class Interpreter
         if (hasVarargin)
             scope.Vars["varargin"] = CellValue.RowOf(args.Skip(fixedIn));
         if (preset != null) foreach (var kv in preset) scope.Vars[kv.Key] = kv.Value;
+        bool needDefaults = f.Defaults != null && args.Length < fixedIn;
 
         var save = Current; var saveEnd = endStack.ToList();
         Current = scope; depth++; CallStack.Add(scope); PushFile(f.File);
         endStack.Clear();
-        try { ExecBlock(f.Body); }
+        try
+        {
+            if (needDefaults)
+                for (int k = args.Length; k < fixedIn && k < f.Defaults!.Count; k++)
+                    if (f.Defaults[k] is { } dx && f.Params[k] != "~") scope.Vars[f.Params[k]] = Eval(dx);
+            ExecBlock(f.Body);
+        }
         catch (Exception ex) when (ex is not ControlException)
         {
             var oe = AddFrame(ex, scope);

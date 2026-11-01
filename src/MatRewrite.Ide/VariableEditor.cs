@@ -21,7 +21,7 @@ public sealed class VariableEditorWindow : Window
         Title = $"Variable Editor - {name}";
         Width = 640; Height = 420;
         var dock = new DockPanel();
-        editable = v is MatrixValue m0 && !m0.IsChar && !m0.IsComplex && !m0.IsSparse && m0.ND == null;
+        editable = v is MatrixValue m0 && !m0.IsChar && !m0.IsComplex && m0.ND == null;
         var info = new TextBlock { Margin = new Thickness(6), Text = $"{name}: {v.Rows}x{v.Cols} {v.ClassName}" + (editable ? "   (edit cells, then Apply)" : "   (read-only)") };
         DockPanel.SetDock(info, Dock.Top);
         dock.Children.Add(info);

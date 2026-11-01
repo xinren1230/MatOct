@@ -24,6 +24,7 @@ public static class Unparser
         AnonFuncExpr a => "@(" + string.Join(", ", a.Params) + ") " + Print(a.Body),
         FuncHandleExpr h => "@" + h.Name,
         ParenExpr p => "(" + Print(p.Inner) + ")",
+        AssignExpr a => a.PostOld ? Print(a.Target) + "++" : Print(a.Target) + " = " + Print(a.Value),
         _ => "?"
     };
 }

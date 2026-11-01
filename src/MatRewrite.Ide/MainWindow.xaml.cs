@@ -14,6 +14,21 @@ using Microsoft.Win32;
 namespace MatRewrite.Ide;
 
 public sealed record WorkspaceItem(string Name, string Value, string Size, string Class);
+public sealed record StackItem(string Name, int Line, string? File) { public string FileName => File == null ? "" : Path.GetFileName(File); }
+public sealed record ProblemItem(int Line, string Text);
+
+/// <summary>One editor tab: the text editor, its breakpoint margin and file state.</summary>
+public sealed class EditorDoc
+{
+    public required TextEditor Editor;
+    public required BreakpointMargin Bp;
+    public required LintRenderer Lint;
+    public required System.Windows.Controls.TabItem Tab;
+    public string? File;
+    public bool Dirty;
+    public string? UntitledPath;
+    public string Name => File == null ? "untitled.m" : Path.GetFileName(File);
+}
 
 /// <summary>Forwards interpreter output to the command window (batched on the UI thread).</summary>
 sealed class UiWriter : TextWriter
@@ -39,16 +54,21 @@ public partial class MainWindow : Window
     readonly WpfBackend figures;
     readonly List<string> history = new();
     int historyPos;
-    string? currentFile;
-    bool dirty, busy;
+    bool busy;
     Thread? worker;
-    readonly TextEditor Editor;
-    readonly BreakpointMargin bpMargin;
+    readonly List<EditorDoc> docs = new();
+    EditorDoc doc = null!;
+    TextEditor Editor => doc.Editor;
+    BreakpointMargin bpMargin => doc.Bp;
+    string? currentFile { get => doc.File; set => doc.File = value; }
+    bool dirty { get => doc.Dirty; set => doc.Dirty = value; }
+    readonly System.Windows.Threading.DispatcherTimer lintTimer = new() { Interval = TimeSpan.FromMilliseconds(700) };
+    ReplaceWindow? replaceWin;
     /// <summary>Lines typed in the command window while the interpreter waits in input()/keyboard/debug mode.</summary>
     readonly BlockingCollection<string?> inputQueue = new();
     volatile bool waitingForInput;
     bool paused;
-    string? untitledPath;
+    string? untitledPath { get => doc.UntitledPath; set => doc.UntitledPath = value; }
     /// <summary>Command-line automation: run the opened script, optionally save a screenshot and exit.</summary>
     internal string? AutoScreenshot;
     internal string? AutoInput;
@@ -56,10 +76,8 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
-        (Editor, bpMargin) = EditorFactory.Create();
-        EditorHost.Content = Editor;
-        Editor.TextChanged += (_, _) => { if (!dirty) { dirty = true; UpdateTitle(); } };
-        bpMargin.Changed += SyncBreakpoints;
+        lintTimer.Tick += (_, _) => { lintTimer.Stop(); RunLint(); };
+        NewDoc(null, "");
         writer = new UiWriter(this);
         it = new Interpreter(writer);
         figures = new WpfBackend(Dispatcher);
@@ -70,7 +88,7 @@ public partial class MainWindow : Window
         figures.WindowClosed += f => { try { it.Graphics.Close(f); } catch { } };
         AppendOutput($"MatRewrite {MatRewrite.Core.Builtins.BuiltinLibrary.Version} - a C# reimplementation of the GNU Octave language\n\n");
         Editor.Text = "% New script\nx = linspace(0, 2*pi, 100);\nplot(x, sin(x), 'r-', x, cos(x), 'b--');\ntitle('Demo'); legend('sin', 'cos'); grid on;\n";
-        dirty = false;
+        dirty = false; UpdateTab(doc);
         UpdateTitle();
         UpdateCwd();
         CommandBindings.Add(new CommandBinding(ApplicationCommands.Properties, (_, _) => OnRun(this, new RoutedEventArgs())));
@@ -85,6 +103,12 @@ public partial class MainWindow : Window
         InputBindings.Add(new KeyBinding(new RelayCommand(() => OnDbStepOut(this, new RoutedEventArgs())), Key.F11, ModifierKeys.Shift));
         InputBindings.Add(new KeyBinding(new RelayCommand(() => OnDbQuit(this, new RoutedEventArgs())), Key.F5, ModifierKeys.Shift));
         InputBindings.Add(new KeyBinding(new RelayCommand(() => OnToggleBreakpoint(this, new RoutedEventArgs())), Key.F12, ModifierKeys.None));
+        InputBindings.Add(new KeyBinding(new RelayCommand(() => OnConditionalBreakpoint(this, new RoutedEventArgs())), Key.F12, ModifierKeys.Shift));
+        InputBindings.Add(new KeyBinding(new RelayCommand(() => OnReplace(this, new RoutedEventArgs())), Key.H, ModifierKeys.Control));
+        InputBindings.Add(new KeyBinding(new RelayCommand(() => OnGotoLine(this, new RoutedEventArgs())), Key.G, ModifierKeys.Control));
+        InputBindings.Add(new KeyBinding(new RelayCommand(() => OnCloseTab(this, new RoutedEventArgs())), Key.W, ModifierKeys.Control));
+        InputBindings.Add(new KeyBinding(new RelayCommand(() => SwitchTab(1)), Key.Tab, ModifierKeys.Control));
+        InputBindings.Add(new KeyBinding(new RelayCommand(() => SwitchTab(-1)), Key.Tab, ModifierKeys.Control | ModifierKeys.Shift));
         Loaded += (_, _) => Input.Focus();
     }
 
@@ -97,9 +121,10 @@ public partial class MainWindow : Window
 
     void UpdateTitle()
     {
-        var name = currentFile == null ? "untitled.m" : Path.GetFileName(currentFile);
-        EditorTitle.Text = "Editor - " + name + (dirty ? " *" : "");
+        var name = doc.Name;
+        EditorTitle.Text = "Editor - " + (currentFile ?? name) + (dirty ? " *" : "");
         Title = "MatRewrite IDE - " + name;
+        UpdateTab(doc);
     }
 
     void UpdateCwd() => CwdText.Text = Environment.CurrentDirectory;
@@ -142,7 +167,7 @@ public partial class MainWindow : Window
             finally
             {
                 writer.Flush();
-                Dispatcher.BeginInvoke(() => { busy = false; paused = false; bpMargin.SetCurrentLine(-1); Status.Text = "Ready"; RefreshWorkspace(); UpdateCwd(); RunFinished?.Invoke(); });
+                Dispatcher.BeginInvoke(() => { busy = false; paused = false; foreach (var d in docs) d.Bp.SetCurrentLine(-1); StackList.ItemsSource = null; Status.Text = "Ready"; RefreshWorkspace(); UpdateCwd(); RunFinished?.Invoke(); });
             }
         }, 64 * 1024 * 1024) { IsBackground = true, Name = "MatRewrite interpreter" };
         worker.SetApartmentState(ApartmentState.STA);
@@ -180,27 +205,23 @@ public partial class MainWindow : Window
     }
 
 
-    bool ConfirmDiscard()
+    bool ConfirmDiscard(EditorDoc d)
     {
-        if (!dirty) return true;
-        var r = MessageBox.Show(this, "Save changes to the current script?", "MatRewrite", MessageBoxButton.YesNoCancel);
+        if (!d.Dirty) return true;
+        Activate(d);
+        var r = MessageBox.Show(this, $"Save changes to {d.Name}?", "MatRewrite", MessageBoxButton.YesNoCancel);
         if (r == MessageBoxResult.Cancel) return false;
-        if (r == MessageBoxResult.Yes) return SaveTo(currentFile);
+        if (r == MessageBoxResult.Yes) return SaveTo(d.File);
         return true;
     }
 
-    void OnNew(object sender, RoutedEventArgs e)
-    {
-        if (!ConfirmDiscard()) return;
-        Editor.Text = ""; currentFile = null; dirty = false; bpMargin.Lines.Clear(); bpMargin.InvalidateVisual(); UpdateTitle();
-    }
+    void OnNew(object sender, RoutedEventArgs e) => NewDoc(null, "");
 
     void OnOpen(object sender, RoutedEventArgs e)
     {
-        if (!ConfirmDiscard()) return;
-        var dlg = new OpenFileDialog { Filter = "Octave/MATLAB files (*.m)|*.m|All files (*.*)|*.*", InitialDirectory = Environment.CurrentDirectory };
+        var dlg = new OpenFileDialog { Filter = "Octave/MATLAB files (*.m)|*.m|All files (*.*)|*.*", InitialDirectory = Environment.CurrentDirectory, Multiselect = true };
         if (dlg.ShowDialog(this) != true) return;
-        LoadFile(dlg.FileName);
+        foreach (var f in dlg.FileNames) LoadFile(f);
     }
 
     bool SaveTo(string? path)
@@ -214,7 +235,7 @@ public partial class MainWindow : Window
         File.WriteAllText(path, Editor.Text, new UTF8Encoding(false));
         bool renamed = currentFile != null && !string.Equals(currentFile, path, StringComparison.OrdinalIgnoreCase);
         if (renamed) it.ClearBreakpoint(currentFile!);
-        currentFile = path; dirty = false; UpdateTitle();
+        currentFile = path; dirty = false; UpdateTitle(); RunLint();
         SyncBreakpoints();
         return true;
     }
@@ -230,7 +251,7 @@ public partial class MainWindow : Window
         if (currentFile == null && bpMargin.Lines.Count > 0)
         {
             // breakpoints need a file: run untitled scripts from a temp file
-            untitledPath ??= Path.Combine(Path.GetTempPath(), "matrewrite_untitled_" + Environment.ProcessId, "untitled.m");
+            untitledPath = BreakFileOf(doc)!;
             Directory.CreateDirectory(Path.GetDirectoryName(untitledPath)!);
             File.WriteAllText(untitledPath, Editor.Text, new UTF8Encoding(false));
             SyncBreakpoints();
@@ -284,7 +305,7 @@ public partial class MainWindow : Window
 
     void OnClosing(object? sender, System.ComponentModel.CancelEventArgs e)
     {
-        if (!ConfirmDiscard()) { e.Cancel = true; return; }
+        foreach (var d in docs.ToList()) if (!ConfirmDiscard(d)) { e.Cancel = true; return; }
         inputQueue.Add(null);
         try { it.CloseAllFiles(); } catch { }
         Application.Current.Shutdown();
@@ -299,27 +320,246 @@ public partial class MainWindow
     internal void LoadFile(string path)
     {
         path = Path.GetFullPath(path);
-        Editor.Text = File.ReadAllText(path);
-        currentFile = path; dirty = false;
-        bpMargin.Lines.Clear();
-        if (it.Breakpoints.TryGetValue(Interpreter.BreakKey(path), out var set)) foreach (var l in set) bpMargin.Lines.Add(l);
+        var existing = FindDoc(path);
+        if (existing != null) { Activate(existing); return; }
+        // reuse a pristine untitled tab
+        var target = docs.Count == 1 && doc.File == null && !doc.Dirty && doc.Bp.Lines.Count == 0 ? doc : null;
+        if (target == null) NewDoc(path, File.ReadAllText(path));
+        else { Editor.Text = File.ReadAllText(path); currentFile = path; dirty = false; }
+        bpMargin.Lines.Clear(); bpMargin.Conditions.Clear();
+        if (it.Breakpoints.TryGetValue(Interpreter.BreakKey(path), out var set))
+            foreach (var l in set) { bpMargin.Lines.Add(l); if (it.GetBreakCondition(path, l) is { } c) bpMargin.Conditions[l] = c; }
         bpMargin.SetCurrentLine(-1);
         UpdateTitle();
+        RunLint();
     }
+
+    EditorDoc? FindDoc(string path) => docs.FirstOrDefault(d => d.File != null && string.Equals(d.File, path, StringComparison.OrdinalIgnoreCase));
+
+    EditorDoc NewDoc(string? path, string text)
+    {
+        var (ed, bp, lint) = EditorFactory.Create();
+        var tab = new System.Windows.Controls.TabItem { Content = ed };
+        var d = new EditorDoc { Editor = ed, Bp = bp, Lint = lint, Tab = tab, File = path };
+        ed.Text = text;
+        tab.Tag = d;
+        ed.TextChanged += (_, _) =>
+        {
+            if (!d.Dirty) { d.Dirty = true; if (d == doc) UpdateTitle(); else UpdateTab(d); }
+            lintTimer.Stop(); lintTimer.Start();
+        };
+        bp.Changed += () => SyncBreakpoints(d);
+        bp.ConditionRequested += line => AskCondition(d, line);
+        ed.TextArea.TextView.MouseHover += (s, e) => OnEditorHover(d, e);
+        ed.TextArea.TextView.MouseHoverStopped += (_, _) => { hoverTip.IsOpen = false; };
+        docs.Add(d);
+        Tabs.Items.Add(tab);
+        Activate(d);
+        UpdateTab(d);
+        return d;
+    }
+
+    void UpdateTab(EditorDoc d)
+    {
+        var header = new System.Windows.Controls.StackPanel { Orientation = System.Windows.Controls.Orientation.Horizontal };
+        header.Children.Add(new System.Windows.Controls.TextBlock { Text = d.Name + (d.Dirty ? " *" : ""), ToolTip = d.File ?? "untitled", VerticalAlignment = VerticalAlignment.Center });
+        var close = new System.Windows.Controls.Button { Content = "×", Padding = new Thickness(3, 0, 3, 0), Margin = new Thickness(6, 0, 0, 0), BorderThickness = new Thickness(0), Background = Brushes.Transparent, FontSize = 11 };
+        close.Click += (_, _) => CloseDoc(d);
+        header.Children.Add(close);
+        d.Tab.Header = header;
+    }
+
+    void Activate(EditorDoc d)
+    {
+        doc = d;
+        if (Tabs.SelectedItem != d.Tab) Tabs.SelectedItem = d.Tab;
+        UpdateTitle();
+        ShowProblems();
+    }
+
+    void OnTabChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+    {
+        if (e.Source != Tabs) return;
+        if (Tabs.SelectedItem is System.Windows.Controls.TabItem { Tag: EditorDoc d } && d != doc) Activate(d);
+    }
+
+    void SwitchTab(int delta)
+    {
+        if (docs.Count < 2) return;
+        int i = (docs.IndexOf(doc) + delta + docs.Count) % docs.Count;
+        Activate(docs[i]);
+    }
+
+    void CloseDoc(EditorDoc d)
+    {
+        if (!ConfirmDiscard(d)) return;
+        if (d.File != null && (!busy || paused)) it.ClearBreakpoint(d.File);
+        docs.Remove(d); Tabs.Items.Remove(d.Tab);
+        if (docs.Count == 0) NewDoc(null, "");
+        else Activate(docs.Contains(doc) ? doc : docs[^1]);
+    }
+
+    void OnCloseTab(object sender, RoutedEventArgs e) => CloseDoc(doc);
+
+    // ---------------------------------------------------------------- find / replace / goto
+    void OnFind(object sender, RoutedEventArgs e)
+    {
+        Editor.Focus();
+        ApplicationCommands.Find.Execute(null, Editor.TextArea);
+    }
+
+    void OnReplace(object sender, RoutedEventArgs e)
+    {
+        if (replaceWin == null || !replaceWin.IsLoaded)
+        {
+            replaceWin = new ReplaceWindow(() => Editor, Editor.SelectedText.Contains('\n') ? "" : Editor.SelectedText) { Owner = this };
+            replaceWin.Show();
+        }
+        else replaceWin.Activate();
+    }
+
+    void OnGotoLine(object sender, RoutedEventArgs e)
+    {
+        var p = new PromptWindow("Go to line", $"Line number (1-{Editor.Document.LineCount}):", Editor.TextArea.Caret.Line.ToString()) { Owner = this };
+        if (p.ShowDialog() == true && int.TryParse(p.Result, out var ln)) GotoLine(ln);
+    }
+
+    void GotoLine(int ln)
+    {
+        ln = Math.Clamp(ln, 1, Editor.Document.LineCount);
+        Editor.ScrollToLine(ln); Editor.TextArea.Caret.Line = ln; Editor.TextArea.Caret.Column = 1; Editor.Focus();
+    }
+
+    // ---------------------------------------------------------------- lint
+    void OnLintNow(object sender, RoutedEventArgs e) => RunLint();
+
+    void RunLint()
+    {
+        foreach (var d in docs)
+        {
+            try { d.Lint.Messages = MatRewrite.Core.Analysis.Linter.Check(d.Editor.Text); }
+            catch { d.Lint.Messages = new(); }
+            d.Editor.TextArea.TextView.InvalidateLayer(ICSharpCode.AvalonEdit.Rendering.KnownLayer.Selection);
+        }
+        ShowProblems();
+    }
+
+    void ShowProblems()
+    {
+        var msgs = doc.Lint.Messages;
+        ProblemList.ItemsSource = msgs.Select(m => new ProblemItem(m.Line, (m.Severity == MatRewrite.Core.Analysis.LintSeverity.Error ? "error: " : "") + m.Message)).ToList();
+        ProblemsTitle.Text = msgs.Count == 0 ? "Problems" : $"Problems ({msgs.Count})";
+        int errs = msgs.Count(m => m.Severity == MatRewrite.Core.Analysis.LintSeverity.Error);
+        LintText.Text = msgs.Count == 0 ? "No problems" : $"{errs} error(s), {msgs.Count - errs} warning(s)";
+    }
+
+    void OnProblemDoubleClick(object sender, MouseButtonEventArgs e)
+    {
+        if (ProblemList.SelectedItem is ProblemItem p) GotoLine(p.Line);
+    }
+
+    // ---------------------------------------------------------------- hover: variable values & lint messages
+    readonly System.Windows.Controls.ToolTip hoverTip = new() { Placement = System.Windows.Controls.Primitives.PlacementMode.Mouse, FontFamily = new FontFamily("Consolas"), MaxWidth = 600 };
+
+    void OnEditorHover(EditorDoc d, MouseEventArgs e)
+    {
+        var tv = d.Editor.TextArea.TextView;
+        var pos = tv.GetPositionFloor(e.GetPosition(tv) + tv.ScrollOffset);
+        if (pos == null) return;
+        var lines = new List<string>();
+        int off = d.Editor.Document.GetOffset(pos.Value.Location);
+        var word = WordAt(d.Editor.Document.Text, off);
+        if (word != null && (!busy || paused))
+        {
+            Value? v = null;
+            try { v = it.GetVar(word); } catch { }
+            if (v != null) lines.Add(HoverText(word, v));
+        }
+        foreach (var m in d.Lint.Messages.Where(m => m.Line == pos.Value.Line)) lines.Add((m.Severity == MatRewrite.Core.Analysis.LintSeverity.Error ? "error: " : "warning: ") + m.Message);
+        if (lines.Count == 0) return;
+        hoverTip.PlacementTarget = tv;
+        hoverTip.Content = string.Join("\n", lines);
+        hoverTip.IsOpen = true;
+        e.Handled = true;
+    }
+
+    internal static string? WordAt(string text, int off)
+    {
+        if (off < 0 || off > text.Length) return null;
+        int a = off, b = off;
+        while (a > 0 && (char.IsLetterOrDigit(text[a - 1]) || text[a - 1] == '_')) a--;
+        while (b < text.Length && (char.IsLetterOrDigit(text[b]) || text[b] == '_')) b++;
+        if (b <= a || char.IsDigit(text[a])) return null;
+        return text[a..b];
+    }
+
+    static string HoverText(string name, Value v)
+    {
+        string body;
+        try
+        {
+            body = v.Rows * v.Cols <= 100 || v.ClassName == "char" ? Display.Disp(v).TrimEnd() : $"<{v.Rows}x{v.Cols} {v.ClassName}>";
+        }
+        catch { body = "?"; }
+        var ls = body.Split('\n');
+        if (ls.Length > 12) body = string.Join("\n", ls.Take(12)) + "\n…";
+        if (body.Length > 1500) body = body[..1500] + "…";
+        return $"{name}: {v.Rows}x{v.Cols} {v.ClassName}\n{body}";
+    }
+
+    // ---------------------------------------------------------------- call stack
+    void ShowStack(int line)
+    {
+        try { StackList.ItemsSource = it.StackFrames(line).Select(f => new StackItem(f.Name, f.Line, f.File)).ToList(); }
+        catch { StackList.ItemsSource = null; }
+    }
+
+    void OnStackDoubleClick(object sender, MouseButtonEventArgs e)
+    {
+        if (StackList.SelectedItem is not StackItem s || s.File == null || !File.Exists(s.File)) return;
+        LoadFile(s.File);
+        GotoLine(s.Line);
+    }
+
+    // ---------------------------------------------------------------- conditional breakpoints
+    void AskCondition(EditorDoc d, int line)
+    {
+        d.Bp.Conditions.TryGetValue(line, out var cur);
+        var p = new PromptWindow("Conditional breakpoint", $"Stop at line {line} only when this expression is true (empty = unconditional):", cur ?? "") { Owner = this };
+        if (p.ShowDialog() != true) return;
+        var cond = p.Result?.Trim();
+        if (!string.IsNullOrEmpty(cond))
+        {
+            try { MatRewrite.Core.Parsing.Parser.ParseProgram(cond); }
+            catch (Exception ex) { MessageBox.Show(this, "Invalid condition: " + ex.Message, "MatRewrite"); return; }
+        }
+        if (string.IsNullOrEmpty(cond)) { if (!d.Bp.Lines.Contains(line)) d.Bp.Toggle(line); else d.Bp.SetCondition(line, null); }
+        else d.Bp.SetCondition(line, cond);
+    }
+
+    void OnConditionalBreakpoint(object sender, RoutedEventArgs e) => AskCondition(doc, Editor.TextArea.Caret.Line);
+
+    internal void SetConditionalBreakpoint(int line, string cond) => doc.Bp.SetCondition(line, cond);
 
     internal void ToggleBreakpoint(int line) => bpMargin.Toggle(line);
 
-    string? BreakFile => currentFile ?? (bpMargin.Lines.Count > 0 ? (untitledPath ??= Path.Combine(Path.GetTempPath(), "matrewrite_untitled_" + Environment.ProcessId, "untitled.m")) : untitledPath);
+    static string? BreakFileOf(EditorDoc d) => d.File ?? (d.Bp.Lines.Count > 0 ? (d.UntitledPath ??= Path.Combine(Path.GetTempPath(), "matrewrite_untitled_" + Environment.ProcessId + "_" + d.GetHashCode(), "untitled.m")) : d.UntitledPath);
 
-    /// <summary>Copy the editor margin's breakpoints into the interpreter (safe when idle or paused).</summary>
-    void SyncBreakpoints()
+    void SyncBreakpoints() { foreach (var d in docs) SyncBreakpoints(d); }
+
+    /// <summary>Copy an editor margin's breakpoints into the interpreter (safe when idle or paused).</summary>
+    void SyncBreakpoints(EditorDoc d)
     {
-        var f = BreakFile;
+        var f = BreakFileOf(d);
         if (f == null) return;
         if (busy && !paused) { pendingSync = true; return; }
         it.ClearBreakpoint(f);
-        foreach (var l in bpMargin.Lines) it.SetBreakpoint(f, l);
-        pendingSync = false;
+        foreach (var l in d.Bp.Lines)
+        {
+            d.Bp.Conditions.TryGetValue(l, out var c);
+            try { it.SetBreakpoint(f, l, c); } catch { it.SetBreakpoint(f, l); }
+        }
+        if (d == docs[^1]) pendingSync = false;
     }
     bool pendingSync;
 
@@ -350,11 +590,11 @@ public partial class MainWindow
         if (info.File != null)
         {
             var full = Path.GetFullPath(info.File);
-            bool isUntitled = untitledPath != null && string.Equals(full, Path.GetFullPath(untitledPath), StringComparison.OrdinalIgnoreCase) && currentFile == null;
-            if (!isUntitled && !string.Equals(full, currentFile, StringComparison.OrdinalIgnoreCase) && File.Exists(full) && !dirty)
-                LoadFile(full);
-            bool shown = isUntitled || string.Equals(full, currentFile, StringComparison.OrdinalIgnoreCase);
-            bpMargin.SetCurrentLine(shown ? info.Line : -1);
+            var target = docs.FirstOrDefault(d => d.File == null && d.UntitledPath != null && string.Equals(full, Path.GetFullPath(d.UntitledPath), StringComparison.OrdinalIgnoreCase)) ?? FindDoc(full);
+            if (target == null && File.Exists(full)) { LoadFile(full); target = FindDoc(full); }
+            foreach (var d in docs) d.Bp.SetCurrentLine(-1);
+            bool shown = target != null;
+            if (target != null) { Activate(target); bpMargin.SetCurrentLine(info.Line); }
             if (shown && info.Line >= 1 && info.Line <= Editor.Document.LineCount)
             {
                 Editor.ScrollToLine(info.Line);
@@ -363,6 +603,7 @@ public partial class MainWindow
         }
         Status.Text = $"Paused ({info.Reason}) at line {info.Line} - F5 continue, F10 step, Shift+F5 quit";
         RefreshWorkspace();
+        ShowStack(info.Line);
         if (AutoScreenshot != null)
         {
             var shot = AutoScreenshot; AutoScreenshot = null;
@@ -380,7 +621,8 @@ public partial class MainWindow
     void OnResumed()
     {
         paused = false;
-        bpMargin.SetCurrentLine(-1);
+        foreach (var d in docs) d.Bp.SetCurrentLine(-1);
+        StackList.ItemsSource = null;
         if (busy) Status.Text = "Busy";
         WorkspaceTitle.Text = "Workspace";
     }
@@ -400,11 +642,21 @@ public partial class MainWindow
     void OnToggleBreakpoint(object sender, RoutedEventArgs e) => bpMargin.Toggle(Editor.TextArea.Caret.Line);
     void OnClearBreakpoints(object sender, RoutedEventArgs e)
     {
-        bpMargin.Lines.Clear(); bpMargin.InvalidateVisual();
-        if (!busy || paused) { it.Breakpoints.Clear(); } else pendingSync = true;
+        foreach (var d in docs) { d.Bp.Lines.Clear(); d.Bp.Conditions.Clear(); d.Bp.InvalidateVisual(); }
+        if (!busy || paused) { it.Breakpoints.Clear(); it.BreakConditions.Clear(); } else pendingSync = true;
     }
 
     internal void RunCurrent() => OnRun(this, new RoutedEventArgs());
+    /// <summary>Automation: show the hover tooltip for a variable (screenshots).</summary>
+    internal void ShowHoverFor(string name)
+    {
+        var v = it.GetVar(name);
+        if (v == null) return;
+        hoverTip.PlacementTarget = Editor.TextArea.TextView;
+        hoverTip.Placement = System.Windows.Controls.Primitives.PlacementMode.Center;
+        hoverTip.Content = HoverText(name, v);
+        hoverTip.IsOpen = true;
+    }
 
     /// <summary>Save a PNG of this window (used by --screenshot).</summary>
     internal void SaveScreenshot(string path)

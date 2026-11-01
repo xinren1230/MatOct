@@ -10,6 +10,8 @@ public static class Program
 {
     public static int Main(string[] argv)
     {
+        if (argv.Length >= 2 && argv[0] == "--test") return TestDriver.RunOne(argv[1]);
+        if (argv.Length >= 2 && argv[0] == "--octave-tests") return TestDriver.RunAll(argv.Skip(1).ToArray());
         Console.OutputEncoding = Encoding.UTF8;
         var stdout = new StreamWriter(Console.OpenStandardOutput(), new UTF8Encoding(false)) { AutoFlush = false };
         var it = new Interpreter(stdout);

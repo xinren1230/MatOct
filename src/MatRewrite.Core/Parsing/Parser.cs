@@ -78,6 +78,7 @@ public sealed class Parser
             else name = first;
         }
         var pars = new List<string>();
+        List<Expr?>? defs = null;
         if (IsP("("))
         {
             p++;
@@ -87,8 +88,15 @@ public sealed class Parser
                 if (Cur.Kind == TokKind.Ident) pars.Add(Next().Text);
                 else if (IsP("~") || IsP("!")) { p++; pars.Add("~"); }
                 else throw Err("invalid parameter list");
-                if (IsP("=")) throw Err("default parameter values are not supported");
+                if (IsP("="))
+                {
+                    p++;
+                    defs ??= new List<Expr?>();
+                    while (defs.Count < pars.Count - 1) defs.Add(null);
+                    defs.Add(ParseExpr());
+                }
             }
+            if (defs != null) while (defs.Count < pars.Count) defs.Add(null);
             p++;
         }
         var body = new List<Stmt>();
@@ -106,7 +114,7 @@ public sealed class Parser
         if (term == "end" || term == "endfunction")
         {
             p++;
-            return new FunctionDef(name, pars, outs, body) { Line = line, Nested = kids.Concat(kidPromoted).ToList() };
+            return new FunctionDef(name, pars, outs, body) { Defaults = defs, Line = line, Nested = kids.Concat(kidPromoted).ToList() };
         }
         // no 'end': following functions are siblings (subfunctions)
         promoted.AddRange(kids); promoted.AddRange(kidPromoted);
@@ -138,12 +146,13 @@ public sealed class Parser
     }
 
     static bool AttrTrue(Dictionary<string, string> a, string k) => a.TryGetValue(k, out var v) && v is "true" or "~false";
+    static string? AttrVal(Dictionary<string, string> a, string k) => a.TryGetValue(k, out var v) ? v.Trim('\'', '"').ToLowerInvariant() : null;
 
     ClassDefAst ParseClassdef()
     {
         var c = new ClassDefAst { Line = Cur.Line };
         p++; // classdef
-        ParseAttrs();
+        c.Attrs = ParseAttrs();
         c.Name = ParseFuncName();
         if (IsP("<"))
         {
@@ -162,6 +171,9 @@ public sealed class Parser
                 p++;
                 var attrs = ParseAttrs();
                 bool constant = AttrTrue(attrs, "Constant");
+                string acc = AttrVal(attrs, "Access") ?? "public";
+                string gacc = AttrVal(attrs, "GetAccess") ?? acc, sacc = AttrVal(attrs, "SetAccess") ?? acc;
+                bool dep = AttrTrue(attrs, "Dependent"), hid = AttrTrue(attrs, "Hidden"), abs = AttrTrue(attrs, "Abstract");
                 while (true)
                 {
                     SkipNewlines();
@@ -174,7 +186,8 @@ public sealed class Parser
                     if (IsP("{")) { int d = 0; do { if (IsP("{")) d++; else if (IsP("}")) d--; p++; } while (d > 0 && Cur.Kind != TokKind.EOF); }
                     Expr? def = null;
                     if (IsP("=")) { p++; def = ParseExpr(); }
-                    c.Props.Add(new PropDef(name, def, constant));
+                    c.Props.Add(new PropDef(name, def, constant) { GetAccess = gacc, SetAccess = sacc, Dependent = dep, Hidden = hid, Abstract = abs });
+                    if (IsP(";") || IsP(",")) p++;
                 }
             }
             else if (w == "methods")
@@ -182,6 +195,8 @@ public sealed class Parser
                 p++;
                 var attrs = ParseAttrs();
                 bool st = AttrTrue(attrs, "Static");
+                string macc = AttrVal(attrs, "Access") ?? "public";
+                bool mabs = AttrTrue(attrs, "Abstract");
                 while (true)
                 {
                     SkipNewlines();
@@ -189,19 +204,49 @@ public sealed class Parser
                     if (IsKw("function"))
                     {
                         var f = ParseFunction(out var promoted);
-                        c.Methods.Add(new MethodDef(f, st));
-                        foreach (var pf in promoted) c.Methods.Add(new MethodDef(pf, st));
+                        c.Methods.Add(new MethodDef(f, st) { Access = macc });
+                        foreach (var pf in promoted) c.Methods.Add(new MethodDef(pf, st) { Access = macc });
                         continue;
                     }
                     // method signature declaration without body (defined in a separate file) - skip line
                     while (Cur.Kind != TokKind.Newline && Cur.Kind != TokKind.EOF) p++;
                 }
             }
-            else if (w is "events" or "enumeration")
+            else if (w == "events")
             {
                 p++; ParseAttrs();
-                while (!IsKw("end") && Cur.Kind != TokKind.EOF) p++;
-                p++;
+                while (true)
+                {
+                    SkipNewlines();
+                    if (IsKw("end")) { p++; break; }
+                    if (Cur.Kind == TokKind.EOF) throw Err("events: missing 'end'");
+                    if (Cur.Kind == TokKind.Ident) c.Events.Add(Next().Text); else p++;
+                }
+            }
+            else if (w == "enumeration")
+            {
+                p++; ParseAttrs();
+                while (true)
+                {
+                    SkipNewlines();
+                    if (IsKw("end")) { p++; break; }
+                    if (Cur.Kind == TokKind.EOF) throw Err("enumeration: missing 'end'");
+                    if (Cur.Kind != TokKind.Ident) { p++; continue; }
+                    var en = Next().Text;
+                    var eargs = new List<Expr>();
+                    if (IsP("("))
+                    {
+                        p++;
+                        while (!IsP(")"))
+                        {
+                            if (IsP(",")) { p++; continue; }
+                            eargs.Add(ParseExpr());
+                        }
+                        p++;
+                    }
+                    c.Enums.Add(new EnumDef(en, eargs));
+                    if (IsP(",") || IsP(";")) p++;
+                }
             }
             else throw Err($"unexpected '{Cur.Text}' in classdef block");
         }
@@ -351,12 +396,14 @@ public sealed class Parser
         {
             p++;
             CheckLValue(e);
-            var rhs = ParseExpr();
+            var rhs = ParseChainRhs();
             return new AssignStmt(new List<Expr> { e }, rhs, EndStatement());
         }
-        if (Cur.Kind == TokKind.Punct && Cur.Text is "+=" or "-=" or "*=" or "/=" or "^=")
+        if (e is AssignExpr ae0)
+            return new AssignStmt(new List<Expr> { ae0.Target }, ae0.Value, EndStatement());
+        if (Cur.Kind == TokKind.Punct && Cur.Text is "+=" or "-=" or "*=" or "/=" or "^=" or ".*=" or "./=" or ".^=" or "|=" or "&=")
         {
-            var op = Next().Text[..1];
+            var op = Next().Text[..^1];
             CheckLValue(e);
             var rhs = ParseExpr();
             return new AssignStmt(new List<Expr> { e }, new BinaryExpr(op, e, new ParenExpr(rhs)), EndStatement(), op);
@@ -370,6 +417,22 @@ public sealed class Parser
         }
         return new ExprStmt(e, EndStatement());
     }
+
+    /// <summary>Right side of an assignment, allowing Octave chains such as a = b = 0.</summary>
+    Expr ParseChainRhs()
+    {
+        var rhs = ParseExpr();
+        if (IsP("=") && IsLValue(rhs)) { p++; return new AssignExpr(rhs, ParseChainRhs()); }
+        return rhs;
+    }
+
+    static bool IsLValue(Expr e) => e switch
+    {
+        IdentExpr => true,
+        IndexExpr ix => IsLValue(ix.Target),
+        FieldExpr f => IsLValue(f.Target),
+        _ => false,
+    };
 
     void CheckLValue(Expr e)
     {
@@ -555,6 +618,15 @@ public sealed class Parser
     }
     Expr ParseUnary()
     {
+        // Octave pre-increment/decrement: ++x, --x (only directly before an identifier)
+        if ((IsP("+") || IsP("-")) && PeekTok().Is(Cur.Text) && !PeekTok().SpaceBefore && p + 2 < t.Count
+            && t[p + 2].Kind == TokKind.Ident && !t[p + 2].SpaceBefore && !InMatrixContext())
+        {
+            var op = Cur.Text; int save = p; p += 2;
+            var target = ParsePostfix();
+            if (IsLValue(target)) return new AssignExpr(target, new BinaryExpr(op, target, new NumberExpr(1, false, "1")));
+            p = save;
+        }
         if (Cur.Kind == TokKind.Punct && Cur.Text is "-" or "+" or "!" or "~")
         {
             var op = Next().Text;
@@ -638,6 +710,12 @@ public sealed class Parser
             {
                 e = new PostfixExpr(Next().Text, e);
             }
+            else if ((IsP("+") || IsP("-")) && PeekTok().Is(Cur.Text) && !PeekTok().SpaceBefore && IsLValue(e)
+                     && p + 2 < t.Count && (t[p + 2].Kind is TokKind.Newline or TokKind.EOF || t[p + 2].Is(")") || t[p + 2].Is("]") || t[p + 2].Is("}") || t[p + 2].Is(",") || t[p + 2].Is(";")))
+            {
+                var op = Cur.Text; p += 2;
+                e = new AssignExpr(e, new BinaryExpr(op, e, new NumberExpr(1, false, "1")), true);
+            }
             else break;
         }
         return e;
@@ -655,7 +733,9 @@ public sealed class Parser
         if (IsP(close)) { p++; matrixDepth = saveM; return args; }
         while (true)
         {
-            args.Add(ParseExpr());
+            var ax = ParseExpr();
+            if (IsP("=") && IsLValue(ax)) { p++; ax = new AssignExpr(ax, ParseChainRhs()); }   // Octave: f (x = expr)
+            args.Add(ax);
             if (IsP(",")) { p++; continue; }
             if (IsP(close)) { p++; break; }
             throw Err($"expected ',' or '{close}' in argument list");
@@ -680,6 +760,7 @@ public sealed class Parser
             p++;
             int save = matrixDepth; matrixDepth = 0;
             var e = ParseExpr();
+            if (IsP("=") && IsLValue(e)) { p++; e = new AssignExpr(e, ParseChainRhs()); }
             matrixDepth = save;
             Expect(")");
             return new ParenExpr(e);

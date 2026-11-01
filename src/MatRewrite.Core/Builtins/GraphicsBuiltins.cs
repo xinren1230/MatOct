@@ -199,13 +199,15 @@ namespace MatRewrite.Core.Builtins
                 if (a.Length > 0)
                 {
                     var name = IsString(a[^1]) ? S(a[^1], "colormap").ToLowerInvariant()
-                        : a[^1] is MatrixValue cm ? (NamedMapFor(cm) ?? throw new OctaveException("colormap: custom colormap matrices are not supported yet (use jet, gray, hot, cool or a named map)"))
+                        : a[^1] is MatrixValue cm ? (NamedMapFor(cm) ?? CustomMapName(cm))
                         : throw new OctaveException("colormap: invalid argument");
-                    if (!(name is "default" or "viridis" or "parula" or "jet" or "gray" or "hot" or "cool" or "turbo" or "magma" or "inferno" or "plasma"))
+                    if (!(name is "default" or "viridis" or "parula" or "jet" or "gray" or "hot" or "cool" or "turbo" or "magma" or "inferno" or "plasma") && CustomColormaps.Get(name) == null)
                         throw new OctaveException($"colormap: invalid MAP name '{name}'");
                     f.Colormap = name == "default" ? "viridis" : name;
                     it.Graphics.Touch(f);
                 }
+                if (CustomColormaps.Get(f.Colormap) is { } cmap)
+                    return n > 0 || a.Length == 0 ? Out(MapMatrix(f.Colormap, cmap.Length)) : Array.Empty<Value>();
                 return n > 0 || a.Length == 0 ? Out(Str(f.Colormap)) : Array.Empty<Value>();
             });
 
@@ -317,6 +319,11 @@ namespace MatRewrite.Core.Builtins
             RegG("set", (it, a, n) =>
             {
                 if (a.Length < 1) throw new OctaveException("Invalid call to set");
+                if (a[0] is MatrixValue r0 && !r0.IsChar && r0.Numel == 1 && r0.Re[0] == 0)
+                {
+                    for (int k = 1; k + 1 < a.Length; k += 2) it.Graphics.RootProps[S(a[k], "set")] = a[k + 1];
+                    return Array.Empty<Value>();
+                }
                 foreach (var h in M(a[0], "set").Re)
                 {
                     var o = it.Graphics.Lookup(h) ?? throw new OctaveException("set: invalid graphics handle");
@@ -324,13 +331,41 @@ namespace MatRewrite.Core.Builtins
                 }
                 return Array.Empty<Value>();
             });
+            static MatrixValue ColorOrderMatrix()
+            {
+                var o = new MatrixValue(Graphics.Rgb.DefaultOrder.Length, 3);
+                for (int i = 0; i < Graphics.Rgb.DefaultOrder.Length; i++)
+                {
+                    var c = Graphics.Rgb.DefaultOrder[i]; int r = o.R;
+                    o.Re[i] = c.R; o.Re[i + r] = c.G; o.Re[i + 2 * r] = c.B;
+                }
+                return o;
+            }
             RegG("get", (it, a, n) =>
             {
                 if (a.Length >= 2 && a[0] is MatrixValue rm && !rm.IsChar && rm.Numel == 1 && rm.Re[0] == 0)
                 {
                     var hs = it.Graphics.Figures.Keys.OrderByDescending(k => k).Select(k => (double)k).ToArray();
-                    return S(a[1], "get").ToLowerInvariant() switch
+                    var rp = S(a[1], "get").ToLowerInvariant();
+                    if (it.Graphics.RootProps.TryGetValue(rp, out var rv)) return Out(rv);
+                    return rp switch
                     {
+                        "defaultaxescolororder" => Out(ColorOrderMatrix()),
+                        "screensize" => Out(MatrixValue.Row(new double[] { 1, 1, 1920, 1080 })),
+                        "screenpixelsperinch" => Out(Num(96)),
+                        "screendepth" => Out(Num(24)),
+                        "monitorpositions" => Out(MatrixValue.Row(new double[] { 1, 1, 1920, 1080 })),
+                        "units" => Out(Str("pixels")),
+                        "type" => Out(Str("root")),
+                        "tag" or "name" => Out(Str("")),
+                        "parent" or "callbackobject" or "currentobject" => Out(new MatrixValue(0, 0)),
+                        "showhiddenhandles" => Out(Str("off")),
+                        "visible" => Out(Str("on")),
+                        "handlevisibility" => Out(Str("on")),
+                        "defaultaxesfontsize" or "defaulttextfontsize" => Out(Num(10)),
+                        "defaultaxesfontname" or "defaulttextfontname" => Out(Str("*")),
+                        "defaultlinelinewidth" or "defaultaxeslinewidth" => Out(Num(0.5)),
+                        "defaultfigurecolormap" => Out(it.CallFunction("viridis", new Value[] { Num(64) }, 1)[0]),
                         "children" => Out(new MatrixValue(hs.Length, hs.Length == 0 ? 0 : 1, hs)),
                         "currentfigure" => Out(it.Graphics.Current == null ? new MatrixValue(0, 0, Array.Empty<double>()) : new MatrixValue(1, 1, new[] { it.Graphics.Current.Handle })),
                         _ => throw new OctaveException("get: unknown root property")
@@ -639,7 +674,7 @@ namespace MatRewrite.Core.Builtins
                     case (Figure f, "numbertitle"): f.NumberTitle = S(v, fn) == "on"; break;
                     case (Figure f, "visible"): f.Visible = S(v, fn) == "on"; break;
                     case (Figure f, "position"): { var m = M(v, fn); if (m.Numel == 4) { f.Width = (int)m.Re[2]; f.Height = (int)m.Re[3]; } break; }
-                    case (Figure f, "colormap"): f.Colormap = S(v, fn); break;
+                    case (Figure f, "colormap"): f.Colormap = IsString(v) ? S(v, fn) : (NamedMapFor(M(v, fn)) ?? CustomMapName(M(v, fn))); break;
                     case (Axes ax, "title"): ax.Title = S(v, fn); break;
                     case (Axes ax, "xlim"): ax.XLim = M(v, fn).Re.ToArray(); break;
                     case (Axes ax, "ylim"): ax.YLim = M(v, fn).Re.ToArray(); break;
@@ -649,7 +684,14 @@ namespace MatRewrite.Core.Builtins
                     case (Axes ax, "view"): { var m = M(v, fn); ax.Az = m.Re[0]; ax.El = m.Re[1]; break; }
                     case (SurfaceSeries sf, "edgecolor"): if (IsString(v) && S(v, fn) is "none") sf.Shading = "flat"; else if (IsString(v) && S(v, fn) is "interp" or "flat") { } else sf.EdgeColor = ParseColor(v, fn); break;
                     case (SurfaceSeries sf, "facecolor"): if (IsString(v) && S(v, fn) is "interp" or "flat") { } else if (IsString(v) && S(v, fn) == "none") sf.FaceColor = null; else sf.FaceColor = ParseColor(v, fn); break;
-                    case (SurfaceSeries, "linestyle" or "linewidth" or "facealpha" or "facelighting"): break;
+                    case (SurfaceSeries sf, "facealpha"): { var fa = D(v, fn); if (fa < 0 || fa > 1) throw new OctaveException($"{fn}: FaceAlpha must be in [0,1]"); sf.FaceAlpha = fa; break; }
+                    case (SurfaceSeries sf, "edgealpha"): sf.EdgeAlpha = Math.Clamp(D(v, fn), 0, 1); break;
+                    case (SurfaceSeries sf, "facelighting"): { var fl = S(v, fn).ToLowerInvariant(); if (fl is not ("none" or "flat" or "gouraud" or "phong")) throw new OctaveException($"{fn}: invalid FaceLighting '{fl}'"); sf.FaceLighting = fl == "phong" ? "gouraud" : fl; break; }
+                    case (SurfaceSeries, "linestyle" or "linewidth" or "ambientstrength" or "diffusestrength" or "specularstrength"): break;
+                    case (LightObject lo, "position"): { var m = M(v, fn); if (m.Numel != 3) throw new OctaveException("light: Position must be a 3-element vector"); lo.CameraRelative = false; lo.Az = Math.Atan2(m.Re[1], m.Re[0]) * 180 / Math.PI + 90; lo.El = Math.Atan2(m.Re[2], Math.Sqrt(m.Re[0] * m.Re[0] + m.Re[1] * m.Re[1])) * 180 / Math.PI; break; }
+                    case (LightObject lo, "color"): lo.Color = ParseColor(v, fn); break;
+                    case (LightObject lo, "visible"): lo.Visible = S(v, fn) == "on"; break;
+                    case (LightObject, "style"): break;
                     case (ContourSeries cs, "linecolor" or "color"): cs.LineColor = IsString(v) && S(v, fn) == "none" ? null : ParseColor(v, fn); break;
                     case (ContourSeries cs, "linewidth"): cs.LineWidth = D(v, fn); break;
                     case (ContourSeries, "showtext" or "linestyle"): break;
@@ -681,7 +723,7 @@ namespace MatRewrite.Core.Builtins
             static Value C(Rgb c) => MatrixValue.Row(new[] { c.R, c.G, c.B });
             return (o, p.ToLowerInvariant()) switch
             {
-                (_, "type") => Str(o switch { Figure => "figure", Axes => "axes", LineSeries => "line", ScatterSeries => "scatter", BarSeries => "bar", ImageSeries => "image", SurfaceSeries => "surface", ContourSeries => "contour", ErrorBarSeries => "errorbar", TextSeries => "text", Annotation => "annotation", _ => "unknown" }),
+                (_, "type") => Str(o switch { Figure => "figure", Axes => "axes", LineSeries => "line", ScatterSeries => "scatter", BarSeries => "bar", ImageSeries => "image", SurfaceSeries => "surface", ContourSeries => "contour", LightObject => "light", ErrorBarSeries => "errorbar", TextSeries => "text", Annotation => "annotation", _ => "unknown" }),
                 (_, "displayname") => Str(o.DisplayName),
                 (LineSeries l, "color") => C(l.Color),
                 (LineSeries l, "linewidth") => Num(l.LineWidth),
@@ -708,6 +750,10 @@ namespace MatRewrite.Core.Builtins
                 (SurfaceSeries sf, "xdata") => FromGrid(sf.X),
                 (SurfaceSeries sf, "ydata") => FromGrid(sf.Y),
                 (SurfaceSeries sf, "cdata") => FromGrid(sf.C),
+                (SurfaceSeries sf, "facealpha") => Num(sf.FaceAlpha),
+                (SurfaceSeries sf, "facelighting") => Str(sf.FaceLighting),
+                (LightObject lo, "position") => LightPos(lo),
+                (LightObject lo, "visible") => Str(lo.Visible ? "on" : "off"),
                 (LineSeries l, "zdata") => l.Z == null ? new MatrixValue(0, 0) : MatrixValue.Row(l.Z),
                 (ContourSeries cs, "levellist") => MatrixValue.Row(cs.Levels),
                 (TextSeries t, "string") => Str(t.Text),
@@ -720,8 +766,33 @@ namespace MatRewrite.Core.Builtins
         }
     
     /// <summary>Colormap matrix (n x 3) for the built-in generator functions jet/gray/hot/cool.</summary>
+    static MatrixValue LightPos(LightObject lo)
+    {
+        double az = (lo.Az - 90) * Math.PI / 180, el = lo.El * Math.PI / 180;
+        return MatrixValue.Row(new[] { Math.Cos(el) * Math.Cos(az), Math.Cos(el) * Math.Sin(az), Math.Sin(el) });
+    }
+
+    static string CustomMapName(MatrixValue cm)
+    {
+        if (cm.C != 3 || cm.R < 1) throw new OctaveException("colormap: MAP must be an N x 3 matrix of RGB values");
+        var rgb = new Rgb[cm.R];
+        for (int i = 0; i < cm.R; i++)
+        {
+            double r = cm.Re[i], g = cm.Re[i + cm.R], b = cm.Re[i + 2 * cm.R];
+            if (r < 0 || r > 1 || g < 0 || g > 1 || b < 0 || b > 1) throw new OctaveException("colormap: all MAP values must be in the range [0,1]");
+            rgb[i] = new Rgb(r, g, b);
+        }
+        return CustomColormaps.Register(rgb);
+    }
+
     internal static MatrixValue MapMatrix(string name, int n)
     {
+        if (CustomColormaps.Get(name) is { } custom)
+        {
+            var cmm = new MatrixValue(custom.Length, 3);
+            for (int i = 0; i < custom.Length; i++) { cmm.Re[i] = custom[i].R; cmm.Re[i + custom.Length] = custom[i].G; cmm.Re[i + 2 * custom.Length] = custom[i].B; }
+            return cmm;
+        }
         n = Math.Max(n, 0);
         var m = new MatrixValue(n, 3);
         for (int i = 0; i < n; i++)

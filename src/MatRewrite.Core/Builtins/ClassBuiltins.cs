@@ -6,9 +6,80 @@ namespace MatRewrite.Core.Builtins;
 /// <summary>classdef introspection builtins.</summary>
 public static partial class BuiltinLibrary
 {
+    static void Wrap(string name, Func<BuiltinFn, Interpreter, Value[], int, Value[]> f)
+    {
+        if (!cur!.Builtins.TryGetValue(name, out var orig)) orig = (it, a, n) => throw new OctaveException($"'{name}' undefined");
+        cur.Builtins[name] = (it, a, n) => f(orig, it, a, n);
+    }
+
     static void RegisterClasses()
     {
-        Reg1("isobject", a => Bool(a[0] is ObjectValue));
+        Reg1("isobject", a => Bool(a[0] is ObjectValue || a[0] is ObjectArrayValue));
+        Reg("addlistener", (it, a, n) =>
+        {
+            if (a.Length < 3 || a[0] is not ObjectValue src) throw new OctaveException("addlistener: usage addlistener(obj, 'Event', callback)");
+            return Out(it.AddListener(src, S(a[1], "addlistener"), a[2]));
+        });
+        Reg("listener", (it, a, n) =>
+        {
+            if (a.Length < 3 || a[0] is not ObjectValue src) throw new OctaveException("listener: usage listener(obj, 'Event', callback)");
+            var l = it.AddListener(src, S(a[1], "listener"), a[2]);
+            return Out(l);
+        });
+        Reg("notify", (it, a, n) =>
+        {
+            if (a.Length < 2 || a[0] is not ObjectValue src) throw new OctaveException("notify: usage notify(obj, 'Event'[, eventData])");
+            it.Notify(src, S(a[1], "notify"), a.Length > 2 ? a[2] : null);
+            return Array.Empty<Value>();
+        });
+        Reg("events", (it, a, n) =>
+        {
+            var ci = a[0] is ObjectValue o ? o.Cls : it.FindClass(S(a[0], "events")) ?? throw new OctaveException("events: invalid class name");
+            var names = ci.Chain().SelectMany(c => c.Events).Distinct().ToList();
+            if (n > 0) return Out(new CellValue(names.Count, 1, names.Select(x => (Value)Str(x)).ToArray()));
+            it.Out.Write($"Events for class {ci.Name}:\n" + string.Concat(names.Select(x => $"  {x}\n")) + "\n");
+            return Array.Empty<Value>();
+        });
+        Reg("enumeration", (it, a, n) =>
+        {
+            var ci = a[0] is ObjectValue o ? o.Cls : it.FindClass(S(a[0], "enumeration")) ?? throw new OctaveException("enumeration: invalid class name");
+            if (!ci.IsEnum) throw new OctaveException($"enumeration: class '{ci.Name}' is not an enumeration");
+            var mem = it.EnumMembers(ci);
+            if (n > 0)
+            {
+                var arr = new ObjectArrayValue(ci, mem.Count, 1, mem.Cast<ObjectValue?>().ToArray());
+                var names = new CellValue(mem.Count, 1, mem.Select(x => (Value)Str(x.EnumName!)).ToArray());
+                return new Value[] { arr.Simplify(), names };
+            }
+            it.Out.Write($"Enumeration members for class '{ci.Name}':\n" + string.Concat(mem.Select(x => $"    {x.EnumName}\n")) + "\n");
+            return Array.Empty<Value>();
+        });
+        // object-aware wrappers around existing builtins
+        Wrap("delete", (orig, it, a, n) =>
+        {
+            if (a.Length >= 1 && a[0] is ObjectValue o) { if (!o.Cls.IsHandle) throw new OctaveException("delete: only handle objects can be deleted"); o.Deleted = true; return Array.Empty<Value>(); }
+            if (a.Length >= 1 && a[0] is ObjectArrayValue oa) { for (int i = 0; i < oa.Numel; i++) oa.At(i).Deleted = true; return Array.Empty<Value>(); }
+            return orig(it, a, n);
+        });
+        Wrap("char", (orig, it, a, n) =>
+            a.Length == 1 && a[0] is ObjectValue o && o.EnumName != null ? Out(Str(o.EnumName)) : orig(it, a, n));
+        Wrap("class", (orig, it, a, n) =>
+        {
+            if (a.Length >= 2 && a[0] is StructValue st)
+            {
+                // old-style @folder class: class(struct, 'Name')
+                var nm = S(a[1], "class");
+                var ci = it.OldStyleClass(nm);
+                var obj = new ObjectValue(ci);
+                foreach (var f in st.Fields)
+                {
+                    obj.Props[f] = st.Get(f);
+                    if (!ci.Props.Any(p => p.Name == f)) ci.Props.Add(new MatRewrite.Core.Parsing.PropDef(f, null, false));
+                }
+                return Out(obj);
+            }
+            return orig(it, a, n);
+        });
         Reg("properties", (it, a, n) =>
         {
             var ci = a[0] is ObjectValue o ? o.Cls : it.FindClass(S(a[0], "properties")) ?? throw new OctaveException("properties: invalid class name");

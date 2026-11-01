@@ -22,6 +22,8 @@ public sealed record CellExpr(List<List<Expr>> Rows) : Expr;
 public sealed record AnonFuncExpr(List<string> Params, Expr Body) : Expr;
 public sealed record FuncHandleExpr(string Name) : Expr;
 public sealed record ParenExpr(Expr Inner) : Expr;
+/// <summary>Octave assignment used as an expression: (x = v), a = b = v, x++ inside an index. Yields the new value (or the old one when PostOld).</summary>
+public sealed record AssignExpr(Expr Target, Expr Value, bool PostOld = false) : Expr;
 
 // ---------- statements ----------
 public abstract record Stmt : Node;
@@ -44,6 +46,8 @@ public sealed record FunctionDef(string Name, List<string> Params, List<string> 
 {
     /// <summary>Nested functions (only when the parent is terminated with end/endfunction).</summary>
     public List<FunctionDef> Nested { get; init; } = new();
+    /// <summary>Octave default parameter values (index-aligned with Params, null when none).</summary>
+    public List<Expr?>? Defaults { get; init; }
 }
 
 public sealed class ProgramUnit
@@ -54,13 +58,28 @@ public sealed class ProgramUnit
     public ClassDefAst? Class;
 }
 
-public sealed record PropDef(string Name, Expr? Default, bool Constant);
-public sealed record MethodDef(FunctionDef Func, bool Static);
+public sealed record PropDef(string Name, Expr? Default, bool Constant)
+{
+    public string GetAccess { get; init; } = "public";
+    public string SetAccess { get; init; } = "public";
+    public bool Dependent { get; init; }
+    public bool Hidden { get; init; }
+    public bool Abstract { get; init; }
+}
+public sealed record MethodDef(FunctionDef Func, bool Static)
+{
+    public string Access { get; init; } = "public";
+    public bool Abstract { get; init; }
+}
+public sealed record EnumDef(string Name, List<Expr> Args);
 public sealed class ClassDefAst
 {
     public string Name = "";
     public List<string> Supers = new();
     public List<PropDef> Props = new();
     public List<MethodDef> Methods = new();
+    public List<string> Events = new();
+    public List<EnumDef> Enums = new();
+    public Dictionary<string, string> Attrs = new();
     public int Line;
 }

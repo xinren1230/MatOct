@@ -78,6 +78,42 @@ public sealed class SurfaceSeries : Series
     public bool Mesh;                 // mesh: white faces, colormapped edges
     public string Shading = "faceted"; // faceted | flat | interp
     public Rgb? EdgeColor, FaceColor;
+    public double FaceAlpha = 1, EdgeAlpha = 1;
+    public string FaceLighting = "flat"; // none | flat | gouraud (only used when the axes has lights)
+}
+
+/// <summary>light / camlight: a directional light. Direction is given relative to the camera when CameraRelative.</summary>
+public sealed class LightObject : Series
+{
+    public double Az, El;             // degrees (world or camera-relative)
+    public bool CameraRelative;       // camlight
+    public Rgb Color = new(1, 1, 1);
+    public bool Visible = true;
+}
+
+/// <summary>Global registry of user-defined Nx3 colormaps (colormap(M)).</summary>
+public static class CustomColormaps
+{
+    static readonly Dictionary<string, Rgb[]> maps = new();
+    static int next;
+    public static string Register(Rgb[] map)
+    {
+        lock (maps)
+        {
+            foreach (var kv in maps) if (kv.Value.SequenceEqual(map)) return kv.Key;
+            var name = "custom" + (++next);
+            maps[name] = map;
+            return name;
+        }
+    }
+    public static Rgb[]? Get(string name) { lock (maps) return maps.TryGetValue(name, out var m) ? m : null; }
+    /// <summary>Colour for normalized t in [0,1] (MATLAB-style: index into N entries, no interpolation).</summary>
+    public static Rgb Sample(Rgb[] map, double t)
+    {
+        if (map.Length == 0) return new Rgb(0, 0, 0);
+        int k = (int)Math.Floor(Math.Clamp(t, 0, 1) * map.Length);
+        return map[Math.Min(k, map.Length - 1)];
+    }
 }
 
 /// <summary>contour / contourf on a rectilinear grid.</summary>
@@ -89,6 +125,8 @@ public sealed class ContourSeries : Series
     public bool Filled;
     public Rgb? LineColor;
     public double LineWidth = 0.5;
+    public bool Contour3;      // contour3: lines drawn at their level height
+    public double? ZPlane;     // surfc / meshc: lines drawn on this z plane
     public List<(double level, double[] x, double[] y)> Lines = new();
 }
 
@@ -134,6 +172,7 @@ public sealed class Axes : GObject
     public double Zoom = 1;
     public bool XLog, YLog;
     public bool Is3D => !(Az == 0 && El == 90);
+    public string Lighting = "flat"; // none | flat | gouraud (lighting command)
     public readonly List<Series> Children = new();
     public bool Hold, Grid, MinorGrid, Box = true, Visible = true;
     public bool LegendVisible;
@@ -150,7 +189,7 @@ public sealed class Axes : GObject
     {
         Children.Clear(); ColorIndex = 0; LegendVisible = false; LegendLabels = null; Colorbar = false;
         XLim = YLim = ZLim = null; Equal = Tight = Square = false; YDirReverse = false; CLim = null;
-        Az = 0; El = 90; Zoom = 1; XLog = YLog = false;
+        Az = 0; El = 90; Zoom = 1; XLog = YLog = false; Lighting = "flat";
     }
 }
 

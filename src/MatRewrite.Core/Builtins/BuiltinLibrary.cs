@@ -29,6 +29,8 @@ public static partial class BuiltinLibrary
         RegisterOde();
         RegisterSparse();
         RegisterClasses();
+        RegisterCompat();
+        RegisterCompat2();
         cur = null;
     }
 

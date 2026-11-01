@@ -18,8 +18,16 @@
                 <MenuItem Header="_Open..." Click="OnOpen" InputGestureText="Ctrl+O" />
                 <MenuItem Header="_Save" Click="OnSave" InputGestureText="Ctrl+S" />
                 <MenuItem Header="Save _As..." Click="OnSaveAs" />
+                <MenuItem Header="_Close tab" Click="OnCloseTab" InputGestureText="Ctrl+W" />
                 <Separator />
                 <MenuItem Header="E_xit" Click="OnExit" />
+            </MenuItem>
+            <MenuItem Header="_Edit">
+                <MenuItem Header="_Find..." Click="OnFind" InputGestureText="Ctrl+F" />
+                <MenuItem Header="Find and _replace..." Click="OnReplace" InputGestureText="Ctrl+H" />
+                <MenuItem Header="_Go to line..." Click="OnGotoLine" InputGestureText="Ctrl+G" />
+                <Separator />
+                <MenuItem Header="Check _code (lint)" Click="OnLintNow" />
             </MenuItem>
             <MenuItem Header="_Run">
                 <MenuItem Header="_Run script" Click="OnRun" InputGestureText="F5" />
@@ -34,6 +42,7 @@
                 <MenuItem Header="_Quit debugging (dbquit)" Click="OnDbQuit" InputGestureText="Shift+F5" />
                 <Separator />
                 <MenuItem Header="_Toggle breakpoint" Click="OnToggleBreakpoint" InputGestureText="F12" />
+                <MenuItem Header="Set co_nditional breakpoint..." Click="OnConditionalBreakpoint" InputGestureText="Shift+F12 / right-click margin" />
                 <MenuItem Header="Clear _all breakpoints" Click="OnClearBreakpoints" />
             </MenuItem>
             <MenuItem Header="_Window">
@@ -45,6 +54,8 @@
             <TextBlock x:Name="Status" Text="Ready" />
             <Separator />
             <TextBlock x:Name="CwdText" />
+            <Separator />
+            <TextBlock x:Name="LintText" />
         </StatusBar>
         <Grid>
             <Grid.ColumnDefinitions>
@@ -60,7 +71,7 @@
                 </Grid.RowDefinitions>
                 <DockPanel Grid.Row="0">
                     <TextBlock x:Name="EditorTitle" DockPanel.Dock="Top" Padding="4,2" Background="#EEE" Text="Editor - untitled.m" />
-                    <ContentControl x:Name="EditorHost" />
+                    <TabControl x:Name="Tabs" SelectionChanged="OnTabChanged" Padding="0" />
                 </DockPanel>
                 <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" />
                 <DockPanel Grid.Row="2">
@@ -74,20 +85,54 @@
                 </DockPanel>
             </Grid>
             <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" />
-            <DockPanel Grid.Column="2">
-                <TextBlock DockPanel.Dock="Top" Padding="4,2" Background="#EEE" x:Name="WorkspaceTitle" Text="Workspace" />
-                <TextBlock DockPanel.Dock="Bottom" Padding="4,2" Foreground="Gray" Text="Double-click a variable to edit it" />
-                <ListView x:Name="WorkspaceList" MouseDoubleClick="OnWorkspaceDoubleClick">
-                    <ListView.View>
-                        <GridView>
-                            <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="80" />
-                            <GridViewColumn Header="Value" DisplayMemberBinding="{Binding Value}" Width="110" />
-                            <GridViewColumn Header="Size" DisplayMemberBinding="{Binding Size}" Width="55" />
-                            <GridViewColumn Header="Class" DisplayMemberBinding="{Binding Class}" Width="65" />
-                        </GridView>
-                    </ListView.View>
-                </ListView>
-            </DockPanel>
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="3*" />
+                    <RowDefinition Height="5" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="5" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <DockPanel Grid.Row="0">
+                    <TextBlock DockPanel.Dock="Top" Padding="4,2" Background="#EEE" x:Name="WorkspaceTitle" Text="Workspace" />
+                    <TextBlock DockPanel.Dock="Bottom" Padding="4,2" Foreground="Gray" Text="Double-click a variable to edit it" />
+                    <ListView x:Name="WorkspaceList" MouseDoubleClick="OnWorkspaceDoubleClick">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="80" />
+                                <GridViewColumn Header="Value" DisplayMemberBinding="{Binding Value}" Width="110" />
+                                <GridViewColumn Header="Size" DisplayMemberBinding="{Binding Size}" Width="55" />
+                                <GridViewColumn Header="Class" DisplayMemberBinding="{Binding Class}" Width="65" />
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </DockPanel>
+                <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" />
+                <DockPanel Grid.Row="2">
+                    <TextBlock DockPanel.Dock="Top" Padding="4,2" Background="#EEE" Text="Call Stack" />
+                    <ListView x:Name="StackList" MouseDoubleClick="OnStackDoubleClick">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Function" DisplayMemberBinding="{Binding Name}" Width="110" />
+                                <GridViewColumn Header="Line" DisplayMemberBinding="{Binding Line}" Width="45" />
+                                <GridViewColumn Header="File" DisplayMemberBinding="{Binding FileName}" Width="140" />
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </DockPanel>
+                <GridSplitter Grid.Row="3" HorizontalAlignment="Stretch" />
+                <DockPanel Grid.Row="4">
+                    <TextBlock DockPanel.Dock="Top" Padding="4,2" Background="#EEE" x:Name="ProblemsTitle" Text="Problems" />
+                    <ListView x:Name="ProblemList" MouseDoubleClick="OnProblemDoubleClick">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Line" DisplayMemberBinding="{Binding Line}" Width="45" />
+                                <GridViewColumn Header="Message" DisplayMemberBinding="{Binding Text}" Width="270" />
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </DockPanel>
+            </Grid>
         </Grid>
     </DockPanel>
 </Window>

@@ -4,7 +4,7 @@ namespace MatRewrite.Core.Runtime;
 /// <summary>Octave indexing semantics: A(I), A(I,J), logical masks, ':' and growth on assignment.</summary>
 public static class Indexing
 {
-    sealed class Idx
+    internal sealed class Idx
     {
         public int[] I = Array.Empty<int>();
         public bool Colon;
@@ -13,7 +13,7 @@ public static class Indexing
         public int Max => I.Length == 0 ? -1 : I.Max();
     }
 
-    static Idx Convert(Value v, int extent, string ctx, bool allowOutOfRange)
+    internal static Idx Convert(Value v, int extent, string ctx, bool allowOutOfRange)
     {
         if (v is MagicColon) return new Idx { I = Enumerable.Range(0, extent).ToArray(), Colon = true, R = extent, C = 1 };
         if (v is MatrixValue m)
@@ -54,7 +54,7 @@ public static class Indexing
     static bool IsOne(Value a) => a is MatrixValue m && m.Numel == 1 && m.Re[0] == 1 && !m.IsLogical;
 
     /// <summary>Drop trailing subscripts equal to 1 (or ':' over a singleton dim) when they are redundant.</summary>
-    static Value[] Normalize(Value[] args, ArrayValue? a = null)
+    internal static Value[] Normalize(Value[] args, ArrayValue? a = null)
     {
         int n = args.Length;
         int nd = a?.NDims ?? 2;

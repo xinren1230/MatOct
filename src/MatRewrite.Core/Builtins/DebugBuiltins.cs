@@ -1,4 +1,5 @@
 // MatRewrite - GPL-3.0-or-later
+using System.IO;
 using MatRewrite.Core.Runtime;
 
 namespace MatRewrite.Core.Builtins;
@@ -16,6 +17,9 @@ public static partial class BuiltinLibrary
                 if (v is MatrixValue m && !m.IsChar) words.AddRange(m.Re.Select(x => ((int)x).ToString()));
                 else words.AddRange(S(v, "dbstop").Split(new[] { ' ', ',' }, StringSplitOptions.RemoveEmptyEntries));
             }
+            string? cond = null;
+            int ifAt = words.FindIndex(w => w == "if");
+            if (ifAt >= 0) { cond = string.Join(" ", words.Skip(ifAt + 1)); words = words.Take(ifAt).ToList(); if (cond.Trim() == "") throw new OctaveException("dbstop: condition expected after 'if'"); }
             words.RemoveAll(w => w is "in" or "at");
             if (words.Count == 0) throw new OctaveException("dbstop: function name required");
             var name = words[0];
@@ -28,14 +32,14 @@ public static partial class BuiltinLibrary
                 var first = fn.Body.FirstOrDefault(s => s.Line > 0);
                 lines.Add(first?.Line ?? 1);
             }
-            foreach (var l in lines) it.SetBreakpoint(name, l);
+            foreach (var l in lines) it.SetBreakpoint(name, l, cond);
             return n > 0 ? Out(new MatrixValue(1, lines.Count, lines.Select(x => (double)x).ToArray())) : Array.Empty<Value>();
         });
         Reg0("dbclear", (it, a) =>
         {
             if (a.Length == 0) throw new OctaveException("dbclear: function name required");
             var first = S(a[0], "dbclear");
-            if (first == "all") { it.Breakpoints.Clear(); return; }
+            if (first == "all") { it.Breakpoints.Clear(); it.BreakConditions.Clear(); return; }
             var words = new List<string>();
             foreach (var v in a)
             {
@@ -50,12 +54,12 @@ public static partial class BuiltinLibrary
         {
             if (n == 0)
             {
-                foreach (var (k, s) in it.Breakpoints) it.Out.WriteLine($"breakpoint in {k} at line{(s.Count > 1 ? "s" : "")} {string.Join(", ", s)}");
+                foreach (var (k, s) in it.Breakpoints) it.Out.WriteLine($"breakpoint in {k} at line{(s.Count > 1 ? "s" : "")} {string.Join(", ", s.Select(l => it.GetBreakCondition(k, l) is { } c ? $"{l} (if {c})" : l.ToString()))}");
                 return Array.Empty<Value>();
             }
             var names = it.Breakpoints.SelectMany(kv => kv.Value.Select(l => (kv.Key, l))).ToList();
-            var st = new StructValue(names.Count, 1, new List<string> { "name", "line" });
-            for (int i = 0; i < names.Count; i++) { st.Set("name", Str(names[i].Key), i); st.Set("line", Num(names[i].l), i); }
+            var st = new StructValue(names.Count, 1, new List<string> { "name", "line", "cond" });
+            for (int i = 0; i < names.Count; i++) { st.Set("name", Str(names[i].Key), i); st.Set("line", Num(names[i].l), i); st.Set("cond", Str(it.GetBreakCondition(names[i].Key, names[i].l) ?? ""), i); }
             return Out(st);
         });
         Reg0("dbcont", (it, a) => it.DbContinue());
@@ -82,6 +86,18 @@ public static partial class BuiltinLibrary
             }
             return Out(st);
         });
+        Reg("checkcode", (it, a, n) =>
+        {
+            if (a.Length == 0) throw new OctaveException("checkcode: file name required");
+            var name = S(a[0], "checkcode");
+            var path = File.Exists(name) ? name : it.FindFile(Interpreter.BreakKey(name)) ?? throw new OctaveException($"checkcode: unable to find '{name}'");
+            var msgs = MatRewrite.Core.Analysis.Linter.Check(File.ReadAllText(path));
+            if (n == 0) { foreach (var m in msgs) it.Out.WriteLine($"L {m.Line}: {m.Message}"); return Array.Empty<Value>(); }
+            var st = new StructValue(msgs.Count, 1, new List<string> { "message", "line" });
+            for (int i = 0; i < msgs.Count; i++) { st.Set("message", Str(msgs[i].Message), i); st.Set("line", Num(msgs[i].Line), i); }
+            return Out(st);
+        });
+        cur!.Builtins["mlint"] = cur.Builtins["checkcode"];
         Reg1("isdebugmode", a => Bool(false));
         cur!.Builtins["isdebugmode"] = (it, a, n) => Out(Bool(it.IsPaused));
     }

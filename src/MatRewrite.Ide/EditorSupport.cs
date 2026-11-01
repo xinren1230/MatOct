@@ -69,8 +69,32 @@ public static class OctaveSyntax
 public sealed class BreakpointMargin : AbstractMargin
 {
     public readonly SortedSet<int> Lines = new();
+    /// <summary>Optional conditions of conditional breakpoints (line -> expression).</summary>
+    public readonly Dictionary<int, string> Conditions = new();
     public int CurrentLine { get; private set; } = -1;
     public event Action? Changed;
+    /// <summary>Raised on right-click with the clicked line (the host asks for a condition).</summary>
+    public event Action<int>? ConditionRequested;
+
+    public void SetCondition(int line, string? cond)
+    {
+        if (string.IsNullOrWhiteSpace(cond)) Conditions.Remove(line);
+        else { Conditions[line] = cond.Trim(); Lines.Add(line); }
+        InvalidateVisual();
+        Changed?.Invoke();
+    }
+
+    public void ClearAll() { Lines.Clear(); Conditions.Clear(); InvalidateVisual(); Changed?.Invoke(); }
+
+    protected override void OnMouseRightButtonDown(MouseButtonEventArgs e)
+    {
+        base.OnMouseRightButtonDown(e);
+        if (TextView == null) return;
+        var vl = TextView.GetVisualLineFromVisualTop(e.GetPosition(TextView).Y + TextView.VerticalOffset);
+        if (vl == null) return;
+        ConditionRequested?.Invoke(vl.FirstDocumentLine.LineNumber);
+        e.Handled = true;
+    }
 
     protected override Size MeasureOverride(Size availableSize) => new(16, 0);
 
@@ -98,7 +122,7 @@ public sealed class BreakpointMargin : AbstractMargin
 
     public void Toggle(int line)
     {
-        if (!Lines.Remove(line)) Lines.Add(line);
+        if (!Lines.Remove(line)) Lines.Add(line); else Conditions.Remove(line);
         InvalidateVisual();
         Changed?.Invoke();
     }
@@ -111,7 +135,12 @@ public sealed class BreakpointMargin : AbstractMargin
         {
             int ln = vl.FirstDocumentLine.LineNumber;
             double y = vl.VisualTop - TextView.VerticalOffset, h = vl.Height;
-            if (Lines.Contains(ln)) dc.DrawEllipse(Brushes.Red, new Pen(Brushes.DarkRed, 1), new Point(8, y + h / 2), 5.5, 5.5);
+            if (Lines.Contains(ln))
+            {
+                bool cond = Conditions.ContainsKey(ln);
+                dc.DrawEllipse(cond ? Brushes.Orange : Brushes.Red, new Pen(cond ? Brushes.DarkOrange : Brushes.DarkRed, 1), new Point(8, y + h / 2), 5.5, 5.5);
+                if (cond) dc.DrawRectangle(Brushes.White, null, new Rect(5, y + h / 2 - 1, 6, 2));
+            }
             if (ln == CurrentLine)
             {
                 var g = new StreamGeometry();
@@ -145,9 +174,138 @@ public sealed class CurrentLineRenderer : IBackgroundRenderer
     }
 }
 
+/// <summary>Wavy underlines for lint messages (red = error, orange = warning).</summary>
+public sealed class LintRenderer : IBackgroundRenderer
+{
+    public List<MatRewrite.Core.Analysis.LintMessage> Messages = new();
+    public KnownLayer Layer => KnownLayer.Selection;
+    public void Draw(TextView textView, DrawingContext dc)
+    {
+        if (Messages.Count == 0 || !textView.VisualLinesValid) return;
+        var byLine = Messages.GroupBy(m => m.Line).ToDictionary(g => g.Key, g => g.Any(m => m.Severity == MatRewrite.Core.Analysis.LintSeverity.Error));
+        foreach (var vl in textView.VisualLines)
+        {
+            var dl = vl.FirstDocumentLine;
+            if (!byLine.TryGetValue(dl.LineNumber, out var isErr)) continue;
+            var text = textView.Document.GetText(dl);
+            int lead = text.Length - text.TrimStart().Length;
+            int len = text.TrimEnd().Length;
+            if (len <= lead) { lead = 0; len = Math.Max(1, text.Length); }
+            var p0 = vl.GetVisualPosition(vl.GetVisualColumn(lead), VisualYPosition.LineBottom) - textView.ScrollOffset;
+            var p1 = vl.GetVisualPosition(vl.GetVisualColumn(Math.Min(len, dl.Length)), VisualYPosition.LineBottom) - textView.ScrollOffset;
+            if (p1.X <= p0.X) p1.X = p0.X + 8;
+            var pen = new Pen(isErr ? Brushes.Red : Brushes.DarkOrange, 1);
+            var g = new StreamGeometry();
+            using (var c = g.Open())
+            {
+                c.BeginFigure(new Point(p0.X, p0.Y - 1), false, false);
+                bool up = true;
+                for (double x = p0.X + 2; x <= p1.X; x += 2, up = !up) c.LineTo(new Point(x, p0.Y - (up ? 3 : 1)), true, false);
+            }
+            g.Freeze();
+            dc.DrawGeometry(null, pen, g);
+        }
+    }
+}
+
+/// <summary>Find / replace dialog for the active editor.</summary>
+public sealed class ReplaceWindow : Window
+{
+    readonly Func<TextEditor> editor;
+    readonly System.Windows.Controls.TextBox find = new() { Width = 260, Margin = new Thickness(4) };
+    readonly System.Windows.Controls.TextBox repl = new() { Width = 260, Margin = new Thickness(4) };
+    readonly System.Windows.Controls.CheckBox matchCase = new() { Content = "Match case", Margin = new Thickness(4) };
+    readonly System.Windows.Controls.CheckBox whole = new() { Content = "Whole word", Margin = new Thickness(4) };
+    readonly System.Windows.Controls.TextBlock info = new() { Margin = new Thickness(4), Foreground = Brushes.Gray };
+
+    public ReplaceWindow(Func<TextEditor> ed, string initial)
+    {
+        editor = ed;
+        Title = "Find and Replace"; SizeToContent = SizeToContent.WidthAndHeight; ResizeMode = ResizeMode.NoResize; ShowInTaskbar = false;
+        find.Text = initial;
+        var grid = new System.Windows.Controls.StackPanel { Margin = new Thickness(6) };
+        System.Windows.Controls.StackPanel Row(string label, UIElement el)
+        {
+            var sp = new System.Windows.Controls.StackPanel { Orientation = System.Windows.Controls.Orientation.Horizontal };
+            sp.Children.Add(new System.Windows.Controls.TextBlock { Text = label, Width = 70, VerticalAlignment = VerticalAlignment.Center });
+            sp.Children.Add(el); return sp;
+        }
+        grid.Children.Add(Row("Find:", find));
+        grid.Children.Add(Row("Replace:", repl));
+        var opts = new System.Windows.Controls.StackPanel { Orientation = System.Windows.Controls.Orientation.Horizontal };
+        opts.Children.Add(matchCase); opts.Children.Add(whole); grid.Children.Add(opts);
+        var buttons = new System.Windows.Controls.StackPanel { Orientation = System.Windows.Controls.Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Right };
+        System.Windows.Controls.Button B(string t, Action a) { var b = new System.Windows.Controls.Button { Content = t, Margin = new Thickness(4), Padding = new Thickness(8, 2, 8, 2) }; b.Click += (_, _) => a(); buttons.Children.Add(b); return b; }
+        B("Find next", () => FindNext()).IsDefault = true;
+        B("Replace", Replace);
+        B("Replace all", ReplaceAll);
+        B("Close", Close);
+        grid.Children.Add(buttons); grid.Children.Add(info);
+        Content = grid;
+        Loaded += (_, _) => { find.Focus(); find.SelectAll(); };
+    }
+
+    System.Text.RegularExpressions.Regex? Pattern()
+    {
+        if (find.Text.Length == 0) return null;
+        var p = System.Text.RegularExpressions.Regex.Escape(find.Text);
+        if (whole.IsChecked == true) p = @"\b" + p + @"\b";
+        return new System.Text.RegularExpressions.Regex(p, matchCase.IsChecked == true ? System.Text.RegularExpressions.RegexOptions.None : System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+    }
+
+    public bool FindNext()
+    {
+        var ed = editor(); var re = Pattern(); if (re == null) return false;
+        int start = ed.SelectionStart + ed.SelectionLength;
+        var m = re.Match(ed.Text, Math.Min(start, ed.Text.Length));
+        if (!m.Success) m = re.Match(ed.Text);
+        if (!m.Success) { info.Text = "Not found"; return false; }
+        ed.Select(m.Index, m.Length); ed.ScrollTo(ed.Document.GetLineByOffset(m.Index).LineNumber, 0);
+        info.Text = "";
+        return true;
+    }
+
+    void Replace()
+    {
+        var ed = editor(); var re = Pattern(); if (re == null) return;
+        if (ed.SelectionLength > 0 && re.Match(ed.SelectedText) is { Success: true } m && m.Length == ed.SelectionLength)
+            ed.Document.Replace(ed.SelectionStart, ed.SelectionLength, repl.Text);
+        FindNext();
+    }
+
+    void ReplaceAll()
+    {
+        var ed = editor(); var re = Pattern(); if (re == null) return;
+        int n = re.Matches(ed.Text).Count;
+        if (n == 0) { info.Text = "Not found"; return; }
+        var replacement = repl.Text.Replace("$", "$$");
+        ed.Document.Text = re.Replace(ed.Text, replacement);
+        info.Text = $"Replaced {n} occurrence(s)";
+    }
+}
+
+/// <summary>One-line text prompt.</summary>
+public sealed class PromptWindow : Window
+{
+    readonly System.Windows.Controls.TextBox box = new() { Width = 320, Margin = new Thickness(4) };
+    public string? Result;
+    public PromptWindow(string title, string label, string initial)
+    {
+        Title = title; SizeToContent = SizeToContent.WidthAndHeight; ResizeMode = ResizeMode.NoResize; ShowInTaskbar = false;
+        var sp = new System.Windows.Controls.StackPanel { Margin = new Thickness(8) };
+        sp.Children.Add(new System.Windows.Controls.TextBlock { Text = label, Margin = new Thickness(4) });
+        box.Text = initial; sp.Children.Add(box);
+        var ok = new System.Windows.Controls.Button { Content = "OK", IsDefault = true, Width = 70, Margin = new Thickness(4), HorizontalAlignment = HorizontalAlignment.Right };
+        ok.Click += (_, _) => { Result = box.Text; DialogResult = true; };
+        sp.Children.Add(ok);
+        Content = sp;
+        Loaded += (_, _) => { box.Focus(); box.SelectAll(); };
+    }
+}
+
 public static class EditorFactory
 {
-    public static (TextEditor ed, BreakpointMargin bp) Create()
+    public static (TextEditor ed, BreakpointMargin bp, LintRenderer lint) Create()
     {
         var ed = new TextEditor
         {
@@ -163,6 +321,9 @@ public static class EditorFactory
         var bp = new BreakpointMargin();
         ed.TextArea.LeftMargins.Insert(0, bp);
         ed.TextArea.TextView.BackgroundRenderers.Add(new CurrentLineRenderer(bp));
-        return (ed, bp);
+        var lint = new LintRenderer();
+        ed.TextArea.TextView.BackgroundRenderers.Add(lint);
+        ICSharpCode.AvalonEdit.Search.SearchPanel.Install(ed);   // Ctrl+F incremental find
+        return (ed, bp, lint);
     }
 }

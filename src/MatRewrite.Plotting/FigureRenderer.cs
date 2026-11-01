@@ -9,7 +9,15 @@ public static class FigureRenderer
 {
     public static SP.Color ToColor(Rgb c) => new((byte)Math.Round(c.R * 255), (byte)Math.Round(c.G * 255), (byte)Math.Round(c.B * 255));
 
-    public static SP.IColormap Colormap(string name) => name switch
+    sealed class CustomMap : SP.IColormap
+    {
+        readonly Rgb[] map;
+        public CustomMap(string name, Rgb[] m) { Name = name; map = m; }
+        public string Name { get; }
+        public SP.Color GetColor(double normalizedIntensity) => ToColor(CustomColormaps.Sample(map, double.IsFinite(normalizedIntensity) ? normalizedIntensity : 0));
+    }
+
+    public static SP.IColormap Colormap(string name) => CustomColormaps.Get(name) is { } cm ? new CustomMap(name, cm) : name switch
     {
         "jet" => new SP.Colormaps.Jet(),
         "gray" => new SP.Colormaps.Grayscale(),

@@ -29,7 +29,7 @@ public static class Display
         }
         switch (v)
         {
-            case MatrixValue sp when sp.IsSparse:
+            case Sparse.SparseValue sp:
                 SparseInto(sb, name, sp, ind);
                 break;
             case MatrixValue m:
@@ -56,8 +56,14 @@ public static class Display
                     sb.Append('\n');
                 }
                 break;
+            case ObjectValue eo when eo.EnumName != null:
+                sb.Append($"{ind}{name} = {eo.EnumName}\n");
+                break;
             case ObjectValue o:
                 sb.Append($"{ind}{name} =\n\n").Append(ObjectBody(o, ind)).Append('\n');
+                break;
+            case ObjectArrayValue oa:
+                sb.Append($"{ind}{name} =\n\n").Append(ObjArrBody(oa, ind)).Append('\n');
                 break;
             case CellValue c:
                 if (c.Numel == 0) { sb.Append($"{ind}{name} = {{}}({c.R}x{c.C})\n"); break; }
@@ -156,7 +162,10 @@ public static class Display
         if (v is MatrixValue nm && nm.ND != null && nm.Numel > 0) return NDPages(nm, "");
         switch (v)
         {
+            case Sparse.SparseValue spv: return SparseBody(spv, "");
+            case ObjectValue eo when eo.EnumName != null: return eo.EnumName + "\n";
             case ObjectValue o: return ObjectBody(o, "");
+            case ObjectArrayValue oa: return ObjArrBody(oa, "");
             case MatrixValue m:
                 if (m.Numel == 0) return m.IsChar ? "\n" : "";
                 if (m.IsChar)
@@ -198,22 +207,38 @@ public static class Display
 
     static int IntDigits(double a) => a < 1 ? 1 : (int)Math.Floor(Math.Log10(a)) + 1;
 
-    static void SparseInto(StringBuilder sb, string name, MatrixValue m, string ind)
+    static void SparseInto(StringBuilder sb, string name, Sparse.SparseValue m, string ind)
     {
-        int nz = 0; for (int i = 0; i < m.Re.Length; i++) if (m.Re[i] != 0 || (m.Im != null && m.Im[i] != 0)) nz++;
+        sb.Append($"{ind}{name} =\n\n");
+        sb.Append(SparseBody(m, ind));
+    }
+
+    static string SparseBody(Sparse.SparseValue m, string ind)
+    {
+        var sb = new StringBuilder();
+        int nz = m.Nnz;
         double pct = m.Numel == 0 ? 0 : 100.0 * nz / m.Numel;
-        sb.Append($"{ind}{name} =\n\n{ind}Compressed Column Sparse (rows = {m.R}, cols = {m.C}, nnz = {nz} [{pct.ToString(pct >= 10 || pct == 0 ? "0" : "0.#", Inv)}%])\n\n");
-        if (nz == 0) return;
+        string ps = pct == 100 ? "100" : pct >= 10 ? pct.ToString("0", Inv) : pct.ToString("0.#", Inv);
+        if (pct > 0 && ps == "0") ps = pct.ToString("0.##", Inv);
+        sb.Append($"{ind}Compressed Column Sparse (rows = {m.R}, cols = {m.C}, nnz = {nz} [{ps}%])\n\n");
+        if (nz == 0) return sb.ToString();
         int wr = m.R.ToString().Length, wc = m.C.ToString().Length;
         for (int j = 0; j < m.C; j++)
-            for (int i = 0; i < m.R; i++)
+            for (int p = m.Cp[j]; p < m.Cp[j + 1]; p++)
             {
-                int k = j * m.R + i;
-                if (m.Re[k] == 0 && (m.Im == null || m.Im[k] == 0)) continue;
-                var e = new MatrixValue(1, 1, new[] { m.Re[k] }, m.Im == null ? null : new[] { m.Im[k] }, m.Kind);
-                sb.Append($"{ind}  ({(i + 1).ToString().PadLeft(wr)}, {(j + 1).ToString().PadLeft(wc)}) -> {FormatScalar(e)}\n");
+                var e = new MatrixValue(1, 1, new[] { m.Re[p] }, m.Im == null ? null : new[] { m.Im[p] }, m.Logical ? NumKind.Logical : NumKind.Double);
+                sb.Append($"{ind}  ({(m.Ri[p] + 1).ToString().PadLeft(wr)}, {(j + 1).ToString().PadLeft(wc)}) -> {FormatScalar(e)}\n");
             }
         sb.Append('\n');
+        return sb.ToString();
+    }
+
+    static string ObjArrBody(ObjectArrayValue oa, string ind)
+    {
+        if (oa.Numel > 0 && oa.At(0).EnumName != null)
+            return string.Concat(Enumerable.Range(0, oa.Numel).Select(i => $"{ind}  {oa.At(i).EnumName}\n"));
+        var names = oa.Numel > 0 ? Interpreter.ObjectProps(oa.At(0)) : new List<string>();
+        return $"{ind}  {oa.R}x{oa.C} {oa.Cls.Name} object array with properties:\n\n" + string.Concat(names.Select(n => $"{ind}    {n}\n"));
     }
 
     static string ObjectBody(ObjectValue o, string ind)
