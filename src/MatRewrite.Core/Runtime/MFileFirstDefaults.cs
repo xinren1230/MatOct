@@ -7,9 +7,9 @@ public static class MFileFirstDefaults
     public static readonly string[] Names =
     {
         "annotation",
-        "ode45", "ode23", "ode23s", "odeset", "odeget", "ode15s", "ode15i", "decic",
-        "assert",
-        "normalize", "quantile", "cov", "cart2sph", "sph2cart", "cart2pol", "pol2cart", "sortrows", "ndgrid", "hadamard", "compan", "istriu", "isbanded", "rescale", "blkdiag", "corr", "bitset",
+        "ode45", "ode23", "ode23s", "odeget", "ode15s", "ode15i", "assert",
+        "rmse", "mape", "ishermitian", "kurtosis", "polyfit", "nthargout", // phase 8 A/B
+        "normalize", "quantile", "cov", "cart2sph", "sph2cart", "cart2pol", "pol2cart", "ndgrid", "compan", "istriu", "isbanded", "rescale", "blkdiag", "corr", "bitset",
         "beep",
         "blanks",
         "camlight",
@@ -35,7 +35,6 @@ public static class MFileFirstDefaults
         "hot",
         "idivide",
         "index",
-        "interp1",
         "isgraphics",
         "ismember",
         "isstrprop",

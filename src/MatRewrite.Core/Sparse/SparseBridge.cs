@@ -10,7 +10,7 @@ public static class SparseBridge
     /// <summary>Builtins that handle SparseValue arguments themselves.</summary>
     public static readonly HashSet<string> Aware = new()
     {
-        "sparse", "full", "issparse", "nnz", "nzmax", "nonzeros", "find", "size", "numel", "rows", "columns", "length",
+        "sparse", "sortrows", "full", "issparse", "nnz", "nzmax", "nonzeros", "find", "size", "numel", "rows", "columns", "length",
         "ndims", "isempty", "class", "isnumeric", "isreal", "islogical", "isfloat", "isa", "speye", "spones", "spfun",
         "spalloc", "sprand", "sprandn", "sprandsym", "spdiags", "spzeros", "eigs", "svds", "isscalar", "isvector",
         "ismatrix", "issquare", "isrow", "iscolumn", "disp", "display", "spfun", "spy",

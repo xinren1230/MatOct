@@ -252,6 +252,7 @@ public static partial class BuiltinLibrary
             {
                 var pv = new MatrixValue(rows, 1, perm.ToArray(), null);
                 var colv = IndexAny(it, A, new Value[] { pv, Dn(Math.Abs(c[j])) });
+                if (colv is CellValue cv && !cv.Data.All(e => e is MatrixValue em && em.IsChar)) colv = Fc(it, "cell2mat", colv);
                 var r = Fn(it, "sort", 2, colv, MatrixValue.Str(c[j] < 0 ? "descend" : "ascend"));
                 var ix = M(r[1], "sortrows").Re;
                 perm = ix.Select(q => perm[(int)q - 1]).ToArray();

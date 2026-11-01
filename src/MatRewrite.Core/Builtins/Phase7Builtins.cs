@@ -44,6 +44,7 @@ public static partial class BuiltinLibrary
         RegisterPhase7Mov();
         //RegisterPhase7Linalg();
         //RegisterPhase7Poly();
+        RegisterPhase8();
     }
 
     // ------------------------------------------------------------ elfun

@@ -37,16 +37,51 @@ public static partial class BuiltinLibrary
         });
         Reg("warning", (it, a, n) =>
         {
-            if (a.Length == 0) return Array.Empty<Value>();
+            string StateOf(string id)
+            {
+                bool allOff = it.DisabledWarnings.Contains("all");
+                if (id == "all") return allOff ? "off" : "on";
+                if (allOff) return it.EnabledWarnings.Contains(id) ? "on" : "off";
+                return it.DisabledWarnings.Contains(id) ? "off" : "on";
+            }
+            void SetState(string st, string id)
+            {
+                if (st == "off") { if (id == "all") { it.DisabledWarnings.Clear(); it.EnabledWarnings.Clear(); } it.DisabledWarnings.Add(id); it.EnabledWarnings.Remove(id); }
+                else { if (id == "all") { it.DisabledWarnings.Clear(); it.EnabledWarnings.Clear(); } else { it.DisabledWarnings.Remove(id); if (it.DisabledWarnings.Contains("all")) it.EnabledWarnings.Add(id); } }
+            }
+            StructValue One(string id) { var r = new StructValue(); r.Set("identifier", Str(id)); r.Set("state", Str(StateOf(id))); return r; }
+            StructValue All()
+            {
+                var ids = new List<string> { "all" };
+                foreach (var d in it.DisabledWarnings) if (d != "all" && !ids.Contains(d)) ids.Add(d);
+                foreach (var d in it.EnabledWarnings) if (!ids.Contains(d)) ids.Add(d);
+                var r = new StructValue(ids.Count, 1, new List<string> { "identifier", "state" });
+                for (int k = 0; k < ids.Count; k++) { r.Elems[k]["identifier"] = Str(ids[k]); r.Elems[k]["state"] = Str(StateOf(ids[k])); }
+                return r;
+            }
+            if (a.Length == 0) return n > 0 ? new Value[] { All() } : Array.Empty<Value>();
+            if (a[0] is StructValue sv)
+            {
+                if (!sv.HasField("identifier") || !sv.HasField("state")) throw new OctaveException("warning: STATE structure must have fields 'identifier' and 'state'");
+                for (int k = 0; k < sv.Elems.Length; k++) { var st = S(sv.Elems[k]["state"], "warning"); var id = S(sv.Elems[k]["identifier"], "warning"); SetState(st == "error" ? "on" : st, id); }
+                return Array.Empty<Value>();
+            }
             if (IsString(a[0]))
             {
                 var s0 = S(a[0], "warning");
                 if (s0 is "on" or "off" or "query" or "error")
                 {
                     var id = a.Length > 1 && IsString(a[1]) ? S(a[1], "warning") : "all";
-                    if (s0 == "off") { if (id == "all") { it.DisabledWarnings.Clear(); it.EnabledWarnings.Clear(); } it.DisabledWarnings.Add(id); it.EnabledWarnings.Remove(id); }
-                    else if (s0 == "on") { if (id == "all") { it.DisabledWarnings.Clear(); it.EnabledWarnings.Clear(); } else { it.DisabledWarnings.Remove(id); it.EnabledWarnings.Add(id); } }
-                    return Array.Empty<Value>();
+                    if (s0 == "query")
+                    {
+                        if (id == "all") { if (n > 0) return new Value[] { All() }; }
+                        else if (n > 0) return new Value[] { One(id) };
+                        else it.Out.Write($"\"{id}\" warning state is \"{StateOf(id)}\"\n");
+                        return Array.Empty<Value>();
+                    }
+                    Value old = id == "all" ? All() : One(id);
+                    SetState(s0 == "error" ? "on" : s0, id);
+                    return n > 0 ? new[] { old } : Array.Empty<Value>();
                 }
             }
             var (wid, msg) = ErrorArgs(a, "warning");
@@ -162,7 +197,18 @@ public static partial class BuiltinLibrary
             while (DateTime.UtcNow < until) { it.CheckInterrupt(); if (!it.Graphics.PendingCallbacks.IsEmpty) DrainCallbacks(it); Thread.Sleep(Math.Max(1, Math.Min(20, (int)(until - DateTime.UtcNow).TotalMilliseconds))); }
             it.CheckInterrupt();
         });
-        Reg0("format", (it, a) => Display.LongFormat = a.Length > 0 && S(a[0], "format").Equals("long", StringComparison.OrdinalIgnoreCase));
+        Reg("format", (it, a, n) =>
+        {
+            if (n > 0 && a.Length == 0) return new Value[] { Str(Display.LongFormat ? "long" : "short"), Str("loose") };
+            foreach (var x in a)
+            {
+                var s = S(x, "format").ToLowerInvariant();
+                if (s == "long") Display.LongFormat = true;
+                else if (s == "short") Display.LongFormat = false;
+            }
+            if (a.Length == 0) Display.LongFormat = false;
+            return Array.Empty<Value>();
+        });
         Reg0("more", (it, a) => { });
         Reg0("beep", (it, a) => { });
         Reg0("clc", (it, a) => { try { if (!Console.IsOutputRedirected) Console.Clear(); } catch (IOException) { } });
@@ -328,17 +374,27 @@ public static partial class BuiltinLibrary
             if (mo.Numel != me.Numel && me.Numel != 1) throw new OctaveException("ASSERT errors: dimensions mismatch");
             for (int k = 0; k < mo.Numel; k++)
             {
-                double e = me.Re[me.Numel == 1 ? 0 : k], o = mo.Re[k];
-                if (double.IsNaN(o) && double.IsNaN(e) || o == e) continue;
-                double err = Math.Abs(o - e), lim = tol < 0 ? Math.Abs(tol * e) : tol;
+                int ke = me.Numel == 1 ? 0 : k;
+                double e = me.Re[ke], o = mo.Re[k];
+                double ei2 = me.Im != null ? me.Im[ke] : 0, oi2 = mo.Im != null ? mo.Im[k] : 0;
+                if (double.IsNaN(o) && double.IsNaN(e) || (o == e && oi2 == ei2)) continue;
+                double ea = Math.Sqrt(e * e + ei2 * ei2);
+                double err = Math.Sqrt((o - e) * (o - e) + (oi2 - ei2) * (oi2 - ei2)), lim = tol < 0 ? (ea == 0 ? Math.Abs(tol) : Math.Abs(tol) * ea) : tol;
                 if (err > lim) throw new OctaveException($"ASSERT errors for:  assert (cond,expected,tol)\n\n  Location  |  Observed  |  Expected  |  Reason\n    ({k + 1})       {o}        {e}       Abs err {err} exceeds tol {lim}");
             }
         });
         Reg("nthargout", (it, a, n) =>
         {
-            int k = I(a[0], "nthargout");
-            var r = it.CallCallable(a[1], a.Skip(2).ToArray(), k);
-            return Out(r[k - 1]);
+            if (a.Length < 2) throw new OctaveException("Invalid call to nthargout");
+            var ns = ((MatrixValue)Fc(it, "double", a[0])).Re.Select(q => (int)q).ToArray();
+            int fi = 1; int ntot = ns.Length == 0 ? 0 : ns.Max();
+            if (a.Length > 2 && a[1] is MatrixValue m1 && !m1.IsChar && m1.Numel == 1 && !(a[1] is FunctionHandleValue)) { ntot = (int)m1.Re[0]; fi = 2; }
+            if (ns.Any(q => q < 1 || q > ntot)) throw new OctaveException("nthargout: N must be a positive integer <= NTOT");
+            var r = it.CallCallable(a[fi], a.Skip(fi + 1).ToArray(), ntot);
+            if (ns.Length == 1) return Out(r[ns[0] - 1]);
+            var c = new CellValue(1, ns.Length);
+            for (int q = 0; q < ns.Length; q++) c.Data[q] = r[ns[q] - 1];
+            return Out(c);
         });
         Reg1("validateattributes", a => MatrixValue.Empty());
         cur!.Builtins.Remove("validateattributes");

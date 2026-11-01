@@ -33,7 +33,7 @@ public class Phase5Tests
     // ---- MFileFirst set
     [Fact] public void MFileFirstContainsTunedNames()
     {
-        Assert.Contains("interp1", Interpreter.MFileFirst);
+        Assert.Contains("rmse", Interpreter.MFileFirst);
         Assert.Contains("var", Interpreter.MFileFirst);
         Assert.DoesNotContain("figure", Interpreter.MFileFirst);
     }

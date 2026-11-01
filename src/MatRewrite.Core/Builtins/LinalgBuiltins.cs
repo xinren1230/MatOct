@@ -246,15 +246,5 @@ public static partial class BuiltinLibrary
             for (int k = 0; k < nb; k++) { b[k] = r[k] / den[0]; for (int j = 0; j < den.Length; j++) r[k + j] -= b[k] * den[j]; }
             return Out(MatrixValue.Row(b), MatrixValue.Row(r));
         });
-        Reg1("interp1", a =>
-        {
-            var x = M(a[0], "interp1"); var y = M(a[1], "interp1"); var xi = M(a[2], "interp1");
-            return Ops.Map(xi, v =>
-            {
-                for (int k = 0; k + 1 < x.Numel; k++)
-                    if (v >= x.Re[k] && v <= x.Re[k + 1]) return y.Re[k] + (y.Re[k + 1] - y.Re[k]) * (v - x.Re[k]) / (x.Re[k + 1] - x.Re[k]);
-                return double.NaN;
-            });
-        });
     }
 }

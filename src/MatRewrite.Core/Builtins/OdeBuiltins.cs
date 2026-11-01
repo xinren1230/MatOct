@@ -23,7 +23,11 @@ public static partial class BuiltinLibrary
                 k++;
             }
             for (; k + 1 < a.Length; k += 2) st.Set(Canon(S(a[k], "odeset")), a[k + 1]);
-            if (k < a.Length) throw new OctaveException("odeset: FIELD/VALUE arguments must occur in pairs");
+            if (k < a.Length)
+            {
+                if (a[k] is MatrixValue dm && dm.IsChar) throw new OctaveException($"odeset: argument '{dm.AsString()}' is not a declared parameter");
+                throw new OctaveException("odeset: FIELD/VALUE arguments must occur in pairs");
+            }
             return st;
         });
         Reg("odeget", (it, a, n) =>
@@ -38,7 +42,15 @@ public static partial class BuiltinLibrary
         Reg("ode23", (it, a, n) => Ode(it, a, n, true));
     }
 
-    static string Canon(string f) => OdeFields.FirstOrDefault(x => x.Equals(f, StringComparison.OrdinalIgnoreCase)) ?? f;
+    static string Canon(string f)
+    {
+        var ex = OdeFields.FirstOrDefault(x => x.Equals(f, StringComparison.OrdinalIgnoreCase));
+        if (ex != null) return ex;
+        var pre = OdeFields.Where(x => x.StartsWith(f, StringComparison.OrdinalIgnoreCase)).OrderBy(x => x, StringComparer.Ordinal).ToList();
+        if (pre.Count == 1) return pre[0];
+        if (pre.Count > 1) throw new OctaveException($"odeset: '{f}' matches more than one Parameter: " + string.Join(", ", pre.Select(x => $"'{x}'")));
+        return f;
+    }
 
     static bool IsEmptyValue(this Value v) => v.Rows * v.Cols == 0;
 

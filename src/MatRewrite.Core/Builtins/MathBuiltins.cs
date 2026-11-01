@@ -37,6 +37,8 @@ public static partial class BuiltinLibrary
     }
     static double RoundHalfAway(double x) => Math.Round(x, MidpointRounding.AwayFromZero);
 
+    internal static double Log1p(double x) { double u = 1 + x; if (u == 1) return x; if (double.IsInfinity(u)) return Math.Log(u); return Math.Log(u) * x / (u - 1); }
+    internal static double Expm1(double x) { if (Math.Abs(x) < 1e-5) return x + x * x / 2 + x * x * x / 6; double u = Math.Exp(x); if (u == 1) return x; double um1 = u - 1; if (um1 == -1) return -1; if (double.IsInfinity(u)) return u; return um1 * x / Math.Log(u); }
     static void RegisterMath()
     {
         Unary("abs", Math.Abs);
@@ -46,8 +48,8 @@ public static partial class BuiltinLibrary
         Unary("log", Math.Log, Complex.Log, x => x < 0);
         Unary("log2", Math.Log2, z => Complex.Log(z) / Math.Log(2), x => x < 0);
         Unary("log10", Math.Log10, Complex.Log10, x => x < 0);
-        Unary("log1p", x => Math.Log(1 + x));
-        Unary("expm1", x => Math.Exp(x) - 1);
+        Unary("log1p", Log1p, z => Complex.Log(1 + z), x => x < -1);
+        Unary("expm1", Expm1, z => Complex.Exp(z) - 1);
         Unary("sin", Math.Sin, Complex.Sin);
         Unary("cos", Math.Cos, Complex.Cos);
         Unary("tan", Math.Tan, Complex.Tan);
@@ -66,7 +68,7 @@ public static partial class BuiltinLibrary
         Unary("fix", Math.Truncate, z => new Complex(Math.Truncate(z.Real), Math.Truncate(z.Imaginary)));
         Unary("sign", x => double.IsNaN(x) ? double.NaN : Math.Sign(x));
         Unary("gamma", x => MathNet.Numerics.SpecialFunctions.Gamma(x));
-        Unary("gammaln", x => MathNet.Numerics.SpecialFunctions.GammaLn(x));
+        Unary("gammaln", x => x > 0 || double.IsNaN(x) ? GammaLn(x) : MathNet.Numerics.SpecialFunctions.GammaLn(x));
         Unary("erf", MathNet.Numerics.SpecialFunctions.Erf);
         Unary("erfc", MathNet.Numerics.SpecialFunctions.Erfc);
         Unary("factorial", x => x < 0 || x != Math.Floor(x) ? throw new OctaveException("factorial: all N must be real non-negative integers") : Math.Round(MathNet.Numerics.SpecialFunctions.Gamma(x + 1)));

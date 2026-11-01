@@ -186,6 +186,7 @@ public static partial class BuiltinLibrary
             Value y = rows ? VCat(it, A, B) : VCat(it, ColOf(it, A), ColOf(it, B));
             if (!rows && isrow) y = y is CellValue cy ? new CellValue(1, cy.Numel, cy.Data) : Fc(it, "transpose", y);
             var r = UniqueImpl(it, y, opts.Where(o => o != "sorted" || true).ToArray(), Math.Max(n, 1) > 1 ? 2 : 1);
+            if (!rows && r[0] is CellValue rc && rc.Numel == 0) r[0] = isrow ? new CellValue(1, 0, new Value[0]) : new CellValue(0, 1, new Value[0]);
             if (n <= 1) return new[] { r[0] };
             int na = rows ? RowsOf(A) : NumelOf(A);
             var idx = M(r[1], "union").Re;

@@ -166,9 +166,18 @@ public static partial class BuiltinLibrary
         // reductions
         Reg1("sum", a =>
         {
+            string mode = "default";
+            while (a.Length > 1 && a[^1] is MatrixValue om && om.IsChar)
+            {
+                mode = om.AsString().ToLowerInvariant();
+                if (mode != "double" && mode != "native" && mode != "default" && mode != "extra") throw new OctaveException($"sum: unrecognized type argument '{om.AsString()}'");
+                a = a[..^1];
+            }
             var m = M(a[0], "sum"); int d = DimArg(a, 1, m, "sum");
-            if (m.IsComplex) return ReduceC(m, d, v => v.Aggregate(Complex.Zero, (x, y) => x + y));
+            if (m.IsComplex) { var rc = ReduceC(m, d, v => v.Aggregate(Complex.Zero, (x, y) => x + y)); return mode != "double" && m.IsSingle ? rc.CastInPlace(m.Kind) : rc; }
             var r = Reduce(m, d, v => { double s = 0; foreach (var x in v) s += x; return s; });
+            if (mode == "double") return r;
+            if (mode == "native" && m.IsLogical) { for (int q = 0; q < r.Re.Length; q++) r.Re[q] = r.Re[q] != 0 ? 1 : 0; return r.CastInPlace(NumKind.Logical); }
             return m.IsInteger || m.IsSingle ? r.CastInPlace(m.Kind) : r;
         });
         Reg1("prod", a =>
