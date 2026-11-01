@@ -545,17 +545,16 @@ public sealed partial class Interpreter
     bool TryFastCellAssign(CellValue c, Op op, Value rhs)
     {
         if (op.Kind != '{' || op.Args == null || op.Args.Count != 1 || c.ND != null) return false;
-        if (op.Args[0] is not (NumberExpr or IdentExpr or BinaryExpr)) return false;
+        if (op.Args[0] is not (NumberExpr or IdentExpr or BinaryExpr or ValueExpr)) return false;
         if (rhs is ObjectValue) return false;
         var args = EvalIndexArgs(op.Args, c);
         if (args[0] is not MatrixValue i || i.Numel != 1 || i.Kind == NumKind.Logical || i.Im != null) return false;
         double d = i.Re[0]; if (d < 1 || d != Math.Floor(d)) return false;
-        int n = c.Data.Length;
-        if (d <= n) { c.Data[(int)d - 1] = rhs; return true; }
+        int n = c.Numel;
+        if (d <= n) { c.RawData[(int)d - 1] = rhs; return true; }
         if (d == n + 1 && (c.R == 1 || n == 0))
         {
-            var nd = new Value[n + 1]; Array.Copy(c.Data, nd, n); nd[n] = rhs;
-            c.Data = nd; c.R = 1; c.C = n + 1; return true;
+            return c.TryAppend(rhs);
         }
         return false;
     }
@@ -564,16 +563,18 @@ public sealed partial class Interpreter
     bool TryFastScalarAssign(MatrixValue m, Op op, Value rhs)
     {
         if (op.Kind != '(' || op.Args == null || op.Args.Count is < 1 or > 2) return false;
-        if (m.Kind != NumKind.Double || m.Im != null || m.ND != null || m.DoubleQuoted) return false;
-        if (rhs is not MatrixValue r || r.Numel != 1 || r.Kind != NumKind.Double || r.Im != null) return false;
-        foreach (var a in op.Args) if (a is not (NumberExpr or IdentExpr or BinaryExpr)) return false;
+        if (m.Kind != NumKind.Double || m.HasIm || m.ND != null || m.DoubleQuoted) return false;
+        if (rhs is not MatrixValue r || r.Numel != 1 || r.Kind != NumKind.Double || r.HasIm) return false;
+        foreach (var a in op.Args) if (a is not (NumberExpr or IdentExpr or BinaryExpr or ValueExpr)) return false;
         // evaluate subscripts with the matrix as 'end' context
         var args = EvalIndexArgs(op.Args, m);
         int lin;
         if (args.Length == 1)
         {
             if (args[0] is not MatrixValue i || i.Numel != 1 || i.Kind == NumKind.Logical || i.Im != null) return false;
-            double d = i.Re[0]; if (d < 1 || d > m.Re.Length || d != Math.Floor(d)) return false;
+            double d = i.Re[0];
+            if (d == m.Numel + 1 && d == Math.Floor(d)) return m.TryAppend(r.RawRe[0]);
+            if (d < 1 || d > m.Numel || d != Math.Floor(d)) return false;
             lin = (int)d - 1;
         }
         else
@@ -584,7 +585,7 @@ public sealed partial class Interpreter
             if (di < 1 || dj < 1 || di > m.R || dj > m.C || di != Math.Floor(di) || dj != Math.Floor(dj)) return false;
             lin = (int)di - 1 + ((int)dj - 1) * m.R;
         }
-        m.Re[lin] = r.Re[0];
+        m.RawRe[lin] = r.RawRe[0];
         return true;
     }
 

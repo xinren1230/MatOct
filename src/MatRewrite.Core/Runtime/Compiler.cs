@@ -130,7 +130,7 @@ public sealed partial class Interpreter
         return -1;
     }
 
-    static bool PlainDouble(MatrixValue m) => m.Kind == NumKind.Double && m.Im == null && m.ND == null && !m.DoubleQuoted;
+    static bool PlainDouble(MatrixValue m) => m.Kind == NumKind.Double && !m.HasIm && m.ND == null && !m.DoubleQuoted;
 
     static Func<Interpreter, Value> CompileIndexRead(Expr e, string name, List<Expr> args)
     {
@@ -197,9 +197,10 @@ public sealed partial class Interpreter
                         { it.AssignTo(target, rhs); return Flow.Normal; }
                         var av = EvalCompiledArgs(it, fa, args);
                         int lin = -1;
-                        if (av.Length == 1) lin = ScalarIndex(av[0], m.Re.Length);
+                        if (av.Length == 1) lin = ScalarIndex(av[0], m.Numel);
                         else if (av.Length == 2) { int i = ScalarIndex(av[0], m.R), j = ScalarIndex(av[1], m.C); if (i >= 0 && j >= 0) lin = i + j * m.R; }
-                        if (lin >= 0) { m.Re[lin] = r.Re[0]; return Flow.Normal; }
+                        if (lin >= 0) { m.RawRe[lin] = r.RawRe[0]; return Flow.Normal; }
+                        if (av.Length == 1 && av[0] is MatrixValue ai && ai.Numel == 1 && !ai.HasIm && ai.Kind != NumKind.Logical && ai.RawRe[0] == m.Numel + 1 && m.TryAppend(r.RawRe[0])) return Flow.Normal;
                         // out of range / non-scalar subscripts: generic path with the already evaluated subscripts
                         it.AssignTo(new IndexExpr(vid, av.Select(x => (Expr)new ValueExpr(x)).ToList(), false) { Line = ix.Line }, rhs);
                         return Flow.Normal;
@@ -268,7 +269,7 @@ public sealed partial class Interpreter
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    static bool IsRealDoubleScalar(MatrixValue m) => m.Kind == NumKind.Double && m.Im == null && m.R == 1 && m.C == 1 && m.ND == null;
+    static bool IsRealDoubleScalar(MatrixValue m) => m.Kind == NumKind.Double && !m.HasIm && m.R == 1 && m.C == 1 && m.ND == null;
 
     static Func<double, double, Value>? ScalarOp(string op) => op switch
     {

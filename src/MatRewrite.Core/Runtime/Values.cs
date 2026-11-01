@@ -123,8 +123,34 @@ public static class NumTypes
 
 public sealed class MatrixValue : ArrayValue
 {
-    public double[] Re;
-    public double[]? Im;
+    double[] _re = Array.Empty<double>();
+    double[]? _im;
+    /// <summary>Set when the backing arrays carry spare capacity from amortized appends; any outside access trims them.</summary>
+    bool _spare;
+    public double[] Re { get { if (_spare) Trim(); return _re; } set { _re = value; _spare = false; } }
+    public double[]? Im { get { if (_spare) Trim(); return _im; } set { _im = value; if (_spare) Trim(); } }
+    internal double[] RawRe => _re;
+    internal bool HasIm => _im != null;
+    void Trim()
+    {
+        int n = R * C;
+        if (_re.Length != n) Array.Resize(ref _re, n);
+        if (_im != null && _im.Length != n) Array.Resize(ref _im, n);
+        _spare = false;
+    }
+    /// <summary>Amortized O(1) append of a real scalar to a row/column vector or empty matrix (in place).</summary>
+    internal bool TryAppend(double v)
+    {
+        int n = R * C;
+        if (ND != null || _im != null) return false;
+        bool row = R == 1 || n == 0 && !(C == 1 && R == 0);
+        if (!(R == 1 || C == 1 || n == 0)) return false;
+        if (n == 0 && (R > 1 || C > 1)) return false;
+        if (_re.Length <= n) { Array.Resize(ref _re, Math.Max(8, n * 2)); }
+        _re[n] = v; _spare = _re.Length != n + 1;
+        if (n == 0) { R = 1; C = 1; } else if (row && R == 1) C++; else R++;
+        return true;
+    }
     public NumKind Kind;
     public bool DoubleQuoted; // display only
 
@@ -246,7 +272,20 @@ public sealed class MatrixValue : ArrayValue
 
 public sealed class CellValue : ArrayValue
 {
-    public Value[] Data;
+    Value[] _data = Array.Empty<Value>();
+    bool _spare;
+    internal Value[] RawData => _data;
+    public Value[] Data { get { if (_spare) { Array.Resize(ref _data, R * C); _spare = false; } return _data; } set { _data = value; _spare = false; } }
+    /// <summary>Amortized O(1) append to a row cell (or empty cell), in place.</summary>
+    internal bool TryAppend(Value v)
+    {
+        int n = R * C;
+        if (ND != null || !(R == 1 || n == 0)) return false;
+        if (_data.Length <= n) Array.Resize(ref _data, Math.Max(8, n * 2));
+        _data[n] = v; _spare = _data.Length != n + 1;
+        R = 1; C = n + 1;
+        return true;
+    }
     public CellValue(int r, int c)
     {
         R = r; C = c; Data = new Value[r * c];
