@@ -20,6 +20,8 @@ public sealed class UserFunction
     public UserFunction? Parent;                                // for nested functions
     public Dictionary<string, UserFunction> Nested = new();
     public int Line;
+    public ClassInfo? Class;        // set on the constructor stub of a classdef file
+    public ClassInfo? OwnerClass;   // set on class methods
 
     public static UserFunction From(FunctionDef d, string? file, UserFunction? parent = null)
     {
@@ -80,6 +82,7 @@ public sealed partial class Interpreter
         Current = Base;
         BuiltinLibrary.RegisterAll(this);
         Ops.Warn = msg => Warning(msg);
+        InputReader = DefaultReader;
     }
 
     public void Warning(string msg) { Out.Flush(); Out.WriteLine("warning: " + msg); }
@@ -92,6 +95,7 @@ public sealed partial class Interpreter
         var unit = Parser.ParseProgram(code);
         foreach (var f in unit.Functions) CommandLineFunctions[f.Name] = UserFunction.From(f, null);
         var saveScope = Current;
+        if (!IsPaused) { fileStack.Clear(); interruptRequested = false; step = StepMode.None; }
         try { Current = Base; endStack.Clear(); depth = 0; ExecBlock(unit.Statements); }
         finally { Current = saveScope; Out.Flush(); }
     }
@@ -111,6 +115,7 @@ public sealed partial class Interpreter
         missingCache.Clear();
         var fn = LoadFile(path, Path.GetFileNameWithoutExtension(path));
         var save = Current;
+        if (!IsPaused) { fileStack.Clear(); interruptRequested = false; step = StepMode.None; }
         try
         {
             Current = Base;
@@ -177,6 +182,7 @@ public sealed partial class Interpreter
     Flow Exec(Stmt s)
     {
         if (s.Line > 0) Current.Line = s.Line;
+        BeforeStatement(s);
         switch (s)
         {
             case ExprStmt es: ExecExprStmt(es); return Flow.Normal;
@@ -189,6 +195,7 @@ public sealed partial class Interpreter
             case WhileStmt w:
                 while (Ops.IsTrue(Eval(w.Cond)))
                 {
+                    CheckInterrupt();
                     var fl = ExecBlock(w.Body);
                     if (fl == Flow.Break) break;
                     if (fl == Flow.Return) return fl;
@@ -197,6 +204,7 @@ public sealed partial class Interpreter
             case DoUntilStmt d:
                 do
                 {
+                    CheckInterrupt();
                     var fl = ExecBlock(d.Body);
                     if (fl == Flow.Break) break;
                     if (fl == Flow.Return) return fl;
@@ -205,7 +213,7 @@ public sealed partial class Interpreter
             case SwitchStmt sw: return ExecSwitch(sw);
             case TryStmt t:
                 try { return ExecBlock(t.Body); }
-                catch (Exception ex) when (ex is not ControlException)
+                catch (Exception ex) when (ex is not ControlException && ex is not InterruptException)
                 {
                     var (msg, id) = ErrorInfo(ex);
                     LastError = msg;
@@ -332,7 +340,7 @@ public sealed partial class Interpreter
             for (long k = 0; k < n; k++)
             {
                 AssignTo(f.Var, MatrixValue.Scalar(start + k * step));
-                var fl = ExecBlock(f.Body);
+                CheckInterrupt(); var fl = ExecBlock(f.Body);
                 if (fl == Flow.Break) break;
                 if (fl == Flow.Return) return fl;
             }
@@ -352,7 +360,7 @@ public sealed partial class Interpreter
             }
             else item = v;
             AssignTo(f.Var, item);
-            var fl = ExecBlock(f.Body);
+            CheckInterrupt(); var fl = ExecBlock(f.Body);
             if (fl == Flow.Break) break;
             if (fl == Flow.Return) return fl;
         }
@@ -462,6 +470,14 @@ public sealed partial class Interpreter
             case '.':
             {
                 var name = FieldName(op);
+                if (cur is ObjectValue ob)
+                {
+                    if (!ob.Props.ContainsKey(name))
+                        throw new OctaveException(ob.Cls.Chain().Any(c => c.Constants.ContainsKey(name)) ? $"subsasgn: cannot set constant property '{name}'" : $"subsasgn: unknown property: {name}");
+                    var target = ob.CopyForWrite();
+                    target.Props[name] = AssignChain(ob.Props[name], ops, k + 1, rhs);
+                    return target;
+                }
                 StructValue s = cur switch
                 {
                     null => new StructValue(),
@@ -558,7 +574,33 @@ public sealed partial class Interpreter
             if (b.Op == "||" && lv) return MatrixValue.Bool(true);
             return MatrixValue.Bool(LogicalScalar(Eval(b.Right), b.Op));
         }
-        return Ops.Binary(b.Op, Eval(b.Left), Eval(b.Right));
+        var lv2 = Eval(b.Left); var rv2 = Eval(b.Right);
+        if (lv2 is ObjectValue || rv2 is ObjectValue) return ObjectBinary(b.Op, lv2, rv2);
+        return Ops.Binary(b.Op, lv2, rv2);
+    }
+
+    static readonly Dictionary<string, string> OpMethods = new()
+    {
+        ["+"] = "plus", ["-"] = "minus", [".*"] = "times", ["*"] = "mtimes", ["./"] = "rdivide", ["/"] = "mrdivide",
+        [".^"] = "power", ["^"] = "mpower", ["=="] = "eq", ["!="] = "ne", ["~="] = "ne", ["<"] = "lt", ["<="] = "le",
+        [">"] = "gt", [">="] = "ge", ["&"] = "and", ["|"] = "or", ["\\"] = "mldivide"
+    };
+
+    Value ObjectBinary(string op, Value l, Value r)
+    {
+        if (OpMethods.TryGetValue(op, out var mname))
+        {
+            foreach (var o in new[] { l, r })
+                if (o is ObjectValue ov && ov.Cls.FindMethod(mname, out _) is UserFunction mf)
+                {
+                    var res = CallUser(mf, new[] { l, r }, 1);
+                    if (res.Length == 0) throw new OctaveException($"{mname}: method returned no value");
+                    return res[0];
+                }
+            if (mname is "eq" or "ne" && l is ObjectValue a && r is ObjectValue b2 && a.Cls.IsHandle)
+                return MatrixValue.Bool(ReferenceEquals(a, b2) == (mname == "eq"));
+        }
+        throw new OctaveException($"binary operator '{op}' not implemented for '{l.ClassName}' by '{r.ClassName}' operations");
     }
 
     static bool LogicalScalar(Value v, string op)
@@ -717,6 +759,20 @@ public sealed partial class Interpreter
                 cur = CallFunction("containers.Map", margs, 1).ToList();
                 if (start == ops.Count) return cur;
             }
+            else if (ops.Count > 0 && ops[0].Kind == '.' && ops[0].Field != null && !Builtins.ContainsKey(id.Name) && FindClassQuiet(id.Name) is ClassInfo sci
+                     && (sci.Static.Contains(ops[0].Field!) || sci.Chain().Any(c => c.Constants.ContainsKey(ops[0].Field!))))
+            {
+                var mname = ops[0].Field!;
+                start = 1;
+                if (sci.Static.Contains(mname))
+                {
+                    Value[] sargs = Array.Empty<Value>();
+                    if (ops.Count > 1 && ops[1].Kind == '(') { sargs = EvalArgs(ops[1].Args!); start = 2; }
+                    cur = CallUser(sci.Methods[mname], sargs, start == ops.Count ? nargout : 1).ToList();
+                }
+                else cur = new List<Value> { sci.Chain().First(c => c.Constants.ContainsKey(mname)).Constants[mname] };
+                if (start == ops.Count) return cur;
+            }
             else if (id.Name == "nargin" && Current.Nargin >= 0 && ops.Count == 0) return new List<Value> { MatrixValue.Scalar(Current.Nargin) };
             else if (id.Name == "nargout" && Current.Nargout >= 0 && ops.Count == 0) return new List<Value> { MatrixValue.Scalar(Current.Nargout) };
             else
@@ -753,6 +809,8 @@ public sealed partial class Interpreter
                         cur = new List<Value> { mv0.Get(ka[0]) };
                         break;
                     }
+                    if (v is ObjectValue && op.Args!.Count == 1 && EvalArgs(op.Args) is var oa && oa.Length == 1 && oa[0] is MatrixValue om && om.Numel == 1 && om.Re[0] == 1)
+                    { cur = new List<Value> { v }; break; }
                     if (v is not ArrayValue av) throw new OctaveException($"'{v.ClassName}' object cannot be indexed with (");
                     cur = new List<Value> { Indexing.Read(av, EvalIndexArgs(op.Args!, v)) };
                     break;
@@ -781,6 +839,21 @@ public sealed partial class Interpreter
                         };
                         break;
                     }
+                    if (v is ObjectValue ov)
+                    {
+                        var meth = ov.Cls.FindMethod(name, out _);
+                        if (meth != null && !ov.Props.ContainsKey(name))
+                        {
+                            Value[] margs = Array.Empty<Value>();
+                            if (!last && ops[k + 1].Kind == '(') { margs = EvalArgs(ops[k + 1].Args!); k++; }
+                            bool isLast = k == ops.Count - 1;
+                            var all = ov.Cls.Static.Contains(name) ? margs : new Value[] { ov }.Concat(margs).ToArray();
+                            cur = CallUser(meth, all, isLast ? nargout : 1).ToList();
+                            break;
+                        }
+                        cur = new List<Value> { GetProp(ov, name) };
+                        break;
+                    }
                     if (v is not StructValue sv)
                         throw new OctaveException(v is MatrixValue mm && mm.IsScalar ? "scalar cannot be indexed with ." : v is MatrixValue ? "matrix cannot be indexed with ." : $"'{v.ClassName}' object cannot be indexed with .");
                     if (!sv.HasField(name)) throw new OctaveException($"invalid use of undefined value");
@@ -796,7 +869,10 @@ public sealed partial class Interpreter
     public Value[] CallFunction(string name, Value[] args, int nargout, UserFunction? context = null)
     {
         context ??= Current.Func;
+        if (name.Contains('@')) return CallSuper(name, args, nargout);
+        if (args.Length > 0 && TryDispatchMethod(name, args, nargout, out var mres)) return mres;
         var uf = ResolveUser(name, context);
+        if (uf != null && uf.Class != null) return Construct(uf.Class, args, nargout);
         if (uf != null)
         {
             if (uf.IsScript)
@@ -854,6 +930,15 @@ public sealed partial class Interpreter
         if (fileCache.TryGetValue(path, out var c) && c.mtime == mtime) return c.fn;
         var unit = Parser.ParseProgram(File.ReadAllText(path));
         UserFunction fn;
+        if (unit.Class != null)
+        {
+            if (!unit.Class.Name.Equals(name, StringComparison.OrdinalIgnoreCase) && !Path.GetFileNameWithoutExtension(path).Equals(unit.Class.Name, StringComparison.OrdinalIgnoreCase))
+                throw new OctaveException($"classdef '{unit.Class.Name}' must be defined in a file named {unit.Class.Name}.m");
+            fn = new UserFunction { Name = unit.Class.Name, File = path };
+            fileCache[path] = (mtime, fn);
+            fn.Class = BuildClass(unit.Class, path, unit.Functions);
+            return fn;
+        }
         if (unit.IsFunctionFile)
         {
             var defs = unit.Functions.Select(d => UserFunction.From(d, path)).ToList();
@@ -875,6 +960,7 @@ public sealed partial class Interpreter
         foreach (var kv in script.Siblings) CommandLineFunctions[kv.Key] = kv.Value;
         var saveLine = Current.Line; var saveName = Current.FrameName;
         Current.FrameName = script.Name; Current.Line = 0;
+        PushFile(script.File);
         try { ExecBlock(script.Body); }
         catch (Exception ex) when (ex is not ControlException)
         {
@@ -882,10 +968,10 @@ public sealed partial class Interpreter
             if (!ReferenceEquals(oe, ex)) throw oe;
             throw;
         }
-        finally { Current.Line = saveLine; Current.FrameName = saveName; }
+        finally { Current.Line = saveLine; Current.FrameName = saveName; PopFile(); }
     }
 
-    public Value[] CallUser(UserFunction f, Value[] args, int nargout)
+    public Value[] CallUser(UserFunction f, Value[] args, int nargout, Dictionary<string, Value>? preset = null)
     {
         bool hasVarargin = f.Params.Count > 0 && f.Params[^1] == "varargin";
         int fixedIn = hasVarargin ? f.Params.Count - 1 : f.Params.Count;
@@ -908,9 +994,10 @@ public sealed partial class Interpreter
             if (f.Params[k] != "~") scope.Vars[f.Params[k]] = args[k];
         if (hasVarargin)
             scope.Vars["varargin"] = CellValue.RowOf(args.Skip(fixedIn));
+        if (preset != null) foreach (var kv in preset) scope.Vars[kv.Key] = kv.Value;
 
         var save = Current; var saveEnd = endStack.ToList();
-        Current = scope; depth++; CallStack.Add(scope);
+        Current = scope; depth++; CallStack.Add(scope); PushFile(f.File);
         endStack.Clear();
         try { ExecBlock(f.Body); }
         catch (Exception ex) when (ex is not ControlException)
@@ -919,7 +1006,7 @@ public sealed partial class Interpreter
             if (!ReferenceEquals(oe, ex)) throw oe;
             throw;
         }
-        finally { Current = save; depth--; CallStack.RemoveAt(CallStack.Count - 1); endStack.Clear(); endStack.AddRange(saveEnd); }
+        finally { Current = save; depth--; CallStack.RemoveAt(CallStack.Count - 1); PopFile(); endStack.Clear(); endStack.AddRange(saveEnd); }
 
         var outs = new List<Value>();
         int want = Math.Max(1, nargout);

@@ -47,10 +47,10 @@ namespace MatRewrite.Core.Builtins
             RegG("clf", (it, a, n) =>
             {
                 var f = it.Graphics.Gcf();
-                f.Axes.Clear(); f.CurrentAxes = null; it.Graphics.Touch(f);
+                f.Axes.Clear(); f.CurrentAxes = null; f.Annotations.Clear(); it.Graphics.Touch(f);
                 return n > 0 ? Out(H(f)) : Array.Empty<Value>();
             });
-            RegG("cla", (it, a, n) => { var ax = it.Graphics.Gca(); ax.Reset(); ax.Title = ax.XLabel = ax.YLabel = ""; it.Graphics.Touch(ax.Figure); return Array.Empty<Value>(); });
+            RegG("cla", (it, a, n) => { var ax = it.Graphics.Gca(); ax.Reset(); ax.Title = ax.XLabel = ax.YLabel = ax.ZLabel = ""; it.Graphics.Touch(ax.Figure); return Array.Empty<Value>(); });
             RegG("close", (it, a, n) =>
             {
                 var g = it.Graphics;
@@ -198,7 +198,9 @@ namespace MatRewrite.Core.Builtins
                 var f = it.Graphics.Gcf();
                 if (a.Length > 0)
                 {
-                    var name = IsString(a[^1]) ? S(a[^1], "colormap").ToLowerInvariant() : throw new OctaveException("colormap: only named colormaps are supported");
+                    var name = IsString(a[^1]) ? S(a[^1], "colormap").ToLowerInvariant()
+                        : a[^1] is MatrixValue cm ? (NamedMapFor(cm) ?? throw new OctaveException("colormap: custom colormap matrices are not supported yet (use jet, gray, hot, cool or a named map)"))
+                        : throw new OctaveException("colormap: invalid argument");
                     if (!(name is "default" or "viridis" or "parula" or "jet" or "gray" or "hot" or "cool" or "turbo" or "magma" or "inferno" or "plasma"))
                         throw new OctaveException($"colormap: invalid MAP name '{name}'");
                     f.Colormap = name == "default" ? "viridis" : name;
@@ -207,6 +209,15 @@ namespace MatRewrite.Core.Builtins
                 return n > 0 || a.Length == 0 ? Out(Str(f.Colormap)) : Array.Empty<Value>();
             });
 
+            foreach (var nm in new[] { "jet", "gray", "hot", "cool" })
+            {
+                var name0 = nm;
+                RegG(name0, (it, a, n) =>
+                {
+                    int cnt = a.Length > 0 ? (int)((MatrixValue)a[0]).Re[0] : 64;
+                    return Out(MapMatrix(name0, cnt));
+                });
+            }
             RegG("title", (it, a, n) => { var ax = it.Graphics.Gca(); ax.Title = LabelText(a, "title"); it.Graphics.Touch(ax.Figure); return Array.Empty<Value>(); });
             RegG("xlabel", (it, a, n) => { var ax = it.Graphics.Gca(); ax.XLabel = LabelText(a, "xlabel"); it.Graphics.Touch(ax.Figure); return Array.Empty<Value>(); });
             RegG("ylabel", (it, a, n) => { var ax = it.Graphics.Gca(); ax.YLabel = LabelText(a, "ylabel"); it.Graphics.Touch(ax.Figure); return Array.Empty<Value>(); });
@@ -396,6 +407,8 @@ namespace MatRewrite.Core.Builtins
             double x0 = double.PositiveInfinity, x1 = double.NegativeInfinity, y0 = x0, y1 = x1;
             void Acc(IEnumerable<double> xs, IEnumerable<double> ys)
             {
+                if (ax.XLog) xs = xs.Where(v => v > 0).Select(Math.Log10);
+                if (ax.YLog) ys = ys.Where(v => v > 0).Select(Math.Log10);
                 foreach (var v in xs.Where(double.IsFinite)) { x0 = Math.Min(x0, v); x1 = Math.Max(x1, v); }
                 foreach (var v in ys.Where(double.IsFinite)) { y0 = Math.Min(y0, v); y1 = Math.Max(y1, v); }
             }
@@ -406,15 +419,26 @@ namespace MatRewrite.Core.Builtins
                     case ScatterSeries sc: Acc(sc.X, sc.Y); break;
                     case BarSeries b: Acc(b.X.Select(v => v - b.Width / 2).Concat(b.X.Select(v => v + b.Width / 2)), b.Y.Append(0)); break;
                     case ImageSeries im: Acc(new[] { im.X0 - 0.5, im.X1 + 0.5 }, new[] { im.Y0 - 0.5, im.Y1 + 0.5 }); break;
+                    case SurfaceSeries sf: Acc(sf.X.Cast<double>(), sf.Y.Cast<double>()); break;
+                    case ContourSeries cs: Acc(cs.X, cs.Y); break;
+                    case ErrorBarSeries eb:
+                        if (eb.Horizontal) Acc(eb.X.Select((v, i) => v - eb.L[i]).Concat(eb.X.Select((v, i) => v + eb.U[i])), eb.Y);
+                        else Acc(eb.X, eb.Y.Select((v, i) => v - eb.L[i]).Concat(eb.Y.Select((v, i) => v + eb.U[i])));
+                        break;
+                    case TextSeries ts: Acc(new[] { ts.X }, new[] { ts.Y }); break;
                 }
             if (x0 > x1) { x0 = 0; x1 = 1; }
             if (y0 > y1) { y0 = 0; y1 = 1; }
             if (x0 == x1) { x0 -= 1; x1 += 1; }
             if (y0 == y1) { y0 -= 1; y1 += 1; }
-            if (!ax.Tight && !ax.Children.Any(c => c is ImageSeries))
+            bool fit = ax.Tight || ax.Children.Any(c => c is ImageSeries or ContourSeries) || ax.Children.Count > 0 && ax.Children.All(c => c is SurfaceSeries) && !ax.Is3D;
+            if (!fit)
             {
-                (x0, x1) = Nice(x0, x1); (y0, y1) = Nice(y0, y1);
+                (x0, x1) = ax.XLog ? (Math.Floor(x0), Math.Ceiling(x1)) : Nice(x0, x1);
+                (y0, y1) = ax.YLog ? (Math.Floor(y0), Math.Ceiling(y1)) : Nice(y0, y1);
             }
+            if (ax.XLog) { x0 = Math.Pow(10, x0); x1 = Math.Pow(10, x1); }
+            if (ax.YLog) { y0 = Math.Pow(10, y0); y1 = Math.Pow(10, y1); }
             return (ax.XLim ?? new[] { x0, x1 }, ax.YLim ?? new[] { y0, y1 });
         }
 
@@ -619,6 +643,23 @@ namespace MatRewrite.Core.Builtins
                     case (Axes ax, "title"): ax.Title = S(v, fn); break;
                     case (Axes ax, "xlim"): ax.XLim = M(v, fn).Re.ToArray(); break;
                     case (Axes ax, "ylim"): ax.YLim = M(v, fn).Re.ToArray(); break;
+                    case (Axes ax, "zlim"): ax.ZLim = M(v, fn).Re.ToArray(); break;
+                    case (Axes ax, "xscale"): ax.XLog = S(v, fn) == "log"; break;
+                    case (Axes ax, "yscale"): ax.YLog = S(v, fn) == "log"; break;
+                    case (Axes ax, "view"): { var m = M(v, fn); ax.Az = m.Re[0]; ax.El = m.Re[1]; break; }
+                    case (SurfaceSeries sf, "edgecolor"): if (IsString(v) && S(v, fn) is "none") sf.Shading = "flat"; else if (IsString(v) && S(v, fn) is "interp" or "flat") { } else sf.EdgeColor = ParseColor(v, fn); break;
+                    case (SurfaceSeries sf, "facecolor"): if (IsString(v) && S(v, fn) is "interp" or "flat") { } else if (IsString(v) && S(v, fn) == "none") sf.FaceColor = null; else sf.FaceColor = ParseColor(v, fn); break;
+                    case (SurfaceSeries, "linestyle" or "linewidth" or "facealpha" or "facelighting"): break;
+                    case (ContourSeries cs, "linecolor" or "color"): cs.LineColor = IsString(v) && S(v, fn) == "none" ? null : ParseColor(v, fn); break;
+                    case (ContourSeries cs, "linewidth"): cs.LineWidth = D(v, fn); break;
+                    case (ContourSeries, "showtext" or "linestyle"): break;
+                    case (ErrorBarSeries eb, "color"): eb.Color = ParseColor(v, fn); break;
+                    case (ErrorBarSeries, "linewidth" or "capsize"): break;
+                    case (TextSeries t, "color"): t.Color = ParseColor(v, fn); break;
+                    case (TextSeries t, "fontsize"): t.FontSize = D(v, fn); break;
+                    case (TextSeries t, "horizontalalignment"): t.HAlign = S(v, fn).ToLowerInvariant(); break;
+                    case (TextSeries t, "string"): t.Text = S(v, fn); break;
+                    case (TextSeries, "verticalalignment" or "rotation"): break;
                     case (Axes ax, "xgrid" or "ygrid"): ax.Grid = S(v, fn) == "on"; break;
                     case (Axes ax, "box"): ax.Box = S(v, fn) == "on"; break;
                     case (Axes ax, "ydir"): ax.YDirReverse = S(v, fn) == "reverse"; break;
@@ -640,7 +681,7 @@ namespace MatRewrite.Core.Builtins
             static Value C(Rgb c) => MatrixValue.Row(new[] { c.R, c.G, c.B });
             return (o, p.ToLowerInvariant()) switch
             {
-                (_, "type") => Str(o switch { Figure => "figure", Axes => "axes", LineSeries => "line", ScatterSeries => "scatter", BarSeries => "bar", ImageSeries => "image", _ => "unknown" }),
+                (_, "type") => Str(o switch { Figure => "figure", Axes => "axes", LineSeries => "line", ScatterSeries => "scatter", BarSeries => "bar", ImageSeries => "image", SurfaceSeries => "surface", ContourSeries => "contour", ErrorBarSeries => "errorbar", TextSeries => "text", Annotation => "annotation", _ => "unknown" }),
                 (_, "displayname") => Str(o.DisplayName),
                 (LineSeries l, "color") => C(l.Color),
                 (LineSeries l, "linewidth") => Num(l.LineWidth),
@@ -658,10 +699,63 @@ namespace MatRewrite.Core.Builtins
                 (Axes ax, "ylabel") => Str(ax.YLabel),
                 (Axes ax, "xlim") => MatrixValue.Row(Limits(ax).x),
                 (Axes ax, "ylim") => MatrixValue.Row(Limits(ax).y),
+                (Axes ax, "zlabel") => Str(ax.ZLabel),
+                (Axes ax, "zlim") => MatrixValue.Row(ZLimits(ax)),
+                (Axes ax, "view") => MatrixValue.Row(new[] { ax.Az, ax.El }),
+                (Axes ax, "xscale") => Str(ax.XLog ? "log" : "linear"),
+                (Axes ax, "yscale") => Str(ax.YLog ? "log" : "linear"),
+                (SurfaceSeries sf, "zdata") => FromGrid(sf.Z),
+                (SurfaceSeries sf, "xdata") => FromGrid(sf.X),
+                (SurfaceSeries sf, "ydata") => FromGrid(sf.Y),
+                (SurfaceSeries sf, "cdata") => FromGrid(sf.C),
+                (LineSeries l, "zdata") => l.Z == null ? new MatrixValue(0, 0) : MatrixValue.Row(l.Z),
+                (ContourSeries cs, "levellist") => MatrixValue.Row(cs.Levels),
+                (TextSeries t, "string") => Str(t.Text),
+                (TextSeries t, "position") => MatrixValue.Row(new[] { t.X, t.Y, t.Z ?? 0 }),
+                (Annotation an, "string") => Str(an.Text),
                 (Axes ax, "nextplot") => Str(ax.Hold ? "add" : "replace"),
                 (Axes ax, "xgrid") => Str(ax.Grid ? "on" : "off"),
                 _ => throw new OctaveException($"get: unknown property '{p}'")
             };
         }
+    
+    /// <summary>Colormap matrix (n x 3) for the built-in generator functions jet/gray/hot/cool.</summary>
+    internal static MatrixValue MapMatrix(string name, int n)
+    {
+        n = Math.Max(n, 0);
+        var m = new MatrixValue(n, 3);
+        for (int i = 0; i < n; i++)
+        {
+            double t = n == 1 ? 0 : (double)i / (n - 1);
+            double r, g, b;
+            switch (name)
+            {
+                case "gray": r = g = b = t; break;
+                case "cool": r = t; g = 1 - t; b = 1; break;
+                case "hot":
+                    r = Math.Clamp(t * 8 / 3, 0, 1); g = Math.Clamp(t * 8 / 3 - 1, 0, 1); b = Math.Clamp(t * 4 - 3, 0, 1); break;
+                default: // jet
+                    double x = 4 * t;
+                    r = Math.Clamp(Math.Min(x - 1.5, -x + 4.5), 0, 1);
+                    g = Math.Clamp(Math.Min(x - 0.5, -x + 3.5), 0, 1);
+                    b = Math.Clamp(Math.Min(x + 0.5, -x + 2.5), 0, 1); break;
+            }
+            m.Re[i] = r; m.Re[i + n] = g; m.Re[i + 2 * n] = b;
+        }
+        return m;
     }
+
+    static string? NamedMapFor(MatrixValue m)
+    {
+        if (m.C != 3 || m.R < 1) return null;
+        foreach (var nm in new[] { "jet", "gray", "hot", "cool" })
+        {
+            var g = MapMatrix(nm, m.R);
+            bool eq = true;
+            for (int k = 0; k < g.Re.Length && eq; k++) eq = Math.Abs(g.Re[k] - m.Re[k]) < 1e-9;
+            if (eq) return nm;
+        }
+        return null;
+    }
+}
 }

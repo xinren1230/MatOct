@@ -1,5 +1,9 @@
 // MatRewrite - GPL-3.0-or-later
+using System.Collections.Concurrent;
 using System.IO;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using ICSharpCode.AvalonEdit;
 using System.Text;
 using System.Windows;
 using System.Windows.Input;
@@ -38,14 +42,31 @@ public partial class MainWindow : Window
     string? currentFile;
     bool dirty, busy;
     Thread? worker;
+    readonly TextEditor Editor;
+    readonly BreakpointMargin bpMargin;
+    /// <summary>Lines typed in the command window while the interpreter waits in input()/keyboard/debug mode.</summary>
+    readonly BlockingCollection<string?> inputQueue = new();
+    volatile bool waitingForInput;
+    bool paused;
+    string? untitledPath;
+    /// <summary>Command-line automation: run the opened script, optionally save a screenshot and exit.</summary>
+    internal string? AutoScreenshot;
+    internal string? AutoInput;
 
     public MainWindow()
     {
         InitializeComponent();
+        (Editor, bpMargin) = EditorFactory.Create();
+        EditorHost.Content = Editor;
+        Editor.TextChanged += (_, _) => { if (!dirty) { dirty = true; UpdateTitle(); } };
+        bpMargin.Changed += SyncBreakpoints;
         writer = new UiWriter(this);
         it = new Interpreter(writer);
         figures = new WpfBackend(Dispatcher);
         it.Graphics.Backend = figures;
+        it.InputReader = ReadInputLine;
+        it.Paused += info => Dispatcher.Invoke(() => OnPaused(info));
+        it.Resumed += () => Dispatcher.BeginInvoke(OnResumed);
         figures.WindowClosed += f => { try { it.Graphics.Close(f); } catch { } };
         AppendOutput($"MatRewrite {MatRewrite.Core.Builtins.BuiltinLibrary.Version} - a C# reimplementation of the GNU Octave language\n\n");
         Editor.Text = "% New script\nx = linspace(0, 2*pi, 100);\nplot(x, sin(x), 'r-', x, cos(x), 'b--');\ntitle('Demo'); legend('sin', 'cos'); grid on;\n";
@@ -58,6 +79,12 @@ public partial class MainWindow : Window
         InputBindings.Add(new KeyBinding(new RelayCommand(() => OnOpen(this, new RoutedEventArgs())), Key.O, ModifierKeys.Control));
         InputBindings.Add(new KeyBinding(new RelayCommand(() => OnNew(this, new RoutedEventArgs())), Key.N, ModifierKeys.Control));
         InputBindings.Add(new KeyBinding(new RelayCommand(() => OnInterrupt(this, new RoutedEventArgs())), Key.Cancel, ModifierKeys.Control));
+        InputBindings.Add(new KeyBinding(new RelayCommand(() => OnInterrupt(this, new RoutedEventArgs())), Key.C, ModifierKeys.Control | ModifierKeys.Shift));
+        InputBindings.Add(new KeyBinding(new RelayCommand(() => OnDbStep(this, new RoutedEventArgs())), Key.F10, ModifierKeys.None));
+        InputBindings.Add(new KeyBinding(new RelayCommand(() => OnDbStepIn(this, new RoutedEventArgs())), Key.F11, ModifierKeys.None));
+        InputBindings.Add(new KeyBinding(new RelayCommand(() => OnDbStepOut(this, new RoutedEventArgs())), Key.F11, ModifierKeys.Shift));
+        InputBindings.Add(new KeyBinding(new RelayCommand(() => OnDbQuit(this, new RoutedEventArgs())), Key.F5, ModifierKeys.Shift));
+        InputBindings.Add(new KeyBinding(new RelayCommand(() => OnToggleBreakpoint(this, new RoutedEventArgs())), Key.F12, ModifierKeys.None));
         Loaded += (_, _) => Input.Focus();
     }
 
@@ -94,6 +121,7 @@ public partial class MainWindow : Window
             items.Add(new WorkspaceItem(n, val, $"{v.Rows}x{v.Cols}", v.ClassName));
         }
         WorkspaceList.ItemsSource = items;
+        WorkspaceTitle.Text = paused ? $"Workspace - {(pauseFrame == "" ? "base" : pauseFrame)} (paused)" : "Workspace";
     }
 
     /// <summary>Run code on a worker thread so the UI (and figure windows) stay responsive.</summary>
@@ -105,14 +133,16 @@ public partial class MainWindow : Window
         if (echo != null) AppendOutput(echo);
         worker = new Thread(() =>
         {
+            it.ClearInterrupt();
             try { it.Eval(code); }
             catch (Exception ex) when (Interpreter.IsQuit(ex, out _)) { Dispatcher.BeginInvoke(Close); }
             catch (ThreadInterruptedException) { writer.Write("^C interrupted\n"); }
+            catch (InterruptException ix) { writer.Write(ix.Message == "dbquit" ? "" : "^C interrupted\n"); }
             catch (Exception ex) { writer.Write("error: " + Interpreter.ErrorInfo(ex).msg + "\n" + Interpreter.FormatStack(ex)); }
             finally
             {
                 writer.Flush();
-                Dispatcher.BeginInvoke(() => { busy = false; Status.Text = "Ready"; RefreshWorkspace(); UpdateCwd(); });
+                Dispatcher.BeginInvoke(() => { busy = false; paused = false; bpMargin.SetCurrentLine(-1); Status.Text = "Ready"; RefreshWorkspace(); UpdateCwd(); RunFinished?.Invoke(); });
             }
         }, 64 * 1024 * 1024) { IsBackground = true, Name = "MatRewrite interpreter" };
         worker.SetApartmentState(ApartmentState.STA);
@@ -127,6 +157,13 @@ public partial class MainWindow : Window
             Input.Clear();
             if (code.Trim().Length > 0) { history.Add(code); }
             historyPos = history.Count;
+            if (waitingForInput)
+            {
+                AppendOutput(code + "\n");
+                inputQueue.Add(code);
+                e.Handled = true;
+                return;
+            }
             Execute(code, ">> " + code + "\n");
             e.Handled = true;
         }
@@ -142,7 +179,6 @@ public partial class MainWindow : Window
         }
     }
 
-    void OnEditorChanged(object sender, System.Windows.Controls.TextChangedEventArgs e) { if (!dirty) { dirty = true; UpdateTitle(); } }
 
     bool ConfirmDiscard()
     {
@@ -156,7 +192,7 @@ public partial class MainWindow : Window
     void OnNew(object sender, RoutedEventArgs e)
     {
         if (!ConfirmDiscard()) return;
-        Editor.Text = ""; currentFile = null; dirty = false; UpdateTitle();
+        Editor.Text = ""; currentFile = null; dirty = false; bpMargin.Lines.Clear(); bpMargin.InvalidateVisual(); UpdateTitle();
     }
 
     void OnOpen(object sender, RoutedEventArgs e)
@@ -164,8 +200,7 @@ public partial class MainWindow : Window
         if (!ConfirmDiscard()) return;
         var dlg = new OpenFileDialog { Filter = "Octave/MATLAB files (*.m)|*.m|All files (*.*)|*.*", InitialDirectory = Environment.CurrentDirectory };
         if (dlg.ShowDialog(this) != true) return;
-        Editor.Text = File.ReadAllText(dlg.FileName);
-        currentFile = dlg.FileName; dirty = false; UpdateTitle();
+        LoadFile(dlg.FileName);
     }
 
     bool SaveTo(string? path)
@@ -177,7 +212,10 @@ public partial class MainWindow : Window
             path = dlg.FileName;
         }
         File.WriteAllText(path, Editor.Text, new UTF8Encoding(false));
+        bool renamed = currentFile != null && !string.Equals(currentFile, path, StringComparison.OrdinalIgnoreCase);
+        if (renamed) it.ClearBreakpoint(currentFile!);
         currentFile = path; dirty = false; UpdateTitle();
+        SyncBreakpoints();
         return true;
     }
 
@@ -187,6 +225,18 @@ public partial class MainWindow : Window
 
     void OnRun(object sender, RoutedEventArgs e)
     {
+        if (paused) { SendDebug("dbcont"); return; }
+        if (busy) { AppendOutput("(busy - wait for the current command to finish)\n"); return; }
+        if (currentFile == null && bpMargin.Lines.Count > 0)
+        {
+            // breakpoints need a file: run untitled scripts from a temp file
+            untitledPath ??= Path.Combine(Path.GetTempPath(), "matrewrite_untitled_" + Environment.ProcessId, "untitled.m");
+            Directory.CreateDirectory(Path.GetDirectoryName(untitledPath)!);
+            File.WriteAllText(untitledPath, Editor.Text, new UTF8Encoding(false));
+            SyncBreakpoints();
+            Execute($"run('{untitledPath.Replace("'", "''")}')", ">> % running untitled script (debug)\n");
+            return;
+        }
         if (currentFile != null)
         {
             if (dirty) SaveTo(currentFile);
@@ -203,26 +253,173 @@ public partial class MainWindow : Window
         var code = Editor.SelectedText;
         if (code.Length == 0)
         {
-            int line = Editor.GetLineIndexFromCharacterIndex(Editor.CaretIndex);
-            code = line >= 0 ? Editor.GetLineText(line) : "";
+            var line = Editor.Document.GetLineByOffset(Editor.CaretOffset);
+            code = Editor.Document.GetText(line.Offset, line.Length);
         }
         if (code.Trim().Length > 0) Execute(code, ">> " + code.TrimEnd() + "\n");
     }
 
-    void OnInterrupt(object sender, RoutedEventArgs e) { if (busy) worker?.Interrupt(); }
+    void OnInterrupt(object sender, RoutedEventArgs e)
+    {
+        if (!busy) return;
+        if (waitingForInput) { inputQueue.Add(null); AppendOutput("^C\n"); }   // abort input()/debug prompt
+        else it.RequestInterrupt();
+    }
     void OnCloseFigures(object sender, RoutedEventArgs e) { if (!busy) Execute("close all"); }
     void OnClearOutput(object sender, RoutedEventArgs e) => Output.Clear();
 
     void OnWorkspaceDoubleClick(object sender, MouseButtonEventArgs e)
     {
-        if (WorkspaceList.SelectedItem is WorkspaceItem w) Execute(w.Name, ">> " + w.Name + "\n");
+        if (WorkspaceList.SelectedItem is not WorkspaceItem w) return;
+        if (busy && !paused) { AppendOutput("(busy - variables can be edited when idle or paused)\n"); return; }
+        var v = it.GetVar(w.Name);
+        if (v == null) return;
+        new VariableEditorWindow(w.Name, v, (n, nv) =>
+        {
+            if (busy && !paused) { MessageBox.Show(this, "The interpreter is running; pause or wait first."); return; }
+            it.SetVar(n, nv);
+            RefreshWorkspace();
+        }) { Owner = this }.Show();
     }
 
     void OnClosing(object? sender, System.ComponentModel.CancelEventArgs e)
     {
         if (!ConfirmDiscard()) { e.Cancel = true; return; }
+        inputQueue.Add(null);
         try { it.CloseAllFiles(); } catch { }
         Application.Current.Shutdown();
+    }
+}
+
+public partial class MainWindow
+{
+    internal event Action? RunFinished;
+    string pauseFrame = "";
+
+    internal void LoadFile(string path)
+    {
+        path = Path.GetFullPath(path);
+        Editor.Text = File.ReadAllText(path);
+        currentFile = path; dirty = false;
+        bpMargin.Lines.Clear();
+        if (it.Breakpoints.TryGetValue(Interpreter.BreakKey(path), out var set)) foreach (var l in set) bpMargin.Lines.Add(l);
+        bpMargin.SetCurrentLine(-1);
+        UpdateTitle();
+    }
+
+    internal void ToggleBreakpoint(int line) => bpMargin.Toggle(line);
+
+    string? BreakFile => currentFile ?? (bpMargin.Lines.Count > 0 ? (untitledPath ??= Path.Combine(Path.GetTempPath(), "matrewrite_untitled_" + Environment.ProcessId, "untitled.m")) : untitledPath);
+
+    /// <summary>Copy the editor margin's breakpoints into the interpreter (safe when idle or paused).</summary>
+    void SyncBreakpoints()
+    {
+        var f = BreakFile;
+        if (f == null) return;
+        if (busy && !paused) { pendingSync = true; return; }
+        it.ClearBreakpoint(f);
+        foreach (var l in bpMargin.Lines) it.SetBreakpoint(f, l);
+        pendingSync = false;
+    }
+    bool pendingSync;
+
+    /// <summary>InputReader for input()/keyboard/debug prompts; runs on the interpreter thread.</summary>
+    string? ReadInputLine(string prompt)
+    {
+        writer.Write(prompt); writer.Flush();
+        waitingForInput = true;
+        Dispatcher.BeginInvoke(() =>
+        {
+            PromptText.Text = prompt.Length > 0 ? prompt : "? ";
+            if (!paused) Status.Text = "Waiting for input";
+            Input.Focus();
+            if (AutoInput != null) { var a = AutoInput; AutoInput = null; Input.Text = a; }
+        });
+        try { return inputQueue.Take(); }
+        finally
+        {
+            waitingForInput = false;
+            Dispatcher.BeginInvoke(() => { PromptText.Text = ">> "; if (busy && !paused) Status.Text = "Busy"; });
+        }
+    }
+
+    void OnPaused(PauseInfo info)
+    {
+        paused = true; pauseFrame = info.Frame;
+        if (pendingSync) SyncBreakpoints();
+        if (info.File != null)
+        {
+            var full = Path.GetFullPath(info.File);
+            bool isUntitled = untitledPath != null && string.Equals(full, Path.GetFullPath(untitledPath), StringComparison.OrdinalIgnoreCase) && currentFile == null;
+            if (!isUntitled && !string.Equals(full, currentFile, StringComparison.OrdinalIgnoreCase) && File.Exists(full) && !dirty)
+                LoadFile(full);
+            bool shown = isUntitled || string.Equals(full, currentFile, StringComparison.OrdinalIgnoreCase);
+            bpMargin.SetCurrentLine(shown ? info.Line : -1);
+            if (shown && info.Line >= 1 && info.Line <= Editor.Document.LineCount)
+            {
+                Editor.ScrollToLine(info.Line);
+                Editor.TextArea.Caret.Line = info.Line;
+            }
+        }
+        Status.Text = $"Paused ({info.Reason}) at line {info.Line} - F5 continue, F10 step, Shift+F5 quit";
+        RefreshWorkspace();
+        if (AutoScreenshot != null)
+        {
+            var shot = AutoScreenshot; AutoScreenshot = null;
+            var t = new System.Windows.Threading.DispatcherTimer { Interval = TimeSpan.FromMilliseconds(1200) };
+            t.Tick += (_, _) =>
+            {
+                t.Stop();
+                try { SaveScreenshot(shot); } catch (Exception ex) { File.WriteAllText(shot + ".err.txt", ex.ToString()); }
+                SendDebug("dbcont");
+            };
+            t.Start();
+        }
+    }
+
+    void OnResumed()
+    {
+        paused = false;
+        bpMargin.SetCurrentLine(-1);
+        if (busy) Status.Text = "Busy";
+        WorkspaceTitle.Text = "Workspace";
+    }
+
+    void SendDebug(string cmd)
+    {
+        if (!paused || !waitingForInput) return;
+        AppendOutput(cmd + "\n");
+        inputQueue.Add(cmd);
+    }
+
+    void OnDbCont(object sender, RoutedEventArgs e) => SendDebug("dbcont");
+    void OnDbStep(object sender, RoutedEventArgs e) => SendDebug("dbstep");
+    void OnDbStepIn(object sender, RoutedEventArgs e) => SendDebug("dbstep in");
+    void OnDbStepOut(object sender, RoutedEventArgs e) => SendDebug("dbstep out");
+    void OnDbQuit(object sender, RoutedEventArgs e) => SendDebug("dbquit");
+    void OnToggleBreakpoint(object sender, RoutedEventArgs e) => bpMargin.Toggle(Editor.TextArea.Caret.Line);
+    void OnClearBreakpoints(object sender, RoutedEventArgs e)
+    {
+        bpMargin.Lines.Clear(); bpMargin.InvalidateVisual();
+        if (!busy || paused) { it.Breakpoints.Clear(); } else pendingSync = true;
+    }
+
+    internal void RunCurrent() => OnRun(this, new RoutedEventArgs());
+
+    /// <summary>Save a PNG of this window (used by --screenshot).</summary>
+    internal void SaveScreenshot(string path)
+    {
+        UpdateLayout();
+        var dpi = VisualTreeHelper.GetDpi(this);
+        var w = (int)Math.Ceiling(ActualWidth * dpi.DpiScaleX); var h = (int)Math.Ceiling(ActualHeight * dpi.DpiScaleY);
+        var rtb = new RenderTargetBitmap(w, h, 96 * dpi.DpiScaleX, 96 * dpi.DpiScaleY, PixelFormats.Pbgra32);
+        var dv = new DrawingVisual();
+        using (var dc = dv.RenderOpen()) dc.DrawRectangle(new VisualBrush((Visual)Content), null, new Rect(0, 0, ActualWidth, ActualHeight));
+        rtb.Render(dv);
+        var enc = new PngBitmapEncoder();
+        enc.Frames.Add(BitmapFrame.Create(rtb));
+        using var fs = File.Create(path);
+        enc.Save(fs);
     }
 }
 

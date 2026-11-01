@@ -139,6 +139,21 @@ public static class Ops
 
     public static Value Binary(string op, Value av, Value bv)
     {
+        var res = BinaryCore(op, av, bv);
+        bool sa = av is MatrixValue ma && ma.IsSparse, sb = bv is MatrixValue mb && mb.IsSparse;
+        if ((sa || sb) && res is MatrixValue rm && !rm.IsScalar | (sa && sb))
+        {
+            // Octave rules (simplified): sparse op sparse -> sparse; sparse .* anything -> sparse;
+            // sparse * dense / scalar ops that keep zeros -> sparse; comparisons -> sparse logical.
+            bool keep = (sa && sb) || op is ".*" or "&" || (op is "*" && (av is MatrixValue x && x.IsScalar || bv is MatrixValue y && y.IsScalar))
+                || (op is "./" or "/" && sa && bv is MatrixValue z && z.IsScalar);
+            if (keep) { if (ReferenceEquals(res, av) || ReferenceEquals(res, bv)) rm = rm.Copy(); rm.IsSparse = true; return rm; }
+        }
+        return res;
+    }
+
+    static Value BinaryCore(string op, Value av, Value bv)
+    {
         var a = ToMatrix(av, op); var b = ToMatrix(bv, op);
         if (op is "+" or "-" or ".*" or "./" or ".\\" or ".^" or "*" or "/" or "\\" or "^")
         {

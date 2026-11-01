@@ -24,7 +24,17 @@
             <MenuItem Header="_Run">
                 <MenuItem Header="_Run script" Click="OnRun" InputGestureText="F5" />
                 <MenuItem Header="Run _selection" Click="OnRunSelection" InputGestureText="F9" />
-                <MenuItem Header="_Interrupt" Click="OnInterrupt" InputGestureText="Ctrl+Break" />
+                <MenuItem Header="_Interrupt" Click="OnInterrupt" InputGestureText="Ctrl+Break / Ctrl+Shift+C" />
+            </MenuItem>
+            <MenuItem Header="_Debug">
+                <MenuItem Header="_Continue (dbcont)" Click="OnDbCont" InputGestureText="F5 (paused)" />
+                <MenuItem Header="Step _over (dbstep)" Click="OnDbStep" InputGestureText="F10" />
+                <MenuItem Header="Step _in (dbstep in)" Click="OnDbStepIn" InputGestureText="F11" />
+                <MenuItem Header="Step o_ut (dbstep out)" Click="OnDbStepOut" InputGestureText="Shift+F11" />
+                <MenuItem Header="_Quit debugging (dbquit)" Click="OnDbQuit" InputGestureText="Shift+F5" />
+                <Separator />
+                <MenuItem Header="_Toggle breakpoint" Click="OnToggleBreakpoint" InputGestureText="F12" />
+                <MenuItem Header="Clear _all breakpoints" Click="OnClearBreakpoints" />
             </MenuItem>
             <MenuItem Header="_Window">
                 <MenuItem Header="_Close all figures" Click="OnCloseFigures" />
@@ -50,15 +60,13 @@
                 </Grid.RowDefinitions>
                 <DockPanel Grid.Row="0">
                     <TextBlock x:Name="EditorTitle" DockPanel.Dock="Top" Padding="4,2" Background="#EEE" Text="Editor - untitled.m" />
-                    <TextBox x:Name="Editor" Style="{StaticResource Mono}" AcceptsReturn="True" AcceptsTab="True"
-                             HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" TextWrapping="NoWrap"
-                             TextChanged="OnEditorChanged" />
+                    <ContentControl x:Name="EditorHost" />
                 </DockPanel>
                 <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" />
                 <DockPanel Grid.Row="2">
                     <TextBlock DockPanel.Dock="Top" Padding="4,2" Background="#EEE" Text="Command Window" />
                     <DockPanel DockPanel.Dock="Bottom">
-                        <TextBlock DockPanel.Dock="Left" Text="&gt;&gt; " FontFamily="Consolas" VerticalAlignment="Center" Margin="4,0,0,0" />
+                        <TextBlock x:Name="PromptText" DockPanel.Dock="Left" Text="&gt;&gt; " FontFamily="Consolas" VerticalAlignment="Center" Margin="4,0,0,0" />
                         <TextBox x:Name="Input" Style="{StaticResource Mono}" PreviewKeyDown="OnInputKey" />
                     </DockPanel>
                     <TextBox x:Name="Output" Style="{StaticResource Mono}" IsReadOnly="True" Background="#FAFAFA"
@@ -67,7 +75,8 @@
             </Grid>
             <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" />
             <DockPanel Grid.Column="2">
-                <TextBlock DockPanel.Dock="Top" Padding="4,2" Background="#EEE" Text="Workspace" />
+                <TextBlock DockPanel.Dock="Top" Padding="4,2" Background="#EEE" x:Name="WorkspaceTitle" Text="Workspace" />
+                <TextBlock DockPanel.Dock="Bottom" Padding="4,2" Foreground="Gray" Text="Double-click a variable to edit it" />
                 <ListView x:Name="WorkspaceList" MouseDoubleClick="OnWorkspaceDoubleClick">
                     <ListView.View>
                         <GridView>

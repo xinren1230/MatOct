@@ -124,6 +124,8 @@ public sealed class MatrixValue : ArrayValue
     public double[]? Im;
     public NumKind Kind;
     public bool DoubleQuoted; // display only
+    /// <summary>Sparse attribute (storage stays dense; affects display and issparse).</summary>
+    public bool IsSparse;
 
     public MatrixValue(int r, int c, NumKind kind = NumKind.Double, bool complex = false)
     {
@@ -208,7 +210,7 @@ public sealed class MatrixValue : ArrayValue
         return new MatrixValue(R, C, Re, Im, NumKind.Double) { ND = ND };
     }
 
-    public MatrixValue Copy() => new(R, C, (double[])Re.Clone(), (double[]?)Im?.Clone(), Kind) { DoubleQuoted = DoubleQuoted, ND = ND };
+    public MatrixValue Copy() => new(R, C, (double[])Re.Clone(), (double[]?)Im?.Clone(), Kind) { DoubleQuoted = DoubleQuoted, ND = ND, IsSparse = IsSparse };
 
     public override ArrayValue Gather(int[] lin, int r, int c)
     {

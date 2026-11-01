@@ -2,6 +2,10 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.IO;
 using MatRewrite.Core.Graphics;
 using ScottPlot.WPF;
 
@@ -30,12 +34,92 @@ public sealed class FigureWindow : Window
         for (int i = 0; i < cols; i++) grid.ColumnDefinitions.Add(new ColumnDefinition());
         foreach (var (ax, r, c, rs, cs) in cells)
         {
+            if (Renderer3D.Handles(ax))
+            {
+                var v3 = new Axes3DView(ax, Figure);
+                Grid.SetRow(v3, r); Grid.SetColumn(v3, c); Grid.SetRowSpan(v3, rs); Grid.SetColumnSpan(v3, cs);
+                grid.Children.Add(v3);
+                continue;
+            }
             var wp = new WpfPlot();
             FigureRenderer.Apply(wp.Plot, ax, Figure.Colormap);
             Grid.SetRow(wp, r); Grid.SetColumn(wp, c); Grid.SetRowSpan(wp, rs); Grid.SetColumnSpan(wp, cs);
             grid.Children.Add(wp);
             wp.Refresh();
         }
+        if (Figure.Annotations.Count > 0)
+        {
+            var overlay = new AnnotationOverlay(Figure) { IsHitTestVisible = false };
+            if (rows > 0) Grid.SetRowSpan(overlay, rows);
+            if (cols > 0) Grid.SetColumnSpan(overlay, cols);
+            grid.Children.Add(overlay);
+        }
+    }
+
+    internal static BitmapSource ToBitmap(byte[] png)
+    {
+        var bi = new BitmapImage();
+        bi.BeginInit(); bi.CacheOption = BitmapCacheOption.OnLoad; bi.StreamSource = new MemoryStream(png); bi.EndInit(); bi.Freeze();
+        return bi;
+    }
+}
+
+/// <summary>Interactive 3-D axes: drag to rotate (changes the axes' view), wheel to zoom, double-click to reset zoom.</summary>
+public sealed class Axes3DView : Border
+{
+    readonly Axes ax; readonly Figure fig;
+    readonly Image img = new() { Stretch = Stretch.None };
+    Point? drag; double az0, el0;
+
+    public Axes3DView(Axes ax, Figure fig)
+    {
+        this.ax = ax; this.fig = fig;
+        Background = Brushes.White; Child = img; ClipToBounds = true;
+        SizeChanged += (_, _) => Render();
+        MouseLeftButtonDown += (_, e) =>
+        {
+            if (e.ClickCount == 2) { ax.Zoom = 1; Render(); return; }
+            drag = e.GetPosition(this); az0 = ax.Az; el0 = ax.El; CaptureMouse();
+        };
+        MouseMove += (_, e) =>
+        {
+            if (drag is not { } d || e.LeftButton != MouseButtonState.Pressed) return;
+            var p = e.GetPosition(this);
+            ax.Az = Math.Round(az0 - (p.X - d.X) * 0.5, 1);
+            ax.El = Math.Clamp(Math.Round(el0 + (p.Y - d.Y) * 0.5, 1), -90, 90);
+            if (ax.Az == 0 && ax.El == 90) ax.Az = 0.1; // keep it a 3-D view while dragging
+            Render();
+        };
+        MouseLeftButtonUp += (_, _) => { drag = null; ReleaseMouseCapture(); };
+        MouseWheel += (_, e) => { ax.Zoom = Math.Clamp(ax.Zoom * (e.Delta > 0 ? 1.1 : 1 / 1.1), 0.2, 10); Render(); };
+        ToolTip = "Drag: rotate   Wheel: zoom   Double-click: reset zoom";
+    }
+
+    void Render()
+    {
+        int w = (int)ActualWidth, h = (int)ActualHeight;
+        if (w < 10 || h < 10) return;
+        img.Source = FigureWindow.ToBitmap(Renderer3D.RenderPng(ax, fig.Colormap, w, h));
+    }
+}
+
+/// <summary>Transparent layer drawing figure annotations.</summary>
+public sealed class AnnotationOverlay : Border
+{
+    readonly Image img = new() { Stretch = Stretch.None };
+    public AnnotationOverlay(Figure f)
+    {
+        Child = img;
+        SizeChanged += (_, _) =>
+        {
+            int w = (int)ActualWidth, h = (int)ActualHeight;
+            if (w < 10 || h < 10) return;
+            using var surf = SkiaSharp.SKSurface.Create(new SkiaSharp.SKImageInfo(w, h, SkiaSharp.SKColorType.Bgra8888, SkiaSharp.SKAlphaType.Premul));
+            surf.Canvas.Clear(SkiaSharp.SKColors.Transparent);
+            Renderer3D.DrawAnnotations(surf.Canvas, f, w, h);
+            using var im = surf.Snapshot(); using var d = im.Encode(SkiaSharp.SKEncodedImageFormat.Png, 100);
+            img.Source = FigureWindow.ToBitmap(d.ToArray());
+        };
     }
 }
 

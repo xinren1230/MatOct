@@ -51,4 +51,16 @@ public sealed class ProgramUnit
     public List<Stmt> Statements = new();
     public List<FunctionDef> Functions = new();
     public bool IsFunctionFile;
+    public ClassDefAst? Class;
+}
+
+public sealed record PropDef(string Name, Expr? Default, bool Constant);
+public sealed record MethodDef(FunctionDef Func, bool Static);
+public sealed class ClassDefAst
+{
+    public string Name = "";
+    public List<string> Supers = new();
+    public List<PropDef> Props = new();
+    public List<MethodDef> Methods = new();
+    public int Line;
 }

@@ -37,6 +37,7 @@ public sealed class Parser
         var u = new ProgramUnit();
         SkipNewlines();
         if (IsKw("function")) u.IsFunctionFile = true;
+        if (Cur.Kind == TokKind.Ident && Cur.Text == "classdef") { u.IsFunctionFile = true; u.Class = ParseClassdef(); SkipNewlines(); }
         while (Cur.Kind != TokKind.EOF)
         {
             if (IsKw("function")) { u.Functions.Add(ParseFunction(out var promoted)); u.Functions.AddRange(promoted); }
@@ -110,6 +111,101 @@ public sealed class Parser
         // no 'end': following functions are siblings (subfunctions)
         promoted.AddRange(kids); promoted.AddRange(kidPromoted);
         return new FunctionDef(name, pars, outs, body) { Line = line };
+    }
+
+    /// <summary>Skip a balanced "( ... )" attribute list; returns attribute names set to true/false.</summary>
+    Dictionary<string, string> ParseAttrs()
+    {
+        var d = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        if (!IsP("(")) return d;
+        p++;
+        int depth = 1; string? key = null; var val = new System.Text.StringBuilder();
+        void Flush() { if (key != null) d[key] = val.Length == 0 ? "true" : val.ToString(); key = null; val.Clear(); }
+        bool afterEq = false;
+        while (depth > 0 && Cur.Kind != TokKind.EOF)
+        {
+            var tk = Next();
+            if (tk.Kind == TokKind.Punct && tk.Text == "(") depth++;
+            else if (tk.Kind == TokKind.Punct && tk.Text == ")") { depth--; if (depth == 0) break; }
+            else if (depth == 1 && tk.Kind == TokKind.Punct && tk.Text == ",") { Flush(); afterEq = false; }
+            else if (depth == 1 && tk.Kind == TokKind.Punct && tk.Text == "=") afterEq = true;
+            else if (depth == 1 && tk.Kind == TokKind.Punct && (tk.Text == "~" || tk.Text == "!")) val.Append("~");
+            else if (!afterEq && key == null) key = tk.Text;
+            else val.Append(tk.Text);
+        }
+        Flush();
+        return d;
+    }
+
+    static bool AttrTrue(Dictionary<string, string> a, string k) => a.TryGetValue(k, out var v) && v is "true" or "~false";
+
+    ClassDefAst ParseClassdef()
+    {
+        var c = new ClassDefAst { Line = Cur.Line };
+        p++; // classdef
+        ParseAttrs();
+        c.Name = ParseFuncName();
+        if (IsP("<"))
+        {
+            p++;
+            c.Supers.Add(ParseFuncName());
+            while (IsP("&") || IsP("&&")) { p++; c.Supers.Add(ParseFuncName()); }
+        }
+        while (true)
+        {
+            SkipNewlines();
+            if (IsKw("end")) { p++; break; }
+            if (Cur.Kind == TokKind.EOF) throw Err("classdef: missing 'end'");
+            var w = Cur.Kind == TokKind.Ident ? Cur.Text : "";
+            if (w == "properties")
+            {
+                p++;
+                var attrs = ParseAttrs();
+                bool constant = AttrTrue(attrs, "Constant");
+                while (true)
+                {
+                    SkipNewlines();
+                    if (IsKw("end")) { p++; break; }
+                    if (Cur.Kind != TokKind.Ident) throw Err("invalid property declaration");
+                    var name = Next().Text;
+                    // optional size/class validation: (1,1) double {mustBe...}
+                    if (IsP("(")) ParseAttrs();
+                    while (Cur.Kind == TokKind.Ident && !(PeekTok().Kind == TokKind.Punct && PeekTok().Text == "=")) p++;
+                    if (IsP("{")) { int d = 0; do { if (IsP("{")) d++; else if (IsP("}")) d--; p++; } while (d > 0 && Cur.Kind != TokKind.EOF); }
+                    Expr? def = null;
+                    if (IsP("=")) { p++; def = ParseExpr(); }
+                    c.Props.Add(new PropDef(name, def, constant));
+                }
+            }
+            else if (w == "methods")
+            {
+                p++;
+                var attrs = ParseAttrs();
+                bool st = AttrTrue(attrs, "Static");
+                while (true)
+                {
+                    SkipNewlines();
+                    if (IsKw("end")) { p++; break; }
+                    if (IsKw("function"))
+                    {
+                        var f = ParseFunction(out var promoted);
+                        c.Methods.Add(new MethodDef(f, st));
+                        foreach (var pf in promoted) c.Methods.Add(new MethodDef(pf, st));
+                        continue;
+                    }
+                    // method signature declaration without body (defined in a separate file) - skip line
+                    while (Cur.Kind != TokKind.Newline && Cur.Kind != TokKind.EOF) p++;
+                }
+            }
+            else if (w is "events" or "enumeration")
+            {
+                p++; ParseAttrs();
+                while (!IsKw("end") && Cur.Kind != TokKind.EOF) p++;
+                p++;
+            }
+            else throw Err($"unexpected '{Cur.Text}' in classdef block");
+        }
+        return c;
     }
 
     string ParseFuncName()
@@ -500,6 +596,11 @@ public sealed class Parser
     Expr ParsePostfix()
     {
         var e = ParsePrimary();
+        if (e is IdentExpr sid && IsP("@") && !Cur.SpaceBefore && PeekTok().Kind == TokKind.Ident && !PeekTok().SpaceBefore)
+        {
+            p++;
+            e = new IdentExpr(sid.Name + "@" + ParseFuncName());
+        }
         while (true)
         {
             if (IsP("(") && !(Cur.SpaceBefore && InMatrixContext()))

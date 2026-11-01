@@ -29,6 +29,9 @@ public static class Display
         }
         switch (v)
         {
+            case MatrixValue sp when sp.IsSparse:
+                SparseInto(sb, name, sp, ind);
+                break;
             case MatrixValue m:
                 if (m.Numel == 0)
                 {
@@ -52,6 +55,9 @@ public static class Display
                     foreach (var line in MatrixLines(m)) sb.Append(ind).Append(line).Append('\n');
                     sb.Append('\n');
                 }
+                break;
+            case ObjectValue o:
+                sb.Append($"{ind}{name} =\n\n").Append(ObjectBody(o, ind)).Append('\n');
                 break;
             case CellValue c:
                 if (c.Numel == 0) { sb.Append($"{ind}{name} = {{}}({c.R}x{c.C})\n"); break; }
@@ -150,6 +156,7 @@ public static class Display
         if (v is MatrixValue nm && nm.ND != null && nm.Numel > 0) return NDPages(nm, "");
         switch (v)
         {
+            case ObjectValue o: return ObjectBody(o, "");
             case MatrixValue m:
                 if (m.Numel == 0) return m.IsChar ? "\n" : "";
                 if (m.IsChar)
@@ -190,6 +197,46 @@ public static class Display
     }
 
     static int IntDigits(double a) => a < 1 ? 1 : (int)Math.Floor(Math.Log10(a)) + 1;
+
+    static void SparseInto(StringBuilder sb, string name, MatrixValue m, string ind)
+    {
+        int nz = 0; for (int i = 0; i < m.Re.Length; i++) if (m.Re[i] != 0 || (m.Im != null && m.Im[i] != 0)) nz++;
+        double pct = m.Numel == 0 ? 0 : 100.0 * nz / m.Numel;
+        sb.Append($"{ind}{name} =\n\n{ind}Compressed Column Sparse (rows = {m.R}, cols = {m.C}, nnz = {nz} [{pct.ToString(pct >= 10 || pct == 0 ? "0" : "0.#", Inv)}%])\n\n");
+        if (nz == 0) return;
+        int wr = m.R.ToString().Length, wc = m.C.ToString().Length;
+        for (int j = 0; j < m.C; j++)
+            for (int i = 0; i < m.R; i++)
+            {
+                int k = j * m.R + i;
+                if (m.Re[k] == 0 && (m.Im == null || m.Im[k] == 0)) continue;
+                var e = new MatrixValue(1, 1, new[] { m.Re[k] }, m.Im == null ? null : new[] { m.Im[k] }, m.Kind);
+                sb.Append($"{ind}  ({(i + 1).ToString().PadLeft(wr)}, {(j + 1).ToString().PadLeft(wc)}) -> {FormatScalar(e)}\n");
+            }
+        sb.Append('\n');
+    }
+
+    static string ObjectBody(ObjectValue o, string ind)
+    {
+        var sb = new StringBuilder();
+        sb.Append($"{ind}  {o.Cls.Name} object with properties:\n\n");
+        var names = Interpreter.ObjectProps(o);
+        int w = names.Count == 0 ? 0 : names.Max(n => n.Length);
+        foreach (var n in names)
+        {
+            var v = o.Props[n];
+            string txt = v switch
+            {
+                MatrixValue m when m.IsChar && m.R <= 1 => m.AsString(),
+                MatrixValue m when m.Numel == 1 => FormatScalar(m),
+                MatrixValue m when m.Numel == 0 => "[](" + m.R + "x" + m.C + ")",
+                MatrixValue m when m.R == 1 && m.Numel <= 10 => "[" + string.Join(" ", Enumerable.Range(0, m.Numel).Select(k => FormatScalar(new MatrixValue(1, 1, new[] { m.Re[k] }, null, m.Kind)))) + "]",
+                _ => $"[{v.DimString} {v.ClassName}]"
+            };
+            sb.Append($"{ind}    {n.PadLeft(w)}: {txt}\n");
+        }
+        return sb.ToString();
+    }
 
     public static string FormatReal(double x, int decimals, bool sci)
     {

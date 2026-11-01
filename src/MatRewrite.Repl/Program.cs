@@ -22,6 +22,7 @@ public static class Program
         it.Graphics.Backend = new MatRewrite.Plotting.FileOnlyBackend();
 #endif
         var args = argv.ToList();
+        Console.CancelKeyPress += (_, e) => { e.Cancel = true; it.RequestInterrupt(); };
         string? evalCode = null;
         bool quiet = false;
         for (int k = 0; k < args.Count; k++)
@@ -59,6 +60,7 @@ public static class Program
     {
         try { a(); return 0; }
         catch (Exception ex) when (Interpreter.IsQuit(ex, out int code)) { return code; }
+        catch (InterruptException ie) { o.Flush(); if (ie.Message != "dbquit") Console.Error.WriteLine("^C"); return 130; }
         catch (Exception ex)
         {
             o.Flush();
@@ -83,6 +85,7 @@ public static class Program
             if (string.IsNullOrWhiteSpace(code)) continue;
             try { it.Eval(code); }
             catch (Exception ex) when (Interpreter.IsQuit(ex, out int c)) { return c; }
+            catch (InterruptException ie) { o.Flush(); if (ie.Message != "dbquit") Console.Error.WriteLine("^C"); }
             catch (Exception ex)
             {
                 o.Flush();

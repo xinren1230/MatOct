@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MatRewrite.Core\MatRewrite.Core.csproj" />
+    <PackageReference Include="AvalonEdit" Version="6.3.0.90" />
     <ProjectReference Include="..\MatRewrite.Plotting.Wpf\MatRewrite.Plotting.Wpf.csproj" />
   </ItemGroup>
 

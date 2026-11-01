@@ -37,6 +37,7 @@ public abstract class Series : GObject { public Axes Parent = null!; }
 public sealed class LineSeries : Series
 {
     public double[] X = Array.Empty<double>(), Y = Array.Empty<double>();
+    public double[]? Z; // plot3
     public Rgb Color;
     public LineStyle Style = LineStyle.Solid;
     public Marker Marker = Marker.None;
@@ -70,12 +71,69 @@ public sealed class ImageSeries : Series
     public double CMin, CMax;
 }
 
+/// <summary>surf / mesh: a grid of quads. X, Y, Z, C are [row, col].</summary>
+public sealed class SurfaceSeries : Series
+{
+    public double[,] X = new double[0, 0], Y = new double[0, 0], Z = new double[0, 0], C = new double[0, 0];
+    public bool Mesh;                 // mesh: white faces, colormapped edges
+    public string Shading = "faceted"; // faceted | flat | interp
+    public Rgb? EdgeColor, FaceColor;
+}
+
+/// <summary>contour / contourf on a rectilinear grid.</summary>
+public sealed class ContourSeries : Series
+{
+    public double[] X = Array.Empty<double>(), Y = Array.Empty<double>(); // column / row coordinates
+    public double[,] Z = new double[0, 0];
+    public double[] Levels = Array.Empty<double>();
+    public bool Filled;
+    public Rgb? LineColor;
+    public double LineWidth = 0.5;
+    public List<(double level, double[] x, double[] y)> Lines = new();
+}
+
+public sealed class ErrorBarSeries : Series
+{
+    public double[] X = Array.Empty<double>(), Y = Array.Empty<double>(), L = Array.Empty<double>(), U = Array.Empty<double>();
+    public Rgb Color;
+    public LineStyle Style = LineStyle.Solid;
+    public Marker Marker = Marker.None;
+    public bool Horizontal;
+}
+
+public sealed class TextSeries : Series
+{
+    public double X, Y;
+    public double? Z;
+    public string Text = "";
+    public Rgb Color = new(0, 0, 0);
+    public double FontSize = 10;
+    public string HAlign = "left";
+}
+
+/// <summary>Figure-level annotation in normalized figure units (0..1, origin bottom-left).</summary>
+public sealed class Annotation : GObject
+{
+    public string Kind = "line"; // line | arrow | doublearrow | textarrow | textbox | rectangle | ellipse
+    public double[] X = { 0.3, 0.4 }, Y = { 0.3, 0.4 };
+    public double[]? Position; // [x y w h] for textbox/rectangle/ellipse
+    public string Text = "";
+    public Rgb Color = new(0, 0, 0);
+    public double FontSize = 10;
+}
+
 public sealed class Axes : GObject
 {
     public Figure Figure = null!;
     public int Rows = 1, Cols = 1;
     public int[] Cells = { 1 }; // subplot cell indices (1-based, row-major)
-    public string Title = "", XLabel = "", YLabel = "";
+    public string Title = "", XLabel = "", YLabel = "", ZLabel = "";
+    public double[]? ZLim;
+    /// <summary>[azimuth, elevation] in degrees; 2-D axes use [0 90].</summary>
+    public double Az = 0, El = 90;
+    public double Zoom = 1;
+    public bool XLog, YLog;
+    public bool Is3D => !(Az == 0 && El == 90);
     public readonly List<Series> Children = new();
     public bool Hold, Grid, MinorGrid, Box = true, Visible = true;
     public bool LegendVisible;
@@ -91,7 +149,8 @@ public sealed class Axes : GObject
     public void Reset()
     {
         Children.Clear(); ColorIndex = 0; LegendVisible = false; LegendLabels = null; Colorbar = false;
-        XLim = YLim = null; Equal = Tight = Square = false; YDirReverse = false; CLim = null;
+        XLim = YLim = ZLim = null; Equal = Tight = Square = false; YDirReverse = false; CLim = null;
+        Az = 0; El = 90; Zoom = 1; XLog = YLog = false;
     }
 }
 
@@ -104,6 +163,7 @@ public sealed class Figure : GObject
     public bool Visible = true;
     public int Width = 560, Height = 420;
     public bool NumberTitle = true;
+    public readonly List<Annotation> Annotations = new();
     public string WindowTitle => NumberTitle ? (Name == "" ? $"Figure {Handle}" : $"Figure {Handle}: {Name}") : Name;
 }
 

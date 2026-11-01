@@ -30,7 +30,7 @@ public sealed class Lexer
     static readonly HashSet<string> CommandWords = new()
     {
         "format","clc","clear","close","hold","more","pkg","warning","help","which","cd","figure","addpath","rmpath",
-        "type","echo","clearvars","disp","load","save","grid","axis","box","colormap","colorbar","print","drawnow","clf","cla","legend","mkdir","rmdir","delete","graphics_toolkit","diary","beep_on_error","page_screen_output"
+        "type","echo","clearvars","dbstop","dbclear","dbstep","dbcont","dbquit","dbstatus","dbstack","keyboard","run","disp","load","save","grid","axis","box","colormap","colorbar","print","drawnow","clf","cla","legend","mkdir","rmdir","delete","graphics_toolkit","diary","beep_on_error","page_screen_output","shading","rotate3d"
     };
 
     readonly string src;

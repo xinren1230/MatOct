@@ -9,6 +9,7 @@ public static partial class BuiltinLibrary
     {
         Reg1("struct", a =>
         {
+            if (a.Length == 1 && a[0] is ObjectValue sob) return ObjectToStruct(sob);
             if (a.Length == 0) return new StructValue();
             if (a.Length % 2 != 0) throw new OctaveException("struct: additional arguments must occur as \"field\", VALUE pairs");
             // cell values create struct arrays (non-1x1 cells); 1x1 cells are unwrapped
@@ -36,6 +37,7 @@ public static partial class BuiltinLibrary
         });
         Reg1("fieldnames", a =>
         {
+            if (a[0] is ObjectValue fob) { var pn = Interpreter.ObjectProps(fob); return new CellValue(pn.Count, 1, pn.Select(x => (Value)MatrixValue.Str(x)).ToArray()); }
             if (a[0] is not StructValue s) throw new OctaveException("fieldnames: Invalid input argument");
             return CellValue.ColOf(s.Fields.Select(Str));
         });
@@ -173,7 +175,7 @@ public static partial class BuiltinLibrary
             var args = arrs.Select(x => isCell ? ((CellValue)x).Data[k] : x.Gather(new[] { k }, 1, 1)).ToArray();
             Value[] r;
             try { r = it.CallCallable(func, args, nargout == 0 ? (uniform ? 1 : 1) : nout); }
-            catch (OctaveException ex) when (errHandler != null)
+            catch (OctaveException ex) when (errHandler != null && ex is not InterruptException)
             {
                 var es = new StructValue(); es.Set("message", Str(ex.Message)); es.Set("identifier", Str(ex.Identifier)); es.Set("index", Num(k + 1));
                 r = it.CallCallable(errHandler, new Value[] { es }.Concat(args).ToArray(), nout);

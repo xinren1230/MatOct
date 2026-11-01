@@ -24,6 +24,11 @@ public static partial class BuiltinLibrary
         RegisterSystem();
         RegisterFiles();
         RegisterGraphics();
+        RegisterGraphics3D();
+        RegisterDebug();
+        RegisterOde();
+        RegisterSparse();
+        RegisterClasses();
         cur = null;
     }
 

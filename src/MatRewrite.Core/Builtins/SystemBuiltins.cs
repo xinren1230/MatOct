@@ -67,7 +67,7 @@ public static partial class BuiltinLibrary
                 }
                 it.EvalInCurrentScope(code);
             }
-            catch (OctaveException ex) when (a.Length > 1)
+            catch (OctaveException ex) when (a.Length > 1 && ex is not InterruptException)
             {
                 it.LastError = ex.Message;
                 it.EvalInCurrentScope(S(a[1], "eval"));
@@ -143,7 +143,13 @@ public static partial class BuiltinLibrary
         RegI("time", (it, a) => Num((DateTime.UtcNow - DateTime.UnixEpoch).TotalSeconds));
         RegI("now", (it, a) => Num((DateTime.Now - new DateTime(1, 1, 1)).TotalDays + 367));
         RegI("date", (it, a) => Str(DateTime.Now.ToString("dd-MMM-yyyy", System.Globalization.CultureInfo.InvariantCulture)));
-        Reg0("pause", (it, a) => { if (a.Length > 0) Thread.Sleep((int)(D(a[0], "pause") * 1000)); });
+        Reg0("pause", (it, a) =>
+        {
+            if (a.Length == 0) { it.InputReader(""); return; }
+            var until = DateTime.UtcNow.AddSeconds(Math.Max(0, D(a[0], "pause")));
+            while (DateTime.UtcNow < until) { it.CheckInterrupt(); Thread.Sleep(Math.Max(1, Math.Min(20, (int)(until - DateTime.UtcNow).TotalMilliseconds))); }
+            it.CheckInterrupt();
+        });
         Reg0("format", (it, a) => Display.LongFormat = a.Length > 0 && S(a[0], "format").Equals("long", StringComparison.OrdinalIgnoreCase));
         Reg0("more", (it, a) => { });
         Reg0("beep", (it, a) => { });
@@ -202,14 +208,18 @@ public static partial class BuiltinLibrary
         Reg0("clearvars", (it, a) => { foreach (var nm in it.VariableNames.ToList()) it.ClearVar(nm); });
         Reg("input", (it, a, n) =>
         {
-            it.Out.Write(a.Length > 0 ? S(a[0], "input") : ""); it.Out.Flush();
-            var line = Console.ReadLine() ?? "";
+            it.Out.Flush();
+            var line = it.InputReader(a.Length > 0 ? S(a[0], "input") : "") ?? "";
             if (a.Length > 1 && S(a[1], "input") == "s") return Out(Str(line));
             if (string.IsNullOrWhiteSpace(line)) return Out(new MatrixValue(0, 0));
             it.EvalInCurrentScope("__input_tmp__ = " + line + ";");
             var v = it.GetVar("__input_tmp__")!; it.ClearVar("__input_tmp__"); return Out(v);
         });
-        Reg0("keyboard", (it, a) => { });
+        Reg0("keyboard", (it, a) =>
+        {
+            if (a.Length > 0) { it.Out.Write(S(a[0], "keyboard")); }
+            it.Pause(new PauseInfo(it.CurrentFile, it.Current.FrameName, it.Current.Line, "keyboard"));
+        });
         Reg0("exit", (it, a) => it.Quit(a.Length > 0 ? I(a[0], "exit") : 0));
         Reg0("quit", (it, a) => it.Quit(a.Length > 0 ? I(a[0], "quit") : 0));
         Reg("addpath", (it, a, n) =>

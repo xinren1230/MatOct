@@ -424,6 +424,7 @@ public static partial class BuiltinLibrary
             string c = S(a[1], "isa"), k = a[0].ClassName;
             bool num = a[0] is MatrixValue mm && !mm.IsChar && !mm.IsLogical;
             bool isInt = a[0] is MatrixValue mi && mi.IsInteger;
+            if (a[0] is ObjectValue ov) return Bool(ov.Cls.IsA(c));
             return Bool(c == k || (c == "numeric" && num) || (c == "float" && (k == "double" || k == "single"))
                 || (c == "integer" && isInt));
         });
@@ -510,6 +511,13 @@ public static partial class BuiltinLibrary
 
     public static bool ValuesEqual(Value a, Value b)
     {
+        if (a is ObjectValue oa || b is ObjectValue)
+        {
+            if (a is not ObjectValue x || b is not ObjectValue y || x.Cls != y.Cls) return false;
+            if (ReferenceEquals(x, y)) return true;
+            if (x.Cls.IsHandle) return false;
+            return x.Props.Keys.All(k => y.Props.ContainsKey(k) && ValuesEqual(x.Props[k], y.Props[k]));
+        }
         if (a.Rows != b.Rows || a.Cols != b.Cols) return false;
         switch (a)
         {
