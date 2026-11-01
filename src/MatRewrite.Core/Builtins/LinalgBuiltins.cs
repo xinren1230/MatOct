@@ -210,12 +210,7 @@ public static partial class BuiltinLibrary
             for (int k = 0; k < sq; k++) R = R * R;
             return Ops.FromMathNet(R);
         });
-        Reg1("null", a =>
-        {
-            var A = Ops.ToMathNet(M(a[0], "null")); var s = A.Svd(true); int rank = A.Rank();
-            var V = s.VT.Transpose();
-            return Ops.FromMathNet(V.SubMatrix(0, V.RowCount, rank, V.ColumnCount - rank));
-        });
+        // null: implemented in CoreLib/null.m (class, tolerance and empty-input handling)
 
         // polynomials
         Reg1("polyval", a =>

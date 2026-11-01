@@ -28,6 +28,8 @@ public static class OctaveTestRunner
 {
     static readonly Regex Kw = new(@"^(test|assert|error|warning|fail|shared|function|endfunction|xtest|testif|demo|eval|shared|ok|end)\b");
 
+    /// <summary>Octave build features (for %!testif) that MatRewrite implements natively.</summary>
+    public static readonly HashSet<string> SupportedFeatures = new() { "HAVE_QHULL" };
     static readonly Regex BugTag = new(@"^\s*<\*?\d+(,\s*\*?\d+)*>");
     public static List<TestBlock> ParseBlocks(string src)
     {
@@ -82,12 +84,22 @@ public static class OctaveTestRunner
         var shared = new List<string>();
 
         (List<string>, List<string>)? warnBase = null;
-        foreach (var b in blocks)
+        foreach (var b0 in blocks)
         {
+            var b = b0;
             switch (b.Kind)
             {
                 case "demo": case "endfunction": continue;
-                case "xtest": case "testif": res.Skip++; continue;
+                case "xtest": res.Skip++; continue;
+                case "testif":
+                {
+                    // run "%!testif FEATURE" blocks only for features this implementation provides
+                    int nl = b.Code.IndexOf('\n'); string first = nl < 0 ? b.Code : b.Code[..nl];
+                    var feat = first.Split(new[] { '<', ';' }, 2)[0].Split(new[] { ',', ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
+                    if (feat.Length == 0 || !feat.All(f => SupportedFeatures.Contains(f))) { res.Skip++; continue; }
+                    b = b with { Kind = "test", Code = nl < 0 ? "" : b.Code[(nl + 1)..] };
+                    break;
+                }
                 case "function":
                     try { it.Eval(b.Code + "\nendfunction\n"); }
                     catch (Exception ex) { res.Fail++; res.Failures.Add(new TestFailure(b.Line, "function", Msg(ex))); }

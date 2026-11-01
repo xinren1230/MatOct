@@ -1,6 +1,10 @@
 ## MatRewrite CoreLib: null -- orthonormal null-space basis from the SVD.
 function retval = null (A, tol)
   if (nargin < 1) print_usage (); endif
+  if (nargin == 2 && ischar (tol))
+    if (strcmpi (tol, "r")) error ("null: option \"r\" for rational not yet implemented"); endif
+    error ("null: TOL must be a numeric scalar");
+  endif
   if (! isnumeric (A) && ! islogical (A)) error ("null: A must be a numeric matrix"); endif
   cls = "double"; if (isa (A, "single")) cls = "single"; endif
   if (isempty (A))

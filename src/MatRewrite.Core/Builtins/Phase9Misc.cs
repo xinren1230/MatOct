@@ -104,15 +104,19 @@ public static partial class BuiltinLibrary
         {
             if (a.Length != 2) Usage("rectint");
             var A = M(a[0], "rectint"); var B = M(a[1], "rectint");
-            if (A.C != 4 && A.Numel != 0 || B.C != 4 && B.Numel != 0) throw new OctaveException("rectint: A and B must have 4 columns");
+            int cols = A.Numel != 0 ? A.C : B.C;
+            if (A.Numel != 0 && B.Numel != 0 && A.C != B.C || (cols != 4 && cols != 6)) throw new OctaveException("rectint: A and B must have 4 or 6 columns");
             if (A.Numel == 0 || B.Numel == 0) return Out(new MatrixValue(A.R, B.R));
-            var r = new MatrixValue(A.R, B.R);
+            int d = cols / 2; var r = new MatrixValue(A.R, B.R);
             for (int i = 0; i < A.R; i++) for (int j = 0; j < B.R; j++)
             {
-                double ax = A.Re[i], ay = A.Re[i + A.R], aw = A.Re[i + 2 * A.R], ah = A.Re[i + 3 * A.R];
-                double bx = B.Re[j], by = B.Re[j + B.R], bw = B.Re[j + 2 * B.R], bh = B.Re[j + 3 * B.R];
-                double w = Math.Max(0, Math.Min(ax + aw, bx + bw) - Math.Max(ax, bx)), h = Math.Max(0, Math.Min(ay + ah, by + bh) - Math.Max(ay, by));
-                r.Re[i + A.R * j] = w * h;
+                double v = 1;
+                for (int k = 0; k < d; k++)
+                {
+                    double ap = A.Re[i + k * A.R], al = A.Re[i + (k + d) * A.R], bp = B.Re[j + k * B.R], bl = B.Re[j + (k + d) * B.R];
+                    v *= Math.Max(0, Math.Min(ap + al, bp + bl) - Math.Max(ap, bp));
+                }
+                r.Re[i + A.R * j] = v;
             }
             return Out(r);
         });
@@ -163,9 +167,13 @@ public static partial class BuiltinLibrary
         Reg("inpolygon", (it, a, n) =>
         {
             if (a.Length != 4) Usage("inpolygon");
+            bool Real(Value v) => v is MatrixValue mv && !mv.IsComplex;
+            if (!Real(a[0]) || !Real(a[1])) throw new OctaveException("inpolygon: X and Y must be real");
+            if (!Real(a[2]) || !Real(a[3]) || !((MatrixValue)a[2]).IsVector || !((MatrixValue)a[3]).IsVector) throw new OctaveException("inpolygon: XV and YV must be real vectors");
             var X = M(a[0], "inpolygon"); var Y = M(a[1], "inpolygon"); var xv = M(a[2], "inpolygon").Re; var yv = M(a[3], "inpolygon").Re;
-            if (X.Numel != Y.Numel) throw new OctaveException("inpolygon: X and Y must be the same size");
-            if (xv.Length != yv.Length) throw new OctaveException("inpolygon: XV and YV must be the same size");
+            var szX = (MatrixValue)it.CallFunction("size", new[] { a[0] }, 1)[0]; var szY = (MatrixValue)it.CallFunction("size", new[] { a[1] }, 1)[0];
+            if (!szX.Re.SequenceEqual(szY.Re)) throw new OctaveException("inpolygon: X and Y must be arrays of the same size");
+            if (xv.Length != yv.Length) throw new OctaveException("inpolygon: XV and YV must be vectors of the same size");
             var inn = new MatrixValue(X.R, X.C, NumKind.Logical); var on = new MatrixValue(X.R, X.C, NumKind.Logical);
             int nv = xv.Length;
             for (int p = 0; p < X.Numel; p++)
@@ -180,7 +188,8 @@ public static partial class BuiltinLibrary
                 }
                 inn.Re[p] = ins || bnd ? 1 : 0; on.Re[p] = bnd ? 1 : 0;
             }
-            return Out(inn, on).Take(Math.Max(1, n)).ToArray();
+            var ri = it.CallFunction("reshape", new Value[] { inn, szX }, 1)[0]; var ro = it.CallFunction("reshape", new Value[] { on, szX }, 1)[0];
+            return Out(ri, ro).Take(Math.Max(1, n)).ToArray();
         });
         Reg("fzero", (it, a, nout) =>
         {

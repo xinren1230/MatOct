@@ -5,7 +5,14 @@ namespace MatRewrite.Core.Builtins;
 
 public static partial class BuiltinLibrary
 {
-    public const string Version = "0.1.0";
+    public static readonly string Version = GetVersion();
+    static string GetVersion()
+    {
+        var asm = System.Reflection.Assembly.GetAssembly(typeof(BuiltinLibrary))!;
+        var info = (System.Reflection.AssemblyInformationalVersionAttribute?)Attribute.GetCustomAttribute(asm, typeof(System.Reflection.AssemblyInformationalVersionAttribute));
+        var v = info?.InformationalVersion ?? asm.GetName().Version?.ToString(3) ?? "0.0.0";
+        int plus = v.IndexOf('+'); return plus >= 0 ? v[..plus] : v;
+    }
 
     /// <summary>Build the message for error()/warning(): (id, fmt, args...) or (fmt, args...).</summary>
     static (string id, string msg) ErrorArgs(Value[] a, string fn)

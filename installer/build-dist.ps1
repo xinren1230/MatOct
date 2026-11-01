@@ -14,7 +14,7 @@ New-Item -ItemType Directory "$zipDir\cli", "$zipDir\demo" | Out-Null
 Copy-Item "$pub\matrw\*" "$zipDir\cli" -Recurse
 Copy-Item "$root\demo\ide_demo.m" "$zipDir\demo"
 Copy-Item "$PSScriptRoot\install-portable.ps1", "$PSScriptRoot\uninstall-portable.ps1" $zipDir
-$zip = Join-Path $dist 'MatRewrite-0.10.0-win-x64-portable.zip'
+$zip = Join-Path $dist 'MatRewrite-0.11.0-win-x64-portable.zip'
 if (Test-Path $zip) { Remove-Item $zip }
 Compress-Archive -Path "$zipDir\*" -DestinationPath $zip
 $iscc = @("${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe", "$env:ProgramFiles\Inno Setup 6\ISCC.exe", "$env:LOCALAPPDATA\Programs\Inno Setup 6\ISCC.exe") | Where-Object { Test-Path $_ } | Select-Object -First 1

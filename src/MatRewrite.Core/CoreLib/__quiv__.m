@@ -123,7 +123,17 @@ function hg = __quiv__ (fn, is3d, varargin)
     set ([h1 h2 h3], "zdata", []);
   endif
   if (filled) set (h3, "markerfacecolor", lc); endif
-  if (! isempty (props)) set ([h1 h2], props{:}); endif
+  if (! isempty (props))
+    set ([h1 h2], props{:});
+    ## the base marker takes every line property except the line style
+    keep = true (1, numel (props));
+    for k = 1:2:numel (props) - 1
+      if (ischar (props{k}) && strcmpi (props{k}, "linestyle")) keep(k:k+1) = false; endif
+    endfor
+    if (any (keep)) set (h3, props{keep}); endif
+  endif
+  ## a marker in the style suppresses the arrowhead line
+  if (! isempty (mk) && ! strcmp (mk, "none")) set (h2, "linestyle", "none"); endif
   addproperty ("xdata", hg, "data", x.'); addproperty ("ydata", hg, "data", y.');
   addproperty ("udata", hg, "data", uu(:).'); addproperty ("vdata", hg, "data", vv(:).');
   if (is3d)

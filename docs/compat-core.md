@@ -2,7 +2,7 @@
 
 Mode: core builtins only (Octave m-files not on path)
 
-Files: 864, blocks passed 6473, failed 3687, skipped 487, pass rate 63.7% (30 s)
+Files: 864, blocks passed 6840, failed 3250, skipped 456, pass rate 67.8% (44 s)
 
 | Area | Files | Pass | Fail | Skip | Rate |
 |---|---:|---:|---:|---:|---:|
@@ -11,29 +11,29 @@ Files: 864, blocks passed 6473, failed 3687, skipped 487, pass rate 63.7% (30 s)
 | @ftp | 14 | 14 | 0 | 0 | 100.0% |
 | audio | 32 | 14 | 55 | 28 | 20.3% |
 | elfun | 27 | 83 | 0 | 0 | 100.0% |
-| general | 67 | 1029 | 512 | 15 | 66.8% |
-| geometry | 15 | 19 | 108 | 31 | 15.0% |
+| general | 67 | 1289 | 252 | 15 | 83.6% |
+| geometry | 15 | 158 | 0 | 0 | 100.0% |
 | gui | 26 | 10 | 81 | 8 | 11.0% |
 | help | 16 | 8 | 40 | 1 | 16.7% |
 | image | 50 | 439 | 108 | 24 | 80.3% |
 | io | 7 | 11 | 31 | 3 | 26.2% |
 | java | 4 | 2 | 13 | 14 | 13.3% |
 | legacy | 9 | 32 | 112 | 0 | 22.2% |
-| linear-algebra | 36 | 484 | 61 | 1 | 88.8% |
+| linear-algebra | 36 | 489 | 56 | 1 | 89.7% |
 | miscellaneous | 92 | 202 | 432 | 18 | 31.9% |
 | ode | 9 | 102 | 58 | 90 | 63.8% |
 | optimization | 14 | 32 | 113 | 5 | 22.1% |
 | path | 4 | 2 | 5 | 0 | 28.6% |
-| plot | 197 | 401 | 645 | 13 | 38.3% |
+| plot | 197 | 426 | 620 | 13 | 40.7% |
 | polynomial | 27 | 182 | 111 | 0 | 62.1% |
 | prefs | 6 | 0 | 24 | 0 | 0.0% |
 | profiler | 3 | 3 | 8 | 0 | 27.3% |
 | set | 9 | 285 | 36 | 2 | 88.8% |
 | signal | 21 | 446 | 59 | 9 | 88.3% |
-| sparse | 29 | 193 | 52 | 198 | 78.8% |
+| sparse | 29 | 192 | 53 | 198 | 78.4% |
 | specfun | 21 | 176 | 261 | 0 | 40.3% |
 | special-matrix | 11 | 193 | 0 | 0 | 100.0% |
-| statistics | 49 | 1303 | 366 | 0 | 78.1% |
+| statistics | 49 | 1242 | 326 | 0 | 79.2% |
 | strings | 34 | 306 | 193 | 26 | 61.3% |
 | testfun | 13 | 79 | 138 | 0 | 36.4% |
 | time | 14 | 377 | 0 | 1 | 100.0% |
@@ -157,7 +157,7 @@ Files: 864, blocks passed 6473, failed 3687, skipped 487, pass rate 63.7% (30 s)
 - general/accumarray.m:422 [test] Invalid call to accumarray
 - general/accumarray.m:434 [test] accumarray: wrong type argument 'cell array'
 - general/accumarray.m:441 [test] accumarray: wrong type argument 'cell array'
-- general/accumarray.m:452 [test] parse error near line 3, column 16: unexpected ','
+- general/accumarray.m:452 [test] 'x' undefined
 - general/accumarray.m:463 [assert] Sequence contains no elements
 - general/accumarray.m:465 [error] expected an error but none was raised
 - general/accumdim.m:168 [assert] 'accumdim' undefined
@@ -207,65 +207,11 @@ Files: 864, blocks passed 6473, failed 3687, skipped 487, pass rate 63.7% (30 s)
 - general/circshift.m:147 [error] expected an error but none was raised
 - general/circshift.m:148 [error] expected an error but none was raised
 - general/circshift.m:149 [error] expected an error but none was raised
-- general/cplxpair.m:145 [assert] 'cplxpair' undefined
-- general/cplxpair.m:146 [assert] 'cplxpair' undefined
-- general/cplxpair.m:147 [assert] 'cplxpair' undefined
-- general/cplxpair.m:148 [assert] 'cplxpair' undefined
-- general/cplxpair.m:150 [assert] 'cplxpair' undefined
-- general/cplxpair.m:152 [assert] 'cplxpair' undefined
-- general/cplxpair.m:159 [assert] 'cplxpair' undefined
-- general/cplxpair.m:160 [assert] 'cplxpair' undefined
-- general/cplxpair.m:161 [assert] 'cplxpair' undefined
-- general/cplxpair.m:162 [assert] 'cplxpair' undefined
-- general/cplxpair.m:163 [assert] 'cplxpair' undefined
-- general/cplxpair.m:164 [assert] 'cplxpair' undefined
-- general/cplxpair.m:166 [assert] index (2): out of bound 0 (dimensions are 0x0)
-- general/cplxpair.m:167 [assert] index (1): out of bound 0 (dimensions are 0x0)
-- general/cplxpair.m:171 [assert] 'cplxpair' undefined
-- general/cplxpair.m:173 [error] error ''cplxpair' undefined' does not match <could not pair>
-- general/cplxpair.m:175 [error] error ''cplxpair' undefined' does not match <could not pair>
-- general/cplxpair.m:179 [error] error ''cplxpair' undefined' does not match <Invalid call>
-- general/cplxpair.m:180 [error] error ''cplxpair' undefined' does not match <cplxpair: TOL must be .* scalar number>
-- general/cplxpair.m:181 [error] error ''cplxpair' undefined' does not match <cplxpair: TOL must be .* in the range 0 <= TOL < 1>
-- general/cplxpair.m:182 [error] error ''cplxpair' undefined' does not match <cplxpair: TOL must be .* in the range 0 <= TOL < 1>
-- general/cplxpair.m:183 [error] error ''cplxpair' undefined' does not match <invalid dimension DIM>
 - general/cumtrapz.m:158 [assert] cumtrapz: length of X and length of Y along DIM must match
 - general/curl.m:138 [test] 'curl' undefined
-- general/dblquad.m:88 [assert] 'dblquad' undefined
-- general/dblquad.m:90 [assert] 'dblquad' undefined
-- general/dblquad.m:92 [assert] 'dblquad' undefined
-- general/dblquad.m:94 [assert] 'dblquad' undefined
 - general/deal.m:110 [error] error 'deal: nargin > 1 and nargin != nargout' does not match <Invalid call>
-- general/del2.m:172 [test] 'del2' undefined
-- general/del2.m:180 [test] 'del2' undefined
-- general/del2.m:188 [test] 'del2' undefined
-- general/del2.m:200 [test] 'del2' undefined
-- general/del2.m:212 [test] 'del2' undefined
-- general/del2.m:221 [test] 'del2' undefined
-- general/del2.m:230 [test] 'del2' undefined
-- general/del2.m:239 [test] 'del2' undefined
-- general/del2.m:252 [test] 'del2' undefined
-- general/del2.m:267 [test] 'del2' undefined
-- general/del2.m:282 [test] 'del2' undefined
-- general/del2.m:293 [test] 'del2' undefined
-- general/del2.m:304 [test] 'del2' undefined
-- general/del2.m:315 [test] 'del2' undefined
-- general/del2.m:331 [test] 'del2' undefined
-- general/del2.m:337 [error] error ''del2' undefined' does not match <Invalid call>
-- general/del2.m:338 [error] error ''del2' undefined' does not match <Invalid call>
-- general/del2.m:339 [error] error ''del2' undefined' does not match <in spacing vector 1>
-- general/del2.m:340 [error] error ''del2' undefined' does not match <in spacing vector 2>
-- general/del2.m:341 [error] error ''del2' undefined' does not match <must be a scalar or vector>
-- general/flip.m:85 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
-- general/flip.m:93 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      .          O(2x4)       E(2x2x2)      Dimensions don't match
-- general/flip.m:100 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      .          O(2x4)       E(2x2x1x2)      Dimensions don't match
 - general/flip.m:111 [error] expected an error but none was raised
-- general/fliplr.m:61 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      .          O(3x4)       E(3x2x2)      Dimensions don't match
-- general/fliplr.m:69 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      .          O(3x4)       E(3x2x1x2)      Dimensions don't match
 - general/fliplr.m:77 [test] =: nonconformant arguments (op1 is 1x1x1, op2 is 1x4)
-- general/flipud.m:60 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      .          O(2x6)       E(2x3x2)      Dimensions don't match
-- general/flipud.m:68 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      .          O(2x6)       E(2x3x1x2)      Dimensions don't match
-- general/flipud.m:76 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      .          O(1x8)       E(1x4x1x2)      Dimensions don't match
 - general/idivide.m:190 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
 - general/idivide.m:191 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
 - general/idivide.m:195 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
@@ -273,104 +219,7 @@ Files: 864, blocks passed 6473, failed 3687, skipped 487, pass rate 63.7% (30 s)
 - general/idivide.m:203 [error] error 'idivide: wrong type argument 'cell array'' does not match <at least one input>
 - general/idivide.m:204 [error] error 'binary operator 'idivide' not implemented for 'int8 scalar' by 'uint8 scalar' operations' does not match <A \(int8\) must match.* B \(uint8\)>
 - general/int2str.m:112 [error] error 'int2str: wrong type argument 'cell array'' does not match <N must be a numeric>
-- general/integral.m:247 [test] 'integral' undefined
-- general/integral.m:254 [test] 'integral' undefined
-- general/integral.m:258 [test] 'integral' undefined
-- general/integral.m:262 [test] 'integral' undefined
-- general/integral.m:266 [test] 'integral' undefined
-- general/integral.m:271 [test] 'integral' undefined
-- general/integral.m:281 [test] 'integral' undefined
-- general/integral.m:288 [test] 'integral' undefined
-- general/integral.m:293 [assert] 'integral' undefined
 - general/integral.m:294 [assert] 'inline' undefined
-- general/integral.m:295 [assert] 'integral' undefined
-- general/integral.m:296 [assert] 'integral' undefined
-- general/integral.m:297 [assert] 'integral' undefined
-- general/integral.m:298 [assert] 'integral' undefined
-- general/integral.m:299 [assert] 'integral' undefined
-- general/integral.m:302 [assert] 'integral' undefined
-- general/integral.m:303 [assert] 'integral' undefined
-- general/integral.m:306 [assert] 'integral' undefined
-- general/integral.m:308 [assert] 'integral' undefined
-- general/integral.m:309 [assert] 'integral' undefined
-- general/integral.m:313 [assert] 'integral' undefined
-- general/integral.m:317 [assert] 'integral' undefined
-- general/integral.m:321 [assert] 'integral' undefined
-- general/integral.m:325 [test] 'integral' undefined
-- general/integral.m:338 [error] error ''integral' undefined' does not match <property PROP must be a string>
-- general/integral.m:339 [error] error ''integral' undefined' does not match <unknown property 'foo'>
-- general/integral2.m:293 [assert] 'integral2' undefined
-- general/integral2.m:294 [assert] 'integral2' undefined
-- general/integral2.m:295 [assert] 'integral2' undefined
-- general/integral2.m:296 [assert] 'integral2' undefined
-- general/integral2.m:301 [assert] 'integral2' undefined
-- general/integral2.m:306 [assert] 'integral2' undefined
-- general/integral2.m:307 [assert] 'integral2' undefined
-- general/integral2.m:308 [assert] 'integral2' undefined
-- general/integral2.m:314 [assert] 'integral2' undefined
-- general/integral2.m:315 [assert] 'integral2' undefined
-- general/integral2.m:316 [assert] 'integral2' undefined
-- general/integral2.m:318 [assert] 'integral2' undefined
-- general/integral2.m:320 [assert] 'integral2' undefined
-- general/integral2.m:323 [assert] 'integral2' undefined
-- general/integral2.m:326 [assert] 'integral2' undefined
-- general/integral2.m:328 [assert] 'integral2' undefined
-- general/integral2.m:330 [assert] 'integral2' undefined
-- general/integral2.m:333 [assert] 'integral2' undefined
-- general/integral2.m:334 [assert] 'integral2' undefined
-- general/integral2.m:338 [assert] 'integral2' undefined
-- general/integral2.m:341 [error] error ''integral2' undefined' does not match <Invalid call>
-- general/integral2.m:342 [error] error ''integral2' undefined' does not match <Invalid call>
-- general/integral2.m:343 [error] error ''integral2' undefined' does not match <Invalid call>
-- general/integral2.m:344 [error] error ''integral2' undefined' does not match <Invalid call>
-- general/integral2.m:345 [error] error ''integral2' undefined' does not match <Invalid call>
-- general/integral2.m:346 [error] error ''integral2' undefined' does not match <Invalid call>
-- general/integral2.m:352 [error] error ''integral2' undefined' does not match <property PROP must be a string>
-- general/integral2.m:353 [error] error ''integral2' undefined' does not match <AbsTol value must be a numeric>
-- general/integral2.m:355 [error] error ''integral2' undefined' does not match <AbsTol value must be a .* scalar>
-- general/integral2.m:357 [error] error ''integral2' undefined' does not match <AbsTol value must be.* .= 0>
-- general/integral2.m:358 [error] error ''integral2' undefined' does not match <RelTol value must be a numeric>
-- general/integral2.m:360 [error] error ''integral2' undefined' does not match <RelTol value must be a .* scalar>
-- general/integral2.m:362 [error] error ''integral2' undefined' does not match <RelTol value must be.* .= 0>
-- general/integral2.m:363 [error] error ''integral2' undefined' does not match <unrecognized method 'foo'>
-- general/integral2.m:364 [error] error ''integral2' undefined' does not match <Vectorized must be a logical value>
-- general/integral2.m:366 [error] error ''integral2' undefined' does not match <Vectorized must be a logical value>
-- general/integral2.m:368 [error] error ''integral2' undefined' does not match <unknown property 'foo'>
-- general/integral2.m:369 [error] error ''integral2' undefined' does not match <YA must be a real scalar>
-- general/integral2.m:370 [error] error ''integral2' undefined' does not match <YA must be a real scalar>
-- general/integral2.m:371 [error] error ''integral2' undefined' does not match <YB must be a real scalar>
-- general/integral2.m:372 [error] error ''integral2' undefined' does not match <YB must be a real scalar>
-- general/integral2.m:373 [warning] 'integral2' undefined
-- general/integral3.m:326 [assert] 'integral3' undefined
-- general/integral3.m:327 [assert] 'integral3' undefined
-- general/integral3.m:328 [assert] 'integral3' undefined
-- general/integral3.m:329 [assert] 'integral3' undefined
-- general/integral3.m:332 [test] 'integral3' undefined
-- general/integral3.m:339 [assert] 'integral3' undefined
-- general/integral3.m:340 [assert] 'integral3' undefined
-- general/integral3.m:341 [assert] 'integral3' undefined
-- general/integral3.m:346 [test] 'integral3' undefined
-- general/integral3.m:367 [error] error ''integral3' undefined' does not match <property PROP must be a string>
-- general/integral3.m:369 [error] error ''integral3' undefined' does not match <AbsTol value must be a numeric>
-- general/integral3.m:371 [error] error ''integral3' undefined' does not match <AbsTol value must be a .* scalar>
-- general/integral3.m:373 [error] error ''integral3' undefined' does not match <AbsTol value must be.* .= 0>
-- general/integral3.m:375 [error] error ''integral3' undefined' does not match <RelTol value must be a numeric>
-- general/integral3.m:377 [error] error ''integral3' undefined' does not match <RelTol value must be a .* scalar>
-- general/integral3.m:379 [error] error ''integral3' undefined' does not match <RelTol value must be.* .= 0>
-- general/integral3.m:381 [error] error ''integral3' undefined' does not match <unrecognized method 'foo'>
-- general/integral3.m:383 [error] error ''integral3' undefined' does not match <Vectorized must be a logical value>
-- general/integral3.m:385 [error] error ''integral3' undefined' does not match <Vectorized must be a logical value>
-- general/integral3.m:387 [error] error ''integral3' undefined' does not match <unknown property 'foo'>
-- general/integral3.m:389 [error] error ''integral3' undefined' does not match <YA must be a real scalar>
-- general/integral3.m:390 [error] error ''integral3' undefined' does not match <YA must be a real scalar>
-- general/integral3.m:391 [error] error ''integral3' undefined' does not match <YB must be a real scalar>
-- general/integral3.m:392 [error] error ''integral3' undefined' does not match <YB must be a real scalar>
-- general/integral3.m:393 [error] error ''integral3' undefined' does not match <ZA must be a real scalar>
-- general/integral3.m:394 [error] error ''integral3' undefined' does not match <ZA must be a real scalar>
-- general/integral3.m:395 [error] error ''integral3' undefined' does not match <ZB must be a real scalar>
-- general/integral3.m:396 [error] error ''integral3' undefined' does not match <ZB must be a real scalar>
-- general/interp1.m:645 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
-- general/interp1.m:665 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
 - general/interp2.m:643 [test] interp2: XI, YI must have uniform spacing ('meshgrid' format)
 - general/interp3.m:257 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)          NaN          -0.2          'NaN' mismatch
 - general/interp3.m:297 [error] error 'Invalid call to interp3' does not match <not enough input arguments>
@@ -477,96 +326,8 @@ Files: 864, blocks passed 6473, failed 3687, skipped 487, pass rate 63.7% (30 s)
 - general/polyarea.m:70 [assert] 'polyarea' undefined
 - general/polyarea.m:71 [assert] 'polyarea' undefined
 - general/polyarea.m:72 [assert] 'polyarea' undefined
-- general/quad2d.m:455 [assert] 'quad2d' undefined
-- general/quad2d.m:459 [assert] 'quad2d' undefined
-- general/quad2d.m:460 [assert] 'quad2d' undefined
-- general/quad2d.m:461 [assert] 'quad2d' undefined
-- general/quad2d.m:466 [assert] 'quad2d' undefined
-- general/quad2d.m:467 [assert] 'quad2d' undefined
-- general/quad2d.m:468 [assert] 'quad2d' undefined
-- general/quad2d.m:470 [assert] 'quad2d' undefined
-- general/quad2d.m:471 [assert] 'quad2d' undefined
-- general/quad2d.m:473 [assert] 'quad2d' undefined
-- general/quad2d.m:476 [assert] 'quad2d' undefined
-- general/quad2d.m:478 [assert] 'quad2d' undefined
-- general/quad2d.m:481 [error] error ''quad2d' undefined' does not match <Invalid call>
-- general/quad2d.m:482 [error] error ''quad2d' undefined' does not match <Invalid call>
-- general/quad2d.m:483 [error] error ''quad2d' undefined' does not match <Invalid call>
-- general/quad2d.m:484 [error] error ''quad2d' undefined' does not match <Invalid call>
-- general/quad2d.m:485 [error] error ''quad2d' undefined' does not match <Invalid call>
-- general/quad2d.m:486 [error] error ''quad2d' undefined' does not match <Invalid call>
-- general/quad2d.m:492 [error] error ''quad2d' undefined' does not match <property PROP must be a string>
-- general/quad2d.m:493 [error] error ''quad2d' undefined' does not match <AbsTol value must be a numeric>
-- general/quad2d.m:494 [error] error ''quad2d' undefined' does not match <AbsTol value must be a .* scalar>
-- general/quad2d.m:495 [error] error ''quad2d' undefined' does not match <AbsTol value must be.* .= 0>
-- general/quad2d.m:496 [error] error ''quad2d' undefined' does not match <RelTol value must be a numeric>
-- general/quad2d.m:497 [error] error ''quad2d' undefined' does not match <RelTol value must be a .* scalar>
-- general/quad2d.m:498 [error] error ''quad2d' undefined' does not match <RelTol value must be.* .= 0>
-- general/quad2d.m:499 [error] error ''quad2d' undefined' does not match <MaxFunEvals value must be a scalar integer>
-- general/quad2d.m:501 [error] error ''quad2d' undefined' does not match <MaxFunEvals value must be a scalar integer>
-- general/quad2d.m:503 [error] error ''quad2d' undefined' does not match <MaxFunEvals value must be a scalar integer>
-- general/quad2d.m:505 [error] error ''quad2d' undefined' does not match <MaxFunEvals value must be a scalar integer .= 1>
-- general/quad2d.m:507 [error] error ''quad2d' undefined' does not match <Singular must be a logical value>
-- general/quad2d.m:509 [error] error ''quad2d' undefined' does not match <Singular must be a logical value>
-- general/quad2d.m:511 [error] error ''quad2d' undefined' does not match <Vectorized must be a logical value>
-- general/quad2d.m:513 [error] error ''quad2d' undefined' does not match <Vectorized must be a logical value>
-- general/quad2d.m:515 [error] error ''quad2d' undefined' does not match <FailurePlot must be a logical value>
-- general/quad2d.m:517 [error] error ''quad2d' undefined' does not match <FailurePlot must be a logical value>
-- general/quad2d.m:519 [error] error ''quad2d' undefined' does not match <unknown property 'foo'>
-- general/quad2d.m:520 [error] error ''quad2d' undefined' does not match <YA must be a real scalar>
-- general/quad2d.m:521 [error] error ''quad2d' undefined' does not match <YA must be a real scalar>
-- general/quad2d.m:522 [error] error ''quad2d' undefined' does not match <YB must be a real scalar>
-- general/quad2d.m:523 [error] error ''quad2d' undefined' does not match <YB must be a real scalar>
-- general/quad2d.m:524 [warning] 'quad2d' undefined
-- general/quadgk.m:622 [assert] 'quadgk' undefined
+- general/quad2d.m:478 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
 - general/quadgk.m:623 [test] 'inline' undefined
-- general/quadgk.m:626 [assert] 'quadgk' undefined
-- general/quadgk.m:627 [assert] 'quadgk' undefined
-- general/quadgk.m:629 [assert] 'quadgk' undefined
-- general/quadgk.m:630 [assert] 'quadgk' undefined
-- general/quadgk.m:632 [assert] 'quadgk' undefined
-- general/quadgk.m:633 [assert] 'quadgk' undefined
-- general/quadgk.m:634 [assert] 'quadgk' undefined
-- general/quadgk.m:635 [assert] 'quadgk' undefined
-- general/quadgk.m:636 [assert] 'quadgk' undefined
-- general/quadgk.m:637 [assert] 'quadgk' undefined
-- general/quadgk.m:640 [assert] 'quadgk' undefined
-- general/quadgk.m:643 [assert] 'quadgk' undefined
-- general/quadgk.m:645 [assert] 'quadgk' undefined
-- general/quadgk.m:646 [assert] 'quadgk' undefined
-- general/quadgk.m:647 [test] 'quadgk' undefined
-- general/quadgk.m:652 [assert] 'quadgk' undefined
-- general/quadgk.m:656 [assert] 'quadgk' undefined
-- general/quadgk.m:660 [warning] 'quadgk' undefined
-- general/quadgk.m:667 [error] error ''quadgk' undefined' does not match <can not pass additional arguments>
-- general/quadgk.m:668 [error] error ''quadgk' undefined' does not match <options must occur in pairs>
-- general/quadgk.m:669 [error] error ''quadgk' undefined' does not match <PROP must be a string>
-- general/quadgk.m:670 [error] error ''quadgk' undefined' does not match <unknown property 'foo'>
-- general/quadgk.m:671 [error] error ''quadgk' undefined' does not match <ABSTOL must be a scalar>
-- general/quadgk.m:672 [error] error ''quadgk' undefined' does not match <ABSTOL must be a scalar .=0>
-- general/quadgk.m:673 [error] error ''quadgk' undefined' does not match <RELTOL must be a scalar>
-- general/quadgk.m:674 [error] error ''quadgk' undefined' does not match <RELTOL must be a scalar>
-- general/quadl.m:180 [assert] 'quadl' undefined
-- general/quadl.m:183 [assert] 'quadl' undefined
-- general/quadl.m:187 [assert] 'quadl' undefined
-- general/quadl.m:191 [test] 'quadl' undefined
-- general/quadl.m:198 [test] 'quadl' undefined
-- general/quadl.m:204 [error] error ''quadl' undefined' does not match <Invalid call>
-- general/quadl.m:205 [error] error ''quadl' undefined' does not match <Invalid call>
-- general/quadl.m:206 [error] error ''quadl' undefined' does not match <Invalid call>
-- general/quadl.m:207 [error] error ''quadl' undefined' does not match <TOL must be a scalar>
-- general/quadl.m:208 [error] error ''quadl' undefined' does not match <TOL must be .* .=0>
-- general/quadv.m:209 [assert] 'quadv' undefined
-- general/quadv.m:210 [assert] 'quadv' undefined
-- general/quadv.m:213 [assert] 'quadv' undefined
-- general/quadv.m:216 [assert] 'quadv' undefined
-- general/quadv.m:219 [assert] 'quadv' undefined
-- general/quadv.m:223 [assert] 'quadv' undefined
-- general/quadv.m:226 [error] error ''quadv' undefined' does not match <Invalid call>
-- general/quadv.m:227 [error] error ''quadv' undefined' does not match <Invalid call>
-- general/quadv.m:228 [error] error ''quadv' undefined' does not match <Invalid call>
-- general/quadv.m:229 [error] error ''quadv' undefined' does not match <TOL must be a scalar>
-- general/quadv.m:230 [error] error ''quadv' undefined' does not match <TOL must be .* .=0>
 - general/rat.m:258 [assert] 'rat' undefined
 - general/rat.m:259 [assert] 'rat' undefined
 - general/rat.m:261 [assert] 'rat' undefined
@@ -598,26 +359,6 @@ Files: 864, blocks passed 6473, failed 3687, skipped 487, pass rate 63.7% (30 s)
 - general/repmat.m:160 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      .          O(1x12)       E(1x3)      Dimensions don't match
 - general/repmat.m:224 [error] expected an error but none was raised
 - general/rescale.m:162 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
-- general/rng.m:186 [test] 'rng' undefined
-- general/rng.m:211 [test] 'rng' undefined
-- general/rng.m:236 [test] 'rng' undefined
-- general/rng.m:249 [test] 'rng' undefined
-- general/rng.m:267 [test] 'rng' undefined
-- general/rng.m:291 [error] error ''rng' undefined' does not match <Invalid call>
-- general/rng.m:292 [error] error ''rng' undefined' does not match <Invalid call>
-- general/rng.m:293 [error] error ''rng' undefined' does not match <Invalid call>
-- general/rng.m:294 [error] error ''rng' undefined' does not match <Invalid call>
-- general/rng.m:295 [error] error ''rng' undefined' does not match <Invalid call>
-- general/rng.m:296 [error] error ''rng' undefined' does not match <Invalid call>
-- general/rng.m:297 [error] error ''rng' undefined' does not match <Invalid call>
-- general/rng.m:298 [error] error ''rng' undefined' does not match <Invalid call>
-- general/rng.m:299 [error] error ''rng' undefined' does not match <Invalid call>
-- general/rng.m:300 [error] error ''rng' undefined' does not match <input structure requires "Type">
-- general/rng.m:301 [error] error ''rng' undefined' does not match <input structure requires "Type">
-- general/rng.m:303 [error] error ''rng' undefined' does not match <GENERATOR must be a string>
-- general/rng.m:304 [error] error ''rng' undefined' does not match <"philox" is not available in Octave>
-- general/rng.m:305 [error] error ''rng' undefined' does not match <GENERATOR must be a string>
-- general/rng.m:306 [error] error ''rng' undefined' does not match <unknown random number generator "foobar">
 - general/rot90.m:111 [test] transpose not defined for N-D objects
 - general/rot90.m:120 [test] transpose not defined for N-D objects
 - general/rot90.m:131 [test] transpose not defined for N-D objects
@@ -652,117 +393,8 @@ Files: 864, blocks passed 6473, failed 3687, skipped 487, pass rate 63.7% (30 s)
 - general/trapz.m:159 [error] expected an error but none was raised
 - general/trapz.m:160 [error] error 'Invalid call to trapz' does not match <length of X and length of Y.*must match>
 - general/trapz.m:161 [error] error 'Invalid call to trapz' does not match <X and Y must have same shape>
-- general/triplequad.m:90 [assert] 'triplequad' undefined
 - general/xor.m:92 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
 - general/xor.m:103 [error] error 'operator xor: nonconformant arguments (op1 is 3x2, op2 is 2x3)' does not match <X and Y must be of compatible size>
-- geometry/convhull.m:196 [error] error ''convhull' undefined' does not match <Invalid call>
-- geometry/convhull.m:197 [error] error ''convhull' undefined' does not match <Invalid call>
-- geometry/convhull.m:198 [error] error ''convhull' undefined' does not match <X must be a matrix with 2 or 3 columns>
-- geometry/convhull.m:199 [error] error ''convhull' undefined' does not match <OPTIONS must be a string or cell array>
-- geometry/convhull.m:200 [error] error ''convhull' undefined' does not match <X must be a matrix with 2 or 3 columns>
-- geometry/convhull.m:201 [error] error ''convhull' undefined' does not match <OPTIONS must be a string or cell array>
-- geometry/convhull.m:202 [error] error ''convhull' undefined' does not match <OPTIONS must be a string or cell array>
-- geometry/convhull.m:203 [error] error ''convhull' undefined' does not match <X and Y must be the same size>
-- geometry/convhull.m:204 [error] error ''convhull' undefined' does not match <X, Y, and Z must be the same size>
-- geometry/delaunay.m:212 [error] error ''delaunay' undefined' does not match <Invalid call>
-- geometry/delaunay.m:213 [error] error ''delaunay' undefined' does not match <Invalid call>
-- geometry/delaunay.m:214 [error] error ''delaunay' undefined' does not match <X must be a matrix with 2 or 3 columns>
-- geometry/delaunay.m:215 [error] error ''delaunay' undefined' does not match <OPTIONS must be a string or cell array>
-- geometry/delaunay.m:216 [error] error ''delaunay' undefined' does not match <X must be a matrix with 2 or 3 columns>
-- geometry/delaunay.m:217 [error] error ''delaunay' undefined' does not match <OPTIONS must be a string or cell array>
-- geometry/delaunay.m:218 [error] error ''delaunay' undefined' does not match <OPTIONS must be a string or cell array>
-- geometry/delaunay.m:219 [error] error ''delaunay' undefined' does not match <X and Y must be the same size>
-- geometry/delaunay.m:220 [error] error ''delaunay' undefined' does not match <X, Y, and Z must be the same size>
-- geometry/delaunayn.m:263 [error] error ''delaunayn' undefined' does not match <Invalid call>
-- geometry/delaunayn.m:264 [error] error ''delaunayn' undefined' does not match <PTS must be .* numeric array>
-- geometry/delaunayn.m:265 [error] error ''delaunayn' undefined' does not match <PTS must be .* numeric array>
-- geometry/delaunayn.m:266 [error] error ''delaunayn' undefined' does not match <PTS must be .* numeric array>
-- geometry/delaunayn.m:267 [error] error ''delaunayn' undefined' does not match <PTS must be a 2-dimensional .* array>
-- geometry/delaunayn.m:268 [error] error ''delaunayn' undefined' does not match <PTS must not contain Inf>
-- geometry/delaunayn.m:269 [error] error ''delaunayn' undefined' does not match <PTS must not contain .* NaN>
-- geometry/dsearchn.m:74 [assert] 'dsearchn' undefined
-- geometry/dsearchn.m:75 [assert] 'dsearchn' undefined
-- geometry/dsearchn.m:76 [assert] 'dsearchn' undefined
-- geometry/dsearchn.m:77 [assert] 'dsearchn' undefined
-- geometry/dsearchn.m:78 [assert] 'dsearchn' undefined
-- geometry/dsearchn.m:79 [assert] 'dsearchn' undefined
-- geometry/griddata.m:370 [error] error ''griddata' undefined' does not match <Invalid call>
-- geometry/griddata.m:371 [error] error ''griddata' undefined' does not match <Invalid call>
-- geometry/griddata.m:372 [error] error ''griddata' undefined' does not match <Invalid call>
-- geometry/griddata.m:373 [error] error ''griddata' undefined' does not match <Invalid call>
-- geometry/griddata.m:374 [error] error ''griddata' undefined' does not match <Invalid call>
-- geometry/griddata.m:375 [error] error ''griddata' undefined' does not match <only one output argument>
-- geometry/griddata.m:376 [error] error ''griddata' undefined' does not match <vectors of the same length>
-- geometry/griddata.m:377 [error] error ''griddata' undefined' does not match <vectors of the same length>
-- geometry/griddata.m:378 [error] error ''griddata' undefined' does not match <vectors of the same length>
-- geometry/griddata.m:379 [error] error ''griddata' undefined' does not match <the columns and rows of Z>
-- geometry/griddata.m:380 [error] error ''griddata' undefined' does not match <the columns and rows of Z>
-- geometry/griddata.m:381 [error] error ''griddata' undefined' does not match <XI and YI .* matrices of same size>
-- geometry/griddata.m:382 [error] error ''griddata' undefined' does not match <XI and YI .* matrices of same size>
-- geometry/griddata.m:383 [error] error ''griddata' undefined' does not match <XI and YI .* matrices of same size>
-- geometry/griddata.m:384 [error] error ''griddata' undefined' does not match <XI and YI .* matrices of same size>
-- geometry/griddata.m:385 [error] error ''griddata' undefined' does not match <METHOD must be a string>
-- geometry/griddata.m:386 [error] error ''griddata' undefined' does not match <"cubic" .* not yet implemented>
-- geometry/griddata.m:387 [error] error ''griddata' undefined' does not match <"natural" .* not yet implemented>
-- geometry/griddata.m:388 [error] error ''griddata' undefined' does not match <unknown interpolation METHOD: "foobar">
-- geometry/griddatan.m:188 [error] error ''griddatan' undefined' does not match <Invalid call>
-- geometry/griddatan.m:189 [error] error ''griddatan' undefined' does not match <Invalid call>
-- geometry/griddatan.m:190 [error] error ''griddatan' undefined' does not match <Invalid call>
-- geometry/griddatan.m:191 [error] error ''griddatan' undefined' does not match <number of points in X>
-- geometry/griddatan.m:192 [error] error ''griddatan' undefined' does not match <Y must be a column vector>
-- geometry/griddatan.m:193 [error] error ''griddatan' undefined' does not match <Y must .* same number of points .* as X>
-- geometry/griddatan.m:194 [error] error ''griddatan' undefined' does not match <dimension of .* XI .* must match X>
-- geometry/griddatan.m:195 [error] error ''griddatan' undefined' does not match <METHOD must be a string>
-- geometry/griddatan.m:196 [error] error ''griddatan' undefined' does not match <"v4" METHOD is available for 2-D>
-- geometry/griddatan.m:197 [error] error ''griddatan' undefined' does not match <"cubic" .* not yet implemented>
-- geometry/griddatan.m:198 [error] error ''griddatan' undefined' does not match <"natural" .* not yet implemented>
-- geometry/griddatan.m:199 [error] error ''griddatan' undefined' does not match <unknown .* METHOD: "foobar">
-- geometry/inpolygon.m:145 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      .          O(2x4)       E(2x2x2)      Dimensions don't match
-- geometry/inpolygon.m:164 [error] expected an error but none was raised
-- geometry/inpolygon.m:165 [error] error 'inpolygon: wrong type argument 'cell array'' does not match <X and Y must be real>
-- geometry/inpolygon.m:166 [error] error 'inpolygon: X and Y must be the same size' does not match <X and Y must be .* the same size>
-- geometry/inpolygon.m:167 [error] error 'inpolygon: X and Y must be the same size' does not match <X and Y must be .* the same size>
-- geometry/inpolygon.m:168 [error] expected an error but none was raised
-- geometry/inpolygon.m:169 [error] error 'inpolygon: wrong type argument 'cell array'' does not match <XV and YV must be real vectors>
-- geometry/rectint.m:105 [assert] rectint: A and B must have 4 columns
-- geometry/rectint.m:115 [assert] rectint: A and B must have 4 columns
-- geometry/rectint.m:116 [assert] rectint: A and B must have 4 columns
-- geometry/rectint.m:117 [assert] rectint: A and B must have 4 columns
-- geometry/rectint.m:120 [assert] rectint: A and B must have 4 columns
-- geometry/rotx.m:102 [assert] 'rotx' undefined
-- geometry/rotx.m:103 [assert] 'rotx' undefined
-- geometry/rotx.m:104 [assert] 'rotx' undefined
-- geometry/rotx.m:105 [assert] 'rotx' undefined
-- geometry/rotx.m:108 [error] error ''rotx' undefined' does not match <Invalid call>
-- geometry/rotx.m:109 [error] error ''rotx' undefined' does not match <Invalid call>
-- geometry/roty.m:102 [assert] 'roty' undefined
-- geometry/roty.m:103 [assert] 'roty' undefined
-- geometry/roty.m:104 [assert] 'roty' undefined
-- geometry/roty.m:105 [assert] 'roty' undefined
-- geometry/roty.m:108 [error] error ''roty' undefined' does not match <Invalid call>
-- geometry/roty.m:109 [error] error ''roty' undefined' does not match <Invalid call>
-- geometry/rotz.m:102 [assert] 'rotz' undefined
-- geometry/rotz.m:103 [assert] 'rotz' undefined
-- geometry/rotz.m:104 [assert] 'rotz' undefined
-- geometry/rotz.m:105 [assert] 'rotz' undefined
-- geometry/rotz.m:108 [error] error ''rotz' undefined' does not match <Invalid call>
-- geometry/rotz.m:109 [error] error ''rotz' undefined' does not match <Invalid call>
-- geometry/tsearchn.m:102 [test] 'tsearchn' undefined
-- geometry/tsearchn.m:106 [test] 'tsearchn' undefined
-- geometry/tsearchn.m:110 [test] 'tsearchn' undefined
-- geometry/tsearchn.m:114 [test] 'tsearchn' undefined
-- geometry/tsearchn.m:118 [test] 'tsearchn' undefined
-- geometry/tsearchn.m:124 [error] error ''tsearchn' undefined' does not match <Invalid call>
-- geometry/tsearchn.m:125 [error] error ''tsearchn' undefined' does not match <Invalid call>
-- geometry/tsearchn.m:126 [error] error ''tsearchn' undefined' does not match <Invalid call>
-- geometry/tsearchn.m:127 [error] error ''tsearchn' undefined' does not match <number of columns of X and XI must match>
-- geometry/tsearchn.m:128 [error] error ''tsearchn' undefined' does not match <T must not access points outside X>
-- geometry/voronoi.m:227 [error] error ''voronoi' undefined' does not match <Invalid call>
-- geometry/voronoi.m:230 [error] error ''voronoi' undefined' does not match <HAX argument must be an axes object>
-- geometry/voronoi.m:231 [error] error ''voronoi' undefined' does not match <X and Y must be vectors of the same length>
-- geometry/voronoi.m:232 [error] error ''voronoi' undefined' does not match <minimum of 2 points required>
-- geometry/voronoin.m:83 [error] error ''voronoin' undefined' does not match <Invalid call>
-- geometry/voronoin.m:84 [error] error ''voronoin' undefined' does not match <number of points must be greater than their dimension>
 - gui/getappdata.m:80 [test] 'rmappdata' undefined
 - gui/getappdata.m:94 [error] error ''getappdata' undefined' does not match <Invalid call>
 - gui/getappdata.m:95 [error] error ''getappdata' undefined' does not match <H must be a scalar .* graphic handle>
@@ -1191,17 +823,12 @@ Files: 864, blocks passed 6473, failed 3687, skipped 487, pass rate 63.7% (30 s)
 - linear-algebra/normest1.m:301 [test] normest1: function handle input is not supported natively
 - linear-algebra/normest1.m:308 [test] normest1: function handle input is not supported natively
 - linear-algebra/normest1.m:385 [error] expected an error but none was raised
-- linear-algebra/null.m:82 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      ()          O(double)       E(single)      Class double != single
-- linear-algebra/null.m:110 [test] parse error near line 4, column 9: unexpected ','
-- linear-algebra/null.m:126 [error] expected an error but none was raised
 - linear-algebra/ols.m:229 [test] 'ols' undefined
 - linear-algebra/ols.m:235 [test] 'ols' undefined
 - linear-algebra/ols.m:243 [test] 'ols' undefined
 - linear-algebra/ols.m:250 [test] 'ols' undefined
 - linear-algebra/ols.m:257 [error] error ''ols' undefined' does not match <Invalid call>
 - linear-algebra/ols.m:258 [error] error ''ols' undefined' does not match <Invalid call>
-- linear-algebra/ordeig.m:121 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (2)       0        -0       Abs err 2.236063988749895 exceeds tol 0.0001
-- linear-algebra/ordeig.m:127 [test] 'qz' undefined
 - linear-algebra/qzhess.m:111 [test] 'qzhess' undefined
 - linear-algebra/qzhess.m:132 [test] 'qzhess' undefined
 - linear-algebra/qzhess.m:157 [error] error ''qzhess' undefined' does not match <Invalid call>
@@ -1629,9 +1256,9 @@ Files: 864, blocks passed 6473, failed 3687, skipped 487, pass rate 63.7% (30 s)
 - miscellaneous/verLessThan.m:89 [error] error ''verLessThan' undefined' does not match <package "no-such-package" is not installed>
 - miscellaneous/verLessThan.m:91 [error] error ''verLessThan' undefined' does not match <compare_versions: version numbers V1 and V2 must be strings>
 - miscellaneous/version.m:126 [test] element number 2 undefined in return list
-- miscellaneous/version.m:131 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      .          O(1x5)       E(1x10)      Dimensions don't match
-- miscellaneous/version.m:133 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      .          O(1x5)       E(0x0)      Dimensions don't match
-- miscellaneous/version.m:134 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      .          O(1x5)       E(0x0)      Dimensions don't match
+- miscellaneous/version.m:131 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      .          O(1x6)       E(1x10)      Dimensions don't match
+- miscellaneous/version.m:133 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      .          O(1x6)       E(0x0)      Dimensions don't match
+- miscellaneous/version.m:134 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      .          O(1x6)       E(0x0)      Dimensions don't match
 - miscellaneous/version.m:139 [error] expected an error but none was raised
 - miscellaneous/version.m:141 [error] expected an error but none was raised
 - miscellaneous/version.m:142 [error] expected an error but none was raised
@@ -2139,21 +1766,8 @@ Files: 864, blocks passed 6473, failed 3687, skipped 487, pass rate 63.7% (30 s)
 - plot/draw/feather.m:127 [error] error ''feather' undefined' does not match <Invalid call>
 - plot/draw/feather.m:129 [error] error ''feather' undefined' does not match <invalid linestyle STYLE>
 - plot/draw/feather.m:130 [error] error ''feather' undefined' does not match <invalid linestyle STYLE>
-- plot/draw/fplot.m:271 [test] 'fplot' undefined
-- plot/draw/fplot.m:278 [test] 'fplot' undefined
-- plot/draw/fplot.m:286 [test] 'fplot' undefined
-- plot/draw/fplot.m:294 [test] 'fplot' undefined
-- plot/draw/fplot.m:305 [test] 'fplot' undefined
-- plot/draw/fplot.m:317 [error] error ''fplot' undefined' does not match <Invalid call>
-- plot/draw/fplot.m:318 [error] error ''fplot' undefined' does not match <Invalid call>
-- plot/draw/fplot.m:319 [error] error ''fplot' undefined' does not match <FCN must be a function handle>
-- plot/draw/fplot.m:320 [error] error ''fplot' undefined' does not match <LIMITS must be a real vector>
-- plot/draw/fplot.m:321 [error] error ''fplot' undefined' does not match <LIMITS must be a real vector with 2 or 4>
-- plot/draw/fplot.m:322 [error] error ''fplot' undefined' does not match <LIMITS must be a real vector with 2 or 4>
-- plot/draw/fplot.m:323 [error] error ''fplot' undefined' does not match <bad input in position 2>
-- plot/draw/fplot.m:324 [error] error ''fplot' undefined' does not match <bad input in position 3>
-- plot/draw/fplot.m:325 [warning] 'fplot' undefined
-- plot/draw/fplot.m:328 [error] error ''fplot' undefined' does not match <invalid function FCN>
+- plot/draw/fplot.m:294 [test] get: unknown axes property string
+- plot/draw/fplot.m:305 [test] get: unknown axes property string
 - plot/draw/hist.m:274 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
 - plot/draw/hist.m:278 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
 - plot/draw/hist.m:290 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      .          O(3x1)       E(3x2)      Dimensions don't match
@@ -2221,9 +1835,6 @@ Files: 864, blocks passed 6473, failed 3687, skipped 487, pass rate 63.7% (30 s)
 - plot/draw/polar.m:646 [test] axis: value undefined
 - plot/draw/polar.m:659 [test] axis: value undefined
 - plot/draw/polar.m:689 [test] expected error <FMT argument must be a string> but got <axis: value undefined>
-- plot/draw/quiver.m:355 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      .          O(1x1)       E(1x4)      Dimensions don't match
-- plot/draw/quiver.m:414 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      .          O(1x1)       E(1x4)      Dimensions don't match
-- plot/draw/quiver.m:445 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
 - plot/draw/reducepatch.m:381 [test] 'reducepatch' undefined
 - plot/draw/reducepatch.m:388 [test] 'reducepatch' undefined
 - plot/draw/reducepatch.m:395 [test] 'reducepatch' undefined
@@ -2298,15 +1909,6 @@ Files: 864, blocks passed 6473, failed 3687, skipped 487, pass rate 63.7% (30 s)
 - plot/draw/stem.m:231 [error] error 'stem: wrong type argument 'cell array'' does not match <X and Y must be numeric>
 - plot/draw/stem.m:232 [error] error 'stem: wrong type argument 'cell array'' does not match <X and Y must be numeric>
 - plot/draw/stem.m:236 [error] expected an error but none was raised
-- plot/draw/stem3.m:93 [error] error ''stem3' undefined' does not match <Invalid call>
-- plot/draw/stem3.m:94 [error] error ''stem3' undefined' does not match <must define X, Y, and Z>
-- plot/draw/stem3.m:95 [error] error ''stem3' undefined' does not match <X, Y, and Z must be numeric>
-- plot/draw/stem3.m:96 [error] error ''stem3' undefined' does not match <X, Y, and Z must be numeric>
-- plot/draw/stem3.m:97 [error] error ''stem3' undefined' does not match <X, Y, and Z must be numeric>
-- plot/draw/stem3.m:98 [error] error ''stem3' undefined' does not match <inconsistent sizes for X, Y, and Z>
-- plot/draw/stem3.m:99 [error] error ''stem3' undefined' does not match <inconsistent sizes for X, Y, and Z>
-- plot/draw/stem3.m:100 [error] error ''stem3' undefined' does not match <inconsistent sizes for X, Y, and Z>
-- plot/draw/stem3.m:101 [error] error ''stem3' undefined' does not match <No value specified for property "FOO">
 - plot/draw/stemleaf.m:339 [test] 'stemleaf' undefined
 - plot/draw/stemleaf.m:386 [test] 'stemleaf' undefined
 - plot/draw/stemleaf.m:414 [test] 'stemleaf' undefined
@@ -2716,7 +2318,7 @@ Files: 864, blocks passed 6473, failed 3687, skipped 487, pass rate 63.7% (30 s)
 - sparse/ichol.m:361 [error] expected an error but none was raised
 - sparse/ichol.m:362 [error] expected an error but none was raised
 - sparse/ichol.m:395 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       0.12362258780492974        0.2377       Abs err 0.11407741219507025 exceeds tol 0.0001
-- sparse/ichol.m:415 [test] Invalid call to __icholt__
+- sparse/ichol.m:415 [test] Exception of type 'System.OutOfMemoryException' was thrown.
 - sparse/ichol.m:425 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       1.1993406693657113E-16        0.2044       Abs err 0.2043999999999999 exceeds tol 0.0001
 - sparse/ilu.m:284 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       0.2681749582253684        0.05       Abs err 0.21817495822536842 exceeds tol 0.01
 - sparse/ilu.m:356 [test] timeout
@@ -2733,6 +2335,7 @@ Files: 864, blocks passed 6473, failed 3687, skipped 487, pass rate 63.7% (30 s)
 - sparse/spconvert.m:79 [error] expected an error but none was raised
 - sparse/sprand.m:72 [test] sprand: RC must be a scalar or vector of length min (M, N)
 - sparse/sprandn.m:72 [test] sprandn: RC must be a scalar or vector of length min (M, N)
+- sparse/sprandsym.m:167 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       0.02        0.1       Abs err 0.08 exceeds tol 0.01
 - sparse/sprandsym.m:175 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      .          O(3x1)       E(2x1)      Dimensions don't match
 - sparse/spstats.m:69 [test] 'spstats' undefined
 - sparse/spy.m:88 [error] expected an error but none was raised
@@ -3013,9 +2616,6 @@ Files: 864, blocks passed 6473, failed 3687, skipped 487, pass rate 63.7% (30 s)
 - specfun/sinint.m:193 [test] 'sinint' undefined
 - specfun/sinint.m:213 [error] error ''sinint' undefined' does not match <Invalid call>
 - specfun/sinint.m:214 [error] error ''sinint' undefined' does not match <X must be numeric>
-- statistics/bounds.m:124 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      .          O(3x1x3)       E(3x1)      Dimensions don't match
-- statistics/bounds.m:129 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      .          O(1x3x3)       E(1x3)      Dimensions don't match
-- statistics/bounds.m:134 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      .          O(1x3x3)       E(1x1)      Dimensions don't match
 - statistics/bounds.m:139 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      .          O(1x3x3)       E(1x1)      Dimensions don't match
 - statistics/bounds.m:144 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      .          O(1x3x3)       E(1x1)      Dimensions don't match
 - statistics/bounds.m:150 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      .          O(1x3x3)       E(1x1)      Dimensions don't match
@@ -3119,40 +2719,7 @@ Files: 864, blocks passed 6473, failed 3687, skipped 487, pass rate 63.7% (30 s)
 - statistics/mape.m:877 [error] expected an error but none was raised
 - statistics/mape.m:879 [error] error 'mape: WEIGHTS vector must have the same length as the operating dimension' does not match <WEIGHTS array must have the same size as the operating page>
 - statistics/mape.m:881 [error] error 'mape: WEIGHTS vector must have the same length as the operating dimension' does not match <WEIGHTS array must have the same size as the operating page>
-- statistics/mean.m:760 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
-- statistics/mean.m:790 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
-- statistics/mean.m:867 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      ()          O(single)       E(double)      Class single != double
-- statistics/mean.m:921 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      ()          O(single)       E(double)      Class single != double
-- statistics/mean.m:922 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      ()          O(single)       E(double)      Class single != double
-- statistics/mean.m:923 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      ()          O(single)       E(double)      Class single != double
-- statistics/mean.m:924 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      ()          O(single)       E(double)      Class single != double
-- statistics/mean.m:925 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      ()          O(single)       E(double)      Class single != double
-- statistics/mean.m:928 [test] Invalid call to mean
-- statistics/mean.m:937 [test] Invalid call to mean
-- statistics/mean.m:943 [test] Invalid call to mean
-- statistics/mean.m:952 [test] Invalid call to mean
-- statistics/mean.m:958 [test] Invalid call to mean
-- statistics/mean.m:965 [test] Invalid call to mean
-- statistics/mean.m:969 [test] Invalid call to mean
-- statistics/mean.m:975 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       35184372088832        35184372088833       Abs err 1 exceeds tol 0.0078125
-- statistics/mean.m:977 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       35184372088832        35184372088833       Abs err 1 exceeds tol 0.0078125
-- statistics/mean.m:980 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       35184372088832        35184372088833       Abs err 1 exceeds tol 0.0078125
-- statistics/mean.m:982 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       35184372088832        35184372088833       Abs err 1 exceeds tol 0.0078125
-- statistics/mean.m:984 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       35184372088832        35184372088833       Abs err 1 exceeds tol 0.0078125
-- statistics/mean.m:986 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       35184372088832        35184372088833       Abs err 1 exceeds tol 0.0078125
-- statistics/mean.m:988 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       35184372088832        35184372088833       Abs err 1 exceeds tol 0.0078125
-- statistics/mean.m:1006 [error] error 'Invalid call to mean' does not match <WEIGHTS must be single or double>
-- statistics/mean.m:1007 [error] error 'Invalid call to mean' does not match <WEIGHTS must be single or double>
-- statistics/mean.m:1008 [error] error 'Invalid call to mean' does not match <WEIGHTS must be nonnegative>
-- statistics/mean.m:1009 [error] error 'Invalid call to mean' does not match <paired input argument for 'Weights' is missing>
-- statistics/mean.m:1016 [error] error 'Invalid call to mean' does not match <WEIGHTS vector must have the same length as the operating dimension>
-- statistics/mean.m:1018 [error] error 'Invalid call to mean' does not match <WEIGHTS array must have the same size as X>
-- statistics/mean.m:1020 [error] error 'Invalid call to mean' does not match <WEIGHTS vector must have the same length as the operating dimension>
-- statistics/mean.m:1022 [error] error 'Invalid call to mean' does not match <WEIGHTS vector must have the same length as the operating dimension>
-- statistics/mean.m:1024 [error] error 'Invalid call to mean' does not match <WEIGHTS array must have the same size as X>
-- statistics/mean.m:1026 [error] error 'Invalid call to mean' does not match <WEIGHTS vector must have the same length as the operating dimension>
-- statistics/mean.m:1028 [error] error 'Invalid call to mean' does not match <WEIGHTS array must have the same size as X>
-- statistics/mean.m:1030 [error] error 'Invalid call to mean' does not match <WEIGHTS array must have the same size as the operating page>
+- statistics/mean.m:0 [crash] child process crashed or timed out
 - statistics/meansq.m:138 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      ()          O(double)       E(single)      Class double != single
 - statistics/median.m:603 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      ()          O(uint8)       E(double)      Class uint8 != double
 - statistics/median.m:610 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      ()          O(logical)       E(double)      Class logical != double
@@ -3171,6 +2738,8 @@ Files: 864, blocks passed 6473, failed 3687, skipped 487, pass rate 63.7% (30 s)
 - statistics/median.m:848 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
 - statistics/median.m:851 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
 - statistics/median.m:858 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      ()          O(uint64)       E(double)      Class uint64 != double
+- statistics/median.m:902 [error] error 'median: VECDIM must contain non-repeating positive integers' does not match <DIM must be a positive integer>
+- statistics/median.m:905 [error] error 'median: VECDIM must contain positive integers' does not match <DIM must be a positive integer>
 - statistics/mode.m:301 [test] element number 2 undefined in return list
 - statistics/mode.m:306 [test] element number 2 undefined in return list
 - statistics/mode.m:311 [test] element number 2 undefined in return list
@@ -3226,16 +2795,15 @@ Files: 864, blocks passed 6473, failed 3687, skipped 487, pass rate 63.7% (30 s)
 - statistics/mode.m:591 [test] element number 2 undefined in return list
 - statistics/mode.m:596 [test] element number 2 undefined in return list
 - statistics/mode.m:601 [test] element number 2 undefined in return list
-- statistics/mode.m:608 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      .          O(1x9x2)       E(1x1x2)      Dimensions don't match
 - statistics/mode.m:618 [error] error 'mode: wrong type argument 'cell array'' does not match <mode: X must be a numeric array>
 - statistics/mode.m:619 [error] expected an error but none was raised
 - statistics/mode.m:620 [error] expected an error but none was raised
 - statistics/mode.m:621 [error] error 'mode: DIM must be a valid dimension' does not match <mode: DIM must be a positive integer>
-- statistics/mode.m:622 [error] expected an error but none was raised
-- statistics/mode.m:624 [error] expected an error but none was raised
+- statistics/mode.m:622 [error] error 'mode: VECDIM must contain non-repeating positive integers' does not match <mode: VECDIM must be a vector of non-repeating positive integers>
+- statistics/mode.m:624 [error] error 'mode: VECDIM must contain positive integers' does not match <mode: VECDIM must be a vector of non-repeating positive integers>
 - statistics/mode.m:626 [error] expected an error but none was raised
-- statistics/moment.m:216 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       -0.01359025613710213        1.7763568394002505E-17       Abs err 0.013590256137102148 exceeds tol 2.220446049250313E-16
-- statistics/moment.m:217 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       0.12833568976913057        0.09437415891499015       Abs err 0.033961530854140415 exceeds tol 2.220446049250313E-16
+- statistics/moment.m:216 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       1.454392162258955E-15        1.4543921622589551E-16       Abs err 1.3089529460330595E-15 exceeds tol 2.220446049250313E-16
+- statistics/moment.m:217 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       0.8154558565491404        0.08154558565491404       Abs err 0.7339102708942264 exceeds tol 2.220446049250313E-16
 - statistics/normalize.m:520 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
 - statistics/normalize.m:521 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
 - statistics/normalize.m:522 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       0.6        0.6666666666666666       Abs err 0.06666666666666665 exceeds tol 2.220446049250313E-16
@@ -3301,13 +2869,7 @@ Files: 864, blocks passed 6473, failed 3687, skipped 487, pass rate 63.7% (30 s)
 - statistics/quantile.m:654 [error] error 'quantile: DIM must be a positive integer' does not match <quantile: VECDIM must be a vector of non-repeating positive integers>
 - statistics/quantile.m:656 [error] error 'quantile: DIM must be a positive integer' does not match <quantile: DIM must be a positive integer scalar, vector, or 'all'>
 - statistics/range.m:101 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      .          O(3x3)       E(1x3)      Dimensions don't match
-- statistics/range.m:113 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      .          O(3x1x3)       E(3x1)      Dimensions don't match
-- statistics/range.m:116 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      .          O(1x3x3)       E(1x3)      Dimensions don't match
-- statistics/range.m:119 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      .          O(1x3x3)       E(1x1)      Dimensions don't match
-- statistics/range.m:122 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      .          O(3x3x3)       E(1x1)      Dimensions don't match
-- statistics/range.m:125 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      .          O(3x3x3)       E(1x1)      Dimensions don't match
-- statistics/range.m:129 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      .          O(3x3x3)       E(1x1)      Dimensions don't match
-- statistics/range.m:133 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      .          O(3x3x3)       E(1x1)      Dimensions don't match
+- statistics/range.m:133 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)          26          NaN          'NaN' mismatch
 - statistics/range.m:143 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)          9          NaN          'NaN' mismatch
 - statistics/rms.m:105 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      ()          O(double)       E(single)      Class double != single
 - statistics/rmse.m:592 [test] rmse: WEIGHTS vector must have the same length as the operating dimension
@@ -3332,7 +2894,6 @@ Files: 864, blocks passed 6473, failed 3687, skipped 487, pass rate 63.7% (30 s)
 - statistics/spearman.m:116 [assert] 'spearman' undefined
 - statistics/spearman.m:117 [assert] 'spearman' undefined
 - statistics/spearman.m:120 [error] error ''spearman' undefined' does not match <Invalid call>
-- statistics/statistics.m:194 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      .          O(7x1x3)       E(7x1)      Dimensions don't match
 - statistics/var.m:574 [assert] var: normalization scalar must be either 0 or 1
 - statistics/var.m:575 [assert] var: normalization scalar must be either 0 or 1
 - statistics/var.m:576 [assert] var: normalization scalar must be either 0 or 1
@@ -3340,7 +2901,7 @@ Files: 864, blocks passed 6473, failed 3687, skipped 487, pass rate 63.7% (30 s)
 - statistics/var.m:604 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)          NaN          0.75          'NaN' mismatch
 - statistics/var.m:605 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)          NaN          3          'NaN' mismatch
 - statistics/var.m:606 [assert] var: weight vector length does not match
-- statistics/var.m:607 [assert] var: weight vector length does not match
+- statistics/var.m:607 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)          NaN          0.75          'NaN' mismatch
 - statistics/var.m:608 [assert] var: weight vector length does not match
 - statistics/var.m:609 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)          NaN          0.75          'NaN' mismatch
 - statistics/var.m:610 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)          NaN          0.75          'NaN' mismatch
@@ -3348,11 +2909,11 @@ Files: 864, blocks passed 6473, failed 3687, skipped 487, pass rate 63.7% (30 s)
 - statistics/var.m:612 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)          NaN          0.75          'NaN' mismatch
 - statistics/var.m:614 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (2)          NaN          0          'NaN' mismatch
 - statistics/var.m:615 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)          NaN          0          'NaN' mismatch
-- statistics/var.m:618 [assert] var: weight vector length does not match
-- statistics/var.m:620 [assert] var: weight vector length does not match
-- statistics/var.m:622 [assert] var: weight vector length does not match
-- statistics/var.m:623 [test] var: weight vector length does not match
-- statistics/var.m:628 [test] var: weight vector length does not match
+- statistics/var.m:618 [assert] var: weight vector length does not match size of operating dimension
+- statistics/var.m:620 [assert] var: weight vector length does not match size of operating dimension
+- statistics/var.m:622 [assert] var: weight vector length does not match size of operating dimension
+- statistics/var.m:623 [test] var: weight vector length does not match size of operating dimension
+- statistics/var.m:628 [test] var: weight vector length does not match size of operating dimension
 - statistics/var.m:655 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)          NaN          25          'NaN' mismatch
 - statistics/var.m:656 [assert] var: weight vector length does not match size of operating dimension
 - statistics/var.m:657 [assert] var: weight vector length does not match size of operating dimension
@@ -3360,25 +2921,27 @@ Files: 864, blocks passed 6473, failed 3687, skipped 487, pass rate 63.7% (30 s)
 - statistics/var.m:659 [assert] var: weight vector length does not match size of operating dimension
 - statistics/var.m:660 [assert] var: weight vector length does not match size of operating dimension
 - statistics/var.m:661 [assert] var: weight vector length does not match size of operating dimension
-- statistics/var.m:662 [assert] var: weight vector length does not match
-- statistics/var.m:663 [assert] var: weight vector length does not match
-- statistics/var.m:664 [assert] var: weight vector length does not match
-- statistics/var.m:684 [assert] var: weight vector length does not match
+- statistics/var.m:662 [assert] var: weight vector length does not match size of operating dimension
+- statistics/var.m:663 [assert] var: weight vector length does not match size of operating dimension
+- statistics/var.m:664 [assert] var: weight vector length does not match size of operating dimension
 - statistics/var.m:735 [test] var: normalization scalar must be either 0 or 1
 - statistics/var.m:904 [test] assert (cond) failed
 - statistics/var.m:908 [test] assert (cond) failed
 - statistics/var.m:915 [error] error 'var: normalization scalar must be either 0 or 1' does not match <Invalid call>
 - statistics/var.m:916 [error] error 'var: normalization scalar must be either 0 or 1' does not match <Invalid call>
+- statistics/var.m:931 [error] error 'var: VECDIM must contain non-repeating positive integers' does not match <DIM must be a positive integer>
+- statistics/var.m:935 [error] error 'var: VECDIM must contain positive integers' does not match <DIM must be a positive integer>
 - statistics/var.m:938 [error] error 'var: weight vector length does not match size of operating dimension' does not match <weight matrix or array does not match X in size>
 - statistics/var.m:940 [error] error 'var: weight vector length does not match size of operating dimension' does not match <weight matrix or array does not match X in size>
 - statistics/var.m:942 [error] error 'var: weight vector length does not match size of operating dimension' does not match <weight matrix or array does not match X in size>
-- statistics/var.m:944 [error] error 'var: weight vector length does not match' does not match <weight matrix or array does not match X in size>
-- statistics/var.m:946 [error] error 'var: weight vector length does not match' does not match <weight matrix or array does not match X in size>
+- statistics/var.m:944 [error] error 'var: weight vector length does not match size of operating dimension' does not match <weight matrix or array does not match X in size>
+- statistics/var.m:946 [error] error 'var: weight vector length does not match size of operating dimension' does not match <weight matrix or array does not match X in size>
 - statistics/var.m:948 [error] error 'var: weight vector length does not match size of operating dimension' does not match <weight matrix or array does not match X in size>
-- statistics/var.m:950 [error] error 'var: weight vector length does not match' does not match <weight matrix or array does not match X in size>
+- statistics/var.m:950 [error] error 'var: weight vector length does not match size of operating dimension' does not match <weight matrix or array does not match X in size>
 - statistics/var.m:958 [error] error 'var: 'all' cannot be used with DIM or VECDIM options' does not match <'all' flag cannot be used with DIM or VECDIM options>
-- statistics/var.m:960 [error] error 'var: weight vector length does not match' does not match <weight vector element count does not match X>
-- statistics/var.m:962 [error] error 'var: weight vector length does not match' does not match <weight matrix or array does not match X in size>
+- statistics/var.m:960 [error] error 'var: weight vector length does not match size of operating dimension' does not match <weight vector element count does not match X>
+- statistics/var.m:962 [error] error 'var: weight vector length does not match size of operating dimension' does not match <weight matrix or array does not match X in size>
+- statistics/zscore.m:161 [error] error 'mean: VECDIM must contain non-repeating positive integers' does not match <DIM must be .* scalar or vector>
 - strings/base2dec.m:137 [error] error 'base2dec: BASE must be between 2 and 36, or a string of symbols' does not match <cannot convert from several bases>
 - strings/bin2dec.m:79 [error] error 'Could not find any recognizable digits.' does not match <STR must be a string>
 - strings/blanks.m:67 [error] expected an error but none was raised

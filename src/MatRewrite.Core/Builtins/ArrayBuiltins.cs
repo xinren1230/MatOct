@@ -45,16 +45,16 @@ public static partial class BuiltinLibrary
         Reg1("eye", a => { var (r, c) = Dims(a, "eye"); var m = new MatrixValue(r, c); for (int k = 0; k < Math.Min(r, c); k++) m.Re[k + k * r] = 1; return m; });
         RegI("rand", (it, a) =>
         {
-            if (a.Length >= 1 && IsString(a[0])) { if (a.Length > 1) it.Rng = new Random((int)D(a[1], "rand")); return Num(0); }
+            if (a.Length >= 1 && IsString(a[0]) && S(a[0], "rand").ToLowerInvariant() is not ("single" or "double")) return RandState(it, a, false, "rand");
             bool sgl = a.Length > 1 && IsString(a[^1]) && S(a[^1], "rand") == "single"; if (a.Length > 1 && IsString(a[^1]) && S(a[^1], "rand") is "single" or "double") a = a[..^1];
             var d = DimsN(a, "rand"); var m = new MatrixValue(d[0], NDArray.Prod(d, 1)); m.SetDims(d); for (int k = 0; k < m.Numel; k++) m.Re[k] = it.Rng.NextDouble(); return sgl ? Fc(it, "single", m) : m;
         });
         RegI("randn", (it, a) =>
         {
-            if (a.Length >= 1 && IsString(a[0])) { if (a.Length > 1) it.Rng = new Random((int)D(a[1], "randn")); return Num(0); }
+            if (a.Length >= 1 && IsString(a[0]) && S(a[0], "randn").ToLowerInvariant() is not ("single" or "double")) return RandState(it, a, true, "randn");
             bool sgl = a.Length > 1 && IsString(a[^1]) && S(a[^1], "randn") == "single"; if (a.Length > 1 && IsString(a[^1]) && S(a[^1], "randn") is "single" or "double") a = a[..^1];
             var d = DimsN(a, "randn"); var m = new MatrixValue(d[0], NDArray.Prod(d, 1)); m.SetDims(d);
-            for (int k = 0; k < m.Numel; k++) { double u1 = 1 - it.Rng.NextDouble(), u2 = it.Rng.NextDouble(); m.Re[k] = Math.Sqrt(-2 * Math.Log(u1)) * Math.Cos(2 * Math.PI * u2); }
+            for (int k = 0; k < m.Numel; k++) { double u1 = 1 - it.RngN.NextDouble(), u2 = it.RngN.NextDouble(); m.Re[k] = Math.Sqrt(-2 * Math.Log(u1)) * Math.Cos(2 * Math.PI * u2); }
             return sgl ? Fc(it, "single", m) : m;
         });
         RegI("randi", (it, a) =>
@@ -341,13 +341,36 @@ public static partial class BuiltinLibrary
         Reg1("tril", a => Tri(M(a[0], "tril"), a.Length > 1 ? I(a[1], "tril") : 0, false));
         Reg1("diff", a =>
         {
-            var m = M(a[0], "diff"); int order = a.Length > 1 ? I(a[1], "diff") : 1;
+            if (a.Length is < 1 or > 3) Usage("diff");
+            var m = M(a[0], "diff");
+            int order = a.Length > 1 && !(a[1] is MatrixValue om && om.Numel == 0) ? I(a[1], "diff") : 1;
+            if (order < 0) throw new OctaveException("diff: order K must be non-negative");
+            int dim = -1;
+            if (a.Length > 2) { dim = I(a[2], "diff"); if (dim < 1) throw new OctaveException("diff: DIM must be a valid dimension"); }
+            if (dim < 0) { var d0 = m.Dims; dim = 1; for (int k = 0; k < d0.Length; k++) if (d0[k] != 1) { dim = k + 1; break; } }
+            bool single = m.Kind == NumKind.Single;
             for (int t = 0; t < order; t++)
             {
-                int d = DefDim(m);
-                if (d == 1) { if (m.R == 0) break; var r = new MatrixValue(m.R - 1, m.C); for (int j = 0; j < m.C; j++) for (int i = 0; i < m.R - 1; i++) r.Re[i + j * r.R] = m.Re[i + 1 + j * m.R] - m.Re[i + j * m.R]; m = r; }
-                else { if (m.C == 0) break; var r = new MatrixValue(m.R, m.C - 1); for (int j = 0; j < m.C - 1; j++) for (int i = 0; i < m.R; i++) r.Re[i + j * m.R] = m.Re[i + (j + 1) * m.R] - m.Re[i + j * m.R]; m = r; }
+                var d = m.Dims.ToList(); while (d.Count < dim) d.Add(1);
+                int n = d[dim - 1];
+                if (n == 0) break;
+                int stride = 1; for (int k = 0; k < dim - 1; k++) stride *= d[k];
+                var nd = d.ToArray(); nd[dim - 1] = n - 1;
+                long tot = nd.Aggregate(1L, (s2, v) => s2 * v);
+                var r = new MatrixValue(nd[0], (int)(nd[0] == 0 ? nd.Skip(1).Aggregate(1L, (s2, v) => s2 * v) : tot / nd[0]));
+                if (m.IsComplex) r.Im = new double[r.Re.Length];
+                for (long q = 0; q < tot; q++)
+                {
+                    long lo = q % stride, rest = q / stride, i = rest % (n - 1), hi = rest / (n - 1);
+                    long src = lo + stride * (i + (long)n * hi);
+                    r.Re[q] = m.Re[src + stride] - m.Re[src];
+                    if (r.Im != null) r.Im[q] = m.Im![src + stride] - m.Im[src];
+                }
+                if (nd.Length > 2) r.SetDims(nd);
+                m = r;
             }
+            if (order == 0) m = m.Copy();
+            if (single && m.Kind != NumKind.Single) { var sm = m.Copy(); sm.Kind = NumKind.Single; m = sm; }
             return m;
         });
         Reg1("isequal", a => { for (int k = 1; k < a.Length; k++) if (!ValuesEqual(a[0], a[k])) return Bool(false); return Bool(true); });
@@ -534,10 +557,17 @@ public static partial class BuiltinLibrary
 
     static ArrayValue Flip(ArrayValue x, int dim)
     {
+        var d = x.Dims;
+        if (dim < 1 || dim > d.Length || d[dim - 1] <= 1) { var cp = x.Gather(Enumerable.Range(0, x.Numel).ToArray(), x.R, x.C); cp.SetDims(d); return cp; }
+        int stride = 1; for (int k = 0; k < dim - 1; k++) stride *= d[k];
+        int n = d[dim - 1], block = stride * n;
         var lin = new int[x.Numel];
-        for (int j = 0; j < x.C; j++) for (int i = 0; i < x.R; i++)
-                lin[i + j * x.R] = dim == 1 ? (x.R - 1 - i) + j * x.R : i + (x.C - 1 - j) * x.R;
-        return x.Gather(lin, x.R, x.C);
+        for (int t = 0; t < lin.Length; t++)
+        {
+            int i = (t / stride) % n;
+            lin[t] = t + (n - 1 - 2 * i) * stride;
+        }
+        var r = x.Gather(lin, x.R, x.C); r.SetDims(d); return r;
     }
 
     static MatrixValue Tri(MatrixValue m, int k, bool upper)

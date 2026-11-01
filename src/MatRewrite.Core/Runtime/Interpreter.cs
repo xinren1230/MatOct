@@ -67,7 +67,8 @@ public sealed partial class Interpreter
     public string LastError = "";
     public string LastErrorId = "";
     public UserFunction? FindUserFunction(string name) => ResolveUser(name, Current.Func);
-    public Random Rng = new();
+    public Random Rng = new MtRandom();
+    public Random RngN = new MtRandom();
     public System.Diagnostics.Stopwatch Clock = System.Diagnostics.Stopwatch.StartNew();
     public double TicTime = double.NaN;
 

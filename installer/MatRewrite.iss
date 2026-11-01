@@ -1,6 +1,6 @@
 ; MatRewrite installer (Inno Setup 6). Build: ISCC.exe MatRewrite.iss  (run build-dist.ps1 first)
 #define AppName "MatRewrite"
-#define AppVer "0.10.0"
+#define AppVer "0.11.0"
 [Setup]
 AppId={{6C1E0B7A-9A43-4D7E-9B0E-4D61A6B2F909}
 AppName={#AppName}

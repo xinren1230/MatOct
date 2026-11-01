@@ -44,7 +44,8 @@ public sealed class Lexer
 
     char Cur => pos < src.Length ? src[pos] : '\0';
     char Peek(int k = 1) => pos + k < src.Length ? src[pos + k] : '\0';
-    bool InMatrix => brackets.Count > 0 && brackets.Peek() != '(';
+    bool InMatrix => brackets.Count > 0 && brackets.Peek() != '(' && brackets.Peek() != 'a';
+    bool afterAnonParams;
     Token? Last => toks.Count > 0 ? toks[^1] : null;
 
     bool LastEndsValue()
@@ -131,7 +132,7 @@ public sealed class Lexer
             }
 
             // implicit comma inside [] / {}
-            if (InMatrix && space && LastEndsValue() && StartsValue())
+            if (InMatrix && space && LastEndsValue() && StartsValue() && !(afterAnonParams && Last != null && Last.Is(")")))
                 Add(TokKind.Punct, ",", true);
 
             if (c == '\n')
@@ -187,10 +188,11 @@ public sealed class Lexer
             pos += op.Length;
             switch (op)
             {
-                case "(": brackets.Push('('); break;
+                case "(": brackets.Push(Last != null && Last.Is("@") ? 'a' : '('); break;
                 case "[": brackets.Push('['); break;
                 case "{": brackets.Push(LastEndsValue() && !(space && InMatrix) ? '(' : '{'); break;
                 case ")": case "]": case "}":
+                    afterAnonParams = brackets.Count > 0 && brackets.Peek() == 'a';
                     if (brackets.Count > 0) brackets.Pop();
                     // remove a trailing ';' or ',' row separator before closing bracket
                     if (op != ")" && Last != null && (Last.Is(";") || Last.Is(",")) && Last.SpaceBefore == true && false) toks.RemoveAt(toks.Count - 1);
