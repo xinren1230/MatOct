@@ -339,7 +339,7 @@ public static partial class BuiltinLibrary
                 return Out(m, im);
             });
         }
-        Reg1("isna", a => { var d = a[0].Dims; var r = new MatrixValue(d[0], d.Length > 1 ? d[1] : 1, NumKind.Logical); if (d.Length > 2) r.ND = d; return r; });
+        Reg1("isna", a => { var d = a[0].Dims; var r = new MatrixValue(1, NDArray.Prod(d), NumKind.Logical); r.SetDims(d); return r; });
         // index permutation used by Octave's sortrows.m
         RegI("__sort_rows_idx__", (it, a) =>
         {

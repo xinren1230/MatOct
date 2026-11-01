@@ -31,6 +31,7 @@ public static partial class BuiltinLibrary
         RegisterClasses();
         RegisterCompat();
         RegisterCompat2();
+        RegisterCompat3();
         cur = null;
     }
 

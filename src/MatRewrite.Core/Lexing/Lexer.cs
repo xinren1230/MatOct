@@ -223,11 +223,12 @@ public sealed class Lexer
             Add(TokKind.Num, src[s..pos], space, Convert.ToInt64(src[hs..pos], 16));
             return;
         }
-        while (char.IsDigit(Cur)) pos++;
+        bool DigitOrSep() => char.IsDigit(Cur) || (Cur == '_' && pos > s && char.IsDigit(src[pos - 1]) && char.IsDigit(Peek()));
+        while (DigitOrSep()) pos++;
         if (Cur == '.' && !(Peek() == '*' || Peek() == '/' || Peek() == '\\' || Peek() == '^' || Peek() == '\'') && !(Peek() == '.' && Peek(2) == '.'))
         {
             pos++;
-            while (char.IsDigit(Cur)) pos++;
+            while (DigitOrSep()) pos++;
         }
         if ((Cur == 'e' || Cur == 'E' || Cur == 'd' || Cur == 'D') &&
             (char.IsDigit(Peek()) || ((Peek() == '+' || Peek() == '-') && char.IsDigit(Peek(2)))))
@@ -236,7 +237,7 @@ public sealed class Lexer
             if (Cur == '+' || Cur == '-') pos++;
             while (char.IsDigit(Cur)) pos++;
         }
-        var text = src[s..pos].Replace('d', 'e').Replace('D', 'e');
+        var text = src[s..pos].Replace("_", "").Replace('d', 'e').Replace('D', 'e');
         double v = double.Parse(text, CultureInfo.InvariantCulture);
         if ((Cur == 'i' || Cur == 'j' || Cur == 'I' || Cur == 'J') && !(char.IsLetterOrDigit(Peek()) || Peek() == '_'))
         {

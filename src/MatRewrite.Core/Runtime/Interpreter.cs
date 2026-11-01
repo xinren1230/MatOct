@@ -65,6 +65,8 @@ public sealed partial class Interpreter
     public readonly Dictionary<string, UserFunction> CommandLineFunctions = new();
     public readonly List<string> SearchPath = new();
     public string LastError = "";
+    public string LastErrorId = "";
+    public UserFunction? FindUserFunction(string name) => ResolveUser(name, Current.Func);
     public Random Rng = new();
     public System.Diagnostics.Stopwatch Clock = System.Diagnostics.Stopwatch.StartNew();
     public double TicTime = double.NaN;
@@ -159,6 +161,13 @@ public sealed partial class Interpreter
 
     static Value? LookupIn(Scope sc, string name)
     {
+        var r = LookupRaw(sc, name);
+        if (r is ArrayValue xm) xm.Exclusive = false;
+        return r;
+    }
+
+    static Value? LookupRaw(Scope sc, string name)
+    {
         for (var s = sc; s != null; s = s.ParentScope)
         {
             if (s.Redirect.TryGetValue(name, out var store)) return store.TryGetValue(name, out var gv) ? gv : null;
@@ -227,7 +236,7 @@ public sealed partial class Interpreter
                 catch (Exception ex) when (ex is not ControlException && ex is not InterruptException)
                 {
                     var (msg, id) = ErrorInfo(ex);
-                    LastError = msg;
+                    LastError = msg; LastErrorId = id ?? "";
                     if (t.CatchVar != null) StoreVar(t.CatchVar, MakeErrorStruct(msg, id, (ex as OctaveException)?.Stack));
                     return ExecBlock(t.CatchBody);
                 }
@@ -298,7 +307,7 @@ public sealed partial class Interpreter
 
     static OctaveException AddFrame(Exception ex, Scope sc)
     {
-        var oe = ex as OctaveException ?? new OctaveException(ex.Message, "Octave:internal");
+        var oe = ex as OctaveException ?? new OctaveException(ex.Message, "Octave:internal") { Inner = ex };
         oe.Stack.Add(new StackFrameInfo(sc.FrameName, sc.Func?.File ?? "", sc.Line, 0));
         return oe;
     }
@@ -466,9 +475,68 @@ public sealed partial class Interpreter
             StoreVar(id.Name, rhs);
             return id.Name;
         }
-        var cur = LookupVar(id.Name);
-        StoreVar(id.Name, AssignChain(cur, ops, 0, rhs));
+        var cur = LookupRaw(Current, id.Name);
+        if (cur is MatrixValue cm && cm.Exclusive && ops.Count == 1 && TryFastScalarAssign(cm, ops[0], rhs)) return id.Name;
+        if (cur is CellValue cc && cc.Exclusive && ops.Count == 1 && TryFastCellAssign(cc, ops[0], rhs)) return id.Name;
+        if (cur is ArrayValue cm2) cm2.Exclusive = false;
+        var res = AssignChain(cur, ops, 0, rhs);
+        bool fresh = res is MatrixValue rm0 ? !(rhs is MatrixValue rhm && ReferenceEquals(rhm.Re, rm0.Re)) && !(cur is MatrixValue cm3 && ReferenceEquals(cm3.Re, rm0.Re))
+                   : res is CellValue rc0 && !(rhs is CellValue rhc && ReferenceEquals(rhc.Data, rc0.Data)) && !(cur is CellValue cc3 && ReferenceEquals(cc3.Data, rc0.Data));
+        if (fresh && res is ArrayValue rm && !ReferenceEquals(res, rhs) && !ReferenceEquals(res, cur)
+            && !Current.Redirect.ContainsKey(id.Name) && Current.Vars.ContainsKey(id.Name))
+        {
+            StoreVar(id.Name, res);
+            rm.Exclusive = ReferenceEquals(Current.Vars.GetValueOrDefault(id.Name), res);
+        }
+        else StoreVar(id.Name, res);
         return id.Name;
+    }
+
+    /// <summary>In-place c{i} = x (in range, or appending to a row/empty cell) for an exclusively owned cell.</summary>
+    bool TryFastCellAssign(CellValue c, Op op, Value rhs)
+    {
+        if (op.Kind != '{' || op.Args == null || op.Args.Count != 1 || c.ND != null) return false;
+        if (op.Args[0] is not (NumberExpr or IdentExpr or BinaryExpr)) return false;
+        if (rhs is ObjectValue) return false;
+        var args = EvalIndexArgs(op.Args, c);
+        if (args[0] is not MatrixValue i || i.Numel != 1 || i.Kind == NumKind.Logical || i.Im != null) return false;
+        double d = i.Re[0]; if (d < 1 || d != Math.Floor(d)) return false;
+        int n = c.Data.Length;
+        if (d <= n) { c.Data[(int)d - 1] = rhs; return true; }
+        if (d == n + 1 && (c.R == 1 || n == 0))
+        {
+            var nd = new Value[n + 1]; Array.Copy(c.Data, nd, n); nd[n] = rhs;
+            c.Data = nd; c.R = 1; c.C = n + 1; return true;
+        }
+        return false;
+    }
+
+    /// <summary>In-place v(i) = s / v(i,j) = s for an exclusively owned real double matrix (hot-loop fast path).</summary>
+    bool TryFastScalarAssign(MatrixValue m, Op op, Value rhs)
+    {
+        if (op.Kind != '(' || op.Args == null || op.Args.Count is < 1 or > 2) return false;
+        if (m.Kind != NumKind.Double || m.Im != null || m.ND != null || m.DoubleQuoted) return false;
+        if (rhs is not MatrixValue r || r.Numel != 1 || r.Kind != NumKind.Double || r.Im != null) return false;
+        foreach (var a in op.Args) if (a is not (NumberExpr or IdentExpr or BinaryExpr)) return false;
+        // evaluate subscripts with the matrix as 'end' context
+        var args = EvalIndexArgs(op.Args, m);
+        int lin;
+        if (args.Length == 1)
+        {
+            if (args[0] is not MatrixValue i || i.Numel != 1 || i.Kind == NumKind.Logical || i.Im != null) return false;
+            double d = i.Re[0]; if (d < 1 || d > m.Re.Length || d != Math.Floor(d)) return false;
+            lin = (int)d - 1;
+        }
+        else
+        {
+            if (args[0] is not MatrixValue i || args[1] is not MatrixValue j || i.Numel != 1 || j.Numel != 1
+                || i.Kind == NumKind.Logical || j.Kind == NumKind.Logical || i.Im != null || j.Im != null) return false;
+            double di = i.Re[0], dj = j.Re[0];
+            if (di < 1 || dj < 1 || di > m.R || dj > m.C || di != Math.Floor(di) || dj != Math.Floor(dj)) return false;
+            lin = (int)di - 1 + ((int)dj - 1) * m.R;
+        }
+        m.Re[lin] = r.Re[0];
+        return true;
     }
 
     Value AssignChain(Value? cur, List<Op> ops, int k, Value rhs)
@@ -651,11 +719,12 @@ public sealed partial class Interpreter
 
     static Value SimplifyObj(Value v) => v is ObjectArrayValue oa ? oa.Simplify() : v;
 
+    public static bool EmptyLogical = Environment.GetEnvironmentVariable("MATRW_EMPTY_TRUE") == "1";
     static bool LogicalScalar(Value v, string op)
     {
         if (v is MatrixValue m)
         {
-            if (m.Numel == 0) throw new OctaveException($"invalid conversion from empty value to real scalar");
+            if (m.Numel == 0) return EmptyLogical;
             return Ops.IsTrue(m);
         }
         throw new OctaveException($"binary operator '{op}' not implemented for '{v.ClassName}' operands");
@@ -800,7 +869,8 @@ public sealed partial class Interpreter
         int start = 0;
         if (root is IdentExpr id)
         {
-            var v = LookupVar(id.Name);
+            var v = ops.Count > 0 && ops[0].Kind is '(' or '{' ? LookupRaw(Current, id.Name) : LookupVar(id.Name);
+            if (v is ArrayValue vx && vx.Exclusive && !(ops.Count == 1 && ops[0].Args != null && ops[0].Args!.All(a => a is NumberExpr or IdentExpr or BinaryExpr))) vx.Exclusive = false;
             if (v != null) cur = new List<Value> { v };
             else if (id.Name == "containers" && ops.Count > 0 && ops[0].Kind == '.' && ops[0].Field == "Map")
             {
@@ -808,6 +878,16 @@ public sealed partial class Interpreter
                 start = 1;
                 if (ops.Count > 1 && ops[1].Kind == '(') { margs = EvalArgs(ops[1].Args!); start = 2; }
                 cur = CallFunction("containers.Map", margs, 1).ToList();
+                if (start == ops.Count) return cur;
+            }
+            else if (ops.Count > 0 && ops[0].Kind == '.' && ops[0].Field != null && ResolveUser(id.Name, Current.Func) == null && !Builtins.ContainsKey(id.Name)
+                     && FindPackageFunction(id.Name, ops, out int pk) is UserFunction pkf)
+            {
+                // package function: pkg.sub.fn(args)
+                start = pk + 1;
+                Value[] pargs = Array.Empty<Value>();
+                if (start < ops.Count && ops[start].Kind == '(') { pargs = EvalArgs(ops[start].Args!); start++; }
+                cur = (pkf.Class != null ? Construct(pkf.Class, pargs, 1) : CallUser(pkf, pargs, start == ops.Count ? nargout : 1)).ToList();
                 if (start == ops.Count) return cur;
             }
             else if (ops.Count > 0 && ops[0].Kind == '.' && ops[0].Field != null && !Builtins.ContainsKey(id.Name) && FindClassQuiet(id.Name) is ClassInfo sci
@@ -1014,13 +1094,28 @@ public sealed partial class Interpreter
                 if (File.Exists(pf)) return LoadFile(pf, name);
             }
         }
-        if (PreferBuiltins && Builtins.ContainsKey(name)) return null;
+        if (PreferBuiltins && Builtins.ContainsKey(name) && !MFileFirst.Contains(name)) return null;
         return FindOnPath(name);
     }
 
     /// <summary>When set, built-in functions take precedence over same-named m-files on the search path
     /// (used by the compatibility runner when Octave's own m-file library is on the path).</summary>
     public bool PreferBuiltins;
+
+    /// <summary>Names for which Octave's m-file implementation (with its full input validation) is preferred
+    /// over our builtin when the m-file library is on the path. Tuned against the %! test suite.</summary>
+    public static readonly HashSet<string> MFileFirst = LoadMFileFirst();
+    static HashSet<string> LoadMFileFirst()
+    {
+        var set = new HashSet<string>(MFileFirstDefaults.Names);
+        var env = Environment.GetEnvironmentVariable("MATRW_MFILE_FIRST");
+        if (env != null)
+        {
+            if (env.StartsWith("=")) { set.Clear(); env = env[1..]; }
+            foreach (var n in env.Split(',', StringSplitOptions.RemoveEmptyEntries)) set.Add(n.Trim());
+        }
+        return set;
+    }
 
     public string? FindFile(string name)
     {
@@ -1030,6 +1125,26 @@ public sealed partial class Interpreter
             if (File.Exists(p)) return p;
             var pf = Path.Combine(dir, "@" + name, name + ".m");
             if (File.Exists(pf)) return pf;
+        }
+        return null;
+    }
+
+    /// <summary>Resolves pkg.sub.name against +pkg/+sub/name.m on the search path; k receives the index of the op naming the function.</summary>
+    UserFunction? FindPackageFunction(string root, List<Op> ops, out int k)
+    {
+        k = -1;
+        var dirs = new List<string> { Directory.GetCurrentDirectory() };
+        dirs.AddRange(SearchPath);
+        var rel = "+" + root;
+        for (int i = 0; i < ops.Count && ops[i].Kind == '.' && ops[i].Field != null; i++)
+        {
+            foreach (var d in dirs)
+            {
+                var f = Path.Combine(d, rel, ops[i].Field! + ".m");
+                if (File.Exists(f)) { k = i; return LoadFile(f, ops[i].Field!); }
+            }
+            rel = Path.Combine(rel, "+" + ops[i].Field);
+            if (!dirs.Any(d => Directory.Exists(Path.Combine(d, rel)))) return null;
         }
         return null;
     }
@@ -1146,6 +1261,7 @@ public sealed partial class Interpreter
             }
             Value? v = scope.Redirect.TryGetValue(on, out var st) ? (st.TryGetValue(on, out var gv) ? gv : null)
                      : scope.Vars.TryGetValue(on, out var lv) ? lv : null;
+            if (v is ArrayValue ovm) ovm.Exclusive = false;
             if (v == null)
             {
                 if (k < nargout || (k == 0 && nargout == 1 && false))

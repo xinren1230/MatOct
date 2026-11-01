@@ -2,7 +2,7 @@
 
 Mode: core builtins only (Octave m-files not on path)
 
-Files: 864, blocks passed 1725, failed 8672, skipped 489, pass rate 16.6% (41 s)
+Files: 864, blocks passed 1730, failed 8667, skipped 489, pass rate 16.6% (35 s)
 
 | Area | Files | Pass | Fail | Skip | Rate |
 |---|---:|---:|---:|---:|---:|
@@ -11,7 +11,7 @@ Files: 864, blocks passed 1725, failed 8672, skipped 489, pass rate 16.6% (41 s)
 | @ftp | 14 | 14 | 0 | 0 | 100.0% |
 | audio | 32 | 14 | 55 | 28 | 20.3% |
 | elfun | 27 | 0 | 83 | 0 | 0.0% |
-| general | 67 | 456 | 1085 | 15 | 29.6% |
+| general | 67 | 458 | 1083 | 15 | 29.7% |
 | geometry | 15 | 2 | 125 | 31 | 1.6% |
 | gui | 26 | 10 | 81 | 8 | 11.0% |
 | help | 16 | 8 | 40 | 1 | 16.7% |
@@ -20,11 +20,11 @@ Files: 864, blocks passed 1725, failed 8672, skipped 489, pass rate 16.6% (41 s)
 | java | 4 | 2 | 13 | 14 | 13.3% |
 | legacy | 9 | 31 | 113 | 0 | 21.5% |
 | linear-algebra | 36 | 43 | 502 | 1 | 7.9% |
-| miscellaneous | 92 | 147 | 487 | 18 | 23.2% |
+| miscellaneous | 92 | 149 | 485 | 18 | 23.5% |
 | ode | 9 | 83 | 77 | 90 | 51.9% |
 | optimization | 14 | 17 | 128 | 5 | 11.7% |
 | path | 4 | 2 | 5 | 0 | 28.6% |
-| plot | 197 | 87 | 967 | 13 | 8.3% |
+| plot | 197 | 88 | 966 | 13 | 8.3% |
 | polynomial | 27 | 52 | 243 | 0 | 17.6% |
 | prefs | 6 | 0 | 24 | 0 | 0.0% |
 | profiler | 3 | 3 | 8 | 0 | 27.3% |
@@ -432,9 +432,7 @@ Files: 864, blocks passed 1725, failed 8672, skipped 489, pass rate 16.6% (41 s)
 - general/cart2sph.m:199 [error] error ''cart2sph' undefined' does not match <must be the same size or scalars>
 - general/cell2mat.m:101 [assert] cell2mat: C must be a cell array
 - general/cell2mat.m:102 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
-- general/cell2mat.m:110 [test] 'mat2cell' undefined
-- general/cell2mat.m:114 [test] 'mat2cell' undefined
-- general/cell2mat.m:118 [test] 'mat2cell' undefined
+- general/cell2mat.m:114 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
 - general/cell2mat.m:135 [error] error 'concatenation operator not implemented for 'struct' by 'matrix' operations' does not match <mixed cells, structs, and matrices>
 - general/cell2mat.m:136 [error] expected an error but none was raised
 - general/cell2mat.m:137 [error] expected an error but none was raised
@@ -462,8 +460,8 @@ Files: 864, blocks passed 1725, failed 8672, skipped 489, pass rate 16.6% (41 s)
 - general/cplxpair.m:162 [assert] 'cplxpair' undefined
 - general/cplxpair.m:163 [assert] 'cplxpair' undefined
 - general/cplxpair.m:164 [assert] 'cplxpair' undefined
-- general/cplxpair.m:166 [assert] index (2): out of bound 0 (dimensions are 0x0)
-- general/cplxpair.m:167 [assert] index (3): out of bound 0 (dimensions are 0x0)
+- general/cplxpair.m:166 [assert] index (4): out of bound 0 (dimensions are 0x0)
+- general/cplxpair.m:167 [assert] index (1): out of bound 0 (dimensions are 0x0)
 - general/cplxpair.m:171 [assert] 'cplxpair' undefined
 - general/cplxpair.m:173 [error] error ''cplxpair' undefined' does not match <could not pair>
 - general/cplxpair.m:175 [error] error ''cplxpair' undefined' does not match <could not pair>
@@ -2235,7 +2233,7 @@ Files: 864, blocks passed 1725, failed 8672, skipped 489, pass rate 16.6% (41 s)
 - legacy/strread.m:1123 [error] expected an error but none was raised
 - legacy/strread.m:1126 [error] expected an error but none was raised
 - legacy/strread.m:1139 [warning] index (3): out of bound 1 (dimensions are 1x1)
-- legacy/textread.m:338 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (2)       0.4        0.4389113597655616       Abs err 0.03891135976556159 exceeds tol 0.01
+- legacy/textread.m:338 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (2)       0.92        0.13271275874781086       Abs err 0.7872872412521892 exceeds tol 0.01
 - legacy/textread.m:347 [test] value on right hand side of assignment is undefined
 - legacy/textread.m:359 [test] value on right hand side of assignment is undefined
 - legacy/textread.m:443 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
@@ -2268,8 +2266,8 @@ Files: 864, blocks passed 1725, failed 8672, skipped 489, pass rate 16.6% (41 s)
 - linear-algebra/bandwidth.m:114 [error] error ''bandwidth' undefined' does not match <TYPE must be "lower" or "upper">
 - linear-algebra/bandwidth.m:115 [error] error ''bandwidth' undefined' does not match <TYPE must be "lower" or "upper">
 - linear-algebra/commutation_matrix.m:103 [test] 'commutation_matrix' undefined
-- linear-algebra/commutation_matrix.m:107 [test] 'vec' undefined
-- linear-algebra/commutation_matrix.m:114 [test] 'vec' undefined
+- linear-algebra/commutation_matrix.m:107 [test] Invalid call to subsref_paren__
+- linear-algebra/commutation_matrix.m:114 [test] Invalid call to subsref_paren__
 - linear-algebra/commutation_matrix.m:121 [error] error ''commutation_matrix' undefined' does not match <M must be a positive integer>
 - linear-algebra/commutation_matrix.m:122 [error] error ''commutation_matrix' undefined' does not match <N must be a positive integer>
 - linear-algebra/commutation_matrix.m:123 [error] error ''commutation_matrix' undefined' does not match <M must be a positive integer>
@@ -2818,7 +2816,6 @@ Files: 864, blocks passed 1725, failed 8672, skipped 489, pass rate 16.6% (41 s)
 - miscellaneous/compare_versions.m:241 [error] error ''compare_versions' undefined' does not match <cannot contain not and greater than>
 - miscellaneous/compare_versions.m:242 [error] error ''compare_versions' undefined' does not match <equality OPERATOR is "==">
 - miscellaneous/compare_versions.m:243 [error] error ''compare_versions' undefined' does not match <no valid OPERATOR>
-- miscellaneous/computer.m:145 [assert] '__octave_config_info__' undefined
 - miscellaneous/computer.m:148 [error] expected an error but none was raised
 - miscellaneous/computer.m:149 [error] expected an error but none was raised
 - miscellaneous/copyfile.m:181 [test] 'copyfile' undefined
@@ -2830,8 +2827,8 @@ Files: 864, blocks passed 1725, failed 8672, skipped 489, pass rate 16.6% (41 s)
 - miscellaneous/copyfile.m:219 [test] 'status' undefined
 - miscellaneous/delete.m:96 [test] delete: argument must be a string
 - miscellaneous/delete.m:109 [error] error 'delete: argument must be a string' does not match <first argument must be a filename>
-- miscellaneous/dir.m:198 [test] 'chdir' undefined
-- miscellaneous/dir.m:234 [test] 'chdir' undefined
+- miscellaneous/dir.m:198 [test] 'dir' undefined
+- miscellaneous/dir.m:234 [test] 'dir' undefined
 - miscellaneous/dir.m:267 [test] 'dir' undefined
 - miscellaneous/dir.m:282 [error] error ''dir' undefined' does not match <DIRECTORY argument must be a string>
 - miscellaneous/dir.m:283 [warning] 'dir' undefined
@@ -2840,7 +2837,7 @@ Files: 864, blocks passed 1725, failed 8672, skipped 489, pass rate 16.6% (41 s)
 - miscellaneous/edit.m:582 [test] parse error near line 8, column 11: unexpected 'home'
 - miscellaneous/fieldnames.m:89 [test] fieldnames: Invalid input argument
 - miscellaneous/fieldnames.m:95 [test] 'ftp' undefined
-- miscellaneous/fileattrib.m:176 [test] 'P_tmpdir' undefined
+- miscellaneous/fileattrib.m:176 [test] 'fileattrib' undefined
 - miscellaneous/fileattrib.m:200 [error] error ''fileattrib' undefined' does not match <FILE must be a string>
 - miscellaneous/fileparts.m:95 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
 - miscellaneous/fileparts.m:125 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
@@ -2948,7 +2945,6 @@ Files: 864, blocks passed 1725, failed 8672, skipped 489, pass rate 16.6% (41 s)
 - miscellaneous/methods.m:182 [error] error 'methods: invalid class name' does not match <class 'foobar' not found>
 - miscellaneous/methods.m:183 [error] error 'methods: argument must be a string' does not match <invalid input argument>
 - miscellaneous/mexext.m:41 [assert] 'mexext' undefined
-- miscellaneous/mkdir.m:106 [test] 'confirm_recursive_rmdir' undefined
 - miscellaneous/mkdir.m:119 [test] assert (cond) failed
 - miscellaneous/movefile.m:199 [test] 'movefile' undefined
 - miscellaneous/movefile.m:226 [error] error ''movefile' undefined' does not match <Invalid call>
@@ -3062,7 +3058,7 @@ Files: 864, blocks passed 1725, failed 8672, skipped 489, pass rate 16.6% (41 s)
 - miscellaneous/namedargs2cell.m:69 [error] error ''namedargs2cell' undefined' does not match <S must be a scalar structure>
 - miscellaneous/namedargs2cell.m:70 [error] error ''namedargs2cell' undefined' does not match <S must be a scalar structure>
 - miscellaneous/namelengthmax.m:42 [assert] 'namelengthmax' undefined
-- miscellaneous/nargchk.m:73 [shared] 'resize' undefined
+- miscellaneous/nargchk.m:73 [shared] resize: invalid argument
 - miscellaneous/nargchk.m:79 [assert] 'nargchk' undefined
 - miscellaneous/nargchk.m:80 [assert] 'nargchk' undefined
 - miscellaneous/nargchk.m:81 [assert] 'nargchk' undefined
@@ -3076,7 +3072,7 @@ Files: 864, blocks passed 1725, failed 8672, skipped 489, pass rate 16.6% (41 s)
 - miscellaneous/narginchk.m:71 [error] error ''narginchk' undefined' does not match <not enough input arguments>
 - miscellaneous/narginchk.m:73 [test] 'narginchk' undefined
 - miscellaneous/narginchk.m:75 [test] 'narginchk' undefined
-- miscellaneous/nargoutchk.m:112 [shared] 'resize' undefined
+- miscellaneous/nargoutchk.m:112 [shared] resize: invalid argument
 - miscellaneous/nargoutchk.m:118 [assert] 'nargoutchk' undefined
 - miscellaneous/nargoutchk.m:119 [assert] 'nargoutchk' undefined
 - miscellaneous/nargoutchk.m:120 [assert] 'nargoutchk' undefined
@@ -3088,7 +3084,7 @@ Files: 864, blocks passed 1725, failed 8672, skipped 489, pass rate 16.6% (41 s)
 - miscellaneous/nargoutchk.m:127 [assert] 'nargoutchk' undefined
 - miscellaneous/news.m:46 [error] error ''news' undefined' does not match <news: PACKAGE must be a string>
 - miscellaneous/news.m:47 [error] error ''news' undefined' does not match <news: package .* is not installed>
-- miscellaneous/nthargout.m:136 [assert] 'ind2sub' undefined
+- miscellaneous/nthargout.m:136 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
 - miscellaneous/nthargout.m:142 [error] error 'Invalid call to sin' does not match <N .* must be positive integers>
 - miscellaneous/nthargout.m:143 [error] error 'expected a function handle or function name' does not match <N .* must be positive integers>
 - miscellaneous/nthargout.m:144 [error] error 'Invalid call to sin' does not match <N .* must be positive integers>
@@ -3100,7 +3096,7 @@ Files: 864, blocks passed 1725, failed 8672, skipped 489, pass rate 16.6% (41 s)
 - miscellaneous/orderfields.m:175 [test] element number 2 undefined in return list
 - miscellaneous/orderfields.m:182 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
 - miscellaneous/orderfields.m:188 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
-- miscellaneous/orderfields.m:207 [test] 'resize' undefined
+- miscellaneous/orderfields.m:207 [test] resize: invalid argument
 - miscellaneous/orderfields.m:217 [error] error 'orderfields: wrong type argument' does not match <S1 must be a struct>
 - miscellaneous/orderfields.m:218 [error] expected an error but none was raised
 - miscellaneous/orderfields.m:222 [error] expected an error but none was raised
@@ -3151,7 +3147,7 @@ Files: 864, blocks passed 1725, failed 8672, skipped 489, pass rate 16.6% (41 s)
 - miscellaneous/symvar.m:61 [assert] 'symvar' undefined
 - miscellaneous/symvar.m:62 [assert] 'symvar' undefined
 - miscellaneous/symvar.m:63 [assert] 'symvar' undefined
-- miscellaneous/tar.m:108 [test] 'chdir' undefined
+- miscellaneous/tar.m:108 [test] The value cannot be an empty string. (Parameter 'path')
 - miscellaneous/tar.m:157 [error] error ''tar' undefined' does not match <Invalid call>
 - miscellaneous/tar.m:158 [error] error ''tar' undefined' does not match <Invalid call>
 - miscellaneous/tar.m:159 [error] error ''tar' undefined' does not match <TARFILE must be a string>
@@ -3224,7 +3220,7 @@ Files: 864, blocks passed 1725, failed 8672, skipped 489, pass rate 16.6% (41 s)
 - miscellaneous/verLessThan.m:89 [error] error ''verLessThan' undefined' does not match <package "no-such-package" is not installed>
 - miscellaneous/verLessThan.m:91 [error] error ''verLessThan' undefined' does not match <compare_versions: version numbers V1 and V2 must be strings>
 - miscellaneous/version.m:126 [test] element number 2 undefined in return list
-- miscellaneous/version.m:131 [assert] '__octave_config_info__' undefined
+- miscellaneous/version.m:131 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
 - miscellaneous/version.m:133 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
 - miscellaneous/version.m:134 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
 - miscellaneous/version.m:139 [error] expected an error but none was raised
@@ -3443,9 +3439,9 @@ Files: 864, blocks passed 1725, failed 8672, skipped 489, pass rate 16.6% (41 s)
 - optimization/sqp.m:801 [error] error ''sqp' undefined' does not match <Invalid call>
 - path/import.m:68 [error] error ''import' undefined' does not match <not yet implemented>
 - path/matlabroot.m:42 [assert] 'matlabroot' undefined
-- path/pathdef.m:100 [test] 'canonicalize_file_name' undefined
-- path/pathdef.m:119 [test] 'canonicalize_file_name' undefined
-- path/savepath.m:211 [test] 'confirm_recursive_rmdir' undefined
+- path/pathdef.m:100 [test] 'pathdef' undefined
+- path/pathdef.m:119 [test] 'pathdef' undefined
+- path/savepath.m:211 [test] 'savepath' undefined
 - plot/appearance/annotation.m:1479 [test] 'axes' undefined
 - plot/appearance/annotation.m:1495 [test] 'findobj' undefined
 - plot/appearance/annotation.m:1511 [test] 'findobj' undefined
@@ -3737,7 +3733,6 @@ Files: 864, blocks passed 1725, failed 8672, skipped 489, pass rate 16.6% (41 s)
 - plot/draw/camlight.m:339 [error] expected an error but none was raised
 - plot/draw/camlight.m:340 [error] error 'camlight: invalid argument 'foobar'' does not match <invalid light position 'foobar'>
 - plot/draw/camlight.m:341 [error] error 'camlight: invalid argument 'foobar'' does not match <invalid light position 'foobar'>
-- plot/draw/colorbar.m:1000 [test] 'lasterror' undefined
 - plot/draw/colorbar.m:1014 [error] expected an error but none was raised
 - plot/draw/colorbar.m:1015 [error] expected an error but none was raised
 - plot/draw/colorbar.m:1016 [error] expected an error but none was raised
@@ -4656,21 +4651,21 @@ Files: 864, blocks passed 1725, failed 8672, skipped 489, pass rate 16.6% (41 s)
 - polynomial/unmkpp.m:105 [error] error ''unmkpp' undefined' does not match <piecewise polynomial structure>
 - polynomial/unmkpp.m:106 [error] error ''unmkpp' undefined' does not match <piecewise polynomial structure>
 - polynomial/unmkpp.m:107 [error] error ''unmkpp' undefined' does not match <piecewise polynomial structure>
-- prefs/addpref.m:83 [test] 'save_default_options' undefined
+- prefs/addpref.m:83 [test] 'addpref' undefined
 - prefs/addpref.m:116 [error] error ''addpref' undefined' does not match <Invalid call>
 - prefs/addpref.m:117 [error] error ''addpref' undefined' does not match <Invalid call>
 - prefs/addpref.m:118 [error] error ''addpref' undefined' does not match <Invalid call>
 - prefs/addpref.m:119 [error] error ''addpref' undefined' does not match <GROUP must be a string>
 - prefs/addpref.m:120 [error] error ''addpref' undefined' does not match <PREF must be a string>
-- prefs/getpref.m:110 [test] 'save_default_options' undefined
+- prefs/getpref.m:110 [test] 'addpref' undefined
 - prefs/getpref.m:158 [error] error ''getpref' undefined' does not match <GROUP must be a string>
 - prefs/getpref.m:159 [error] error ''getpref' undefined' does not match <PREF must be a string>
-- prefs/ispref.m:73 [test] 'save_default_options' undefined
+- prefs/ispref.m:73 [test] 'addpref' undefined
 - prefs/ispref.m:101 [error] error ''ispref' undefined' does not match <Invalid call>
 - prefs/ispref.m:102 [error] error ''ispref' undefined' does not match <GROUP must be a string>
 - prefs/ispref.m:103 [error] error ''ispref' undefined' does not match <PREF must be a string>
-- prefs/preferences.m:42 [test] 'isguirunning' undefined
-- prefs/rmpref.m:81 [test] 'save_default_options' undefined
+- prefs/preferences.m:42 [test] 'fail' undefined
+- prefs/rmpref.m:81 [test] 'addpref' undefined
 - prefs/rmpref.m:116 [error] error ''rmpref' undefined' does not match <Invalid call>
 - prefs/rmpref.m:117 [error] error ''rmpref' undefined' does not match <GROUP must be a string>
 - prefs/rmpref.m:118 [error] error ''rmpref' undefined' does not match <PREF must be a string>
@@ -5615,7 +5610,7 @@ Files: 864, blocks passed 1725, failed 8672, skipped 489, pass rate 16.6% (41 s)
 - sparse/speye.m:88 [error] expected an error but none was raised
 - sparse/spfun.m:104 [error] error 'spfun: wrong type argument 'cell'' does not match <S must be numeric>
 - sparse/spfun.m:105 [error] expected an error but none was raised
-- sparse/sprand.m:72 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       5.578413903273513        5       Abs err 0.5784139032735132 exceeds tol 1.4901161193847656E-08
+- sparse/sprand.m:72 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       44.89657389960131        5       Abs err 39.89657389960131 exceeds tol 1.4901161193847656E-08
 - sparse/sprand.m:104 [error] error 'Index was outside the bounds of the array.' does not match <M must be a non-negative integer>
 - sparse/sprand.m:105 [error] expected an error but none was raised
 - sparse/sprand.m:106 [error] expected an error but none was raised
@@ -5626,7 +5621,7 @@ Files: 864, blocks passed 1725, failed 8672, skipped 489, pass rate 16.6% (41 s)
 - sparse/sprand.m:113 [error] expected an error but none was raised
 - sparse/sprand.m:114 [error] expected an error but none was raised
 - sparse/sprand.m:115 [error] expected an error but none was raised
-- sparse/sprandn.m:72 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       12.878246611209539        5       Abs err 7.878246611209539 exceeds tol 1.4901161193847656E-08
+- sparse/sprandn.m:72 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       15.635408687977744        5       Abs err 10.635408687977744 exceeds tol 1.4901161193847656E-08
 - sparse/sprandn.m:103 [error] error 'Index was outside the bounds of the array.' does not match <M must be a non-negative integer>
 - sparse/sprandn.m:104 [error] expected an error but none was raised
 - sparse/sprandn.m:105 [error] expected an error but none was raised

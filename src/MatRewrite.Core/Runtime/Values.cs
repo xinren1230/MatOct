@@ -10,6 +10,7 @@ public class OctaveException : Exception
 {
     public string Identifier { get; }
     public OctaveException(string message, string identifier = "") : base(message) { Identifier = identifier; }
+    public Exception? Inner;
     /// <summary>Call stack captured as the error propagated out of user functions/scripts (innermost first).</summary>
     public List<StackFrameInfo> Stack { get; } = new();
 }
@@ -45,6 +46,8 @@ public abstract class ArrayValue : Value
     /// <summary>N-D dimensions when ndims &gt; 2; otherwise null. Storage is column-major and R x C is the
     /// folded 2-D view (R = dims[0], C = prod(dims[1..])).</summary>
     public int[]? ND;
+    /// <summary>Set when this array is known to be referenced only by one local variable, enabling in-place element assignment.</summary>
+    internal bool Exclusive;
     public override int Rows => R;
     public override int Cols => C;
     public override int[] Dims => ND != null ? (int[])ND.Clone() : new[] { R, C };

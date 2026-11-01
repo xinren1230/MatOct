@@ -148,6 +148,10 @@ public sealed class Parser
     static bool AttrTrue(Dictionary<string, string> a, string k) => a.TryGetValue(k, out var v) && v is "true" or "~false";
     static string? AttrVal(Dictionary<string, string> a, string k) => a.TryGetValue(k, out var v) ? v.Trim('\'', '"').ToLowerInvariant() : null;
 
+    static readonly HashSet<string> PostIncFollow = new() { "<", ">", "<=", ">=", "==", "!=", "~=", "&&", "||", "&", "|", "*", "/", ".*", "./" };
+    static readonly HashSet<string> ClassEnds = new() { "endclassdef", "endproperties", "endmethods", "endevents", "endenumeration" };
+    bool IsEndC() => IsKw("end") || (Cur.Kind == TokKind.Ident && ClassEnds.Contains(Cur.Text));
+
     ClassDefAst ParseClassdef()
     {
         var c = new ClassDefAst { Line = Cur.Line };
@@ -163,7 +167,7 @@ public sealed class Parser
         while (true)
         {
             SkipNewlines();
-            if (IsKw("end")) { p++; break; }
+            if (IsEndC()) { p++; break; }
             if (Cur.Kind == TokKind.EOF) throw Err("classdef: missing 'end'");
             var w = Cur.Kind == TokKind.Ident ? Cur.Text : "";
             if (w == "properties")
@@ -177,7 +181,7 @@ public sealed class Parser
                 while (true)
                 {
                     SkipNewlines();
-                    if (IsKw("end")) { p++; break; }
+                    if (IsEndC()) { p++; break; }
                     if (Cur.Kind != TokKind.Ident) throw Err("invalid property declaration");
                     var name = Next().Text;
                     // optional size/class validation: (1,1) double {mustBe...}
@@ -200,7 +204,7 @@ public sealed class Parser
                 while (true)
                 {
                     SkipNewlines();
-                    if (IsKw("end")) { p++; break; }
+                    if (IsEndC()) { p++; break; }
                     if (IsKw("function"))
                     {
                         var f = ParseFunction(out var promoted);
@@ -218,7 +222,7 @@ public sealed class Parser
                 while (true)
                 {
                     SkipNewlines();
-                    if (IsKw("end")) { p++; break; }
+                    if (IsEndC()) { p++; break; }
                     if (Cur.Kind == TokKind.EOF) throw Err("events: missing 'end'");
                     if (Cur.Kind == TokKind.Ident) c.Events.Add(Next().Text); else p++;
                 }
@@ -229,7 +233,7 @@ public sealed class Parser
                 while (true)
                 {
                     SkipNewlines();
-                    if (IsKw("end")) { p++; break; }
+                    if (IsEndC()) { p++; break; }
                     if (Cur.Kind == TokKind.EOF) throw Err("enumeration: missing 'end'");
                     if (Cur.Kind != TokKind.Ident) { p++; continue; }
                     var en = Next().Text;
@@ -711,7 +715,8 @@ public sealed class Parser
                 e = new PostfixExpr(Next().Text, e);
             }
             else if ((IsP("+") || IsP("-")) && PeekTok().Is(Cur.Text) && !PeekTok().SpaceBefore && IsLValue(e)
-                     && p + 2 < t.Count && (t[p + 2].Kind is TokKind.Newline or TokKind.EOF || t[p + 2].Is(")") || t[p + 2].Is("]") || t[p + 2].Is("}") || t[p + 2].Is(",") || t[p + 2].Is(";")))
+                     && p + 2 < t.Count && (t[p + 2].Kind is TokKind.Newline or TokKind.EOF || t[p + 2].Is(")") || t[p + 2].Is("]") || t[p + 2].Is("}") || t[p + 2].Is(",") || t[p + 2].Is(";")
+                         || (t[p + 2].Kind == TokKind.Punct && PostIncFollow.Contains(t[p + 2].Text))))
             {
                 var op = Cur.Text; p += 2;
                 e = new AssignExpr(e, new BinaryExpr(op, e, new NumberExpr(1, false, "1")), true);

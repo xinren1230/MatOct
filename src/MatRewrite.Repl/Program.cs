@@ -67,6 +67,7 @@ public static class Program
         {
             o.Flush();
             Console.Error.Write("error: " + Interpreter.ErrorInfo(ex).msg + "\n" + Interpreter.FormatStack(ex));
+            if (Environment.GetEnvironmentVariable("MATRW_TRACE") == "1") { Exception? e = ex; while (e != null) { Console.Error.WriteLine(e.GetType().Name + ": " + e.Message + "\n" + e.StackTrace); e = e.InnerException ?? (e as OctaveException)?.Inner; } }
             return 1;
         }
     }
