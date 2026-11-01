@@ -1,0 +1,219 @@
+// MatRewrite - GPL-3.0-or-later
+namespace MatRewrite.Core.Runtime;
+
+/// <summary>Octave indexing semantics: A(I), A(I,J), logical masks, ':' and growth on assignment.</summary>
+public static class Indexing
+{
+    sealed class Idx
+    {
+        public int[] I = Array.Empty<int>();
+        public bool Colon;
+        public int R, C;     // shape of the index value
+        public bool Logical;
+        public int Max => I.Length == 0 ? -1 : I.Max();
+    }
+
+    static Idx Convert(Value v, int extent, string ctx, bool allowOutOfRange)
+    {
+        if (v is MagicColon) return new Idx { I = Enumerable.Range(0, extent).ToArray(), Colon = true, R = extent, C = 1 };
+        if (v is MatrixValue m)
+        {
+            if (m.IsChar && m.Numel == 1 && m.Re[0] == ':')
+                return new Idx { I = Enumerable.Range(0, extent).ToArray(), Colon = true, R = extent, C = 1 };
+            if (m.IsLogical)
+            {
+                var list = new List<int>();
+                for (int k = 0; k < m.Numel; k++) if (m.Re[k] != 0) list.Add(k);
+                if (!allowOutOfRange && list.Count > 0 && list[^1] >= extent)
+                    throw new OctaveException($"{ctx}: out of bound {extent} (dimensions are {ctx})", "Octave:index-out-of-bounds");
+                bool row = m.R == 1 && m.C != 1;
+                return new Idx { I = list.ToArray(), R = row ? 1 : list.Count, C = row ? list.Count : 1, Logical = true };
+            }
+            var arr = new int[m.Numel];
+            for (int k = 0; k < arr.Length; k++)
+            {
+                double d = m.Re[k];
+                if (d != Math.Floor(d))
+                    throw new OctaveException($"subscript indices must be either positive integers or logicals", "Octave:index-out-of-bounds");
+                if (d < 1)
+                    throw new OctaveException(d == 0 ? "index (0): out of bound; value 0 out of bound " + extent
+                        : $"index ({d}): out of bound; value {d} out of bound {extent}", "Octave:index-out-of-bounds");
+                arr[k] = (int)d - 1;
+            }
+            return new Idx { I = arr, R = m.R, C = m.C };
+        }
+        throw new OctaveException($"subscript indices must be either positive integers or logicals");
+    }
+
+    static OctaveException OOB(int idx, int extent, ArrayValue a, int pos, int n) =>
+        n == 1
+            ? new OctaveException($"index ({idx + 1}): out of bound {extent} (dimensions are {a.R}x{a.C})", "Octave:index-out-of-bounds")
+            : new OctaveException($"{(pos == 0 ? $"index ({idx + 1},_)" : $"index (_,{idx + 1})")}: out of bound {extent} (dimensions are {a.R}x{a.C})", "Octave:index-out-of-bounds");
+
+    /// <summary>Normalize >2 subscripts: trailing ones must be 1 or ':'.</summary>
+    static Value[] Normalize(Value[] args)
+    {
+        if (args.Length <= 2) return args;
+        for (int k = 2; k < args.Length; k++)
+        {
+            var a = args[k];
+            bool ok = a is MagicColon || (a is MatrixValue m && m.Numel == 1 && m.Re[0] == 1);
+            if (!ok) throw new OctaveException("N-dimensional arrays are not supported yet (only 2-D)");
+        }
+        return new[] { args[0], args[1] };
+    }
+
+    public static ArrayValue Read(ArrayValue a, Value[] args)
+    {
+        args = Normalize(args);
+        if (args.Length == 0) return a;
+        if (args.Length == 1)
+        {
+            int n = a.Numel;
+            var ix = Convert(args[0], n, "index", false);
+            foreach (var k in ix.I) if (k >= n) throw OOB(k, n, a, 0, 1);
+            int r, c;
+            if (ix.Colon) { r = n; c = 1; }
+            else if (ix.Logical)
+            {
+                // mask on a vector keeps the source orientation
+                if (a.R == 1 && a.C >= 1 && (args[0] as MatrixValue)!.R == 1) { r = 1; c = ix.I.Length; }
+                else if (a.R == 1 && args[0] is MatrixValue lm && (lm.R == 1 || lm.C == 1)) { r = 1; c = ix.I.Length; }
+                else { r = ix.I.Length; c = 1; }
+            }
+            else if ((ix.R == 1 || ix.C == 1) && (a.R == 1 || a.C == 1) && !(a.R == 1 && a.C == 1))
+            {
+                if (a.R == 1) { r = 1; c = ix.I.Length; } else { r = ix.I.Length; c = 1; }
+            }
+            else { r = ix.R; c = ix.C; }
+            return a.Gather(ix.I, r, c);
+        }
+        var ri = Convert(args[0], a.R, "index", false);
+        var ci = Convert(args[1], a.C, "index", false);
+        foreach (var k in ri.I) if (k >= a.R) throw OOB(k, a.R, a, 0, 2);
+        foreach (var k in ci.I) if (k >= a.C) throw OOB(k, a.C, a, 1, 2);
+        var lin = new int[ri.I.Length * ci.I.Length];
+        int t = 0;
+        foreach (var j in ci.I) foreach (var i in ri.I) lin[t++] = i + j * a.R;
+        return a.Gather(lin, ri.I.Length, ci.I.Length);
+    }
+
+    /// <summary>A(args) = rhs. 'a' may be null (undefined variable). Returns the new array.</summary>
+    public static ArrayValue Assign(ArrayValue? a, Value[] args, ArrayValue rhs)
+    {
+        args = Normalize(args);
+        bool deleting = a != null && rhs is MatrixValue dm && dm.R == 0 && dm.C == 0 && !dm.IsChar;
+        if (deleting) return Delete(a!, args);
+        a ??= rhs.EmptyLike(0, 0);
+        a = Coerce(a, rhs);
+        if (args.Length == 1)
+        {
+            int n = a.Numel;
+            var ix = Convert(args[0], n, "index", true);
+            int count = ix.I.Length;
+            if (rhs.Numel != 1 && rhs.Numel != count)
+                throw new OctaveException($"=: nonconformant arguments (op1 is 1x{count}, op2 is {rhs.R}x{rhs.C})");
+            int max = ix.Max;
+            ArrayValue target;
+            if (max >= n)
+            {
+                int nr, nc;
+                if (a.Numel == 0 && a.R == 0 && a.C == 0) { nr = 1; nc = max + 1; if (rhs.C == 1 && rhs.R > 1 && ix.Colon == false && ix.C == 1 && ix.R > 1) { nr = max + 1; nc = 1; } }
+                else if (a.R == 1) { nr = 1; nc = max + 1; }
+                else if (a.C == 1) { nr = max + 1; nc = 1; }
+                else throw new OctaveException($"Octave:index out of bound; value {max + 1} out of bound {n}", "Octave:index-out-of-bounds");
+                target = a.Resized(nr, nc);
+            }
+            else target = Clone(a);
+            for (int k = 0; k < count; k++) target.SetFrom(ix.I[k], rhs, rhs.Numel == 1 ? 0 : k);
+            return Narrow(target);
+        }
+        else
+        {
+            bool aEmpty = a.Numel == 0;
+            var ri = Convert(args[0], args[0] is MagicColon && aEmpty ? Math.Max(rhs.R, a.R) : a.R, "index", true);
+            var ci = Convert(args[1], args[1] is MagicColon && aEmpty ? (args[0] is MagicColon ? rhs.C : (rhs.Numel / Math.Max(1, ri.I.Length))) : a.C, "index", true);
+            if (args[0] is MagicColon && aEmpty && !(args[1] is MagicColon))
+                ri = Convert(args[0], rhs.Numel / Math.Max(1, ci.I.Length) == 0 ? rhs.R : (rhs.Numel == 1 ? 1 : rhs.Numel / Math.Max(1, ci.I.Length)), "index", true);
+            int count = ri.I.Length * ci.I.Length;
+            if (rhs.Numel != 1 && rhs.Numel != count)
+                throw new OctaveException($"=: nonconformant arguments (op1 is {ri.I.Length}x{ci.I.Length}, op2 is {rhs.R}x{rhs.C})");
+            int nr = Math.Max(a.R, ri.Max + 1), nc = Math.Max(a.C, ci.Max + 1);
+            var target = (nr != a.R || nc != a.C) ? a.Resized(nr, nc) : Clone(a);
+            int t = 0;
+            foreach (var j in ci.I)
+                foreach (var i in ri.I)
+                    target.SetFrom(i + j * nr, rhs, rhs.Numel == 1 ? 0 : t++);
+            return Narrow(target);
+        }
+    }
+
+
+    static ArrayValue Narrow(ArrayValue a) => a is MatrixValue m ? m.Narrow() : a;
+
+    static ArrayValue Clone(ArrayValue a) => a switch
+    {
+        MatrixValue m => m.Copy(),
+        CellValue c => c.Copy(),
+        StructValue s => s.Copy(),
+        _ => a
+    };
+
+    /// <summary>Type promotion of the target when assigning rhs into it.</summary>
+    static ArrayValue Coerce(ArrayValue a, ArrayValue rhs)
+    {
+        if (a.GetType() == rhs.GetType())
+        {
+            if (a is MatrixValue am && rhs is MatrixValue rm && am.Kind != rm.Kind)
+            {
+                var c = am.Copy();
+                c.Kind = (am.Numel == 0) ? rm.Kind : NumKind.Double;
+                if (am.IsChar && rm.IsChar) c.Kind = NumKind.Char;
+                return c;
+            }
+            return a;
+        }
+        if (a.Numel == 0 && a is MatrixValue) return rhs.EmptyLike(a.R, a.C);
+        if (a is CellValue) throw new OctaveException("conversion to cell array from " + rhs.ClassName + " not possible; use '{' instead of '('");
+        if (a is StructValue && rhs is MatrixValue) throw new OctaveException("invalid assignment to struct array element");
+        throw new OctaveException($"operator = undefined for '{a.ClassName}' by '{rhs.ClassName}' operations");
+    }
+
+    public static ArrayValue Delete(ArrayValue a, Value[] args)
+    {
+        if (args.Length == 1)
+        {
+            var ix = Convert(args[0], a.Numel, "index", false);
+            var del = new HashSet<int>(ix.I);
+            var keep = Enumerable.Range(0, a.Numel).Where(k => !del.Contains(k)).ToArray();
+            if (ix.Colon) return a.Gather(Array.Empty<int>(), 0, 0);
+            if (a.C == 1 && a.R != 1) return a.Gather(keep, keep.Length, 1);
+            return a.Gather(keep, 1, keep.Length);
+        }
+        bool rAll = args[0] is MagicColon || IsFull(args[0], a.R);
+        bool cAll = args[1] is MagicColon || IsFull(args[1], a.C);
+        if (rAll)
+        {
+            var ci = new HashSet<int>(Convert(args[1], a.C, "index", false).I);
+            var cols = Enumerable.Range(0, a.C).Where(j => !ci.Contains(j)).ToArray();
+            var lin = cols.SelectMany(j => Enumerable.Range(0, a.R).Select(i => i + j * a.R)).ToArray();
+            return a.Gather(lin, a.R, cols.Length);
+        }
+        if (cAll)
+        {
+            var ri = new HashSet<int>(Convert(args[0], a.R, "index", false).I);
+            var rows = Enumerable.Range(0, a.R).Where(i => !ri.Contains(i)).ToArray();
+            var lin = Enumerable.Range(0, a.C).SelectMany(j => rows.Select(i => i + j * a.R)).ToArray();
+            return a.Gather(lin, rows.Length, a.C);
+        }
+        throw new OctaveException("a null assignment can only have one non-colon index");
+    }
+
+    static bool IsFull(Value v, int extent)
+    {
+        if (v is not MatrixValue m) return false;
+        var set = new HashSet<double>(m.IsLogical ? Enumerable.Range(0, m.Numel).Where(k => m.Re[k] != 0).Select(k => (double)k + 1) : m.Re);
+        for (int k = 1; k <= extent; k++) if (!set.Contains(k)) return false;
+        return true;
+    }
+}
