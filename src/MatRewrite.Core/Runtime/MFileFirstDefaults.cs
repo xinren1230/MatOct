@@ -9,6 +9,7 @@ public static class MFileFirstDefaults
         "annotation",
         "ode45", "ode23", "ode23s", "odeset", "odeget", "ode15s", "ode15i", "decic",
         "assert",
+        "normalize", "quantile", "cov", "cart2sph", "sph2cart", "cart2pol", "pol2cart", "sortrows", "ndgrid", "hadamard", "compan", "istriu", "isbanded", "rescale", "blkdiag", "corr", "bitset",
         "beep",
         "blanks",
         "camlight",

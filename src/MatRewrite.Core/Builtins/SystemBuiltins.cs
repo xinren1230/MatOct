@@ -306,12 +306,30 @@ public static partial class BuiltinLibrary
             }
             var obs = a[0]; var exp = a[1];
             double tol = a.Length > 2 ? D(a[2], "assert") : 0;
+            if (Environment.GetEnvironmentVariable("MATRW_ASSERT_STRICT") != "0" && obs is MatrixValue xo && exp is MatrixValue xe)
+            {
+                if (!xo.Dims.SequenceEqual(xe.Dims) && !(tol != 0 && xe.Numel == 1))
+                    throw new OctaveException("ASSERT errors for:  assert (cond,expected,tol)\n\n  Location  |  Observed  |  Expected  |  Reason\n     .          O(" + string.Join("x", xo.Dims) + ")       E(" + string.Join("x", xe.Dims) + ")      Dimensions don't match");
+                string co = NumTypes.Name(xo.Kind), ce = NumTypes.Name(xe.Kind);
+                if (co != ce && Environment.GetEnvironmentVariable("MATRW_ASSERT_CLASS") != "0")
+                    throw new OctaveException($"ASSERT errors for:  assert (cond,expected,tol)\n\n  Location  |  Observed  |  Expected  |  Reason\n     ()          O({co})       E({ce})      Class {co} != {ce}");
+                for (int k = 0; k < xo.Numel; k++)
+                {
+                    int ke = xe.Numel == 1 ? 0 : k;
+                    double o = xo.Re[k], e = xe.Re[ke], oi = xo.Im?[k] ?? 0, ei = xe.Im?[ke] ?? 0;
+                    if (double.IsNaN(o) != double.IsNaN(e) || double.IsNaN(oi) != double.IsNaN(ei)) throw new OctaveException($"ASSERT errors for:  assert (cond,expected,tol)\n\n  Location  |  Observed  |  Expected  |  Reason\n    ({k + 1})          {o}          {e}          'NaN' mismatch");
+                    if ((double.IsInfinity(o) || double.IsInfinity(e)) && o != e) throw new OctaveException($"ASSERT errors for:  assert (cond,expected,tol)\n\n  Location  |  Observed  |  Expected  |  Reason\n    ({k + 1})          {o}          {e}          'Inf' mismatch");
+                    if (tol == 0 && !double.IsNaN(o) && (o != e || (!double.IsNaN(oi) && oi != ei))) throw new OctaveException("ASSERT errors for:  assert (cond,expected,tol)\n\n  Observed and expected values differ");
+                }
+                if (tol == 0) return;
+            }
             if (tol == 0) { if (!ValuesEqual(obs, exp)) throw new OctaveException("ASSERT errors for:  assert (cond,expected,tol)\n\n  Observed and expected values differ"); return; }
             var mo = M(obs, "assert"); var me = M(exp, "assert");
             if (mo.Numel != me.Numel && me.Numel != 1) throw new OctaveException("ASSERT errors: dimensions mismatch");
             for (int k = 0; k < mo.Numel; k++)
             {
                 double e = me.Re[me.Numel == 1 ? 0 : k], o = mo.Re[k];
+                if (double.IsNaN(o) && double.IsNaN(e) || o == e) continue;
                 double err = Math.Abs(o - e), lim = tol < 0 ? Math.Abs(tol * e) : tol;
                 if (err > lim) throw new OctaveException($"ASSERT errors for:  assert (cond,expected,tol)\n\n  Location  |  Observed  |  Expected  |  Reason\n    ({k + 1})       {o}        {e}       Abs err {err} exceeds tol {lim}");
             }

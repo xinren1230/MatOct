@@ -9,7 +9,9 @@ public sealed record NumberExpr(double Value, bool Imag, string Text) : Expr;
 public sealed record StringExpr(string Value, bool DoubleQuoted) : Expr;
 public sealed record IdentExpr(string Name) : Expr;
 public sealed record ColonExpr : Expr;          // magic colon inside an index
-public sealed record EndExpr : Expr;            // 'end' inside an index
+public sealed record EndExpr : Expr;
+/// <summary>An already evaluated value (used internally by the compiler to replay subscripts).</summary>
+public sealed record ValueExpr(MatRewrite.Core.Runtime.Value Value) : Expr;            // 'end' inside an index
 public sealed record TildeExpr : Expr;          // ~ placeholder in [~, i] = ...
 public sealed record BinaryExpr(string Op, Expr Left, Expr Right) : Expr;
 public sealed record UnaryExpr(string Op, Expr Operand) : Expr;

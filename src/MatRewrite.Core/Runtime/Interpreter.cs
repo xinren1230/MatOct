@@ -203,6 +203,11 @@ public sealed partial class Interpreter
     {
         if (s.Line > 0) Current.Line = s.Line;
         BeforeStatement(s);
+        return UseCompiler ? CompiledStmt(s)(this) : ExecTree(s);
+    }
+
+    internal Flow ExecTree(Stmt s)
+    {
         switch (s)
         {
             case ExprStmt es: ExecExprStmt(es); return Flow.Normal;
@@ -691,6 +696,7 @@ public sealed partial class Interpreter
     {
         switch (e)
         {
+            case ValueExpr ve: return ve.Value;
             case NumberExpr n: return n.Imag ? MatrixValue.Cplx(0, n.Value) : MatrixValue.Scalar(n.Value);
             case StringExpr s: return MatrixValue.Str(s.Value, s.DoubleQuoted);
             case BinaryExpr b: return EvalBinary(b);
@@ -1139,7 +1145,7 @@ public sealed partial class Interpreter
             {
                 var pd = Path.GetFileName(d) == "private" ? d : Path.Combine(d, "private");
                 var pf = Path.Combine(pd, name + ".m");
-                if (File.Exists(pf)) return LoadFile(pf, name);
+                if (PrivateExists(pf)) return LoadFile(pf, name);
             }
         }
         if (PreferBuiltins && Builtins.ContainsKey(name) && !MFileFirst.Contains(name)) return null;
@@ -1278,7 +1284,7 @@ public sealed partial class Interpreter
         if (preset != null) foreach (var kv in preset) scope.Vars[kv.Key] = kv.Value;
         bool needDefaults = f.Defaults != null && args.Length < fixedIn;
 
-        var save = Current; var saveEnd = endStack.ToList();
+        var save = Current; var saveEnd = endStack.Count == 0 ? null : endStack.ToList();
         Current = scope; depth++; CallStack.Add(scope); PushFile(f.File);
         endStack.Clear();
         try
@@ -1294,7 +1300,7 @@ public sealed partial class Interpreter
             if (!ReferenceEquals(oe, ex)) throw oe;
             throw;
         }
-        finally { Current = save; depth--; CallStack.RemoveAt(CallStack.Count - 1); PopFile(); endStack.Clear(); endStack.AddRange(saveEnd); }
+        finally { Current = save; depth--; CallStack.RemoveAt(CallStack.Count - 1); PopFile(); endStack.Clear(); if (saveEnd != null) endStack.AddRange(saveEnd); }
 
         var outs = new List<Value>();
         int want = Math.Max(1, nargout);
@@ -1336,10 +1342,10 @@ public sealed partial class Interpreter
         foreach (var kv in fh.Captured!) scope.Vars[kv.Key] = kv.Value;
         for (int k = 0; k < Math.Min(fixedIn, args.Length); k++) if (pars[k] != "~") scope.Vars[pars[k]] = args[k];
         if (hasVarargin) scope.Vars["varargin"] = CellValue.RowOf(args.Skip(fixedIn));
-        var save = Current; var saveEnd = endStack.ToList();
+        var save = Current; var saveEnd = endStack.Count == 0 ? null : endStack.ToList();
         Current = scope; depth++; endStack.Clear();
         try { return EvalMulti(fh.Body!, nargout).ToArray(); }
-        finally { Current = save; depth--; endStack.Clear(); endStack.AddRange(saveEnd); }
+        finally { Current = save; depth--; endStack.Clear(); if (saveEnd != null) endStack.AddRange(saveEnd); }
     }
 
     /// <summary>Call something that may be a handle, or a function name string.</summary>
