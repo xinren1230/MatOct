@@ -15,6 +15,7 @@ public static class Indexing
 
     internal static Idx Convert(Value v, int extent, string ctx, bool allowOutOfRange)
     {
+        if (v is Sparse.SparseValue spv0) v = spv0.ToDense();
         if (v is MagicColon) return new Idx { I = Enumerable.Range(0, extent).ToArray(), Colon = true, R = extent, C = 1 };
         if (v is MatrixValue m)
         {
@@ -184,6 +185,14 @@ public static class Indexing
     }
 
     public static ArrayValue Read(ArrayValue a, Value[] args)
+    {
+        var res = ReadRaw(a, args);
+        // Octave narrows complex results whose imaginary parts are all zero
+        if (!ReferenceEquals(res, a) && res is MatrixValue m && m.Im != null) m.Narrow();
+        return res;
+    }
+
+    static ArrayValue ReadRaw(ArrayValue a, Value[] args)
     {
         args = Normalize(args, a);
         if (args.Length == 0) return a;

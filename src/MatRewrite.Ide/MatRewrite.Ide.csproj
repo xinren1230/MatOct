@@ -9,6 +9,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <AssemblyName>MatRewriteIde</AssemblyName>
+    <ApplicationIcon>app.ico</ApplicationIcon>
+    <Version>0.10.0</Version>
   </PropertyGroup>
 
   <ItemGroup>

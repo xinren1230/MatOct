@@ -11,5 +11,6 @@ public static partial class BuiltinLibrary
         RegisterPhase9Image();
         RegisterPhase9Graphics();
         RegisterPhase9Misc();
+        RegisterPhase10();
     }
 }

@@ -373,7 +373,22 @@ public static partial class BuiltinLibrary
         Reg1("magic", a => Magic(I(a[0], "magic")));
         Reg("meshgrid", (it, a, n) =>
         {
+            if (a.Length is 0 or > 3) Usage("meshgrid");
             var x = M(a[0], "meshgrid"); var y = a.Length > 1 ? M(a[1], "meshgrid") : x;
+            bool Vec(MatrixValue q) => q.ND == null && (q.R == 1 || q.C == 1 || q.Numel == 0);
+            if (n >= 3 || a.Length == 3)
+            {
+                var z = a.Length > 2 ? M(a[2], "meshgrid") : x;
+                if (!Vec(x) || !Vec(y) || !Vec(z)) throw new OctaveException("meshgrid: X, Y, and Z must be vectors");
+                int r3 = y.Numel, c3 = x.Numel, p3 = z.Numel, pg = r3 * c3;
+                var X3 = new MatrixValue(r3, c3 * p3); var Y3 = new MatrixValue(r3, c3 * p3); var Z3 = new MatrixValue(r3, c3 * p3);
+                for (int k = 0; k < p3; k++) for (int j = 0; j < c3; j++) for (int i = 0; i < r3; i++)
+                { int q = i + j * r3 + k * pg; X3.Re[q] = x.Re[j]; Y3.Re[q] = y.Re[i]; Z3.Re[q] = z.Re[k]; }
+                var d3 = new[] { r3, c3, p3 };
+                X3.SetDims(d3); Y3.SetDims((int[])d3.Clone()); Z3.SetDims((int[])d3.Clone());
+                return Out(X3, Y3, Z3);
+            }
+            if (!Vec(x) || !Vec(y)) throw new OctaveException("meshgrid: X and Y must be vectors");
             int r = y.Numel, c = x.Numel;
             var X = new MatrixValue(r, c); var Y = new MatrixValue(r, c);
             for (int j = 0; j < c; j++) for (int i = 0; i < r; i++) { X.Re[i + j * r] = x.Re[j]; Y.Re[i + j * r] = y.Re[i]; }

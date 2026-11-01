@@ -120,26 +120,54 @@ public static partial class BuiltinLibrary
         Reg("eig", (it, a, n) =>
         {
             var m = Square(a[0], "eig");
-            if (m.Numel == 0) return Out(new MatrixValue(0, 1));
-            var A = Ops.ToMathNet(m);
-            bool sym = !m.IsComplex && A.IsSymmetric();
-            var evd = A.Evd(sym ? Symmetricity.Symmetric : Symmetricity.Unknown);
-            // sort ascending (by real part) as Octave does for symmetric problems
-            var vals = evd.EigenValues;
-            var order = Enumerable.Range(0, vals.Count).OrderBy(k => vals[k].Real).ThenBy(k => vals[k].Imaginary).ToArray();
-            if (!sym) order = Enumerable.Range(0, vals.Count).ToArray();
-            var lam = Vector<Complex>.Build.Dense(order.Select(k => vals[k]).ToArray());
-            if (n <= 1) return Out(FromC(lam));
-            var V = new MatrixValue(m.R, m.C);
-            var ev = evd.EigenVectors;
-            for (int j = 0; j < m.C; j++)
+            if (m.Numel == 0) return n <= 1 ? Out(new MatrixValue(0, 1)) : Out(new MatrixValue(0, 0), new MatrixValue(0, 0));
+            if (a.Length > 1 && a[1] is MatrixValue bm0 && !bm0.IsChar)
             {
-                int src = order[j];
-                // normalise sign so that the largest component is positive-ish like LAPACK output
-                for (int i = 0; i < m.R; i++) V.Re[i + j * m.R] = ev[i, src];
+                var bm = Square(bm0, "eig");
+                m = Ops.FromMathNet(Ops.ToMathNetC(bm).Solve(Ops.ToMathNetC(m)));
+                if (m.Im != null && m.Im.All(x => x == 0)) m = Ops.FromMathNet(Ops.ToMathNet(m));
             }
-            var D = new MatrixValue(m.R, m.C, NumKind.Double, lam.Any(z => z.Imaginary != 0));
-            for (int k = 0; k < m.R; k++) { D.Re[k + k * m.R] = lam[k].Real; if (D.Im != null) D.Im[k + k * m.R] = lam[k].Imaginary; }
+            int N = m.R;
+            Complex[] lamA; Complex[,] Vc = new Complex[N, N];
+            bool sym = false;
+            if (m.IsComplex)
+            {
+                var evd = Ops.ToMathNetC(m).Evd();
+                lamA = evd.EigenValues.ToArray();
+                for (int i = 0; i < N; i++) for (int j = 0; j < N; j++) Vc[i, j] = evd.EigenVectors[i, j];
+            }
+            else
+            {
+                var A = Ops.ToMathNet(m);
+                sym = A.IsSymmetric();
+                var evd = A.Evd(sym ? Symmetricity.Symmetric : Symmetricity.Unknown);
+                lamA = evd.EigenValues.ToArray();
+                var ev = evd.EigenVectors;
+                for (int j = 0; j < N; j++)
+                {
+                    if (!sym && lamA[j].Imaginary != 0 && j + 1 < N)
+                    {
+                        for (int i = 0; i < N; i++) { Vc[i, j] = new Complex(ev[i, j], ev[i, j + 1]); Vc[i, j + 1] = Complex.Conjugate(Vc[i, j]); }
+                        j++;
+                    }
+                    else for (int i = 0; i < N; i++) Vc[i, j] = ev[i, j];
+                }
+            }
+            var order = Enumerable.Range(0, N).ToArray();
+            if (sym) order = order.OrderBy(k => lamA[k].Real).ToArray();
+            var lam = Vector<Complex>.Build.Dense(order.Select(k => lamA[k]).ToArray());
+            if (n <= 1) return Out(FromC(lam));
+            bool cv = Enumerable.Range(0, N).Any(j => Enumerable.Range(0, N).Any(i => Vc[i, j].Imaginary != 0));
+            var V = new MatrixValue(N, N, NumKind.Double, cv);
+            for (int j = 0; j < N; j++)
+            {
+                int src = order[j]; double nr = 0;
+                for (int i = 0; i < N; i++) nr += Math.Pow(Vc[i, src].Magnitude, 2);
+                nr = Math.Sqrt(nr); if (nr == 0) nr = 1;
+                for (int i = 0; i < N; i++) { V.Re[i + j * N] = Vc[i, src].Real / nr; if (cv) V.Im![i + j * N] = Vc[i, src].Imaginary / nr; }
+            }
+            var D = new MatrixValue(N, N, NumKind.Double, lam.Any(z => z.Imaginary != 0));
+            for (int k = 0; k < N; k++) { D.Re[k + k * N] = lam[k].Real; if (D.Im != null) D.Im[k + k * N] = lam[k].Imaginary; }
             return Out(V, D);
         });
         Reg("svd", (it, a, n) =>

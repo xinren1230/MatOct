@@ -334,7 +334,7 @@ public sealed partial class Interpreter
 
     void ExecAssign(AssignStmt a)
     {
-        if (a.Targets.Count == 1 && !(a.Targets[0] is IndexExpr { Brace: true, Target: IdentExpr, Args.Count: 1 } bt && bt.Args[0] is not (NumberExpr or EndExpr) && ExpandCsListTargets(a.Targets).Count != 1))
+        if (a.Targets.Count == 1 && !(a.Targets[0] is FieldExpr { Target: IdentExpr } && ExpandCsListTargets(a.Targets).Count != 1) && !(a.Targets[0] is IndexExpr { Brace: true, Target: IdentExpr, Args.Count: 1 } bt && bt.Args[0] is not (NumberExpr or EndExpr) && ExpandCsListTargets(a.Targets).Count != 1))
         {
             var vals = EvalMulti(a.Value, 1);
             if (vals.Count == 0) throw new OctaveException("value on right hand side of assignment is undefined");
@@ -361,10 +361,17 @@ public sealed partial class Interpreter
     /// <summary>[c{:}] = f() / [c{1:3}] = f(): one output per addressed cell element.</summary>
     List<Expr> ExpandCsListTargets(List<Expr> targets)
     {
-        if (!targets.Any(t => t is IndexExpr { Brace: true, Target: IdentExpr, Args.Count: 1 })) return targets;
+        if (!targets.Any(t => t is IndexExpr { Brace: true, Target: IdentExpr, Args.Count: 1 } or FieldExpr { Target: IdentExpr })) return targets;
         var r = new List<Expr>();
         foreach (var t in targets)
         {
+            // [s.name] = ... on a struct array: one output per element
+            if (t is FieldExpr { Target: IdentExpr fid } fe && LookupRaw(Current, fid.Name) is StructValue fsv && fsv.Numel != 1)
+            {
+                for (int q = 1; q <= fsv.Numel; q++)
+                    r.Add(new FieldExpr(new IndexExpr(fid, new List<Expr> { new NumberExpr(q, false, q.ToString()) }, false) { Line = fe.Line }, fe.Name, fe.DynName) { Line = fe.Line });
+                continue;
+            }
             if (t is IndexExpr { Brace: true, Target: IdentExpr id, Args.Count: 1 } ix)
             {
                 var cur = LookupRaw(Current, id.Name);   // raw: must not clear the in-place ownership flag
@@ -1208,7 +1215,12 @@ public sealed partial class Interpreter
     {
         if (missingCache.Contains(name)) return null;
         var p = FindFile(name);
-        if (p == null) { missingCache.Add(name); return null; }
+        if (p == null)
+        {
+            var src = CoreMLib.Get(name);
+            if (src != null) return LoadSource(src, "<core>/" + name + ".m", name);
+            missingCache.Add(name); return null;
+        }
         return LoadFile(p, name);
     }
 
@@ -1241,6 +1253,17 @@ public sealed partial class Interpreter
         }
         fileCache[path] = (mtime, fn);
         return fn;
+    }
+
+    readonly Dictionary<string, UserFunction> coreLibCache = new();
+    UserFunction LoadSource(string src, string path, string name)
+    {
+        if (coreLibCache.TryGetValue(name, out var f)) return f;
+        var unit = Parser.ParseProgram(src);
+        var defs = unit.Functions.Select(d => UserFunction.From(d, path)).ToList();
+        var sibs = defs.ToDictionary(d => d.Name, d => d);
+        foreach (var d in defs) d.SetSiblings(sibs);
+        return coreLibCache[name] = defs[0];
     }
 
     void ExecScript(UserFunction script)

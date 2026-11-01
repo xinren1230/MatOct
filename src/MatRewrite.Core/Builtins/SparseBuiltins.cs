@@ -84,9 +84,15 @@ public static partial class BuiltinLibrary
         Reg1("speye", a =>
         {
             int r, c;
+            if (a.Length > 2) Usage("speye");
             if (a.Length == 0) r = c = 1;
-            else if (a.Length == 1) { var d = M(a[0], "speye"); r = (int)d.Re[0]; c = d.Numel > 1 ? (int)d.Re[1] : r; }
-            else { r = I(a[0], "speye"); c = I(a[1], "speye"); }
+            else if (a.Length == 1) { var d = M(a[0], "speye"); if (d.Numel is not (1 or 2)) Usage("speye"); r = (int)d.Re[0]; c = d.Numel > 1 ? (int)d.Re[1] : r; }
+            else
+            {
+                if (!(a[0] is MatrixValue m0 && m0.Numel == 1 && a[1] is MatrixValue m1 && m1.Numel == 1)) throw new OctaveException("speye: M and N must be scalar dimensions");
+                r = I(a[0], "speye"); c = I(a[1], "speye");
+            }
+            r = Math.Max(0, r); c = Math.Max(0, c);
             int k = Math.Min(r, c);
             return SparseValue.FromTriplets(r, c, Enumerable.Range(0, k).ToArray(), Enumerable.Range(0, k).ToArray(), Enumerable.Repeat(1.0, k).ToArray());
         });
@@ -95,6 +101,8 @@ public static partial class BuiltinLibrary
         Reg1("spalloc", a => SparseValue.Zeros(I(a[0], "spalloc"), a.Length > 1 ? I(a[1], "spalloc") : I(a[0], "spalloc")));
         Reg("spfun", (it, a, n) =>
         {
+            if (a.Length != 2) Usage("spfun");
+            if (!(a[1] is SparseValue || a[1] is MatrixValue { IsChar: false })) throw new OctaveException("spfun: S must be numeric");
             var s = SpArg(a[1], "spfun");
             var vals = new MatrixValue(s.Nnz, 1, s.Re[..s.Nnz], s.Im?[..s.Nnz]);
             var fv = (a[0] is FunctionHandleValue fh ? it.CallHandle(fh, new Value[] { vals }, 1) : it.CallFunction(S(a[0], "spfun"), new Value[] { vals }, 1))[0];
@@ -105,12 +113,20 @@ public static partial class BuiltinLibrary
         Value Rand(Interpreter it, Value[] a, string fn, Func<Random, double> gen, bool sym)
         {
             int r, c; double dens;
+            if (a.Length == 0 || (!sym && a.Length == 2) || a.Length > 4) Usage(fn);
+            int NonNeg(Value v, string what)
+            {
+                if (!(v is MatrixValue mv && mv.Numel == 1 && mv.Re[0] >= 0 && mv.Re[0] == Math.Floor(mv.Re[0])))
+                    throw new OctaveException($"{fn}: {what} must be a non-negative integer");
+                return (int)((MatrixValue)v).Re[0];
+            }
             if (a.Length == 1) { var p = SpArg(a[0], fn); var I2 = new List<int>(); var J2 = new List<int>(); var V2 = new List<double>();
                 for (int j = 0; j < p.C; j++) for (int q = p.Cp[j]; q < p.Cp[j + 1]; q++) { I2.Add(p.Ri[q]); J2.Add(j); V2.Add(gen(it.Rng)); }
                 return SparseValue.FromTriplets(p.R, p.C, I2, J2, V2); }
-            if (sym) { r = c = I(a[0], fn); dens = D(a[1], fn); }
-            else { r = I(a[0], fn); c = I(a[1], fn); dens = D(a[2], fn); }
+            if (sym) { r = c = NonNeg(a[0], "N"); dens = D(a[1], fn); }
+            else { r = NonNeg(a[0], "M"); c = NonNeg(a[1], "N"); dens = D(a[2], fn); }
             if (dens < 0 || dens > 1) throw new OctaveException($"{fn}: density D must be between 0 and 1");
+            if (!sym && a.Length == 4) return RandCond(it, r, c, dens, M(a[3], fn).Re, fn);
             long total = (long)r * c;
             int k = (int)Math.Round(dens * total);
             var picked = new HashSet<long>();
@@ -124,6 +140,44 @@ public static partial class BuiltinLibrary
                 else { II.Add(i); JJ.Add(j); VV.Add(v); }
             }
             return SparseValue.FromTriplets(r, c, II, JJ, VV, null, false, false);
+        }
+        Value RandCond(Interpreter it, int r, int c, double dens, double[] rc, string fn)
+        {
+            int k = Math.Min(r, c);
+            var sv = new double[k];
+            if (rc.Length == 1)
+            {
+                if (rc[0] < 0 || rc[0] > 1) throw new OctaveException($"{fn}: RC must be between 0 and 1");
+                for (int i = 0; i < k; i++) sv[i] = k == 1 ? 1 : Math.Pow(rc[0], (double)i / (k - 1));
+            }
+            else
+            {
+                if (rc.Length > k) throw new OctaveException($"{fn}: RC must be a scalar or vector of length min (M, N)");
+                for (int i = 0; i < rc.Length; i++) sv[i] = rc[i];
+            }
+            var A = new double[r, c];
+            for (int i = 0; i < k; i++) A[i, i] = sv[i];
+            long target = (long)Math.Round(dens * r * c);
+            int Nnz() { int q = 0; foreach (var x in A) if (x != 0) q++; return q; }
+            int guard = 0;
+            while (Nnz() < target && guard++ < 10 * (r + c) + 100)
+            {
+                double th = 2 * Math.PI * it.Rng.NextDouble(), cs = Math.Cos(th), sn = Math.Sin(th);
+                if (it.Rng.NextDouble() < 0.5 && r > 1)
+                {
+                    int i = it.Rng.Next(r), j = it.Rng.Next(r); if (i == j) continue;
+                    for (int q = 0; q < c; q++) { double x = A[i, q], y = A[j, q]; A[i, q] = cs * x - sn * y; A[j, q] = sn * x + cs * y; }
+                }
+                else if (c > 1)
+                {
+                    int i = it.Rng.Next(c), j = it.Rng.Next(c); if (i == j) continue;
+                    for (int q = 0; q < r; q++) { double x = A[q, i], y = A[q, j]; A[q, i] = cs * x - sn * y; A[q, j] = sn * x + cs * y; }
+                }
+                else break;
+            }
+            var II = new List<int>(); var JJ = new List<int>(); var VV = new List<double>();
+            for (int j = 0; j < c; j++) for (int i = 0; i < r; i++) if (A[i, j] != 0) { II.Add(i); JJ.Add(j); VV.Add(A[i, j]); }
+            return SparseValue.FromTriplets(r, c, II, JJ, VV);
         }
         static double Gauss(Random rng) { double u = 1 - rng.NextDouble(), v = rng.NextDouble(); return Math.Sqrt(-2 * Math.Log(u)) * Math.Cos(2 * Math.PI * v); }
         Reg("sprand", (it, a, n) => new[] { Rand(it, a, "sprand", r => { double x; do x = r.NextDouble(); while (x == 0); return x; }, false) });
@@ -182,6 +236,27 @@ public static partial class BuiltinLibrary
     static Value[] EigsSvds(Interpreter it, Value[] a, int nargout, bool svd)
     {
         string fn = svd ? "svds" : "eigs";
+        if (a.Length == 0) Usage(fn);
+        if (!svd)
+        {
+            if (a.Length > 1 && !(a[1] is MatrixValue { IsChar: false } || a[1] is SparseValue)) throw new OctaveException("eigs: second argument must be numeric");
+            int nA = a[0] is SparseValue s0 ? s0.R : (a[0] as MatrixValue)?.R ?? 0;
+            int kk = 6; int ki = 1;
+            if (a.Length > 1 && a[1] is MatrixValue m1 && m1.Numel == 1 && !(a[0] is MatrixValue m0 && m0.Numel == 1 && false)) kk = (int)m1.Re[0];
+            if (a.Length > 2 && a[1] is MatrixValue { Numel: 0 } && a[2] is MatrixValue m2 && !m2.IsChar && m2.Numel == 1) kk = (int)m2.Re[0];
+            _ = ki;
+            if (kk > nA) throw new OctaveException($"eigs: requested number of eigenvalues K ({kk}) exceeds available eigenvalues ({nA})");
+            if (a.Length > 2 && a[2] is MatrixValue sg && sg.IsChar)
+            {
+                string md = sg.AsString().ToLowerInvariant();
+                var Ad = a[0] is SparseValue s1 ? s1.ToDense() : M(a[0], fn);
+                bool rsym = !Ad.IsComplex && Ad.R == Ad.C;
+                if (rsym) for (int i = 0; i < Ad.R && rsym; i++) for (int j = 0; j < i; j++) if (Ad.Re[i + j * Ad.R] != Ad.Re[j + i * Ad.R]) { rsym = false; break; }
+                if (md is "la" or "sa" or "be" && !rsym) throw new OctaveException($"eigs: \"{md}\" requires real symmetric problem");
+                if (md is "lr" or "sr" or "li" or "si" && rsym) throw new OctaveException($"eigs: \"{md}\" requires complex or unsymmetric problem");
+                if (md is not ("lm" or "sm" or "la" or "sa" or "be" or "lr" or "sr" or "li" or "si")) throw new OctaveException($"eigs: unrecognized value for SIGMA: {sg.AsString()}");
+            }
+        }
         var A = a[0] is SparseValue s ? s.ToDense() : M(a[0], fn);
         if (A.R * (long)A.C > 9_000_000) throw new OctaveException($"{fn}: matrix too large for the dense fallback (max 3000x3000)");
         int k = a.Length > 1 ? I(a[1], fn) : 6;

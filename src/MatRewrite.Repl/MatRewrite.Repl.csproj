@@ -12,6 +12,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <AssemblyName>matrw</AssemblyName>
+    <ApplicationIcon>app.ico</ApplicationIcon>
+    <Version>0.10.0</Version>
   </PropertyGroup>
 
   <!-- On Windows, figures open as WPF windows. -->

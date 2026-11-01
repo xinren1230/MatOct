@@ -111,6 +111,8 @@ public static class OctaveTestRunner
             // fresh workspace containing only the shared variables
             foreach (var k in it.Base.Vars.Keys.Where(k => !shared.Contains(k)).ToList()) it.Base.Vars.Remove(k);
             string code = b.Code;
+            // Octave runs each block as a function: shared variables are written back only when the block completes normally
+            var snap = shared.Where(it.Base.Vars.ContainsKey).ToDictionary(k => k, k => it.Base.Vars[k]);
             bool pass; string? msg = null;
             switch (b.Kind)
             {
@@ -155,6 +157,8 @@ public static class OctaveTestRunner
                 }
                 default: res.Skip++; continue;
             }
+            if (b.Kind is "error" or "warning" || !pass)
+                foreach (var kv in snap) it.Base.Vars[kv.Key] = kv.Value;
             if (pass) res.Pass++;
             else
             {
