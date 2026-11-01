@@ -259,10 +259,13 @@ public sealed class CellValue : ArrayValue
     public override ArrayValue Gather(int[] lin, int r, int c) => new CellValue(r, c, lin.Select(k => Data[k]).ToArray());
     public override ArrayValue Resized(int r, int c)
     {
-        var m = new CellValue(r, c);
-        for (int j = 0; j < Math.Min(c, C); j++)
-            for (int i = 0; i < Math.Min(r, R); i++) m.Data[i + j * r] = Data[i + j * R];
-        return m;
+        var d = new Value[r * c];
+        if (r == R) Array.Copy(Data, d, Math.Min(Data.Length, d.Length));
+        else
+            for (int j = 0; j < Math.Min(c, C); j++)
+                for (int i = 0; i < Math.Min(r, R); i++) d[i + j * r] = Data[i + j * R];
+        for (int k = 0; k < d.Length; k++) d[k] ??= MatrixValue.Empty();
+        return new CellValue(r, c, d);
     }
     public override void SetFrom(int dst, ArrayValue src, int srcIdx) => Data[dst] = ((CellValue)src).Data[srcIdx];
     public override ArrayValue EmptyLike(int r, int c) => new CellValue(r, c);

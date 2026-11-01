@@ -658,6 +658,7 @@ namespace MatRewrite.Core.Builtins
             {
                 var p = S(a[k], fn).ToLowerInvariant();
                 var v = a[k + 1];
+                ValidatePropValue(o, p, v, fn);
                 switch (o, p)
                 {
                     case (_, "displayname"): o.DisplayName = S(v, fn); break;

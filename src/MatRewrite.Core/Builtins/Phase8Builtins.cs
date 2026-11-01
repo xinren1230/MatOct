@@ -11,6 +11,6 @@ public static partial class BuiltinLibrary
         RegisterPhase8Poly();
         RegisterPhase8Linalg();
         RegisterPhase8Special();
-        RegisterPhase8Misc(); RegisterPhase8Interp(); RegisterPhase8Interp2(); RegisterPhase8Gallery(); RegisterPhase8Decic();
+        RegisterPhase8Misc(); RegisterPhase8Interp(); RegisterPhase8Interp2(); RegisterPhase8Gallery(); RegisterPhase8Decic(); RegisterPhase9();
     }
 }

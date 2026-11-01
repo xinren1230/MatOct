@@ -66,12 +66,13 @@ public static partial class BuiltinLibrary
             }
             var m = M(a[0], "norm");
             if (m.Numel == 0) return Num(0);
-            string p = a.Length > 1 ? (IsString(a[1]) ? S(a[1], "norm") : D(a[1], "norm").ToString(System.Globalization.CultureInfo.InvariantCulture)) : "2";
+            string p = a.Length > 1 ? (IsString(a[1]) ? S(a[1], "norm") : D(a[1], "norm") is var pd && double.IsPositiveInfinity(pd) ? "inf" : double.IsNegativeInfinity(pd) ? "-inf" : pd.ToString("R", System.Globalization.CultureInfo.InvariantCulture)) : "2";
             bool vec = m.R == 1 || m.C == 1;
             var abs = Enumerable.Range(0, m.Numel).Select(k => m.At(k).Magnitude).ToArray();
             if (vec)
             {
                 if (p == "Inf" || p == "inf" || p == "∞") return Num(abs.Max());
+                if (p is "-inf" or "-Inf") return Num(abs.Min());
                 if (p == "-Inf") return Num(abs.Min());
                 if (p == "fro") p = "2";
                 double pp = double.Parse(p, System.Globalization.CultureInfo.InvariantCulture);

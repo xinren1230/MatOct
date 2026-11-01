@@ -81,6 +81,7 @@ public static class OctaveTestRunner
         configure?.Invoke(it);
         var shared = new List<string>();
 
+        (List<string>, List<string>)? warnBase = null;
         foreach (var b in blocks)
         {
             switch (b.Kind)
@@ -104,6 +105,9 @@ public static class OctaveTestRunner
                     continue;
                 }
             }
+            // test blocks run as functions in Octave: undo "local" warning state changes of earlier blocks
+            if (warnBase == null) warnBase = (it.DisabledWarnings.ToList(), it.EnabledWarnings.ToList());
+            else { it.DisabledWarnings.Clear(); foreach (var w in warnBase.Value.Item1) it.DisabledWarnings.Add(w); it.EnabledWarnings.Clear(); foreach (var w in warnBase.Value.Item2) it.EnabledWarnings.Add(w); }
             // fresh workspace containing only the shared variables
             foreach (var k in it.Base.Vars.Keys.Where(k => !shared.Contains(k)).ToList()) it.Base.Vars.Remove(k);
             string code = b.Code;

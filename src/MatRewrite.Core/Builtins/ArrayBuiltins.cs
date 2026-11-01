@@ -46,21 +46,24 @@ public static partial class BuiltinLibrary
         RegI("rand", (it, a) =>
         {
             if (a.Length >= 1 && IsString(a[0])) { if (a.Length > 1) it.Rng = new Random((int)D(a[1], "rand")); return Num(0); }
-            var d = DimsN(a, "rand"); var m = new MatrixValue(d[0], NDArray.Prod(d, 1)); m.SetDims(d); for (int k = 0; k < m.Numel; k++) m.Re[k] = it.Rng.NextDouble(); return m;
+            bool sgl = a.Length > 1 && IsString(a[^1]) && S(a[^1], "rand") == "single"; if (a.Length > 1 && IsString(a[^1]) && S(a[^1], "rand") is "single" or "double") a = a[..^1];
+            var d = DimsN(a, "rand"); var m = new MatrixValue(d[0], NDArray.Prod(d, 1)); m.SetDims(d); for (int k = 0; k < m.Numel; k++) m.Re[k] = it.Rng.NextDouble(); return sgl ? Fc(it, "single", m) : m;
         });
         RegI("randn", (it, a) =>
         {
             if (a.Length >= 1 && IsString(a[0])) { if (a.Length > 1) it.Rng = new Random((int)D(a[1], "randn")); return Num(0); }
+            bool sgl = a.Length > 1 && IsString(a[^1]) && S(a[^1], "randn") == "single"; if (a.Length > 1 && IsString(a[^1]) && S(a[^1], "randn") is "single" or "double") a = a[..^1];
             var d = DimsN(a, "randn"); var m = new MatrixValue(d[0], NDArray.Prod(d, 1)); m.SetDims(d);
             for (int k = 0; k < m.Numel; k++) { double u1 = 1 - it.Rng.NextDouble(), u2 = it.Rng.NextDouble(); m.Re[k] = Math.Sqrt(-2 * Math.Log(u1)) * Math.Cos(2 * Math.PI * u2); }
-            return m;
+            return sgl ? Fc(it, "single", m) : m;
         });
         RegI("randi", (it, a) =>
         {
             var lim = M(a[0], "randi"); double lo = lim.Numel > 1 ? lim.Re[0] : 1, hi = lim.Numel > 1 ? lim.Re[1] : lim.Re[0];
+            string? rcls = a.Length > 1 && IsString(a[^1]) ? S(a[^1], "randi") : null; if (rcls != null) a = a[..^1];
             var d = DimsN(a, "randi", 1); var m = new MatrixValue(d[0], NDArray.Prod(d, 1)); m.SetDims(d);
             for (int k = 0; k < m.Numel; k++) m.Re[k] = Math.Floor(lo + it.Rng.NextDouble() * (hi - lo + 1));
-            return m;
+            return rcls != null && rcls != "double" ? Fc(it, rcls, m) : m;
         });
         RegI("randperm", (it, a) => { int n = I(a[0], "randperm"); var p = Enumerable.Range(1, n).Select(x => (double)x).ToArray(); it.Rng.Shuffle(p); return MatrixValue.Row(p); });
         Reg1("linspace", a =>
