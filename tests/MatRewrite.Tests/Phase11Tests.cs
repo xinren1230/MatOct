@@ -13,7 +13,7 @@ public class Phase11Tests
         return o.ToString().Replace("\r\n", "\n").Trim();
     }
 
-    [Fact] public void VersionCurrent() => Assert.Equal("0.13.1", Run("printf('%s', version())"));
+    [Fact] public void VersionCurrent() => Assert.Equal("0.14.0", Run("printf('%s', version())"));
     [Fact] public void SchurReal() => Assert.Equal("1", Run("A=[1 2;3 4]; [u,s]=schur(A); printf('%d', norm(u*s*u'-A)<1e-10 && abs(s(2,1))<1e-12)"));
     [Fact] public void Qz() => Assert.Equal("1", Run("A=[1 2;3 4]; B=[2 0;1 1]; [AA,BB,Q,Z]=qz(A,B); printf('%d', norm(Q*A*Z-AA)<1e-10 && norm(Q*B*Z-BB)<1e-10)"));
     [Fact] public void SumAll() => Assert.Equal("10", Run("printf('%d', sum([1 2;3 4],'all'))"));

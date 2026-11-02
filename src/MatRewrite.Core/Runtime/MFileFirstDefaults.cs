@@ -9,6 +9,7 @@ public static class MFileFirstDefaults
         "movefile", "copyfile", "isstring", "setappdata", "getappdata", "isappdata", "rmappdata", "type", "help", "doc", "lookfor",
         "area", "fplot", "imshow", "linkaxes", "pie", "histogram", "histc", "fill", "rectangle", "xticks", "yticks", "xticklabels", "yticklabels",
         "annotation",
+        "mad", "repmat", "orderfields", "cell2mat", "strcat", "factor", // 0.14 A/B
         "ode45", "ode23", "ode23s", "odeget", "ode15s", "ode15i", "assert",
         "rmse", "mape", "ishermitian", "kurtosis", "polyfit", "nthargout", // phase 8 A/B
         "normalize", "quantile", "cov", "cart2sph", "sph2cart", "cart2pol", "pol2cart", "ndgrid", "compan", "istriu", "isbanded", "rescale", "blkdiag", "corr", "bitset",

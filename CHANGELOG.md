@@ -2,6 +2,17 @@
 
 All notable changes to MatOct. Detailed notes (Chinese) live in `docs/phaseN.md`.
 
+## [0.14.0] - 2026-11-02
+MatOct is a MATLAB-style IDE for GNU Octave, written in C#.
+### Changed
+- Octave test-suite pass rate out of the box: **68.1 % → 90.1 %** (9169/10172 blocks); with `--lib`: 90.5 %.
+- GNU Octave's GPL m-file library (979 functions, plus the `+matlab` package) is bundled unmodified as embedded resources. MatOct builtins still take precedence, except for a tuned list where Octave's m-file has the stricter validation. Graphics stays on MatOct's native renderer.
+### Fixed
+- classdef files load from embedded sources (e.g. `inputParser`); package functions (`matlab.lang.makeValidName`, …) resolve.
+- `matlab.lang.makeValidName` options (`ReplacementStyle`, `Prefix`); `base64_encode`/`base64_decode`.
+- `isequal`: argument validation, N-d size comparison, function handles.
+- `colormap`: input validation and Octave error messages, `colormap(hax, …)`.
+
 ## [0.13.1] - 2026-11-02
 MatOct is a MATLAB-style IDE/interface for GNU Octave, written in C# (MATLAB 的平替，给 Octave 做的 MATLAB 风格界面).
 ### Added

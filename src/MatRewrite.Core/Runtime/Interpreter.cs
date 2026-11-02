@@ -1137,10 +1137,10 @@ public sealed partial class Interpreter
                 Value[] r = (!args.Any(a => a is Sparse.SparseValue) || Sparse.SparseBridge.Aware.Contains(name))
                     ? bf(this, args, nargout)
                     : Sparse.SparseBridge.Call(name, args, a => bf(this, a, nargout));
-                if (PreferBuiltins && nargout > 1 && r.Length < nargout)
+                if (nargout > 1 && r.Length < nargout)
                 {
                     // the builtin can't supply every requested output: fall back to the library m-file
-                    var mf = FindOnPath(name);
+                    var mf = FindOnPath(name, true);
                     if (mf != null && !mf.IsScript && mf.Class == null) return CallUser(mf, args, nargout);
                 }
                 return r;
@@ -1226,7 +1226,7 @@ public sealed partial class Interpreter
         k = -1;
         var dirs = new List<string> { Directory.GetCurrentDirectory() };
         dirs.AddRange(SearchPath);
-        var rel = "+" + root;
+        var rel = "+" + root; var qual = root;
         for (int i = 0; i < ops.Count && ops[i].Kind == '.' && ops[i].Field != null; i++)
         {
             foreach (var d in dirs)
@@ -1234,19 +1234,25 @@ public sealed partial class Interpreter
                 var f = Path.Combine(d, rel, ops[i].Field! + ".m");
                 if (File.Exists(f)) { k = i; return LoadFile(f, ops[i].Field!); }
             }
+            qual += "." + ops[i].Field;
+            if (CoreMLib.GetPackage(qual) is { } psrc) { k = i; return LoadSource(psrc, "<core>/" + qual + ".m", qual); }
             rel = Path.Combine(rel, "+" + ops[i].Field);
-            if (!dirs.Any(d => Directory.Exists(Path.Combine(d, rel)))) return null;
+            if (!dirs.Any(d => Directory.Exists(Path.Combine(d, rel))) && !CoreMLib.HasPackagePrefix(qual)) return null;
         }
         return null;
     }
 
-    UserFunction? FindOnPath(string name)
+    UserFunction? FindOnPath(string name, bool includeShadowed = false)
     {
+        if (includeShadowed && FindFile(name) == null && CoreMLib.Get(name) is { } osrc)
+            return LoadSource(osrc, "<core>/" + name + ".m", name);
         if (missingCache.Contains(name)) return null;
         var p = FindFile(name);
         if (p == null)
         {
             var src = CoreMLib.Get(name);
+            // Octave's bundled m-files never shadow a MatOct builtin (unless tuned to prefer the m-file)
+            if (src != null && CoreMLib.IsOctaveLib(name) && Builtins.ContainsKey(name) && (!MFileFirst.Contains(name) || CoreMLib.IsOctaveGraphics(name))) src = null;
             if (src != null) return LoadSource(src, "<core>/" + name + ".m", name);
             missingCache.Add(name); return null;
         }
@@ -1289,6 +1295,13 @@ public sealed partial class Interpreter
     {
         if (coreLibCache.TryGetValue(name, out var f)) return f;
         var unit = Parser.ParseProgram(src);
+        if (unit.Class != null)
+        {
+            var cf = new UserFunction { Name = unit.Class.Name, File = path };
+            coreLibCache[name] = cf;
+            cf.Class = BuildClass(unit.Class, path, unit.Functions);
+            return cf;
+        }
         var defs = unit.Functions.Select(d => UserFunction.From(d, path)).ToList();
         var sibs = defs.ToDictionary(d => d.Name, d => d);
         foreach (var d in defs) d.SetSiblings(sibs);

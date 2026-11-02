@@ -211,14 +211,23 @@ namespace MatRewrite.Core.Builtins
             });
             RegG("colormap", (it, a, n) =>
             {
+                if (a.Length > 2) throw new OctaveException("Invalid call to colormap", "Octave:invalid-fun-call");
+                if (a.Length >= 1 && a[0] is MatrixValue h0 && !h0.IsChar && h0.Numel == 1)
+                {
+                    var tgt = it.Graphics.Lookup(h0.Re[0]);
+                    if (tgt is not (Figure or Axes)) throw new OctaveException("colormap: target argument must be a figure or axes handle");
+                    a = a.Skip(1).ToArray();
+                }
                 var f = it.Graphics.Gcf();
                 if (a.Length > 0)
                 {
+                    if (a[^1] is MatrixValue cv && !cv.IsChar && (cv.IsComplex || cv.NDims > 2 || cv.C != 3))
+                        throw new OctaveException("colormap: MAP must be a real-valued N x 3 ([0-1]) matrix");
                     var name = IsString(a[^1]) ? S(a[^1], "colormap").ToLowerInvariant()
                         : a[^1] is MatrixValue cm ? (NamedMapFor(cm) ?? CustomMapName(cm))
-                        : throw new OctaveException("colormap: invalid argument");
+                        : throw new OctaveException("colormap: MAP must be a real-valued N x 3 ([0-1]) matrix");
                     if (!(name is "default" or "viridis" or "parula" or "jet" or "gray" or "hot" or "cool" or "turbo" or "magma" or "inferno" or "plasma") && CustomColormaps.Get(name) == null)
-                        throw new OctaveException($"colormap: invalid MAP name '{name}'");
+                        throw new OctaveException($"colormap: failed to set MAP '{name}'");
                     f.Colormap = name == "default" ? "parula" : name;
                     it.Graphics.Touch(f);
                 }
@@ -905,7 +914,7 @@ namespace MatRewrite.Core.Builtins
 
     static string CustomMapName(MatrixValue cm)
     {
-        if (cm.C != 3 || cm.R < 1) throw new OctaveException("colormap: MAP must be an N x 3 matrix of RGB values");
+        if (cm.C != 3 || cm.R < 1) throw new OctaveException("colormap: MAP must be a real-valued N x 3 ([0-1]) matrix");
         var rgb = new Rgb[cm.R];
         for (int i = 0; i < cm.R; i++)
         {

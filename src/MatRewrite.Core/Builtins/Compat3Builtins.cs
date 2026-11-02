@@ -196,6 +196,19 @@ public static partial class BuiltinLibrary
                 };
             return x.C == 1 && x.R > 1 ? new MatrixValue(cnt, 1, v, null, k) : new MatrixValue(1, cnt, v, null, k);
         });
+        // base64 helpers used by matlab.net.base64encode/decode and base64_decode
+        Reg1("base64_encode", a =>
+        {
+            if (a.Length != 1) throw new OctaveException("Invalid call to base64_encode");
+            if (a[0] is not MatrixValue x || x.Kind == NumKind.Char || x.IsComplex) throw new OctaveException("base64_encode: encoding is supported only for numeric arrays");
+            return Str(Convert.ToBase64String(ToBytes(x)));
+        });
+        Reg1("__base64_decode_bytes__", a =>
+        {
+            var b = Convert.FromBase64String(S(a[0], "__base64_decode_bytes__"));
+            var v = b.Select(x => (double)x).ToArray();
+            return new MatrixValue(1, b.Length, v, null, NumKind.UInt8);
+        });
         Reg1("sizeof", a => Num(a[0] is MatrixValue m ? m.Numel * KindSize(m.Kind) * (m.IsComplex ? 2 : 1) : 0));
         Reg("mat2cell", (it, a, n) =>
         {
@@ -346,28 +359,58 @@ public static partial class BuiltinLibrary
         });
         Reg("__make_valid_name__", (it, a, n) =>
         {
+            if (a.Length == 0) throw new OctaveException("Invalid call to makeValidName", "Octave:invalid-fun-call");
             bool Valid(string s) => s.Length > 0 && (char.IsLetter(s[0])) && s.All(ch => char.IsLetterOrDigit(ch) || ch == '_') && !Lexing.Lexer.IsKeyword(s);
+            if (!(a[0] is CellValue c0 && c0.Data.All(v => v is MatrixValue { Kind: NumKind.Char } || v is MatrixValue { Numel: 0 })) && !(a[0] is MatrixValue { Kind: NumKind.Char }))
+                throw new OctaveException("makeValidName: STR must be a string or cellstr");
+            if ((a.Length - 1) % 2 != 0) throw new OctaveException("makeValidName: property/value options must occur in pairs");
+            string style = "underscore", prefix = "x";
+            for (int q = 1; q < a.Length; q += 2)
+            {
+                if (a[q] is not MatrixValue { Kind: NumKind.Char }) throw new OctaveException("makeValidName: option argument must be a string");
+                var key = S(a[q], "makeValidName");
+                if (key.Equals("ReplacementStyle", StringComparison.OrdinalIgnoreCase))
+                {
+                    if (a[q + 1] is not MatrixValue { Kind: NumKind.Char }) throw new OctaveException("makeValidName: 'ReplacementStyle' value must be a string");
+                    style = S(a[q + 1], "makeValidName").ToLowerInvariant();
+                    if (style is not ("underscore" or "delete" or "hex")) throw new OctaveException($"makeValidName: invalid 'ReplacementStyle' value '{style}'");
+                }
+                else if (key.Equals("Prefix", StringComparison.OrdinalIgnoreCase))
+                {
+                    if (a[q + 1] is not MatrixValue { Kind: NumKind.Char }) throw new OctaveException("makeValidName: 'Prefix' value must be a string");
+                    prefix = S(a[q + 1], "makeValidName");
+                    if (!Valid(prefix)) throw new OctaveException($"makeValidName: invalid 'Prefix' value '{prefix}'");
+                }
+                else throw new OctaveException($"makeValidName: unknown property '{key}'");
+            }
             string Fix(string s, out bool mod)
             {
                 mod = !Valid(s);
                 if (!mod) return s;
-                if (Lexing.Lexer.IsKeyword(s)) return "x" + char.ToUpperInvariant(s[0]) + s[1..];
+                if (Lexing.Lexer.IsKeyword(s)) return prefix + char.ToUpperInvariant(s[0]) + s[1..];
+                s = s.Trim();
                 var sb = new StringBuilder();
-                // remove whitespace, capitalising following letter
                 bool up = false;
                 foreach (var ch in s)
                 {
                     if (char.IsWhiteSpace(ch)) { up = sb.Length > 0; continue; }
                     sb.Append(up ? char.ToUpperInvariant(ch) : ch); up = false;
                 }
-                var t = new string(sb.ToString().Select(ch => char.IsLetterOrDigit(ch) || ch == '_' ? ch : '_').ToArray());
-                if (t.Length == 0 || !char.IsLetter(t[0])) t = "x" + t;
-                return t;
+                var t = new StringBuilder();
+                foreach (var ch in sb.ToString())
+                {
+                    if (char.IsLetterOrDigit(ch) && ch < 128 || ch == '_') t.Append(ch);
+                    else if (style == "underscore") t.Append('_');
+                    else if (style == "hex") t.Append("0x").Append(((int)ch).ToString("X2"));
+                }
+                var r = t.ToString();
+                if (r.Length == 0 || !char.IsLetter(r[0])) r = prefix + r;
+                return r;
             }
             if (a[0] is CellValue c)
             {
                 var r = new CellValue(c.R, c.C); var m = new MatrixValue(c.R, c.C, NumKind.Logical); r.SetDims(c.Dims); m.SetDims(c.Dims);
-                for (int k = 0; k < c.Data.Length; k++) { r.Data[k] = Str(Fix(S(c.Data[k], "makeValidName"), out bool md)); m.Re[k] = md ? 1 : 0; }
+                for (int k = 0; k < c.Data.Length; k++) { r.Data[k] = Str(Fix(c.Data[k] is MatrixValue { Numel: 0 } ? "" : S(c.Data[k], "makeValidName"), out bool md)); m.Re[k] = md ? 1 : 0; }
                 return Out(r, m);
             }
             var o = Fix(S(a[0], "makeValidName"), out bool mm);

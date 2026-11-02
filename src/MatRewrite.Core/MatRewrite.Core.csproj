@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
-    <Version>0.13.1</Version>
+    <Version>0.14.0</Version>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <NoWarn>$(NoWarn);CS8618;CS8602;CS8600;CS8603;CS8604;CS8625</NoWarn>
@@ -12,6 +12,8 @@
     <PackageReference Include="CSparse" Version="4.4.1" />
     <PackageReference Include="MathNet.Numerics" Version="5.0.0" />
     <EmbeddedResource Include="CoreLib\*.m" LogicalName="CoreLib.%(Filename).m" />
+    <EmbeddedResource Include="OctavePkg\*.m" LogicalName="OctavePkg.%(Filename).m" />
+    <EmbeddedResource Include="OctaveLib\**\*.m" LogicalName="OctaveLib.%(RecursiveDir)%(Filename).m" />
   </ItemGroup>
 
 </Project>

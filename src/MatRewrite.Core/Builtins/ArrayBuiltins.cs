@@ -373,7 +373,7 @@ public static partial class BuiltinLibrary
             if (single && m.Kind != NumKind.Single) { var sm = m.Copy(); sm.Kind = NumKind.Single; m = sm; }
             return m;
         });
-        Reg1("isequal", a => { for (int k = 1; k < a.Length; k++) if (!ValuesEqual(a[0], a[k])) return Bool(false); return Bool(true); });
+        Reg1("isequal", a => { if (a.Length < 2) throw new OctaveException("Invalid call to isequal", "Octave:invalid-fun-call"); for (int k = 1; k < a.Length; k++) if (!ValuesEqual(a[0], a[k])) return Bool(false); return Bool(true); });
         Reg("ismember", (it, a, n) =>
         {
             if (a[1] is CellValue set)
@@ -591,6 +591,7 @@ public static partial class BuiltinLibrary
             return x.Props.Keys.All(k => y.Props.ContainsKey(k) && ValuesEqual(x.Props[k], y.Props[k]));
         }
         if (a.Rows != b.Rows || a.Cols != b.Cols) return false;
+        if (a is not FunctionHandleValue && !a.Dims.SequenceEqual(b.Dims)) return false;
         switch (a)
         {
             case MatrixValue ma when b is MatrixValue mb:
@@ -605,6 +606,7 @@ public static partial class BuiltinLibrary
                 for (int k = 0; k < sa.Numel; k++) foreach (var f in sa.Fields) if (!ValuesEqual(sa.Elems[k][f], sb.Elems[k][f])) return false;
                 return true;
             case FunctionHandleValue fa when b is FunctionHandleValue fb:
+                if (fa.IsAnonymous || fb.IsAnonymous) return ReferenceEquals(fa, fb);
                 return fa.ToString() == fb.ToString();
         }
         return false;
