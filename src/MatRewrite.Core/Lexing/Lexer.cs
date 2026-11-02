@@ -316,6 +316,7 @@ public sealed class Lexer
         if ((c == '+' || c == '-' || c == '*' || c == '/' || c == '<' || c == '>' || c == '&' || c == '|' || c == '^')
             && p + 1 < src.Length && (src[p + 1] == ' ' || src[p + 1] == '=')) return;
         if (c == '\'' || c == '"') return; // treat as normal function syntax with string arg? fall back
+        if (c == '.' && p + 2 < src.Length && src[p + 1] == '.' && src[p + 2] == '.') return; // continuation: normal syntax
         // collect words until ; , newline or comment
         pos = p;
         Add(TokKind.Punct, "(", true);

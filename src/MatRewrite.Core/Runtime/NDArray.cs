@@ -141,7 +141,7 @@ public static class NDArray
         var arrs = items.Where(v => v.Numel > 0 || v.NDims > 2).ToList();
         if (arrs.Count == 0) return items.Count > 0 && items[0] is ArrayValue a0 ? a0 : MatrixValue.Empty();
         // pick a common type using the 2-D concat rules on one element of each
-        var proto = Concat.Horz(arrs.Select(v => v is ArrayValue av && av.Numel > 0 ? (Value)av.Gather(new[] { 0 }, 1, 1) : v).ToList());
+        var proto = Concat.Horz(arrs.Select(v => v is ArrayValue av && av.Numel > 0 ? (Value)av.Gather(new[] { 0 }, 1, 1) : v is ArrayValue ev && v.NDims > 2 ? (Value)ev.EmptyLike(0, 0) : v).ToList());
         int n = Math.Max(dim, arrs.Max(v => v.NDims));
         var baseD = Pad(arrs[0].Dims, n);
         int total = 0;

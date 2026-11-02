@@ -145,6 +145,8 @@ public static class Ops
     public static Value Binary(string op, Value av, Value bv)
     {
         if (av is StructValue { Tag: not null } || bv is StructValue { Tag: not null }) return Tagged.Binary(null, op, av, bv);
+        if ((op == "==" || op == "!=" || op == "~=") && av is FunctionHandleValue fl && bv is FunctionHandleValue fr)
+            return MatrixValue.Bool((ReferenceEquals(fl, fr) || fl.Name != null && fl.Name == fr.Name && fl.Body == null && fr.Body == null) == (op == "=="));
         if (av is Sparse.SparseValue || bv is Sparse.SparseValue)
             return Sparse.SparseOps.Binary(op, av, bv, BinaryCore);
         var res = BinaryCore(op, av, bv);

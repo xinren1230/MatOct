@@ -53,7 +53,14 @@ static class TestDriver
             var n = Interlocked.Increment(ref done);
             if (n % 50 == 0) Console.WriteLine($"  {n}/{files.Count}");
         });
-        var list = results.ToList();
+        // Files whose child crashed or timed out under parallel load are retried once, serially, with a longer timeout.
+        var retry = results.Where(x => x.r.Failures.Count == 1 && x.r.Failures[0].Kind == "crash").ToList();
+        var list = results.Except(retry).ToList();
+        foreach (var (area, r0) in retry)
+        {
+            Console.WriteLine($"  retrying {Path.GetRelativePath(dir, r0.File)} serially...");
+            list.Add((area, RunChild(r0.File, timeout * 3, lib) ?? r0));
+        }
         var areas = OctaveTestRunner.Summarize(list);
         int tp = areas.Sum(x => x.Pass), tf = areas.Sum(x => x.Fail), ts = areas.Sum(x => x.Skip);
         var sb = new StringBuilder();

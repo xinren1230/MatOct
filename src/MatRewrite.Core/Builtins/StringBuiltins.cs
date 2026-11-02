@@ -36,13 +36,14 @@ public static partial class BuiltinLibrary
         return f(S(v, fn));
     }
 
-    static Value CompareStr(Value a, Value b, Func<string, string, bool> eq)
+    static Value CompareStr(Value a, Value b, Func<string, string, bool> eq, bool ncmp = false)
     {
         string? AsStr(Value v) => v is MatrixValue m && (m.IsChar || m.Numel == 0) && m.R <= 1 ? m.AsString() : (v is MatrixValue m2 && m2.IsChar ? null : null);
         bool One(Value x, Value y)
         {
             if (x is MatrixValue mx && y is MatrixValue my && mx.IsChar && my.IsChar)
             {
+                if (ncmp && mx.R <= 1 && my.R <= 1) return eq(mx.AsString(), my.AsString());
                 if (mx.R != my.R || mx.C != my.C) return mx.R <= 1 && my.R <= 1 && mx.Numel == 0 && my.Numel == 0 || (mx.R <= 1 && my.R <= 1 && eq(mx.AsString(), my.AsString()) && mx.Numel == my.Numel);
                 if (mx.R <= 1) return eq(mx.AsString(), my.AsString());
                 return eq(mx.AsString(), my.AsString());
@@ -245,8 +246,8 @@ public static partial class BuiltinLibrary
         Reg("toupper", upper); Reg("tolower", lower);
         Reg1("strcmp", a => { NArgs(a, 2, 2, "strcmp"); return CompareStr(a[0], a[1], (x, y) => x == y); });
         Reg1("strcmpi", a => CompareStr(a[0], a[1], (x, y) => string.Equals(x, y, StringComparison.OrdinalIgnoreCase)));
-        Reg1("strncmp", a => { int n = I(a[2], "strncmp"); return CompareStr(a[0], a[1], (x, y) => x.Length >= n && y.Length >= n && x[..n] == y[..n]); });
-        Reg1("strncmpi", a => { int n = I(a[2], "strncmpi"); return CompareStr(a[0], a[1], (x, y) => x.Length >= n && y.Length >= n && string.Equals(x[..n], y[..n], StringComparison.OrdinalIgnoreCase)); });
+        Reg1("strncmp", a => { int n = I(a[2], "strncmp"); return CompareStr(a[0], a[1], (x, y) => x.Length >= n && y.Length >= n && x[..n] == y[..n], true); });
+        Reg1("strncmpi", a => { int n = I(a[2], "strncmpi"); return CompareStr(a[0], a[1], (x, y) => x.Length >= n && y.Length >= n && string.Equals(x[..n], y[..n], StringComparison.OrdinalIgnoreCase), true); });
         Reg1("strfind", a =>
         {
             var pat = S(a[1], "strfind");

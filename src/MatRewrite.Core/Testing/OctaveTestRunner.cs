@@ -124,7 +124,7 @@ public static class OctaveTestRunner
             foreach (var k in it.Base.Vars.Keys.Where(k => !shared.Contains(k)).ToList()) it.Base.Vars.Remove(k);
             string code = b.Code;
             // Octave runs each block as a function: shared variables are written back only when the block completes normally
-            var snap = shared.Where(it.Base.Vars.ContainsKey).ToDictionary(k => k, k => it.Base.Vars[k]);
+            var snap = shared.Distinct().Where(it.Base.Vars.ContainsKey).ToDictionary(k => k, k => it.Base.Vars[k]);
             bool pass; string? msg = null;
             switch (b.Kind)
             {

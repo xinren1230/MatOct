@@ -115,6 +115,15 @@ public static partial class BuiltinLibrary
     internal static MatrixValue ClassFill(Value[] a, string fn, double v)
     {
         var kind = NumKind.Double;
+        if (a.Length >= 2 && IsString(a[^2]) && string.Equals(S(a[^2], fn), "like", StringComparison.OrdinalIgnoreCase))
+        {
+            var proto = a[^1]; a = a[..^2];
+            var lm0 = FillN(DimsN(a, fn), v);
+            if (proto is MatrixValue pm && !pm.IsChar) { if (pm.Kind != NumKind.Double) lm0 = lm0.CastInPlace(pm.Kind == NumKind.Logical && v != 0 && v != 1 ? NumKind.Double : pm.Kind); if (pm.Im != null) lm0.Im = new double[lm0.Re.Length]; }
+            else if (proto is MatRewrite.Core.Sparse.SparseValue) return lm0;
+            else if (proto is not MatrixValue) throw new OctaveException($"{fn}: invalid data type specified");
+            return lm0;
+        }
         if (a.Length > 0 && IsString(a[^1]))
         {
             var name = S(a[^1], fn);

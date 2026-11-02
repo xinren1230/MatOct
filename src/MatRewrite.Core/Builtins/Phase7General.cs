@@ -235,6 +235,7 @@ public static partial class BuiltinLibrary
             Value r;
             if (p == 2) r = Fc(it, "sqrt", Fc(it, "sum", Bx(".*", Fc(it, "abs", A), Fc(it, "abs", A)), dv));
             else if (p == 1) r = Fc(it, "sum", Fc(it, "abs", A), dv);
+            else if (double.IsPositiveInfinity(p) && A is MatrixValue em && em.Numel == 0) r = Fc(it, "sum", Fc(it, "abs", A), dv);
             else if (double.IsPositiveInfinity(p)) r = Fn(it, "max", 1, Fc(it, "abs", A), new MatrixValue(0, 0, Array.Empty<double>(), null), dv)[0];
             else r = Bx(".^", Fc(it, "sum", Bx(".^", Fc(it, "abs", A), Dn(p)), dv), Dn(1 / p));
             return new[] { r };

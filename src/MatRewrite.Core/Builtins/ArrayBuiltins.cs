@@ -34,8 +34,8 @@ public static partial class BuiltinLibrary
         Reg1("isnull", a => Bool(a[0].Numel == 0));
         Reg1("isscalar", a => Bool(a[0].Rows == 1 && a[0].Cols == 1));
         Reg1("isvector", a => Bool(a[0].NDims == 2 && (a[0].Rows == 1 || a[0].Cols == 1) && a[0].Numel >= 1));
-        Reg1("isrow", a => Bool(a[0].Rows == 1));
-        Reg1("iscolumn", a => Bool(a[0].Cols == 1));
+        Reg1("isrow", a => Bool(a[0].Rows == 1 && a[0].NDims <= 2));
+        Reg1("iscolumn", a => Bool(a[0].Cols == 1 && a[0].NDims <= 2));
         Reg1("ismatrix", a => Bool(a[0].NDims == 2));
         Reg1("issquare", a => Bool(a[0].Rows == a[0].Cols));
 
@@ -169,17 +169,30 @@ public static partial class BuiltinLibrary
         // reductions
         Reg1("sum", a =>
         {
-            string mode = "default";
+            string mode = "default"; bool omitNan = false;
             while (a.Length > 1 && a[^1] is MatrixValue om && om.IsChar)
             {
-                mode = om.AsString().ToLowerInvariant();
+                var flag = om.AsString().ToLowerInvariant();
+                if (flag == "omitnan" || flag == "omitmissing") { omitNan = true; a = a[..^1]; continue; }
+                if (flag == "includenan" || flag == "includemissing") { a = a[..^1]; continue; }
+                mode = flag;
                 if (mode != "double" && mode != "native" && mode != "default" && mode != "extra") throw new OctaveException($"sum: unrecognized type argument '{om.AsString()}'");
                 a = a[..^1];
             }
-            var m = M(a[0], "sum"); int d = DimArg(a, 1, m, "sum");
+            var m = M(a[0], "sum");
+            if (omitNan && (m.Re.Any(double.IsNaN) || m.Im != null && m.Im.Any(double.IsNaN)))
+            {
+                var re = (double[])m.Re.Clone(); var im = m.Im != null ? (double[])m.Im.Clone() : null;
+                for (int q = 0; q < re.Length; q++) if (double.IsNaN(re[q]) || im != null && double.IsNaN(im[q])) { re[q] = 0; if (im != null) im[q] = 0; }
+                var nm = new MatrixValue(m.R, m.C, re, im, m.Kind); nm.SetDims(m.Dims); m = nm;
+            }
+            int d = DimArg(a, 1, m, "sum");
+            if (a.Length > 1 && m.R == 0 && m.C == 0 && m.ND == null)
+            { var e = d == 1 ? new MatrixValue(1, 0, NumKind.Double) : d == 2 ? new MatrixValue(0, 1, NumKind.Double) : new MatrixValue(0, 0, NumKind.Double); return (mode != "double" && !(mode == "extra" && m.IsInteger) && (m.IsInteger || m.IsSingle)) ? e.CastInPlace(m.Kind) : e; }
             if (m.IsComplex) { var rc = ReduceC(m, d, v => v.Aggregate(Complex.Zero, (x, y) => x + y)); return mode != "double" && m.IsSingle ? rc.CastInPlace(m.Kind) : rc; }
-            var r = Reduce(m, d, v => { double s = 0; foreach (var x in v) s += x; return s; });
-            if (mode == "double") return r;
+            var r = mode == "extra" ? Reduce(m, d, v => { double s = 0, c = 0; foreach (var x in v) { double t = s + x; if (Math.Abs(s) >= Math.Abs(x)) c += (s - t) + x; else c += (x - t) + s; s = t; } return double.IsFinite(s) ? s + c : s; })
+                : Reduce(m, d, v => { double s = 0; foreach (var x in v) s += x; return s; });
+            if (mode == "double" || mode == "extra" && m.IsInteger) return r;
             if (mode == "native" && m.IsLogical) { for (int q = 0; q < r.Re.Length; q++) r.Re[q] = r.Re[q] != 0 ? 1 : 0; return r.CastInPlace(NumKind.Logical); }
             return m.IsInteger || m.IsSingle ? r.CastInPlace(m.Kind) : r;
         });
@@ -430,6 +443,32 @@ public static partial class BuiltinLibrary
             foreach (var v in x.Re) { for (int k = ed.Numel - 1; k >= 0; k--) if (k == ed.Numel - 1 ? v == ed.Re[k] : v >= ed.Re[k] && v < ed.Re[k + 1]) { r.Re[k]++; break; } }
             return r;
         });
+        static MatrixValue AccumCore(Value[] a, int nArgPos, string kind, string fn)
+        {
+            var idx = M(a[0], fn); var vals = M(a[1], fn);
+            double zero = kind == "sum" ? 0 : (a.Length > 2 ? M(a[2], fn).Re.FirstOrDefault(double.NaN) : double.NaN);
+            int n = 0; foreach (var q in idx.Re) { if (q < 1 || q != Math.Floor(q)) throw new OctaveException($"index ({q}): out of bound; value {q} out of bound {idx.Numel}"); n = Math.Max(n, (int)q); }
+            if (a.Length > nArgPos) n = Math.Max(n, (int)M(a[nArgPos], fn).Re[0]);
+            bool cplx = vals.Im != null && kind == "sum";
+            var re = new double[n]; var im = cplx ? new double[n] : null;
+            if (zero != 0) Array.Fill(re, zero);
+            bool scalarV = vals.Numel == 1;
+            if (!scalarV && vals.Numel != idx.Numel) throw new OctaveException($"{fn}: dimensions mismatch");
+            for (int k = 0; k < idx.Numel; k++)
+            {
+                int i = (int)idx.Re[k] - 1; double v = vals.Re[scalarV ? 0 : k];
+                if (kind == "sum") { re[i] += v; if (im != null) im[i] += vals.Im![scalarV ? 0 : k]; }
+                else if (double.IsNaN(re[i])) re[i] = v;
+                else if (!double.IsNaN(v)) re[i] = kind == "max" ? Math.Max(re[i], v) : Math.Min(re[i], v);
+            }
+            var r = new MatrixValue(n, 1, re, im, NumKind.Double);
+            if (vals.IsInteger || vals.IsSingle) r = r.CastInPlace(vals.Kind);
+            else if (vals.IsLogical && kind != "sum") r = r.CastInPlace(NumKind.Logical);
+            return r;
+        }
+        Reg1("__accumarray_sum__", a => AccumCore(a, 2, "sum", "__accumarray_sum__"));
+        Reg1("__accumarray_max__", a => AccumCore(a, 3, "max", "__accumarray_max__"));
+        Reg1("__accumarray_min__", a => AccumCore(a, 3, "min", "__accumarray_min__"));
         Reg1("accumarray", a =>
         {
             var subs = M(a[0], "accumarray"); var vals = M(a[1], "accumarray");

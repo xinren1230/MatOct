@@ -25,6 +25,7 @@ public sealed record AnonFuncExpr(List<string> Params, Expr Body) : Expr;
 public sealed record FuncHandleExpr(string Name) : Expr;
 public sealed record ParenExpr(Expr Inner) : Expr;
 /// <summary>Octave assignment used as an expression: (x = v), a = b = v, x++ inside an index. Yields the new value (or the old one when PostOld).</summary>
+public sealed record MultiAssignExpr(List<Expr> Targets, Expr Value) : Expr;   // Octave: f ([~, q] = g (x))
 public sealed record AssignExpr(Expr Target, Expr Value, bool PostOld = false) : Expr;
 
 // ---------- statements ----------

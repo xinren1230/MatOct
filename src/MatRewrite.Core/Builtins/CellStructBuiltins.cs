@@ -91,6 +91,38 @@ public static partial class BuiltinLibrary
         Reg1("num2cell", a =>
         {
             var x = A(a[0], "num2cell");
+            if (a.Length > 1)
+            {
+                var dm = M(a[1], "num2cell");
+                var dl = dm.Re.Select(v => (int)v).ToArray();
+                if (dl.Any(v => v < 1)) throw new OctaveException("num2cell: DIMS must be a valid array of integers between 1 and N");
+                int nd = Math.Max(x.Dims.Length, dl.Length == 0 ? 2 : dl.Max());
+                var sz = new int[nd]; for (int k = 0; k < nd; k++) sz[k] = k < x.Dims.Length ? x.Dims[k] : 1;
+                var osz = (int[])sz.Clone(); var ssz = new int[nd];
+                for (int k = 0; k < nd; k++) ssz[k] = 1;
+                foreach (var d in dl) { osz[d - 1] = 1; ssz[d - 1] = sz[d - 1]; }
+                int on = osz.Aggregate(1, (p2, q) => p2 * q), sn = ssz.Aggregate(1, (p2, q) => p2 * q);
+                var str = new int[nd]; str[0] = 1; for (int k = 1; k < nd; k++) str[k] = str[k - 1] * sz[k - 1];
+                var rc = new CellValue(osz[0], on / Math.Max(1, osz[0]));
+                if (osz[0] == 0) rc = new CellValue(0, osz.Skip(1).Aggregate(1, (p2, q) => p2 * q));
+                var oc = new int[nd];
+                for (int o = 0; o < on; o++)
+                {
+                    var lin = new int[sn]; var sc = new int[nd];
+                    for (int e = 0; e < sn; e++)
+                    {
+                        int li = 0; for (int k = 0; k < nd; k++) li += (oc[k] + sc[k]) * str[k];
+                        lin[e] = li;
+                        for (int k = 0; k < nd; k++) { if (++sc[k] < ssz[k]) break; sc[k] = 0; }
+                    }
+                    var g = x.Gather(lin, ssz[0], sn / Math.Max(1, ssz[0]));
+                    if (nd > 2) g = NDArray.Reshape(g, ssz);
+                    rc.Data[o] = g;
+                    for (int k = 0; k < nd; k++) { if (++oc[k] < osz[k]) break; oc[k] = 0; }
+                }
+                if (nd > 2) rc.SetDims(osz);
+                return rc;
+            }
             var r = new CellValue(x.R, x.C);
             for (int k = 0; k < x.Numel; k++) r.Data[k] = x.Gather(new[] { k }, 1, 1);
             return r;

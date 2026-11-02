@@ -198,7 +198,17 @@ public static partial class BuiltinLibrary
         });
         Reg("realmax", (it, a, n) => new[] { ClassConst(it, a, "realmax", double.MaxValue, float.MaxValue) });
         Reg("realmin", (it, a, n) => new[] { ClassConst(it, a, "realmin", 2.2250738585072014e-308, 1.17549435e-38) });
-        Reg("flintmax", (it, a, n) => new[] { ClassConst(it, a, "flintmax", 9007199254740992, 16777216) });
+        Reg("flintmax", (it, a, n) =>
+        {
+            if (a.Length == 1 && !(a[0] is MatrixValue fc && fc.IsChar))
+            {
+                var cls = Fc(it, "class", a[0]) is MatrixValue cv ? cv.AsString() : "double";
+                if (cls == "single") return new[] { Fc(it, "single", Dn(16777216)) };
+                if (cls == "double") return new[] { Dn(9007199254740992) };
+                throw new OctaveException($"flintmax: not defined for class '{cls}'");
+            }
+            return new[] { ClassConst(it, a, "flintmax", 9007199254740992, 16777216) };
+        });
         Reg("__gammainc__", (it, a, n) =>
         {
             var x = M(a[0], "__gammainc__"); var aa = M(a[1], "__gammainc__");

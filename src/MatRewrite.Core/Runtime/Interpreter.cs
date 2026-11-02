@@ -736,6 +736,12 @@ public sealed partial class Interpreter
             case BinaryExpr b: return EvalBinary(b);
             case UnaryExpr u: return Ops.Unary(u.Op, Eval(u.Operand));
             case ParenExpr p: return Eval(p.Inner);
+            case MultiAssignExpr me:
+            {
+                Exec(new AssignStmt(me.Targets, me.Value, false));
+                var first = me.Targets.FirstOrDefault(t => t is not TildeExpr);
+                return first == null ? MatrixValue.Empty() : Eval(first);
+            }
             case AssignExpr ae:
             {
                 var old = ae.PostOld ? Eval(ae.Target) : null;
@@ -800,6 +806,11 @@ public sealed partial class Interpreter
             if (mname is "eq" or "ne" && l is ObjectValue a && r is ObjectValue b2 && a.Cls.IsHandle)
                 return MatrixValue.Bool(ReferenceEquals(a, b2) == (mname == "eq"));
         }
+        if ((op == "==" || op == "!=" || op == "~=") && l is FunctionHandleValue fl && r is FunctionHandleValue fr)
+        {
+            bool same = ReferenceEquals(fl, fr) || fl.Name != null && fl.Name == fr.Name && fl.Body == null && fr.Body == null;
+            return MatrixValue.Bool(same == (op == "=="));
+        }
         throw new OctaveException($"binary operator '{op}' not implemented for '{l.ClassName}' by '{r.ClassName}' operations");
     }
 
@@ -813,6 +824,7 @@ public sealed partial class Interpreter
             if (m.Numel == 0) return EmptyLogical;
             return Ops.IsTrue(m);
         }
+        if (v is MatRewrite.Core.Sparse.SparseValue sv) return LogicalScalar(sv.ToDense(), op);
         throw new OctaveException($"binary operator '{op}' not implemented for '{v.ClassName}' operands");
     }
 
@@ -851,7 +863,7 @@ public sealed partial class Interpreter
             case AnonFuncExpr af: return new List<Value> { MakeAnon(af) };
             case FuncHandleExpr fh:
                 return new List<Value> { new FunctionHandleValue { Name = fh.Name, Context = Current.Func } };
-            case AssignExpr: return new List<Value> { Eval(e) };
+            case AssignExpr: case MultiAssignExpr: return new List<Value> { Eval(e) };
             case IdentExpr or IndexExpr or FieldExpr:
                 return EvalChain(e, nargout);
         }
@@ -1203,7 +1215,7 @@ public sealed partial class Interpreter
         if (env != null)
         {
             if (env.StartsWith("=")) { set.Clear(); env = env[1..]; }
-            foreach (var n in env.Split(',', StringSplitOptions.RemoveEmptyEntries)) set.Add(n.Trim());
+            foreach (var n in env.Split(',', StringSplitOptions.RemoveEmptyEntries)) { var t = n.Trim(); if (t.StartsWith("-")) set.Remove(t[1..]); else set.Add(t); }
         }
         return set;
     }

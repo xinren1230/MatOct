@@ -45,7 +45,7 @@ public static class CoreMLib
     static readonly HashSet<string> GraphicsSafe = new() { "setappdata", "getappdata", "isappdata", "rmappdata", "contourc", "ndgrid", "isgraphics", "view", "xlim", "ylim", "zlim", "grid", "shading", "lighting", "material", "hist" };
     static readonly HashSet<string> NativeFirst = new() { "eigs", "sprand", "sprandn", "sprandsym", "help", "lookfor", "doc" };
     /// <summary>Names where Octave's own m-file beats MatOct's CoreLib version on the %! test suite.</summary>
-    static readonly HashSet<string> OctaveFirst = new() { "interpn", "interp3", "fplot", "fminsearch", "area", "pcg", "gmres", "bicg", "ilu", "spconvert", "xticks", "yticks", "xticklabels", "yticklabels" };
+    static readonly HashSet<string> OctaveFirst = new HashSet<string>((Environment.GetEnvironmentVariable("MATOCT_OCTAVE_FIRST") ?? "").Split(',', StringSplitOptions.RemoveEmptyEntries)) { "ichol", "interpn", "interp3", "fplot", "fminsearch", "area", "pcg", "gmres", "bicg", "ilu", "spconvert", "xticks", "yticks", "xticklabels", "yticklabels" };
     static readonly Dictionary<string, string> pkg = new();
     /// <summary>Embedded package function source by qualified name, e.g. "matlab.lang.makeValidName".</summary>
     public static string? GetPackage(string qualified) { _ = all.Value; return pkg.TryGetValue(qualified, out var s) ? s : null; }

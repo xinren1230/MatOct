@@ -738,7 +738,21 @@ public sealed class Parser
         if (IsP(close)) { p++; matrixDepth = saveM; return args; }
         while (true)
         {
-            var ax = ParseExpr();
+            Expr ax;
+            if (IsP("[") && LooksLikeMultiAssign())
+            {
+                p++;
+                var targets = new List<Expr>();
+                while (!IsP("]"))
+                {
+                    if (IsP(",")) { p++; continue; }
+                    if ((IsP("~") || IsP("!")) && (PeekTok().Is(",") || PeekTok().Is("]"))) { p++; targets.Add(new TildeExpr()); continue; }
+                    targets.Add(ParsePostfix());
+                }
+                p++; Expect("=");
+                ax = new MultiAssignExpr(targets, ParseExpr());
+            }
+            else ax = ParseExpr();
             if (IsP("=") && IsLValue(ax)) { p++; ax = new AssignExpr(ax, ParseChainRhs()); }   // Octave: f (x = expr)
             args.Add(ax);
             if (IsP(",")) { p++; continue; }

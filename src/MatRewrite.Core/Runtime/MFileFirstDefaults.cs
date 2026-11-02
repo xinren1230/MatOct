@@ -9,9 +9,9 @@ public static class MFileFirstDefaults
         "movefile", "copyfile", "isstring", "setappdata", "getappdata", "isappdata", "rmappdata", "type", "help", "doc", "lookfor",
         "area", "fplot", "imshow", "linkaxes", "pie", "histogram", "histc", "fill", "rectangle", "xticks", "yticks", "xticklabels", "yticklabels",
         "annotation",
-        "mad", "repmat", "orderfields", "cell2mat", "strcat", "factor", // 0.14 A/B
+        "iqr", "strread", "mad", "repmat", "base2dec", "beta", "bincoeff", "bitget", "blackman", "bounds", "cumtrapz", "deal", "deblank", "factorial", "fminbnd", "fzero", "hamming", "isletter", "lscov", "moment", "normest1", "repelem", "str2num", "strtrim", "strtrunc", "unwrap", "xor", "orderfields", "cell2mat", "strcat", "factor", "strsplit", "accumarray", // 0.14 A/B
         "ode45", "ode23", "ode23s", "odeget", "ode15s", "ode15i", "assert",
-        "rmse", "mape", "ishermitian", "kurtosis", "polyfit", "nthargout", // phase 8 A/B
+        "rmse", "mape", "ishermitian", "polyfit", "nthargout", // phase 8 A/B
         "normalize", "quantile", "cov", "cart2sph", "sph2cart", "cart2pol", "pol2cart", "ndgrid", "compan", "istriu", "isbanded", "rescale", "blkdiag", "corr", "bitset",
         "beep",
         "blanks",
