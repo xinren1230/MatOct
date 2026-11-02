@@ -64,6 +64,15 @@ public sealed partial class Interpreter
     public readonly Dictionary<string, BuiltinFn> Builtins = new(StringComparer.Ordinal);
     public readonly Dictionary<string, UserFunction> CommandLineFunctions = new();
     public readonly List<string> SearchPath = new();
+    /// <summary>Folders that restoredefaultpath puts back (after userpath). Hosts may add toolbox folders.</summary>
+    public readonly List<string> DefaultPath = new();
+    /// <summary>Raised after addpath/rmpath/path/cd change what resolves.</summary>
+    public event Action? PathChanged;
+    /// <summary>Set by the IDE so pathtool opens the Set Path dialog.</summary>
+    public Action? PathToolRequested;
+    public void NotifyPathChanged() { missingCache.Clear(); PathChanged?.Invoke(); }
+    /// <summary>Forget negative lookups so new files on the path are found (MATLAB rehash).</summary>
+    public void Rehash() { missingCache.Clear(); fileCache.Clear(); }
     public string LastError = "";
     public string LastErrorId = "";
     public UserFunction? FindUserFunction(string name) => ResolveUser(name, Current.Func);

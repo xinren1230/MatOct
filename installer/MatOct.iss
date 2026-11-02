@@ -1,39 +1,41 @@
-; MatRewrite installer (Inno Setup 6). Build: ISCC.exe MatRewrite.iss  (run build-dist.ps1 first)
-#define AppName "MatRewrite"
-#define AppVer "0.11.0"
+; MatOct installer (Inno Setup 6). Build: ISCC.exe MatOct.iss  (run build-dist.ps1 first)
+#define AppName "MatOct"
+#define AppVer "0.12.0"
 [Setup]
-AppId={{6C1E0B7A-9A43-4D7E-9B0E-4D61A6B2F909}
+AppId={{8F3D2C51-7B1A-4E0C-A9D2-5E1F0C3B7A12}
+UsePreviousAppDir=no
 AppName={#AppName}
 AppVersion={#AppVer}
 AppPublisher=Xinren Chen
-DefaultDirName={localappdata}\Programs\MatRewrite
-DefaultGroupName=MatRewrite
+DefaultDirName={localappdata}\Programs\MatOct
+DefaultGroupName=MatOct
 PrivilegesRequired=lowest
 OutputDir=..\dist
-OutputBaseFilename=MatRewrite-{#AppVer}-win-x64-setup
+OutputBaseFilename=MatOct-{#AppVer}-win-x64-setup
 Compression=lzma2
 SolidCompression=yes
 ArchitecturesInstallIn64BitMode=x64compatible
 ChangesAssociations=yes
 ChangesEnvironment=yes
 SetupIconFile=app.ico
-UninstallDisplayIcon={app}\MatRewriteIde.exe
+UninstallDisplayIcon={app}\MatOct.exe
 [Files]
 Source: "..\dist\publish\ide\*"; DestDir: "{app}"; Flags: recursesubdirs ignoreversion
 Source: "..\dist\publish\matrw\*"; DestDir: "{app}\cli"; Flags: recursesubdirs ignoreversion
+Source: "..\dist\publish\matrw\matrw.exe"; DestDir: "{app}\cli"; DestName: "matoct.exe"; Flags: ignoreversion
 Source: "..\demo\ide_demo.m"; DestDir: "{app}\demo"
 [Icons]
-Name: "{group}\MatRewrite IDE"; Filename: "{app}\MatRewriteIde.exe"
-Name: "{group}\MatRewrite Console"; Filename: "{app}\cli\matrw.exe"
-Name: "{group}\Uninstall MatRewrite"; Filename: "{uninstallexe}"
+Name: "{group}\MatOct"; Filename: "{app}\MatOct.exe"
+Name: "{group}\MatOct Console"; Filename: "{app}\cli\matrw.exe"
+Name: "{group}\Uninstall MatOct"; Filename: "{uninstallexe}"
 [Registry]
-Root: HKCU; Subkey: "Software\Classes\.m"; ValueType: string; ValueName: ""; ValueData: "MatRewrite.MFile"; Flags: uninsdeletevalue
-Root: HKCU; Subkey: "Software\Classes\MatRewrite.MFile"; ValueType: string; ValueName: ""; ValueData: "MatRewrite script"; Flags: uninsdeletekey
-Root: HKCU; Subkey: "Software\Classes\MatRewrite.MFile\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\MatRewriteIde.exe,0"
-Root: HKCU; Subkey: "Software\Classes\MatRewrite.MFile\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\MatRewriteIde.exe"" ""%1"""
+Root: HKCU; Subkey: "Software\Classes\.m"; ValueType: string; ValueName: ""; ValueData: "MatOct.MFile"; Flags: uninsdeletevalue
+Root: HKCU; Subkey: "Software\Classes\MatOct.MFile"; ValueType: string; ValueName: ""; ValueData: "MatOct script"; Flags: uninsdeletekey
+Root: HKCU; Subkey: "Software\Classes\MatOct.MFile\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\MatOct.exe,0"
+Root: HKCU; Subkey: "Software\Classes\MatOct.MFile\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\MatOct.exe"" ""%1"""
 Root: HKCU; Subkey: "Environment"; ValueType: expandsz; ValueName: "Path"; ValueData: "{olddata};{app}\cli"; Check: NeedsAddPath(ExpandConstant('{app}\cli'))
 [Run]
-Filename: "{app}\MatRewriteIde.exe"; Description: "Launch MatRewrite IDE"; Flags: nowait postinstall skipifsilent
+Filename: "{app}\MatOct.exe"; Description: "Launch MatOct"; Flags: nowait postinstall skipifsilent
 [Code]
 function NeedsAddPath(Dir: string): Boolean;
 var P: string;

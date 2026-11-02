@@ -35,6 +35,7 @@ public static partial class BuiltinLibrary
         RegisterHG();
         RegisterPhase6();
         RegisterPhase7();
+        RegisterPaths();
         cur = null;
     }
 

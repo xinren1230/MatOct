@@ -80,6 +80,7 @@ public partial class MainWindow : Window
         NewDoc(null, "");
         writer = new UiWriter(this);
         it = new Interpreter(writer);
+        InitPaths();
         figures = new WpfBackend(Dispatcher);
         FigureWindow.CallbackSink = it.Graphics.RaiseCallback;
         it.Graphics.Backend = figures;
@@ -87,7 +88,7 @@ public partial class MainWindow : Window
         it.Paused += info => Dispatcher.Invoke(() => OnPaused(info));
         it.Resumed += () => Dispatcher.BeginInvoke(OnResumed);
         figures.WindowClosed += f => { try { it.Graphics.Close(f); } catch { } };
-        AppendOutput($"MatRewrite {MatRewrite.Core.Builtins.BuiltinLibrary.Version} - a C# reimplementation of the GNU Octave language\n\n");
+        AppendOutput($"MatOct {MatRewrite.Core.Builtins.BuiltinLibrary.Version} - a C# reimplementation of the GNU Octave language\n\n");
         Editor.Text = "% New script\nx = linspace(0, 2*pi, 100);\nplot(x, sin(x), 'r-', x, cos(x), 'b--');\ntitle('Demo'); legend('sin', 'cos'); grid on;\n";
         dirty = false; UpdateTab(doc);
         UpdateTitle();
@@ -124,11 +125,10 @@ public partial class MainWindow : Window
     {
         var name = doc.Name;
         EditorTitle.Text = "Editor - " + (currentFile ?? name) + (dirty ? " *" : "");
-        Title = "MatRewrite IDE - " + name;
+        Title = "MatOct - " + name;
         UpdateTab(doc);
     }
 
-    void UpdateCwd() => CwdText.Text = Environment.CurrentDirectory;
 
     void RefreshWorkspace()
     {
@@ -210,7 +210,7 @@ public partial class MainWindow : Window
     {
         if (!d.Dirty) return true;
         Activate(d);
-        var r = MessageBox.Show(this, $"Save changes to {d.Name}?", "MatRewrite", MessageBoxButton.YesNoCancel);
+        var r = MessageBox.Show(this, $"Save changes to {d.Name}?", "MatOct", MessageBoxButton.YesNoCancel);
         if (r == MessageBoxResult.Cancel) return false;
         if (r == MessageBoxResult.Yes) return SaveTo(d.File);
         return true;
@@ -532,7 +532,7 @@ public partial class MainWindow
         if (!string.IsNullOrEmpty(cond))
         {
             try { MatRewrite.Core.Parsing.Parser.ParseProgram(cond); }
-            catch (Exception ex) { MessageBox.Show(this, "Invalid condition: " + ex.Message, "MatRewrite"); return; }
+            catch (Exception ex) { MessageBox.Show(this, "Invalid condition: " + ex.Message, "MatOct"); return; }
         }
         if (string.IsNullOrEmpty(cond)) { if (!d.Bp.Lines.Contains(line)) d.Bp.Toggle(line); else d.Bp.SetCondition(line, null); }
         else d.Bp.SetCondition(line, cond);

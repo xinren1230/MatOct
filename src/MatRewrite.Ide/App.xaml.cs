@@ -5,7 +5,7 @@ using System.Windows.Threading;
 namespace MatRewrite.Ide;
 
 /// <summary>
-/// Usage: MatRewriteIde [script.m] [--open other.m]... [--break N]... [--breakif N expr]... [--run] [--input text] [--screenshot out.png] [--exit]
+/// Usage: MatOct [script.m] [--open other.m]... [--break N]... [--breakif N expr]... [--run] [--input text] [--screenshot out.png] [--exit]
 /// With --break and --screenshot the IDE captures the window when execution pauses at the breakpoint
 /// (then continues); a second capture "out_done.png" is taken after the run finishes.
 /// </summary>
@@ -15,7 +15,7 @@ public partial class App : Application
     {
         base.OnStartup(e);
         var w = new MainWindow();
-        string? file = null, shot = null; bool run = false, exit = false; var breaks = new List<int>(); var condBreaks = new List<(int, string)>(); var extra = new List<string>();
+        string? file = null, shot = null; bool run = false, exit = false; var breaks = new List<int>(); var condBreaks = new List<(int, string)>(); var extra = new List<string>(); string? spShot = null;
         var a = e.Args;
         for (int i = 0; i < a.Length; i++)
         {
@@ -26,6 +26,7 @@ public partial class App : Application
                 case "--screenshot" when i + 1 < a.Length: shot = Path.GetFullPath(a[++i]); break;
                 case "--input" when i + 1 < a.Length: w.AutoInput = a[++i]; break;
                 case "--breakif" when i + 2 < a.Length && int.TryParse(a[i + 1], out var cn): condBreaks.Add((cn, a[i + 2])); i += 2; break;
+                case "--setpath-screenshot" when i + 1 < a.Length: spShot = Path.GetFullPath(a[++i]); break;
                 case "--open" when i + 1 < a.Length: extra.Add(a[++i]); break;
                 case "--break" when i + 1 < a.Length && int.TryParse(a[i + 1], out var n): breaks.Add(n); i++; break;
                 default: if (!a[i].StartsWith("--")) file = a[i]; break;
@@ -57,6 +58,19 @@ public partial class App : Application
             };
             t.Start();
         };
+        if (spShot != null)
+        {
+            var sp = w.OpenSetPath();
+            var t2 = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(1500) };
+            t2.Tick += (_, _) =>
+            {
+                t2.Stop();
+                try { sp.SaveScreenshot(spShot); } catch (Exception ex) { File.WriteAllText(spShot + ".err.txt", ex.ToString()); }
+                try { w.SaveScreenshot(Path.Combine(Path.GetDirectoryName(spShot)!, Path.GetFileNameWithoutExtension(spShot) + "_main.png")); } catch { }
+                if (exit) { sp.SuppressCloseQuestion = true; Shutdown(); }
+            };
+            t2.Start();
+        }
         if (run && file != null)
             w.Dispatcher.BeginInvoke(DispatcherPriority.ApplicationIdle, w.RunCurrent);
     }

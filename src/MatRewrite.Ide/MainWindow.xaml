@@ -1,7 +1,7 @@
 <Window x:Class="MatRewrite.Ide.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MatRewrite IDE" Height="760" Width="1200" Closing="OnClosing">
+        Title="MatOct" Height="760" Width="1200" Closing="OnClosing">
     <Window.Resources>
         <Style x:Key="Mono" TargetType="TextBox">
             <Setter Property="FontFamily" Value="Consolas, Cascadia Mono, Courier New" />
@@ -19,6 +19,8 @@
                 <MenuItem Header="_Save" Click="OnSave" InputGestureText="Ctrl+S" />
                 <MenuItem Header="Save _As..." Click="OnSaveAs" />
                 <MenuItem Header="_Close tab" Click="OnCloseTab" InputGestureText="Ctrl+W" />
+                <Separator />
+                <MenuItem Header="Set _Path..." Click="OnSetPath" />
                 <Separator />
                 <MenuItem Header="E_xit" Click="OnExit" />
             </MenuItem>
@@ -50,6 +52,16 @@
                 <MenuItem Header="C_lear command window" Click="OnClearOutput" />
             </MenuItem>
         </Menu>
+        <ToolBarTray DockPanel.Dock="Top">
+            <ToolBar>
+                <Button Content="Set Path" Click="OnSetPath" ToolTip="Open the Set Path dialog" />
+                <Separator />
+                <Button Content="&#x2191;" Click="OnFolderUp" ToolTip="Up one level" />
+                <Button Content="Browse..." Click="OnBrowseFolder" ToolTip="Browse for folder" />
+                <TextBlock Text=" Current Folder: " VerticalAlignment="Center" />
+                <TextBox x:Name="FolderBox" Width="560" KeyDown="OnFolderBoxKey" ToolTip="Type a folder and press Enter (cd)" />
+            </ToolBar>
+        </ToolBarTray>
         <StatusBar DockPanel.Dock="Bottom">
             <TextBlock x:Name="Status" Text="Ready" />
             <Separator />
@@ -59,11 +71,39 @@
         </StatusBar>
         <Grid>
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="230" />
+                <ColumnDefinition Width="5" />
                 <ColumnDefinition Width="3*" />
                 <ColumnDefinition Width="5" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <Grid Grid.Column="0">
+            <DockPanel Grid.Column="0">
+                <TextBlock DockPanel.Dock="Top" Padding="4,2" Background="#EEE" Text="Current Folder" />
+                <ListView x:Name="FolderList" SelectionMode="Extended" MouseDoubleClick="OnFolderItemDoubleClick">
+                    <ListView.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Open" Click="OnFolderOpen" />
+                            <Separator />
+                            <MenuItem Header="Add to Path">
+                                <MenuItem Header="Selected Folders" Click="OnAddSelectedToPath" />
+                                <MenuItem Header="Selected Folders and Subfolders" Click="OnAddSelectedSubToPath" />
+                                <MenuItem Header="Current Folder" Click="OnAddCurrentToPath" />
+                            </MenuItem>
+                            <MenuItem Header="Remove from Path" Click="OnRemoveSelectedFromPath" />
+                            <Separator />
+                            <MenuItem Header="Show in Explorer" Click="OnShowInExplorer" />
+                            <MenuItem Header="Refresh" Click="OnFolderRefresh" />
+                        </ContextMenu>
+                    </ListView.ContextMenu>
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Display}" Width="200" />
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </DockPanel>
+            <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" />
+            <Grid Grid.Column="2">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="3*" />
                     <RowDefinition Height="5" />
@@ -84,8 +124,8 @@
                              VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" TextWrapping="NoWrap" />
                 </DockPanel>
             </Grid>
-            <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" />
-            <Grid Grid.Column="2">
+            <GridSplitter Grid.Column="3" HorizontalAlignment="Stretch" />
+            <Grid Grid.Column="4">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="3*" />
                     <RowDefinition Height="5" />

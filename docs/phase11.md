@@ -20,5 +20,5 @@
 单元测试：352 个全部通过（新增 Phase11Tests 共 19 个）。
 
 ## 打包 0.11.0
-- 产物：`dist/MatRewrite-0.11.0-win-x64-setup.exe`、`dist/MatRewrite-0.11.0-win-x64-portable.zip`；0.9.0 的旧产物已删除。
-- 已验证：卸载会移除 PATH 条目；重新安装及覆盖安装正常；图形窗口截图正常。
+- 产物：`dist/MatRewrite-0.11.0-win-x64-setup.exe`、`dist/MatRewrite-0.11.0-win-x64-portable.zip`；0.9.0 的产物实际从未存在（更正）。
+- 已验证：卸载会移除 PATH 条目；重新安装及覆盖安装正常；仅图形窗口截图正常；IDE 主窗口截图为空白（更正）。

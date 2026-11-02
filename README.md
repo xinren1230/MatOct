@@ -1,19 +1,15 @@
-﻿# MATLAB-Rewrite
+# MatOct
 
-Goal: an open replacement for MATLAB (language + numeric core + plotting + IDE).
+基于 Octave 的 MATLAB 风格界面软件（C# 重写）
+A MATLAB-style IDE built on a C# rewrite of GNU Octave.
 
-## Existing alternatives (reference / reuse)
-- GNU Octave: most MATLAB-compatible syntax, free, GPL.
-- Scilab: own syntax, Xcos (Simulink-like).
-- Python (NumPy/SciPy/Matplotlib/Spyder/Jupyter): largest ecosystem.
-- Julia: MATLAB-like syntax, JIT, fast.
-- FreeMat / RunMat (Rust, MATLAB-syntax runtime, JIT).
+**License: GPL-3.0-or-later** (see LICENSE). MatOct is a port of GNU Octave and is distributed under the same GPL-3.0 terms.
 
-## Proposed plan
-1. Parser for .m syntax (lexer -> AST).
-2. Interpreter on top of NumPy (matrix ops, indexing 1-based, end, colon).
-3. Builtins: zeros/ones/size/plot/disp/fprintf/load/save.
-4. Plotting via Matplotlib; REPL + simple IDE (workspace, editor, command window).
+- IDE: `MatOct.exe` (editor, command window, workspace, debugger, figures, Current Folder browser, Set Path dialog)
+- Console: `matoct` / `matrw` (same program; `matrw` kept as an alias)
+- Search path: `addpath`/`rmpath`/`path`/`genpath`/`savepath`/`restoredefaultpath`/`userpath`/`which`/`rehash`; saved to `%APPDATA%\MatOct\pathdef.m` and loaded at startup (see docs/phase12.md)
+
+Internal project and namespace names (`MatRewrite.*`) are unchanged.
 
 ## Phase 1: Octave-compatible engine in C# (implemented)
 MatRewrite.Core is a clean-room C# reimplementation of the GNU Octave language core:

@@ -2,7 +2,7 @@
 
 Mode: core builtins only (Octave m-files not on path)
 
-Files: 864, blocks passed 6840, failed 3250, skipped 456, pass rate 67.8% (44 s)
+Files: 864, blocks passed 6889, failed 3251, skipped 456, pass rate 67.9% (57 s)
 
 | Area | Files | Pass | Fail | Skip | Rate |
 |---|---:|---:|---:|---:|---:|
@@ -14,13 +14,13 @@ Files: 864, blocks passed 6840, failed 3250, skipped 456, pass rate 67.8% (44 s)
 | general | 67 | 1289 | 252 | 15 | 83.6% |
 | geometry | 15 | 158 | 0 | 0 | 100.0% |
 | gui | 26 | 10 | 81 | 8 | 11.0% |
-| help | 16 | 8 | 40 | 1 | 16.7% |
+| help | 16 | 10 | 38 | 1 | 20.8% |
 | image | 50 | 439 | 108 | 24 | 80.3% |
 | io | 7 | 11 | 31 | 3 | 26.2% |
 | java | 4 | 2 | 13 | 14 | 13.3% |
 | legacy | 9 | 32 | 112 | 0 | 22.2% |
 | linear-algebra | 36 | 489 | 56 | 1 | 89.7% |
-| miscellaneous | 92 | 202 | 432 | 18 | 31.9% |
+| miscellaneous | 92 | 203 | 430 | 18 | 32.1% |
 | ode | 9 | 102 | 58 | 90 | 63.8% |
 | optimization | 14 | 32 | 113 | 5 | 22.1% |
 | path | 4 | 2 | 5 | 0 | 28.6% |
@@ -33,7 +33,7 @@ Files: 864, blocks passed 6840, failed 3250, skipped 456, pass rate 67.8% (44 s)
 | sparse | 29 | 192 | 53 | 198 | 78.4% |
 | specfun | 21 | 176 | 261 | 0 | 40.3% |
 | special-matrix | 11 | 193 | 0 | 0 | 100.0% |
-| statistics | 49 | 1242 | 326 | 0 | 79.2% |
+| statistics | 49 | 1288 | 331 | 0 | 79.6% |
 | strings | 34 | 306 | 193 | 26 | 61.3% |
 | testfun | 13 | 79 | 138 | 0 | 36.4% |
 | time | 14 | 377 | 0 | 1 | 100.0% |
@@ -507,15 +507,13 @@ Files: 864, blocks passed 6840, failed 3250, skipped 456, pass rate 67.8% (44 s)
 - help/type.m:157 [assert] 'type' undefined
 - help/type.m:159 [error] error ''type' undefined' does not match <Invalid call>
 - help/type.m:160 [error] error ''type' undefined' does not match <'__NO_NAME__' undefined>
-- help/which.m:100 [test] 'which' undefined
-- help/which.m:103 [test] 'which' undefined
-- help/which.m:106 [assert] 'which' undefined
-- help/which.m:107 [test] 'which' undefined
-- help/which.m:112 [assert] 'which' undefined
-- help/which.m:114 [test] 'which' undefined
-- help/which.m:124 [error] error ''which' undefined' does not match <Invalid call>
-- help/which.m:125 [error] error ''which' undefined' does not match <Invalid call>
-- help/which.m:126 [warning] 'which' undefined
+- help/which.m:100 [test] index (-17): out of bound; value -17 out of bound 0
+- help/which.m:103 [test] index (-7): out of bound; value -7 out of bound 0
+- help/which.m:106 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      ()          O(char)       E(double)      Class char != double
+- help/which.m:114 [test] index (-7): out of bound; value -7 out of bound 0
+- help/which.m:124 [error] expected an error but none was raised
+- help/which.m:125 [error] error 'which: argument must be a string' does not match <Invalid call>
+- help/which.m:126 [warning] expected a warning but none was issued
 - image/cmpermute.m:97 [shared] 'cmunique' undefined
 - image/cmpermute.m:101 [test] 'cmpermute' undefined
 - image/cmpermute.m:108 [test] 'cmpermute' undefined
@@ -933,13 +931,11 @@ Files: 864, blocks passed 6840, failed 3250, skipped 456, pass rate 67.8% (44 s)
 - miscellaneous/inputParser.m:1063 [test] 'inputParser' undefined
 - miscellaneous/inputParser.m:1075 [test] 'inputParser' undefined
 - miscellaneous/inputParser.m:1083 [test] 'inputParser' undefined
-- miscellaneous/isfile.m:56 [shared] 'which' undefined
 - miscellaneous/isfile.m:59 [assert] assert (cond) failed
 - miscellaneous/isfile.m:61 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      .          O(1x1)       E(1x2)      Dimensions don't match
 - miscellaneous/isfile.m:62 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      .          O(1x1)       E(2x1)      Dimensions don't match
 - miscellaneous/isfile.m:80 [error] expected an error but none was raised
 - miscellaneous/isfile.m:81 [error] expected an error but none was raised
-- miscellaneous/isfolder.m:58 [assert] 'which' undefined
 - miscellaneous/isfolder.m:59 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      .          O(1x1)       E(1x2)      Dimensions don't match
 - miscellaneous/isfolder.m:60 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      .          O(1x1)       E(2x1)      Dimensions don't match
 - miscellaneous/isfolder.m:79 [error] expected an error but none was raised
@@ -1262,7 +1258,7 @@ Files: 864, blocks passed 6840, failed 3250, skipped 456, pass rate 67.8% (44 s)
 - miscellaneous/version.m:139 [error] expected an error but none was raised
 - miscellaneous/version.m:141 [error] expected an error but none was raised
 - miscellaneous/version.m:142 [error] expected an error but none was raised
-- miscellaneous/what.m:192 [test] 'what' undefined
+- miscellaneous/what.m:192 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
 - miscellaneous/zip.m:98 [test] value on right hand side of assignment is undefined
 - miscellaneous/zip.m:137 [error] error ''zip' undefined' does not match <Invalid call>
 - miscellaneous/zip.m:138 [error] error ''zip' undefined' does not match <Invalid call>
@@ -1441,9 +1437,9 @@ Files: 864, blocks passed 6840, failed 3250, skipped 456, pass rate 67.8% (44 s)
 - optimization/sqp.m:801 [error] error ''sqp' undefined' does not match <Invalid call>
 - path/import.m:68 [error] error ''import' undefined' does not match <not yet implemented>
 - path/matlabroot.m:42 [assert] 'matlabroot' undefined
-- path/pathdef.m:100 [test] 'pathdef' undefined
-- path/pathdef.m:119 [test] 'pathdef' undefined
-- path/savepath.m:211 [test] 'savepath' undefined
+- path/pathdef.m:136 [error] expected an error but none was raised
+- path/pathdef.m:137 [error] expected an error but none was raised
+- path/savepath.m:211 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      .          O(128x1)       E(0x1)      Dimensions don't match
 - plot/appearance/annotation.m:1479 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      .          O(0x1)       E(1x1)      Dimensions don't match
 - plot/appearance/annotation.m:1495 [test] Hello!
 - plot/appearance/annotation.m:1511 [test] Hello!
@@ -2335,7 +2331,7 @@ Files: 864, blocks passed 6840, failed 3250, skipped 456, pass rate 67.8% (44 s)
 - sparse/spconvert.m:79 [error] expected an error but none was raised
 - sparse/sprand.m:72 [test] sprand: RC must be a scalar or vector of length min (M, N)
 - sparse/sprandn.m:72 [test] sprandn: RC must be a scalar or vector of length min (M, N)
-- sparse/sprandsym.m:167 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       0.02        0.1       Abs err 0.08 exceeds tol 0.01
+- sparse/sprandsym.m:167 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       0.09        0.1       Abs err 0.010000000000000009 exceeds tol 0.01
 - sparse/sprandsym.m:175 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      .          O(3x1)       E(2x1)      Dimensions don't match
 - sparse/spstats.m:69 [test] 'spstats' undefined
 - sparse/spy.m:88 [error] expected an error but none was raised
@@ -2719,7 +2715,12 @@ Files: 864, blocks passed 6840, failed 3250, skipped 456, pass rate 67.8% (44 s)
 - statistics/mape.m:877 [error] expected an error but none was raised
 - statistics/mape.m:879 [error] error 'mape: WEIGHTS vector must have the same length as the operating dimension' does not match <WEIGHTS array must have the same size as the operating page>
 - statistics/mape.m:881 [error] error 'mape: WEIGHTS vector must have the same length as the operating dimension' does not match <WEIGHTS array must have the same size as the operating page>
-- statistics/mean.m:0 [crash] child process crashed or timed out
+- statistics/mean.m:760 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mean.m:790 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- statistics/mean.m:867 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      ()          O(single)       E(double)      Class single != double
+- statistics/mean.m:921 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      ()          O(single)       E(double)      Class single != double
+- statistics/mean.m:922 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      ()          O(single)       E(double)      Class single != double
+- statistics/mean.m:923 [assert] timeout
 - statistics/meansq.m:138 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      ()          O(double)       E(single)      Class double != single
 - statistics/median.m:603 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      ()          O(uint8)       E(double)      Class uint8 != double
 - statistics/median.m:610 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      ()          O(logical)       E(double)      Class logical != double
@@ -2802,8 +2803,8 @@ Files: 864, blocks passed 6840, failed 3250, skipped 456, pass rate 67.8% (44 s)
 - statistics/mode.m:622 [error] error 'mode: VECDIM must contain non-repeating positive integers' does not match <mode: VECDIM must be a vector of non-repeating positive integers>
 - statistics/mode.m:624 [error] error 'mode: VECDIM must contain positive integers' does not match <mode: VECDIM must be a vector of non-repeating positive integers>
 - statistics/mode.m:626 [error] expected an error but none was raised
-- statistics/moment.m:216 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       1.454392162258955E-15        1.4543921622589551E-16       Abs err 1.3089529460330595E-15 exceeds tol 2.220446049250313E-16
-- statistics/moment.m:217 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       0.8154558565491404        0.08154558565491404       Abs err 0.7339102708942264 exceeds tol 2.220446049250313E-16
+- statistics/moment.m:216 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       3.3306690738754696E-16        3.3306690738754695E-17       Abs err 2.997602166487923E-16 exceeds tol 2.220446049250313E-16
+- statistics/moment.m:217 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       0.9421003627417497        0.09421003627417496       Abs err 0.8478903264675748 exceeds tol 2.220446049250313E-16
 - statistics/normalize.m:520 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
 - statistics/normalize.m:521 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
 - statistics/normalize.m:522 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       0.6        0.6666666666666666       Abs err 0.06666666666666665 exceeds tol 2.220446049250313E-16

@@ -12,8 +12,9 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <AssemblyName>matrw</AssemblyName>
+    <Product>MatOct</Product>
     <ApplicationIcon>app.ico</ApplicationIcon>
-    <Version>0.11.0</Version>
+    <Version>0.12.0</Version>
   </PropertyGroup>
 
   <!-- On Windows, figures open as WPF windows. -->

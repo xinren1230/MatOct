@@ -15,6 +15,7 @@ public static class Program
         Console.OutputEncoding = Encoding.UTF8;
         var stdout = new StreamWriter(Console.OpenStandardOutput(), new UTF8Encoding(false)) { AutoFlush = false };
         var it = new Interpreter(stdout);
+        if (!argv.Contains("--no-pathdef")) PathManager.LoadStartup(it);
         bool gui = !argv.Contains("--no-gui");
 #if WPF_FIGURES
         MatRewrite.Plotting.Wpf.WpfBackend? wpf = null;
@@ -30,6 +31,7 @@ public static class Program
         for (int k = 0; k < args.Count; k++)
         {
             if (args[k] is "--eval" or "-e" && k + 1 < args.Count) { evalCode = args[k + 1]; args.RemoveRange(k, 2); k--; }
+            else if (args[k] == "--no-pathdef") { args.RemoveAt(k); k--; }
             else if (args[k] is "-q" or "--quiet" or "--no-gui") { quiet = true; args.RemoveAt(k); k--; }
             else if (args[k] is "-p" or "--path" && k + 1 < args.Count) { it.SearchPath.Add(Path.GetFullPath(args[k + 1])); args.RemoveRange(k, 2); k--; }
             else if (args[k] == "--lib" && k + 1 < args.Count)
@@ -40,7 +42,7 @@ public static class Program
                     it.SearchPath.Add(d);
                 it.PreferBuiltins = true; args.RemoveRange(k, 2); k--;
             }
-            else if (args[k] is "-h" or "--help") { Console.WriteLine("usage: matrw [-q] [-p DIR] [--eval CODE] [script.m]"); return 0; }
+            else if (args[k] is "-h" or "--help") { Console.WriteLine("usage: matoct|matrw [-q] [-p DIR] [--no-pathdef] [--eval CODE] [script.m]"); return 0; }
         }
         try
         {
@@ -58,7 +60,7 @@ public static class Program
             }
             if (!quiet)
             {
-                stdout.WriteLine($"MatRewrite {BuiltinLibrary.Version} - a C# reimplementation of the GNU Octave language");
+                stdout.WriteLine($"MatOct {BuiltinLibrary.Version} - a C# reimplementation of the GNU Octave language");
                 stdout.WriteLine("Licensed under GPL-3.0-or-later. Type 'exit' to quit.\n");
             }
             return Interactive(it, stdout);
