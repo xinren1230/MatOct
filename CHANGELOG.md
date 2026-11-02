@@ -2,6 +2,20 @@
 
 All notable changes to MatOct. Detailed notes (Chinese) live in `docs/phaseN.md`.
 
+## [0.15.0] - 2026-11-02
+MatOct is a MATLAB-style IDE for GNU Octave, written in C#.
+### Changed
+- Octave test-suite pass rate out of the box: **90.1 % → 92.6 %** (9590/10356 blocks); with `--lib`: 92.8 %.
+- More functions use Octave's bundled m-file (`strread`, `iqr`, `mad`, `strsplit`, `accumarray`, …); new `__accumarray_sum__/max/min__` builtins.
+### Fixed
+- `sum`: `"extra"` (compensated) mode, `omitnan`/`includenan` flags, empty results with explicit DIM.
+- `strncmp`/`strncmpi` with strings of different length (previously always false).
+- `zeros`/`ones(…, "like", p)`; `num2cell(A, dims)` for N-d; `isrow`/`iscolumn` on N-d arrays.
+- `[~, q] = f()` usable as a call argument; `word ...` line continuation; `==`/`!=` on function handles; `||` on sparse scalars.
+- `vecnorm` with p=Inf on empty input; `flintmax(class)`; N-d empty concatenation (crash in `iqr`).
+- `bar`/`barh`/`text` input validation and Octave error messages.
+- Test runner: crashed files are retried serially with a longer timeout.
+
 ## [0.14.0] - 2026-11-02
 MatOct is a MATLAB-style IDE for GNU Octave, written in C#.
 ### Changed

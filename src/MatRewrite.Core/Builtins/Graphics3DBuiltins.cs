@@ -381,6 +381,10 @@ namespace MatRewrite.Core.Builtins
                 var xs = M(a[0], "text").Re; var ys = M(a[1], "text").Re;
                 var zs = has3 ? M(a[2], "text").Re : null;
                 var tv = a[has3 ? 3 : 2];
+                if (xs.Length != ys.Length || zs != null && zs.Length != xs.Length) throw new OctaveException("text: X, Y, and Z coordinates must match");
+                if ((a.Length - (has3 ? 4 : 3)) % 2 != 0) throw new OctaveException("Invalid call to text");
+                if (!(tv is CellValue) && !(tv is MatrixValue tcm && (tcm.IsChar || tcm.Numel == 0))) throw new OctaveException("text: STRING must be a character string");
+                { int nt = tv is CellValue tcc ? tcc.Numel : ((MatrixValue)tv).R; if (xs.Length > 1 && nt > 1 && nt != xs.Length) throw new OctaveException("text: invalid combination of points and text strings"); }
                 var texts = tv is CellValue cv ? cv.Data.Select(v => S(v, "text")).ToArray() : new[] { LabelText(new[] { tv }, "text") };
                 var made = new List<double>();
                 for (int i = 0; i < xs.Length; i++)

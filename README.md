@@ -6,7 +6,7 @@
   <a href="https://github.com/xinren1230/MatOct/releases"><img alt="Downloads" src="https://img.shields.io/github/downloads/xinren1230/MatOct/total"></a>
   <img alt=".NET 9" src="https://img.shields.io/badge/.NET-9.0-512BD4">
   <img alt="Platform: Windows" src="https://img.shields.io/badge/platform-Windows%20x64-0078D6">
-  <img alt="Octave compatibility" src="https://img.shields.io/badge/Octave%20tests-90%25-brightgreen">
+  <img alt="Octave compatibility" src="https://img.shields.io/badge/Octave%20tests-92.6%25-brightgreen">
 </p>
 
 <p align="center"><b>MatOct</b> — a MATLAB-style IDE/interface for GNU Octave, written in C#.<br>
@@ -93,8 +93,8 @@ Measured by running GNU Octave's own `%!test`/`%!assert` blocks from `scripts/` 
 
 | Mode | Passed blocks | Rate |
 |---|---|---|
-| Core only (MatOct builtins + bundled Octave m-file library) | 9 169 / 10 172 | **90.1 %** |
-| With Octave's `.m` source tree on the path (`--lib`) | 9 248 / 10 218 | **90.5 %** |
+| Core only (MatOct builtins + bundled Octave m-file library) | 9 590 / 10 356 | **92.6 %** |
+| With Octave's `.m` source tree on the path (`--lib`) | 9 657 / 10 402 | **92.8 %** |
 
 Details: [`docs/compat-core.md`](docs/compat-core.md), [`docs/compat-octave-lib.md`](docs/compat-octave-lib.md).
 
@@ -174,7 +174,7 @@ Issues and pull requests are welcome — see [CONTRIBUTING.md](CONTRIBUTING.md) 
 | 搜索路径 | 与 MATLAB 一致的 `addpath`/`savepath`/`pathdef.m`/`which -all` |
 
 ### 兼容性
-运行 GNU Octave 自带的 `%!test` 测试块：安装即用（内置 Octave `.m` 函数库）**90.1%**（9169/10172），额外加载 Octave 源码树时 **90.5%**（9248/10218）。
+运行 GNU Octave 自带的 `%!test` 测试块：安装即用（内置 Octave `.m` 函数库）**92.6%**（9590/10356），额外加载 Octave 源码树时 **92.8%**（9657/10402）。
 
 ### 与 MATLAB / Octave 的比较
 MatOct 免费开源（GPL-3.0），界面与交互仿照 MATLAB（工作区、变量编辑器、设置路径、属性检查器、生成代码），一个安装包即可使用；不提供 Simulink 等工具箱，目前图形界面仅支持 Windows。详见上方英文对比表。

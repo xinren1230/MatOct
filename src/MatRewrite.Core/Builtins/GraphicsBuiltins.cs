@@ -685,9 +685,17 @@ namespace MatRewrite.Core.Builtins
             if (a.Length == 0) throw new OctaveException($"Invalid call to {fn}");
             MatrixValue? xm = null, ym;
             int k = 0;
+            if (a[0] is MatrixValue c0 && c0.IsChar) throw new OctaveException($"{fn}: Y must be numeric");
             var m0 = M(a[0], fn); k = 1;
             if (k < a.Length && a[k] is MatrixValue m1 && !m1.IsChar && !(m1.Numel == 1 && m0.Numel > 1)) { xm = m0; ym = m1; k++; }
             else ym = m0;
+            if (xm != null)
+            {
+                if (!(xm.R == 1 || xm.C == 1) || xm.ND != null) throw new OctaveException($"{fn}: X must be a vector");
+                if (xm.Re.Distinct().Count() != xm.Numel) throw new OctaveException($"{fn}: X vector values must be unique");
+                int yl = (ym.R == 1 || ym.C == 1) ? ym.Numel : ym.R;
+                if (xm.Numel != yl) throw new OctaveException($"{fn}: length of X and Y must be equal");
+            }
             double width = 0.8;
             if (k < a.Length && a[k] is MatrixValue wm && !wm.IsChar && wm.Numel == 1) { width = wm.Re[0]; k++; }
             Rgb? col = null;
