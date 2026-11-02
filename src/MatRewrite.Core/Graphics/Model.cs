@@ -80,6 +80,12 @@ public sealed class LineSeries : Series
     public Marker Marker = Marker.None;
     public double LineWidth = 0.5, MarkerSize = 6;
     public bool MarkerFilled;
+    /// <summary>Marker edge colour (null = same as line colour, "auto").</summary>
+    public Rgb? MarkerEdge;
+    /// <summary>Marker face colour (null = "none" unless MarkerFilled, then line colour).</summary>
+    public Rgb? MarkerFace;
+    /// <summary>1-based indices of points that get a marker (null = all).</summary>
+    public int[]? MarkerIndices;
 }
 
 public sealed class ScatterSeries : Series
@@ -214,6 +220,8 @@ public sealed class Axes : GObject
     public LabelObject? TitleObj, XLabelObj, YLabelObj, ZLabelObj;
     public bool Hold, Grid, MinorGrid, Box = true, Visible = true;
     public bool LegendVisible;
+    /// <summary>Legend object (handle returned by legend()); carries FontSize/FontName/... props.</summary>
+    public GenericObject? LegendObj, ColorbarObj;
     public string[]? LegendLabels;
     public string LegendLocation = "northeast";
     public double[]? XLim, YLim;

@@ -155,6 +155,8 @@ public static partial class BuiltinLibrary
                 k = NumTypes.FromName(name) is NumKind q && NumTypes.IsInt(q) ? q : throw new OctaveException($"{fn}: invalid class name '{name}'");
             }
         }
+        if (k == NumKind.Int64) return MatrixValue.FromI64(1, 1, new[] { max ? long.MaxValue : long.MinValue }, k);
+        if (k == NumKind.UInt64) return MatrixValue.FromI64(1, 1, new[] { max ? -1L : 0L }, k);
         var (lo, hi) = NumTypes.Range(k);
         return new MatrixValue(1, 1, new[] { max ? hi : lo }, null, k);
     }

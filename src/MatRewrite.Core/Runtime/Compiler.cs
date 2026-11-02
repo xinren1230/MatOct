@@ -140,7 +140,7 @@ public sealed partial class Interpreter
             var v = LookupRaw(it.Current, name);
             if (v == null)
             {
-                if (name is "nargin" or "nargout" or "containers") return it.EvalTree(e);
+                if (name is "nargin" or "nargout" or "containers" or "table" or "timetable") return it.EvalTree(e);
                 var av = EvalCompiledArgs(it, fa, args);
                 var r = it.CallFunction(name, av, 1);
                 if (r.Length == 0) throw new OctaveException("indexing produces no results / value undefined");

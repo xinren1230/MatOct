@@ -203,8 +203,10 @@ namespace MatRewrite.Core.Builtins
             {
                 var ax = it.Graphics.Gca();
                 ax.Colorbar = !(a.Length > 0 && IsString(a[0]) && S(a[0], "colorbar") is "off" or "hide");
+                var cbo = ColorbarOf(it, ax);
+                for (int k = 0; k + 1 < a.Length; k++) if (IsString(a[k]) && S(a[k], "colorbar").ToLowerInvariant() is var pk && pk is "fontsize" or "fontname" or "fontweight" or "fontangle" or "color" or "location") { cbo.Props[pk] = NormColor(pk, a[k + 1]); k++; }
                 it.Graphics.Touch(ax.Figure);
-                return n > 0 ? Out(H(ax)) : Array.Empty<Value>();
+                return n > 0 ? Out(Num(cbo.Handle)) : Array.Empty<Value>();
             });
             RegG("colormap", (it, a, n) =>
             {
@@ -233,14 +235,20 @@ namespace MatRewrite.Core.Builtins
                     return Out(MapMatrix(name0, cnt));
                 });
             }
-            RegG("title", (it, a, n) => { var ax = it.Graphics.Gca(); ax.Title = LabelText(a, "title"); it.Graphics.Touch(ax.Figure); return Array.Empty<Value>(); });
-            RegG("xlabel", (it, a, n) => { var ax = it.Graphics.Gca(); ax.XLabel = LabelText(a, "xlabel"); it.Graphics.Touch(ax.Figure); return Array.Empty<Value>(); });
-            RegG("ylabel", (it, a, n) => { var ax = it.Graphics.Gca(); ax.YLabel = LabelText(a, "ylabel"); it.Graphics.Touch(ax.Figure); return Array.Empty<Value>(); });
+            RegG("title", (it, a, n) => LabelCmd(it, a, n, "title"));
+            RegG("xlabel", (it, a, n) => LabelCmd(it, a, n, "xlabel"));
+            RegG("ylabel", (it, a, n) => LabelCmd(it, a, n, "ylabel"));
             RegG("legend", (it, a, n) =>
             {
                 var ax = it.Graphics.Gca();
                 var labels = new List<string>();
-                for (int k = 0; k < a.Length; k++)
+                var lprops = new List<(string, Value)>();
+                List<Series>? targets = null;
+                int k0 = 0;
+                if (a.Length > 0 && a[0] is MatrixValue m0 && !m0.IsChar && m0.Numel == 1 && it.Graphics.Lookup(m0.Re[0]) is Axes ax0) { ax = ax0; k0 = 1; }
+                if (a.Length > k0 && a[k0] is MatrixValue m1 && !m1.IsChar && m1.Numel >= 1 && m1.Re.All(h => it.Graphics.Lookup(h) is Series))
+                { targets = m1.Re.Select(h => (Series)it.Graphics.Lookup(h)!).ToList(); ax = targets[0].Parent; k0++; }
+                for (int k = k0; k < a.Length; k++)
                 {
                     if (a[k] is CellValue c) { labels.AddRange(c.Data.Select(x => S(x, "legend"))); continue; }
                     var s = S(a[k], "legend");
@@ -248,16 +256,21 @@ namespace MatRewrite.Core.Builtins
                     if (s is "off" or "hide") { ax.LegendVisible = false; it.Graphics.Touch(ax.Figure); return Array.Empty<Value>(); }
                     if (s is "boxoff" or "boxon") continue;
                     if (s.Equals("location", StringComparison.OrdinalIgnoreCase) && k + 1 < a.Length) { ax.LegendLocation = S(a[++k], "legend").ToLowerInvariant(); continue; }
+                    if (k + 1 < a.Length && s.ToLowerInvariant() is "fontsize" or "fontname" or "fontweight" or "fontangle" or "textcolor" or "box" or "orientation" or "interpreter" or "numcolumns" or "edgecolor" or "color")
+                    { lprops.Add((s.ToLowerInvariant(), a[++k])); continue; }
                     labels.Add(s);
                 }
                 ax.LegendVisible = true;
                 if (labels != null && labels.Count > 0)
                 {
                     ax.LegendLabels = labels.ToArray();
-                    for (int i = 0; i < ax.Children.Count && i < labels.Count; i++) ax.Children[i].DisplayName = labels[i];
+                    var tl = targets ?? ax.Children;
+                    for (int i = 0; i < tl.Count && i < labels.Count; i++) tl[i].DisplayName = labels[i];
                 }
+                var lg = LegendOf(it, ax);
+                foreach (var (pk, pv) in lprops) lg.Props[pk] = NormColor(pk, pv);
                 it.Graphics.Touch(ax.Figure);
-                return n > 0 ? Out(H(ax)) : Array.Empty<Value>();
+                return n > 0 ? Out(Num(lg.Handle)) : Array.Empty<Value>();
             });
             RegG("grid", (it, a, n) =>
             {
@@ -420,6 +433,22 @@ namespace MatRewrite.Core.Builtins
         {
             if (it.Graphics.Backend == null) throw new OctaveException("print: no graphics toolkit available (start MatRewrite with graphics enabled)");
             it.Graphics.Backend.Export(f, Path.GetFullPath(file), w > 0 ? w : f.Width * 2, h > 0 ? h : f.Height * 2);
+        }
+
+        static Value[] LabelCmd(Interpreter it, Value[] a, int n, string fn)
+        {
+            var ax = it.Graphics.Gca();
+            if (a.Length > 0 && a[0] is MatrixValue hm && !hm.IsChar && hm.Numel == 1 && a.Length > 1 && it.Graphics.Lookup(hm.Re[0]) is Axes hax) { ax = hax; a = a[1..]; }
+            var lbl = it.Graphics.Label(ax, fn);
+            lbl.Text = LabelText(a.Take(1).ToArray(), fn);
+            if (a.Length > 1)
+            {
+                var rest = a.Skip(1).ToArray();
+                if (rest.Length % 2 == 1) rest = rest.Skip(1).ToArray(); // title(str, subtitle, ...)
+                SetProps(it, lbl, rest, fn);
+            }
+            it.Graphics.Touch(ax.Figure);
+            return n > 0 ? Out(Num(lbl.Handle)) : Array.Empty<Value>();
         }
 
         static string LabelText(Value[] a, string fn)
@@ -645,6 +674,23 @@ namespace MatRewrite.Core.Builtins
             return Num(last);
         }
 
+        internal static GenericObject LegendOf(Interpreter it, Axes ax)
+        {
+            if (ax.LegendObj is { Deleted: false } l) return l;
+            l = it.Graphics.Register(new GenericObject { Type = "legend", Owner = ax.Figure, Parent = ax });
+            l.Props["__legendaxes__"] = Num(ax.Handle);
+            ax.LegendObj = l;
+            return l;
+        }
+
+        internal static GenericObject ColorbarOf(Interpreter it, Axes ax)
+        {
+            if (ax.ColorbarObj is { Deleted: false } c) return c;
+            c = it.Graphics.Register(new GenericObject { Type = "colorbar", Owner = ax.Figure, Parent = ax });
+            ax.ColorbarObj = c;
+            return c;
+        }
+
         static Rgb ParseColor(Value v, string fn)
         {
             if (v is MatrixValue m && !m.IsChar && m.Numel == 3) return new Rgb(m.Re[0], m.Re[1], m.Re[2]);
@@ -665,8 +711,19 @@ namespace MatRewrite.Core.Builtins
                     case (LineSeries l, "color"): l.Color = ParseColor(v, fn); break;
                     case (LineSeries l, "linewidth"): l.LineWidth = D(v, fn); break;
                     case (LineSeries l, "markersize"): l.MarkerSize = D(v, fn); break;
-                    case (LineSeries l, "markerfacecolor"): l.MarkerFilled = !(IsString(v) && S(v, fn) == "none"); break;
-                    case (LineSeries, "markeredgecolor"): break;
+                    case (LineSeries l, "markerfacecolor"):
+                        if (IsString(v) && S(v, fn).ToLowerInvariant() == "none") { l.MarkerFilled = false; l.MarkerFace = null; }
+                        else if (IsString(v) && S(v, fn).ToLowerInvariant() == "auto") { l.MarkerFilled = true; l.MarkerFace = null; }
+                        else { l.MarkerFilled = true; l.MarkerFace = ParseColor(v, fn); }
+                        break;
+                    case (LineSeries l, "markeredgecolor"):
+                        l.MarkerEdge = IsString(v) && S(v, fn).ToLowerInvariant() is "auto" or "none" ? null : ParseColor(v, fn); break;
+                    case (LineSeries l, "markerindices"):
+                    {
+                        var mi = M(v, fn);
+                        if (mi.Re.Any(x => x < 1 || x != Math.Floor(x))) throw new OctaveException($"{fn}: MarkerIndices must be positive integers");
+                        l.MarkerIndices = mi.Re.Select(x => (int)x).ToArray(); break;
+                    }
                     case (LineSeries l, "linestyle"):
                         l.Style = S(v, fn) switch { "-" => LineStyle.Solid, "--" => LineStyle.Dashed, ":" => LineStyle.Dotted, "-." => LineStyle.DashDot, "none" => LineStyle.None, var s => throw new OctaveException($"{fn}: invalid LineStyle '{s}'") };
                         break;
@@ -721,12 +778,26 @@ namespace MatRewrite.Core.Builtins
                     case (Axes ax, "box"): ax.Box = S(v, fn) == "on"; break;
                     case (Axes ax, "ydir"): ax.YDirReverse = S(v, fn) == "reverse"; break;
                     case (Axes ax, "nextplot"): ax.Hold = S(v, fn) == "add"; break;
+                    case (GenericObject lg, _) when lg.Type is "legend" or "colorbar" && lg.Parent is Axes lax:
+                        if (lg.Type == "legend")
+                        {
+                            if (p == "location") lax.LegendLocation = S(v, fn).ToLowerInvariant();
+                            else if (p == "visible") lax.LegendVisible = S(v, fn) == "on";
+                            else if (p == "string")
+                            {
+                                var labs = v is CellValue lc ? lc.Data.Select(x => S(x, fn)).ToArray() : new[] { S(v, fn) };
+                                lax.LegendLabels = labs;
+                                for (int i = 0; i < lax.Children.Count && i < labs.Length; i++) lax.Children[i].DisplayName = labs[i];
+                            }
+                        }
+                        else if (p == "visible") lax.Colorbar = S(v, fn) == "on";
+                        break;
                     case (_, "fontsize"): case (_, "fontname"): case (_, "fontweight"): case (_, "interpreter"): break;
                     default:
                         if (!SetGeneric(it, o, p, v, fn)) throw new OctaveException($"{fn}: unknown {TypeOf(o)} property {p}");
                         break;
                 }
-                if (!(p is "parent" or "children" or "type")) o.Props[p] = v;
+                if (!(p is "parent" or "children" or "type")) o.Props[p] = NormColor(p, v);
                 FireListeners(it, o, p);
             }
             switch (o)
@@ -736,6 +807,15 @@ namespace MatRewrite.Core.Builtins
                 case Axes ax: it.Graphics.Touch(ax.Figure); break;
                 case Figure f: it.Graphics.Touch(f); break;
             }
+        }
+
+        /// <summary>Colour-valued properties are stored as RGB triples (like MATLAB's get).</summary>
+        static Value NormColor(string p, Value v)
+        {
+            if (!p.EndsWith("color") || !IsString(v)) return v;
+            var s = S(v, "set");
+            if (s.ToLowerInvariant() is "none" or "auto" or "flat" or "interp") return v;
+            return Rgb.FromName(s.ToLowerInvariant()) is Rgb c ? MatrixValue.Row(new[] { c.R, c.G, c.B }) : v;
         }
 
         static Value GetProp(Interpreter it, GObject o, string p)
@@ -749,6 +829,7 @@ namespace MatRewrite.Core.Builtins
                 (LineSeries l, "linewidth") => Num(l.LineWidth),
                 (LineSeries l, "xdata") => MatrixValue.Row(l.X),
                 (LineSeries l, "ydata") => MatrixValue.Row(l.Y),
+                (LineSeries l, "markerindices") => MatrixValue.Row(l.MarkerIndices?.Select(i => (double)i).ToArray() ?? Enumerable.Range(1, l.X.Length).Select(i => (double)i).ToArray()),
                 (LineSeries l, "linestyle") => Str(l.Style switch { LineStyle.Solid => "-", LineStyle.Dashed => "--", LineStyle.Dotted => ":", LineStyle.DashDot => "-.", _ => "none" }),
                 (Series s, "parent") => Num(s.Parent.Handle),
                 (Figure f, "name") => Str(f.Name),

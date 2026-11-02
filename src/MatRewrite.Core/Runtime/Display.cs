@@ -71,6 +71,9 @@ public static class Display
                 CellBody(sb, c, ind);
                 sb.Append('\n');
                 break;
+            case StructValue ts when ts.Tag != null:
+                sb.Append(Tagged.Show(name, ts, ind));
+                break;
             case StructValue s:
                 if (s.Numel == 1)
                 {
@@ -181,6 +184,8 @@ public static class Display
                 if (c.Numel == 0) return $"{{}}({c.R}x{c.C})\n";
                 var sb = new StringBuilder(); CellBody(sb, c, ""); return sb.ToString();
             }
+            case StructValue ts when ts.Tag != null:
+                return Tagged.Body(ts);
             case StructValue s:
             {
                 var sb = new StringBuilder();
@@ -316,7 +321,7 @@ public static class Display
             var (d, sci, _) = RealFormat(new[] { re, im }, true);
             return $"{FormatReal(re, d, sci)} {(im < 0 ? "-" : "+")} {FormatReal(Math.Abs(im), d, sci)}i";
         }
-        if (m.IsInteger) return ((long)re).ToString(Inv);
+        if (m.IsInteger) return m.Is64 ? m.ExactString(0) : ((long)re).ToString(Inv);
         if (m.IsLogical || m.IsChar || AllInt(m)) return FmtInt(re);
         var (dec, s2, _) = RealFormat(new[] { re }, true);
         return FormatReal(re, dec, s2);
@@ -360,7 +365,7 @@ public static class Display
         }
         if (m.IsInteger)
         {
-            var strs = m.Re.Select(x => ((long)x).ToString(Inv)).ToArray();
+            var strs = m.Is64 ? Enumerable.Range(0, m.Re.Length).Select(m.ExactString).ToArray() : m.Re.Select(x => ((long)x).ToString(Inv)).ToArray();
             int iw = strs.Max(x => x.Length);
             for (int i = 0; i < m.R; i++)
             {

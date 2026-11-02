@@ -606,6 +606,9 @@ public sealed partial class Interpreter
         return true;
     }
 
+    /// <summary>Argument variable names of the last table()/timetable() call (for default VariableNames).</summary>
+    public string[]? CallArgNames;
+
     Value AssignChain(Value? cur, List<Op> ops, int k, Value rhs)
     {
         if (k == ops.Count) return rhs;
@@ -616,6 +619,7 @@ public sealed partial class Interpreter
             case '.':
             {
                 var name = FieldName(op);
+                if (cur is StructValue { Tag: not null } tas && Tagged.DotAssign(tas, name, old => AssignChain(old, ops, k + 1, rhs)) is Value tar) return tar;
                 if (cur is ObjectValue ob)
                     return WriteProp(ob, name, old => AssignChain(old, ops, k + 1, rhs), !last);
                 if (cur is ObjectArrayValue oarr)
@@ -639,6 +643,12 @@ public sealed partial class Interpreter
             case '(':
             {
                 if (cur is FunctionHandleValue) throw new OctaveException("invalid use of a function handle in indexed assignment");
+                if (cur is StructValue { Tag: not null } tpa)
+                {
+                    var targs = EvalIndexArgs(op.Args!, tpa);
+                    var trhs = last ? rhs : AssignChain(Tagged.Paren(tpa, targs), ops, k + 1, rhs);
+                    return Tagged.ParenAssign(this, tpa, targs, trhs, false);
+                }
                 if (cur is MapValue map)
                 {
                     var ka = EvalArgs(op.Args!);
@@ -689,6 +699,12 @@ public sealed partial class Interpreter
             }
             case '{':
             {
+                if (cur is StructValue { Tag: not null } tba)
+                {
+                    var targs = EvalIndexArgs(op.Args!, tba);
+                    var trhs = last ? rhs : AssignChain(Tagged.Brace(tba, targs), ops, k + 1, rhs);
+                    return Tagged.ParenAssign(this, tba, targs, trhs, true);
+                }
                 CellValue c = cur switch
                 {
                     null => new CellValue(0, 0),
@@ -988,7 +1004,7 @@ public sealed partial class Interpreter
             else
             {
                 Value[] args = Array.Empty<Value>();
-                if (ops.Count > 0 && ops[0].Kind == '(') { args = EvalArgs(ops[0].Args!); start = 1; }
+                if (ops.Count > 0 && ops[0].Kind == '(') { args = EvalArgs(ops[0].Args!); start = 1; if (id.Name is "table" or "timetable") CallArgNames = ops[0].Args!.Select(e => e is IdentExpr ie ? ie.Name : "").ToArray(); }
                 int nout = start == ops.Count ? nargout : 1;
                 cur = CallFunction(id.Name, args, nout).ToList();
                 if (start == ops.Count) return cur;
@@ -1022,12 +1038,14 @@ public sealed partial class Interpreter
                     if (v is ObjectValue && op.Args!.Count == 1 && EvalArgs(op.Args) is var oa && oa.Length == 1 && oa[0] is MatrixValue om && om.Numel == 1 && om.Re[0] == 1)
                     { cur = new List<Value> { v }; break; }
                     if (v is Sparse.SparseValue spv) { cur = new List<Value> { Sparse.SparseIndex.Read(spv, EvalIndexArgs(op.Args!, v)) }; break; }
+                    if (v is StructValue { Tag: not null } tsv) { cur = new List<Value> { Tagged.Paren(tsv, EvalIndexArgs(op.Args!, v)) }; break; }
                     if (v is not ArrayValue av) throw new OctaveException($"'{v.ClassName}' object cannot be indexed with (");
                     cur = new List<Value> { SimplifyObj(Indexing.Read(av, EvalIndexArgs(op.Args!, v))) };
                     break;
                 case '{':
                 {
                     if (v is MapValue) throw new OctaveException("containers.Map: only '()' indexing is supported by containers.Map");
+                    if (v is StructValue { Tag: not null } tbv) { cur = new List<Value> { Tagged.Brace(tbv, EvalIndexArgs(op.Args!, v)) }; break; }
                     if (v is not CellValue cv)
                         throw new OctaveException(v is FunctionHandleValue ? "'{' undefined for arguments of type 'function_handle'" : $"'{{' undefined for arguments of type '{v.ClassName}'; matrix cannot be indexed with {{");
                     var sub = (CellValue)Indexing.Read(cv, EvalIndexArgs(op.Args!, v));
@@ -1037,6 +1055,7 @@ public sealed partial class Interpreter
                 case '.':
                 {
                     var name = FieldName(op);
+                    if (v is StructValue { Tag: not null } tdv && Tagged.Dot(tdv, name, out var tdr)) { cur = new List<Value> { tdr }; break; }
                     if (v is MapValue mp)
                     {
                         Value[] margs = Array.Empty<Value>();

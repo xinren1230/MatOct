@@ -144,6 +144,7 @@ public static class Ops
 
     public static Value Binary(string op, Value av, Value bv)
     {
+        if (av is StructValue { Tag: not null } || bv is StructValue { Tag: not null }) return Tagged.Binary(null, op, av, bv);
         if (av is Sparse.SparseValue || bv is Sparse.SparseValue)
             return Sparse.SparseOps.Binary(op, av, bv, BinaryCore);
         var res = BinaryCore(op, av, bv);
@@ -156,6 +157,7 @@ public static class Ops
         if (op is "+" or "-" or ".*" or "./" or ".\\" or ".^" or "*" or "/" or "\\" or "^")
         {
             var k = ArithKind(a, b, op);
+            if ((k == NumKind.Int64 || k == NumKind.UInt64) && Int64Ops.TryArith(op, a, b, k) is MatrixValue e64) return e64;
             if (k != NumKind.Double)
             {
                 if (NumTypes.IsInt(k) && op is "*" or "/" or "\\" or "^" && !(a.IsScalar || b.IsScalar))
@@ -170,6 +172,7 @@ public static class Ops
 
     static Value BinaryDouble(string op, MatrixValue a, MatrixValue b)
     {
+        if ((a.Is64 || b.Is64) && Int64Ops.TryCompare(op, a, b) is MatrixValue c64) return c64;
         switch (op)
         {
             case "+": return Elementwise(a, b, op, (x, y) => x + y, (x, y) => x + y);
@@ -224,11 +227,14 @@ public static class Ops
     public static Value Unary(string op, Value v)
     {
         if (v is Sparse.SparseValue sv) return Sparse.SparseOps.Unary(op, sv, Unary);
+        if (v is StructValue { Tag: not null } tv) return Tagged.Unary(op, tv);
         var a = ToMatrix(v, op);
         switch (op)
         {
             case "-":
             {
+                if (a.Kind == NumKind.Int64 && !a.IsComplex) { var l = new long[a.Numel]; for (int i = 0; i < l.Length; i++) { var q = a.I64(i); l[i] = q == long.MinValue ? long.MaxValue : -q; } var rr = MatrixValue.FromI64(a.R, a.C, l, a.Kind); rr.ND = a.ND; return rr; }
+                if (a.Kind == NumKind.UInt64) return MatrixValue.FromI64(a.R, a.C, new long[a.Numel], a.Kind).WithDims<MatrixValue>(a.Dims);
                 var r = Map(a, x => -x, z => -z);
                 return a.IsInteger || a.IsSingle ? r.CastInPlace(a.Kind) : r;
             }
@@ -242,6 +248,7 @@ public static class Ops
 
     public static ArrayValue Transpose(ArrayValue a, bool conj)
     {
+        if (a is StructValue { Tag: not null } ts) return (ArrayValue)Tagged.Transpose(ts);
         if (a.ND != null) throw new OctaveException("transpose not defined for N-D objects");
         var lin = new int[a.Numel];
         for (int i = 0; i < a.R; i++)

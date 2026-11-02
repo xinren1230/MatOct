@@ -35,6 +35,13 @@ public static partial class BuiltinLibrary
         RegisterHG();
         RegisterPhase6();
         RegisterPhase7();
+        RegisterPhase13Tables();
+        var keep13 = new[] { "isfolder", "isfile", "dir", "erase", "tempname", "dec2bin", "dec2hex", "mean", "unique", "hist", "ishold", "moment" }
+            .Where(cur!.Builtins.ContainsKey).ToDictionary(k => k, k => cur!.Builtins[k]);
+        RegisterPhase13IO();
+        RegisterPhase13Strings();
+        foreach (var kv in keep13) cur!.Builtins[kv.Key] = kv.Value;
+        RegisterPhase13AppData(); RegisterPhase13Help(); RegisterFigureEdit(); RegisterFft();
         RegisterPaths();
         cur = null;
     }

@@ -168,6 +168,7 @@ public static partial class BuiltinLibrary
             {
                 if (type != "dir" && it.FindFile(name) != null) return Num(2);
                 if (type != "dir" && File.Exists(name)) return Num(2);
+                if (type != "dir" && CoreMLib.Get(name) != null) return Num(2);
                 if (Directory.Exists(name) && type != "file") return Num(7);
             }
             if ((type == "" || type == "builtin") && it.Builtins.ContainsKey(name)) return Num(type == "builtin" ? 5 : 5);

@@ -15,7 +15,7 @@ public partial class App : Application
     {
         base.OnStartup(e);
         var w = new MainWindow();
-        string? file = null, shot = null; bool run = false, exit = false; var breaks = new List<int>(); var condBreaks = new List<(int, string)>(); var extra = new List<string>(); string? spShot = null;
+        string? file = null, shot = null; bool run = false, exit = false; var breaks = new List<int>(); var condBreaks = new List<(int, string)>(); var extra = new List<string>(); string? spShot = null; string? helpShot = null, helpTopic = null; string? inspShot = null, varShot = null, varName = "A";
         var a = e.Args;
         for (int i = 0; i < a.Length; i++)
         {
@@ -27,6 +27,10 @@ public partial class App : Application
                 case "--input" when i + 1 < a.Length: w.AutoInput = a[++i]; break;
                 case "--breakif" when i + 2 < a.Length && int.TryParse(a[i + 1], out var cn): condBreaks.Add((cn, a[i + 2])); i += 2; break;
                 case "--setpath-screenshot" when i + 1 < a.Length: spShot = Path.GetFullPath(a[++i]); break;
+                case "--help-screenshot" when i + 1 < a.Length: helpShot = Path.GetFullPath(a[++i]); break;
+                case "--var-screenshot" when i + 2 < a.Length: varName = a[++i]; varShot = Path.GetFullPath(a[++i]); break;
+                case "--inspector-screenshot" when i + 1 < a.Length: inspShot = Path.GetFullPath(a[++i]); break;
+                case "--help-topic" when i + 1 < a.Length: helpTopic = a[++i]; break;
                 case "--open" when i + 1 < a.Length: extra.Add(a[++i]); break;
                 case "--break" when i + 1 < a.Length && int.TryParse(a[i + 1], out var n): breaks.Add(n); i++; break;
                 default: if (!a[i].StartsWith("--")) file = a[i]; break;
@@ -42,9 +46,56 @@ public partial class App : Application
         }
         if (condBreaks.Count > 0) breaks.AddRange(condBreaks.Select(c => c.Item1));
         w.AutoScreenshot = breaks.Count > 0 ? shot : null;
+        void VarShot()
+        {
+            try
+            {
+                var ve = w.OpenVariableEditor(varName);
+                var t4 = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(1200) };
+                t4.Tick += (_, _) =>
+                {
+                    t4.Stop();
+                    try { global::MatRewrite.Ide.MainWindow.SaveWindowPng(ve, varShot!); w.SaveScreenshot(Path.Combine(Path.GetDirectoryName(varShot!)!, Path.GetFileNameWithoutExtension(varShot!) + "_main.png")); }
+                    catch (Exception ex) { File.WriteAllText(varShot + ".err.txt", ex.ToString()); }
+                    if (exit) Shutdown();
+                };
+                t4.Start();
+            }
+            catch (Exception ex) { File.WriteAllText(varShot + ".err.txt", ex.ToString()); if (exit) Shutdown(); }
+        }
         w.RunFinished += () =>
         {
-            if (shot == null && !exit) return;
+            if (shot == null && !exit && inspShot == null && varShot == null) return;
+            if (inspShot != null)
+            {
+                var edits = new (string, string)[] { ("Color", "[0.85 0.1 0.1]"), ("LineWidth", "3"), ("LineStyle", "--"), ("Marker", "s"), ("MarkerSize", "8"), ("MarkerFaceColor", "y"), ("DisplayName", "edited in inspector") };
+                int step = -1;
+                var ti = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(900) };
+                var dir = Path.Combine(Path.GetDirectoryName(inspShot)!, "frames");
+                Directory.CreateDirectory(dir);
+                ti.Tick += (_, _) =>
+                {
+                    var fw = MatRewrite.Plotting.Wpf.FigureWindow.Latest;
+                    try
+                    {
+                        if (step >= 0) fw?.SaveWindowScreenshot(Path.Combine(dir, $"frame{step:00}.png"));
+                        step++;
+                        if (step == 0) fw?.DemoInspector(Array.Empty<(string, string)>());
+                        else if (step <= edits.Length) fw?.DemoInspector(new[] { edits[step - 1] });
+                        else
+                        {
+                            ti.Stop();
+                            fw?.SaveWindowScreenshot(inspShot);
+                            if (varShot != null) VarShot();
+                            else if (exit) Shutdown();
+                        }
+                    }
+                    catch (Exception ex) { ti.Stop(); File.WriteAllText(inspShot + ".err.txt", ex.ToString()); if (exit) Shutdown(); }
+                };
+                ti.Start();
+                return;
+            }
+            if (varShot != null) { var tv = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(1500) }; tv.Tick += (_, _) => { tv.Stop(); VarShot(); }; tv.Start(); return; }
             var t = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(1500) };
             t.Tick += (_, _) =>
             {
@@ -70,6 +121,13 @@ public partial class App : Application
                 if (exit) { sp.SuppressCloseQuestion = true; Shutdown(); }
             };
             t2.Start();
+        }
+        if (helpShot != null)
+        {
+            var hw = w.OpenHelp(helpTopic);
+            var t3 = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(1500) };
+            t3.Tick += (_, _) => { t3.Stop(); try { hw.SaveScreenshot(helpShot); } catch (Exception ex) { File.WriteAllText(helpShot + ".err.txt", ex.ToString()); } if (exit && !run) Shutdown(); };
+            t3.Start();
         }
         if (run && file != null)
             w.Dispatcher.BeginInvoke(DispatcherPriority.ApplicationIdle, w.RunCurrent);

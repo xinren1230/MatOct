@@ -2,7 +2,7 @@
 
 Mode: core builtins only (Octave m-files not on path)
 
-Files: 864, blocks passed 6889, failed 3251, skipped 456, pass rate 67.9% (57 s)
+Files: 864, blocks passed 6938, failed 3248, skipped 456, pass rate 68.1% (86 s)
 
 | Area | Files | Pass | Fail | Skip | Rate |
 |---|---:|---:|---:|---:|---:|
@@ -13,18 +13,18 @@ Files: 864, blocks passed 6889, failed 3251, skipped 456, pass rate 67.9% (57 s)
 | elfun | 27 | 83 | 0 | 0 | 100.0% |
 | general | 67 | 1289 | 252 | 15 | 83.6% |
 | geometry | 15 | 158 | 0 | 0 | 100.0% |
-| gui | 26 | 10 | 81 | 8 | 11.0% |
-| help | 16 | 10 | 38 | 1 | 20.8% |
-| image | 50 | 439 | 108 | 24 | 80.3% |
+| gui | 26 | 19 | 72 | 8 | 20.9% |
+| help | 16 | 12 | 36 | 1 | 25.0% |
+| image | 50 | 444 | 103 | 24 | 81.2% |
 | io | 7 | 11 | 31 | 3 | 26.2% |
 | java | 4 | 2 | 13 | 14 | 13.3% |
 | legacy | 9 | 32 | 112 | 0 | 22.2% |
 | linear-algebra | 36 | 489 | 56 | 1 | 89.7% |
-| miscellaneous | 92 | 203 | 430 | 18 | 32.1% |
+| miscellaneous | 92 | 207 | 426 | 18 | 32.7% |
 | ode | 9 | 102 | 58 | 90 | 63.8% |
-| optimization | 14 | 32 | 113 | 5 | 22.1% |
+| optimization | 14 | 41 | 100 | 5 | 29.1% |
 | path | 4 | 2 | 5 | 0 | 28.6% |
-| plot | 197 | 426 | 620 | 13 | 40.7% |
+| plot | 197 | 420 | 626 | 13 | 40.2% |
 | polynomial | 27 | 182 | 111 | 0 | 62.1% |
 | prefs | 6 | 0 | 24 | 0 | 0.0% |
 | profiler | 3 | 3 | 8 | 0 | 27.3% |
@@ -33,8 +33,8 @@ Files: 864, blocks passed 6889, failed 3251, skipped 456, pass rate 67.9% (57 s)
 | sparse | 29 | 192 | 53 | 198 | 78.4% |
 | specfun | 21 | 176 | 261 | 0 | 40.3% |
 | special-matrix | 11 | 193 | 0 | 0 | 100.0% |
-| statistics | 49 | 1288 | 331 | 0 | 79.6% |
-| strings | 34 | 306 | 193 | 26 | 61.3% |
+| statistics | 49 | 1308 | 361 | 0 | 78.4% |
+| strings | 34 | 312 | 187 | 26 | 62.5% |
 | testfun | 13 | 79 | 138 | 0 | 36.4% |
 | time | 14 | 377 | 0 | 1 | 100.0% |
 | web | 3 | 0 | 18 | 0 | 0.0% |
@@ -395,11 +395,9 @@ Files: 864, blocks passed 6889, failed 3251, skipped 456, pass rate 67.9% (57 s)
 - general/trapz.m:161 [error] error 'Invalid call to trapz' does not match <X and Y must have same shape>
 - general/xor.m:92 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
 - general/xor.m:103 [error] error 'operator xor: nonconformant arguments (op1 is 3x2, op2 is 2x3)' does not match <X and Y must be of compatible size>
-- gui/getappdata.m:80 [test] 'rmappdata' undefined
-- gui/getappdata.m:94 [error] error ''getappdata' undefined' does not match <Invalid call>
-- gui/getappdata.m:95 [error] error ''getappdata' undefined' does not match <H must be a scalar .* graphic handle>
-- gui/getappdata.m:96 [error] error ''getappdata' undefined' does not match <NAME must be a string>
-- gui/getappdata.m:97 [error] error ''getappdata' undefined' does not match <Only one handle H may be used when fetching appdata>
+- gui/getappdata.m:95 [error] error 'getappdata: invalid handle' does not match <H must be a scalar .* graphic handle>
+- gui/getappdata.m:96 [error] error 'getappdata: argument must be a string' does not match <NAME must be a string>
+- gui/getappdata.m:97 [error] expected an error but none was raised
 - gui/getpixelposition.m:98 [test] 'uipanel' undefined
 - gui/getpixelposition.m:110 [test] 'groot' undefined
 - gui/getpixelposition.m:114 [test] 'getpixelposition' undefined
@@ -418,10 +416,9 @@ Files: 864, blocks passed 6889, failed 3251, skipped 456, pass rate 67.9% (57 s)
 - gui/inputdlg.m:267 [error] error ''inputdlg' undefined' does not match <ROWSCOLS vector does not match size of PROMPT>
 - gui/inputdlg.m:269 [error] error ''inputdlg' undefined' does not match <ROWSCOLS matrix does not match size of PROMPT>
 - gui/inputdlg.m:271 [error] error ''inputdlg' undefined' does not match <invalid form of ROWSCOLS argument>
-- gui/isappdata.m:59 [test] 'rmappdata' undefined
-- gui/isappdata.m:70 [error] error ''isappdata' undefined' does not match <Invalid call>
-- gui/isappdata.m:71 [error] error ''isappdata' undefined' does not match <H must be a scalar .* graphic handle>
-- gui/isappdata.m:72 [error] error ''isappdata' undefined' does not match <NAME must be a string>
+- gui/isappdata.m:59 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      .          O(1x1)       E(1x2)      Dimensions don't match
+- gui/isappdata.m:71 [error] error 'isappdata: invalid handle' does not match <H must be a scalar .* graphic handle>
+- gui/isappdata.m:72 [error] error 'isappdata: argument must be a string' does not match <NAME must be a string>
 - gui/listdlg.m:203 [error] error ''listdlg' undefined' does not match <Invalid call>
 - gui/listdlg.m:204 [error] error ''listdlg' undefined' does not match <Invalid call>
 - gui/listdlg.m:206 [error] error ''listdlg' undefined' does not match <must occur in pairs>
@@ -451,24 +448,18 @@ Files: 864, blocks passed 6889, failed 3251, skipped 456, pass rate 67.9% (57 s)
 - gui/questdlg.m:193 [error] error ''questdlg' undefined' does not match <DEFAULT must match one of the button>
 - gui/questdlg.m:194 [error] error ''questdlg' undefined' does not match <DEFAULT must match one of the button>
 - gui/questdlg.m:196 [error] error ''questdlg' undefined' does not match <DEFAULT must match one of the button>
-- gui/rmappdata.m:68 [test] 'setappdata' undefined
-- gui/rmappdata.m:73 [test] 'setappdata' undefined
-- gui/rmappdata.m:81 [error] error ''rmappdata' undefined' does not match <Invalid call>
-- gui/rmappdata.m:82 [error] error ''rmappdata' undefined' does not match <Invalid call>
-- gui/rmappdata.m:83 [error] error ''rmappdata' undefined' does not match <H must be a scalar .* graphic handle>
-- gui/rmappdata.m:84 [error] error ''rmappdata' undefined' does not match <NAME must be a string>
-- gui/rmappdata.m:85 [error] error ''rmappdata' undefined' does not match <appdata 'foobar' is not present>
-- gui/setappdata.m:95 [test] 'rmappdata' undefined
-- gui/setappdata.m:104 [test] 'rmappdata' undefined
-- gui/setappdata.m:115 [test] 'rmappdata' undefined
-- gui/setappdata.m:131 [error] error ''setappdata' undefined' does not match <Invalid call>
-- gui/setappdata.m:132 [error] error ''setappdata' undefined' does not match <Invalid call>
-- gui/setappdata.m:133 [error] error ''setappdata' undefined' does not match <Invalid call>
-- gui/setappdata.m:134 [error] error ''setappdata' undefined' does not match <H must be a scalar .* graphic handle>
-- gui/setappdata.m:135 [error] error ''setappdata' undefined' does not match <NAME/VALUE arguments must occur in pairs>
-- gui/setappdata.m:136 [error] error ''setappdata' undefined' does not match <only 3 arguments possible>
-- gui/setappdata.m:137 [error] error ''setappdata' undefined' does not match <number of NAME and VALUE arguments must match>
-- gui/setappdata.m:139 [error] error ''setappdata' undefined' does not match <NAME must be a string>
+- gui/rmappdata.m:82 [error] error 'rmappdata: invalid handle' does not match <Invalid call>
+- gui/rmappdata.m:83 [error] error 'rmappdata: invalid handle' does not match <H must be a scalar .* graphic handle>
+- gui/rmappdata.m:84 [error] error 'rmappdata: argument must be a string' does not match <NAME must be a string>
+- gui/rmappdata.m:85 [error] expected an error but none was raised
+- gui/setappdata.m:115 [test] setappdata: argument must be a string
+- gui/setappdata.m:132 [error] expected an error but none was raised
+- gui/setappdata.m:133 [error] expected an error but none was raised
+- gui/setappdata.m:134 [error] error 'setappdata: invalid handle' does not match <H must be a scalar .* graphic handle>
+- gui/setappdata.m:135 [error] expected an error but none was raised
+- gui/setappdata.m:136 [error] error 'setappdata: argument must be a string' does not match <only 3 arguments possible>
+- gui/setappdata.m:137 [error] error 'setappdata: argument must be a string' does not match <number of NAME and VALUE arguments must match>
+- gui/setappdata.m:139 [error] error 'setappdata: argument must be a string' does not match <NAME must be a string>
 - gui/uicontrol.m:148 [warning] 'uicontrol' undefined
 - gui/uifigure.m:86 [test] 'uifigure' undefined
 - gui/uifigure.m:96 [error] error ''uifigure' undefined' does not match <parameters must occur in pairs>
@@ -493,20 +484,18 @@ Files: 864, blocks passed 6889, failed 3251, skipped 456, pass rate 67.9% (57 s)
 - help/get_first_help_sentence.m:198 [error] error ''get_first_help_sentence' undefined' does not match <MAX_LEN must be positive integer>
 - help/get_first_help_sentence.m:199 [error] error ''get_first_help_sentence' undefined' does not match <MAX_LEN must be positive integer>
 - help/get_first_help_sentence.m:200 [error] error ''get_first_help_sentence' undefined' does not match <MAX_LEN must be positive integer>
-- help/help.m:223 [assert] 'help' undefined
-- help/help.m:224 [assert] 'help' undefined
-- help/help.m:227 [error] error ''help' undefined' does not match <invalid input>
-- help/help.m:228 [error] error ''help' undefined' does not match <called with too many inputs>
-- help/help.m:229 [error] error ''help' undefined' does not match <'_! UNLIKELY_FCN! _' not found>
-- help/type.m:139 [test] 'type' undefined
-- help/type.m:145 [test] 'type' undefined
-- help/type.m:150 [test] 'type' undefined
-- help/type.m:154 [assert] 'type' undefined
-- help/type.m:155 [assert] 'type' undefined
-- help/type.m:156 [assert] 'type' undefined
-- help/type.m:157 [assert] 'type' undefined
-- help/type.m:159 [error] error ''type' undefined' does not match <Invalid call>
-- help/type.m:160 [error] error ''type' undefined' does not match <'__NO_NAME__' undefined>
+- help/help.m:223 [assert] help: 'ls' not found
+- help/help.m:224 [assert] help: '.' not found
+- help/help.m:227 [error] error 'help: argument must be a string' does not match <invalid input>
+- help/help.m:228 [error] error 'help: 'abc' not found' does not match <called with too many inputs>
+- help/type.m:139 [test] type: 'var' undefined
+- help/type.m:145 [test] type: 'ls' undefined
+- help/type.m:150 [test] type: 'ls' undefined
+- help/type.m:154 [assert] type: 'fftw' undefined
+- help/type.m:155 [assert] type: 'cat' undefined
+- help/type.m:156 [assert] type: '+' undefined
+- help/type.m:157 [assert] type: 'end' undefined
+- help/type.m:159 [error] expected an error but none was raised
 - help/which.m:100 [test] index (-17): out of bound; value -17 out of bound 0
 - help/which.m:103 [test] index (-7): out of bound; value -7 out of bound 0
 - help/which.m:106 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      ()          O(char)       E(double)      Class char != double
@@ -588,12 +577,7 @@ Files: 864, blocks passed 6889, failed 3251, skipped 456, pass rate 67.9% (57 s)
 - image/imfinfo.m:193 [error] error ''imfinfo' undefined' does not match <FILENAME must be a string>
 - image/imfinfo.m:194 [error] error ''imfinfo' undefined' does not match <EXT must be a string>
 - image/imformats.m:336 [test] 'imformats' undefined
-- image/imshow.m:271 [error] error ''imshow' undefined' does not match <Invalid call>
-- image/imshow.m:272 [error] error ''imshow' undefined' does not match <IM must be an image>
-- image/imshow.m:273 [error] error ''imshow' undefined' does not match <TrueColor image must be uint8>
-- image/imshow.m:274 [error] error ''imshow' undefined' does not match <TrueColor image must be uint8>
-- image/imshow.m:275 [error] error ''imshow' undefined' does not match <image must be MxN or MxNx3 matrix>
-- image/imshow.m:277 [test] expected error <all MAP values must be in the range> but got <'imshow' undefined>
+- image/imshow.m:277 [test] expected error <argument number 2 is invalid> but got none
 - image/imwrite.m:132 [error] error ''imwrite' undefined' does not match <Invalid call>
 - image/imwrite.m:133 [error] error ''imwrite' undefined' does not match <Invalid call>
 - image/ind2gray.m:90 [error] expected an error but none was raised
@@ -859,19 +843,16 @@ Files: 864, blocks passed 6889, failed 3251, skipped 456, pass rate 67.9% (57 s)
 - miscellaneous/clearvars.m:226 [error] expected an error but none was raised
 - miscellaneous/computer.m:148 [error] expected an error but none was raised
 - miscellaneous/computer.m:149 [error] expected an error but none was raised
-- miscellaneous/copyfile.m:181 [test] 'copyfile' undefined
-- miscellaneous/copyfile.m:206 [error] error ''copyfile' undefined' does not match <Invalid call>
-- miscellaneous/copyfile.m:207 [error] error ''copyfile' undefined' does not match <Invalid call>
-- miscellaneous/copyfile.m:208 [error] error ''copyfile' undefined' does not match <F1 must be a string>
-- miscellaneous/copyfile.m:209 [error] error ''copyfile' undefined' does not match <F2 must be a string>
-- miscellaneous/copyfile.m:210 [error] error ''copyfile' undefined' does not match <F2 must be a directory>
+- miscellaneous/copyfile.m:206 [error] error 'copyfile: Index was outside the bounds of the array.' does not match <Invalid call>
+- miscellaneous/copyfile.m:207 [error] error 'copyfile: argument must be a string' does not match <Invalid call>
+- miscellaneous/copyfile.m:208 [error] error 'copyfile: argument must be a string' does not match <F1 must be a string>
+- miscellaneous/copyfile.m:209 [error] error 'copyfile: argument must be a string' does not match <F2 must be a string>
+- miscellaneous/copyfile.m:210 [error] error 'copyfile: argument must be a string' does not match <F2 must be a directory>
 - miscellaneous/copyfile.m:219 [test] 'status' undefined
 - miscellaneous/delete.m:109 [error] error 'delete: argument must be a string' does not match <first argument must be a filename>
-- miscellaneous/dir.m:198 [test] 'dir' undefined
-- miscellaneous/dir.m:234 [test] 'dir' undefined
-- miscellaneous/dir.m:267 [test] 'dir' undefined
-- miscellaneous/dir.m:282 [error] error ''dir' undefined' does not match <DIRECTORY argument must be a string>
-- miscellaneous/dir.m:283 [warning] 'dir' undefined
+- miscellaneous/dir.m:198 [test] rmfield: first argument must be a struct
+- miscellaneous/dir.m:282 [error] error 'dir: argument must be a string' does not match <DIRECTORY argument must be a string>
+- miscellaneous/dir.m:283 [warning] expected a warning but none was issued
 - miscellaneous/dos.m:61 [test] 'ls_command' undefined
 - miscellaneous/dos.m:76 [error] error ''dos' undefined' does not match <Invalid call>
 - miscellaneous/edit.m:582 [test] parse error near line 8, column 11: unexpected 'home'
@@ -984,13 +965,12 @@ Files: 864, blocks passed 6889, failed 3251, skipped 456, pass rate 67.9% (57 s)
 - miscellaneous/methods.m:183 [error] error 'methods: argument must be a string' does not match <invalid input argument>
 - miscellaneous/mexext.m:41 [assert] 'mexext' undefined
 - miscellaneous/mkdir.m:119 [test] assert (cond) failed
-- miscellaneous/movefile.m:199 [test] 'movefile' undefined
-- miscellaneous/movefile.m:226 [error] error ''movefile' undefined' does not match <Invalid call>
-- miscellaneous/movefile.m:227 [error] error ''movefile' undefined' does not match <F1 must be a string>
-- miscellaneous/movefile.m:228 [error] error ''movefile' undefined' does not match <F2 must be a string>
-- miscellaneous/movefile.m:229 [error] error ''movefile' undefined' does not match <F2 must be a directory>
+- miscellaneous/movefile.m:226 [error] error 'movefile: Index was outside the bounds of the array.' does not match <Invalid call>
+- miscellaneous/movefile.m:227 [error] error 'movefile: argument must be a string' does not match <F1 must be a string>
+- miscellaneous/movefile.m:228 [error] error 'movefile: argument must be a string' does not match <F2 must be a string>
+- miscellaneous/movefile.m:229 [error] error 'movefile: argument must be a string' does not match <F2 must be a directory>
 - miscellaneous/movefile.m:238 [test] 'status' undefined
-- miscellaneous/movefile.m:250 [error] error ''movefile' undefined' does not match <no files to move>
+- miscellaneous/movefile.m:250 [error] error 'no matching files for '%_NOT_A_FILENAME1_%'' does not match <no files to move>
 - miscellaneous/mustBeFinite.m:57 [test] 'mustBeFinite' undefined
 - miscellaneous/mustBeFinite.m:63 [error] error ''mustBeFinite' undefined' does not match <Invalid call>
 - miscellaneous/mustBeFinite.m:64 [error] error ''mustBeFinite' undefined' does not match <found 1 non-finite>
@@ -1322,7 +1302,6 @@ Files: 864, blocks passed 6889, failed 3251, skipped 456, pass rate 67.9% (57 s)
 - ode/ode45.m:568 [error] error 'expected a function handle or function name' does not match <FCN must be a valid function handle>
 - ode/odeget.m:88 [error] error 'odeget: ODE_OPT must be a valid ODE_OPT structure' does not match <Invalid call>
 - ode/odeget.m:91 [error] expected an error but none was raised
-- optimization/fminbnd.m:341 [shared] 'optimset' undefined
 - optimization/fminbnd.m:347 [assert] assert (cond) failed
 - optimization/fminbnd.m:352 [error] error 'expected a function handle or function name' does not match <A must be a finite floating point scalar>
 - optimization/fminbnd.m:353 [error] error 'expected a function handle or function name' does not match <A must be a finite floating point scalar>
@@ -1330,38 +1309,32 @@ Files: 864, blocks passed 6889, failed 3251, skipped 456, pass rate 67.9% (57 s)
 - optimization/fminbnd.m:355 [error] error 'expected a function handle or function name' does not match <B must be a finite floating point scalar>
 - optimization/fminbnd.m:356 [error] error 'expected a function handle or function name' does not match <B must be a finite floating point scalar>
 - optimization/fminbnd.m:357 [error] error 'expected a function handle or function name' does not match <B must be a finite floating point scalar>
-- optimization/fminsearch.m:543 [assert] 'optimset' undefined
-- optimization/fminsearch.m:548 [test] 'optimset' undefined
-- optimization/fminsearch.m:554 [test] 'optimset' undefined
-- optimization/fminsearch.m:565 [test] 'fminsearch' undefined
-- optimization/fminsearch.m:570 [test] 'optimset' undefined
-- optimization/fminsearch.m:585 [error] error ''optimset' undefined' does not match <non-real value encountered>
-- optimization/fminsearch.m:587 [error] error ''optimset' undefined' does not match <NaN value encountered>
-- optimization/fminsearch.m:589 [error] error ''optimset' undefined' does not match <Inf value encountered>
-- optimization/fminsearch.m:593 [error] error ''fminsearch' undefined' does not match <Invalid call>
-- optimization/fminsearch.m:594 [error] error ''fminsearch' undefined' does not match <Invalid call>
-- optimization/fminsearch.m:595 [error] error ''fminsearch' undefined' does not match <PROBLEM must be a structure>
-- optimization/fminsearch.m:596 [test] expected error <problem.solver must be set to> but got <'fminsearch' undefined>
-- optimization/fminsearch.m:603 [test] expected error <Invalid call> but got <'fminsearch' undefined>
+- optimization/fminsearch.m:548 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       4.650000000000004        4.875       Abs err 0.2249999999999961 exceeds tol 0.0001
+- optimization/fminsearch.m:554 [test] Invalid call to fminsearch
+- optimization/fminsearch.m:585 [error] error '=: nonconformant arguments (op1 is 1x1, op2 is 1x2)' does not match <non-real value encountered>
+- optimization/fminsearch.m:587 [error] expected an error but none was raised
+- optimization/fminsearch.m:589 [error] expected an error but none was raised
+- optimization/fminsearch.m:594 [error] error 'index (2,_): out of bound 1 (dimensions are 1x1)' does not match <Invalid call>
+- optimization/fminsearch.m:595 [error] error 'Invalid call to fminsearch' does not match <PROBLEM must be a structure>
+- optimization/fminsearch.m:596 [test] expected error <problem.solver must be set to> but got <Invalid call to fminsearch>
+- optimization/fminsearch.m:603 [test] expected error <Invalid call> but got none
 - optimization/fminunc.m:459 [test] 'fminunc' undefined
 - optimization/fminunc.m:465 [test] 'fminunc' undefined
-- optimization/fminunc.m:473 [assert] 'optimset' undefined
-- optimization/fminunc.m:474 [error] error ''optimset' undefined' does not match <non-real value>
-- optimization/fminunc.m:475 [error] error ''optimset' undefined' does not match <NaN value>
-- optimization/fminunc.m:476 [error] error ''optimset' undefined' does not match <Inf value>
+- optimization/fminunc.m:473 [assert] 'fminunc' undefined
+- optimization/fminunc.m:474 [error] error ''fminunc' undefined' does not match <non-real value>
+- optimization/fminunc.m:475 [error] error ''fminunc' undefined' does not match <NaN value>
+- optimization/fminunc.m:476 [error] error ''fminunc' undefined' does not match <Inf value>
 - optimization/fsolve.m:594 [test] 'fsolve' undefined
 - optimization/fsolve.m:615 [test] 'fsolve' undefined
 - optimization/fsolve.m:634 [test] 'fsolve' undefined
-- optimization/fsolve.m:653 [test] 'optimset' undefined
+- optimization/fsolve.m:653 [test] 'fsolve' undefined
 - optimization/fsolve.m:664 [test] 'fsolve' undefined
-- optimization/fsolve.m:684 [test] 'optimset' undefined
+- optimization/fsolve.m:684 [test] 'fsolve' undefined
 - optimization/fsolve.m:693 [test] 'fsolve' undefined
 - optimization/fsolve.m:704 [test] 'fsolve' undefined
-- optimization/fzero.m:537 [shared] 'optimset' undefined
-- optimization/fzero.m:546 [shared] 'optimset' undefined
-- optimization/fzero.m:553 [test] 'optimset' undefined
-- optimization/fzero.m:572 [test] 'optimset' undefined
-- optimization/fzero.m:580 [test] 'optimset' undefined
+- optimization/fzero.m:553 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
+- optimization/fzero.m:572 [test] element number 4 undefined in return list
+- optimization/fzero.m:580 [test] element number 4 undefined in return list
 - optimization/fzero.m:587 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
 - optimization/fzero.m:592 [test] fzero: unable to find a valid initial bracketing
 - optimization/fzero.m:600 [error] expected an error but none was raised
@@ -1397,24 +1370,18 @@ Files: 864, blocks passed 6889, failed 3251, skipped 456, pass rate 67.9% (57 s)
 - optimization/lsqnonneg.m:281 [error] error ''lsqnonneg' undefined' does not match <D must be numeric matrices>
 - optimization/lsqnonneg.m:282 [error] error ''lsqnonneg' undefined' does not match <D must be numeric matrices>
 - optimization/lsqnonneg.m:283 [error] error ''lsqnonneg' undefined' does not match <OPTIONS must be a struct>
-- optimization/optimget.m:85 [shared] 'optimset' undefined
-- optimization/optimget.m:87 [assert] 'optimget' undefined
-- optimization/optimget.m:88 [assert] 'optimget' undefined
-- optimization/optimget.m:89 [assert] 'optimget' undefined
-- optimization/optimget.m:90 [assert] 'optimget' undefined
-- optimization/optimget.m:91 [assert] 'optimget' undefined
-- optimization/optimget.m:94 [error] error ''optimget' undefined' does not match <Invalid call>
-- optimization/optimget.m:95 [error] error ''optimget' undefined' does not match <Invalid call>
-- optimization/optimget.m:98 [warning] 'optimget' undefined
-- optimization/optimget.m:99 [error] error ''optimget' undefined' does not match <ambiguous option: 'Max'>
-- optimization/optimset.m:229 [assert] 'optimset' undefined
-- optimization/optimset.m:230 [assert] 'optimset' undefined
-- optimization/optimset.m:231 [assert] 'optimset' undefined
-- optimization/optimset.m:232 [test] 'optimset' undefined
-- optimization/optimset.m:242 [test] 'optimset' undefined
-- optimization/optimset.m:248 [error] error ''optimset' undefined' does not match <no defaults for function>
-- optimization/optimset.m:249 [warning] 'optimset' undefined
-- optimization/optimset.m:250 [error] error ''optimset' undefined' does not match <ambiguous option: 'Max'>
+- optimization/optimget.m:89 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      .          O(0x0)       E(1x1)      Dimensions don't match
+- optimization/optimget.m:94 [error] error ''s' undefined' does not match <Invalid call>
+- optimization/optimget.m:95 [error] expected an error but none was raised
+- optimization/optimget.m:96 [error] expected an error but none was raised
+- optimization/optimget.m:97 [error] expected an error but none was raised
+- optimization/optimget.m:98 [warning] expected a warning but none was issued
+- optimization/optimget.m:99 [error] expected an error but none was raised
+- optimization/optimset.m:229 [assert] assert (cond) failed
+- optimization/optimset.m:230 [assert] assert (cond) failed
+- optimization/optimset.m:248 [error] error 'index (2): out of bound 1 (dimensions are 1x1)' does not match <no defaults for function>
+- optimization/optimset.m:249 [warning] expected a warning but none was issued
+- optimization/optimset.m:250 [error] expected an error but none was raised
 - optimization/pqpnonneg.m:235 [test] 'pqpnonneg' undefined
 - optimization/pqpnonneg.m:241 [test] 'pqpnonneg' undefined
 - optimization/pqpnonneg.m:247 [test] 'pqpnonneg' undefined
@@ -1520,7 +1487,6 @@ Files: 864, blocks passed 6889, failed 3251, skipped 456, pass rate 67.9% (57 s)
 - plot/appearance/datetick.m:101 [test] 'datetick' undefined
 - plot/appearance/grid.m:205 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      .          O(1x3)       E(1x2)      Dimensions don't match
 - plot/appearance/grid.m:264 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      .          O(1x3)       E(1x2)      Dimensions don't match
-- plot/appearance/legend.m:2212 [test] element number 2 undefined in return list
 - plot/appearance/legend.m:2227 [test] element number 2 undefined in return list
 - plot/appearance/legend.m:2242 [test] element number 2 undefined in return list
 - plot/appearance/lighting.m:184 [test] 'surface' undefined
@@ -1549,7 +1515,7 @@ Files: 864, blocks passed 6889, failed 3251, skipped 456, pass rate 67.9% (57 s)
 - plot/appearance/orient.m:166 [error] error ''orient' undefined' does not match <Invalid call>
 - plot/appearance/orient.m:167 [error] error ''orient' undefined' does not match <Invalid call>
 - plot/appearance/orient.m:168 [error] error ''orient' undefined' does not match <unknown ORIENTATION 'foobar'>
-- plot/appearance/private/__gnuplot_legend__.m:1800 [test] legend: argument must be a string
+- plot/appearance/private/__gnuplot_legend__.m:1800 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      .          O(0x0)       E(1x1)      Dimensions don't match
 - plot/appearance/private/__gnuplot_legend__.m:1816 [test] 'plotyy' undefined
 - plot/appearance/private/__gnuplot_legend__.m:1833 [test] expected warning <plot data is empty> but got none
 - plot/appearance/private/__gnuplot_legend__.m:1853 [test] expected warning <'best' not yet implemented> but got none
@@ -1584,6 +1550,7 @@ Files: 864, blocks passed 6889, failed 3251, skipped 456, pass rate 67.9% (57 s)
 - plot/appearance/title.m:96 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
 - plot/appearance/title.m:106 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
 - plot/appearance/title.m:129 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      .          O(1x1)       E(1x16)      Dimensions don't match
+- plot/appearance/title.m:141 [test] title: invalid number of PROPERTY/VALUE arguments
 - plot/appearance/view.m:124 [test] view: VIEW must be [AZ EL], 2, or 3
 - plot/appearance/view.m:153 [test] view: VIEW must be [AZ EL], 2, or 3
 - plot/appearance/view.m:164 [test] view: VIEW must be [AZ EL], 2, or 3
@@ -1602,10 +1569,12 @@ Files: 864, blocks passed 6889, failed 3251, skipped 456, pass rate 67.9% (57 s)
 - plot/appearance/xtickangle.m:100 [error] error ''xtickangle' undefined' does not match <ANGLE must be .* numeric>
 - plot/appearance/xtickangle.m:101 [error] error ''xtickangle' undefined' does not match <ANGLE must be .* finite>
 - plot/appearance/xtickangle.m:102 [error] error ''xtickangle' undefined' does not match <called with output query and input set value>
-- plot/appearance/xticklabels.m:145 [test] 'xticklabels' undefined
-- plot/appearance/xticklabels.m:168 [test] expected error <HAX must be a handle to an axes> but got <'xticklabels' undefined>
-- plot/appearance/xticks.m:121 [test] 'xticks' undefined
-- plot/appearance/xticks.m:143 [test] expected error <HAX must be a handle to an axes> but got <'xticks' undefined>
+- plot/appearance/xticklabels.m:145 [test] value on right hand side of assignment is undefined; 'v' undefined in function 'xticklabels'
+- plot/appearance/xticklabels.m:167 [error] expected an error but none was raised
+- plot/appearance/xticklabels.m:168 [test] expected error <HAX must be a handle to an axes> but got none
+- plot/appearance/xticks.m:121 [test] value on right hand side of assignment is undefined; 'v' undefined in function 'xticks'
+- plot/appearance/xticks.m:142 [error] expected an error but none was raised
+- plot/appearance/xticks.m:143 [test] expected error <HAX must be a handle to an axes> but got none
 - plot/appearance/ylabel.m:72 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
 - plot/appearance/ylabel.m:85 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
 - plot/appearance/ylim.m:122 [test] indexing produces no results / value undefined
@@ -1616,10 +1585,12 @@ Files: 864, blocks passed 6889, failed 3251, skipped 456, pass rate 67.9% (57 s)
 - plot/appearance/ytickangle.m:100 [error] error ''ytickangle' undefined' does not match <ANGLE must be .* numeric>
 - plot/appearance/ytickangle.m:101 [error] error ''ytickangle' undefined' does not match <ANGLE must be .* finite>
 - plot/appearance/ytickangle.m:102 [error] error ''ytickangle' undefined' does not match <called with output query and input set value>
-- plot/appearance/yticklabels.m:145 [test] 'yticklabels' undefined
-- plot/appearance/yticklabels.m:168 [test] expected error <HAX must be a handle to an axes> but got <'yticklabels' undefined>
-- plot/appearance/yticks.m:123 [test] 'yticks' undefined
-- plot/appearance/yticks.m:145 [test] expected error <HAX must be a handle to an axes> but got <'yticks' undefined>
+- plot/appearance/yticklabels.m:145 [test] value on right hand side of assignment is undefined; 'v' undefined in function 'yticklabels'
+- plot/appearance/yticklabels.m:167 [error] expected an error but none was raised
+- plot/appearance/yticklabels.m:168 [test] expected error <HAX must be a handle to an axes> but got none
+- plot/appearance/yticks.m:123 [test] value on right hand side of assignment is undefined; 'v' undefined in function 'yticks'
+- plot/appearance/yticks.m:144 [error] expected an error but none was raised
+- plot/appearance/yticks.m:145 [test] expected error <HAX must be a handle to an axes> but got none
 - plot/appearance/zlabel.m:70 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
 - plot/appearance/zlabel.m:89 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
 - plot/appearance/zlim.m:122 [test] indexing produces no results / value undefined
@@ -1634,13 +1605,12 @@ Files: 864, blocks passed 6889, failed 3251, skipped 456, pass rate 67.9% (57 s)
 - plot/appearance/zticklabels.m:168 [test] expected error <HAX must be a handle to an axes> but got <'zticklabels' undefined>
 - plot/appearance/zticks.m:121 [test] 'zticks' undefined
 - plot/appearance/zticks.m:143 [test] expected error <HAX must be a handle to an axes> but got <'zticks' undefined>
-- plot/draw/area.m:279 [error] error ''area' undefined' does not match <Invalid call>
-- plot/draw/area.m:281 [error] error ''area' undefined' does not match <X and Y must be real vectors or matrices>
-- plot/draw/area.m:282 [error] error ''area' undefined' does not match <X and Y must be real vectors or matrices>
-- plot/draw/area.m:283 [error] error ''area' undefined' does not match <X and Y must be real vectors or matrices>
-- plot/draw/area.m:284 [error] error ''area' undefined' does not match <X and Y must be real vectors or matrices>
-- plot/draw/area.m:285 [error] error ''area' undefined' does not match <LVL must be a real scalar>
-- plot/draw/area.m:286 [error] error ''area' undefined' does not match <LVL must be a real scalar>
+- plot/draw/area.m:281 [error] error 'binary operator '+' not implemented for 'cell' by 'double' operations' does not match <X and Y must be real vectors or matrices>
+- plot/draw/area.m:282 [error] expected an error but none was raised
+- plot/draw/area.m:283 [error] expected an error but none was raised
+- plot/draw/area.m:284 [error] expected an error but none was raised
+- plot/draw/area.m:285 [error] expected an error but none was raised
+- plot/draw/area.m:286 [error] expected an error but none was raised
 - plot/draw/bar.m:154 [test] element number 2 undefined in return list
 - plot/draw/bar.m:159 [test] element number 2 undefined in return list
 - plot/draw/bar.m:164 [test] element number 2 undefined in return list
@@ -1762,8 +1732,19 @@ Files: 864, blocks passed 6889, failed 3251, skipped 456, pass rate 67.9% (57 s)
 - plot/draw/feather.m:127 [error] error ''feather' undefined' does not match <Invalid call>
 - plot/draw/feather.m:129 [error] error ''feather' undefined' does not match <invalid linestyle STYLE>
 - plot/draw/feather.m:130 [error] error ''feather' undefined' does not match <invalid linestyle STYLE>
-- plot/draw/fplot.m:294 [test] get: unknown axes property string
-- plot/draw/fplot.m:305 [test] get: unknown axes property string
+- plot/draw/fplot.m:271 [test] fplot: function called with too many outputs
+- plot/draw/fplot.m:278 [test] fplot: function called with too many outputs
+- plot/draw/fplot.m:286 [test] fplot: function called with too many outputs
+- plot/draw/fplot.m:294 [test] get: unknown legend property string
+- plot/draw/fplot.m:305 [test] plot: invalid line specification '+;mysin;'
+- plot/draw/fplot.m:318 [error] error 'index (2): out of bound 1 (dimensions are 1x1)' does not match <Invalid call>
+- plot/draw/fplot.m:320 [error] expected an error but none was raised
+- plot/draw/fplot.m:321 [error] error 'index (2): out of bound 1 (dimensions are 1x1)' does not match <LIMITS must be a real vector with 2 or 4>
+- plot/draw/fplot.m:322 [error] expected an error but none was raised
+- plot/draw/fplot.m:323 [error] expected an error but none was raised
+- plot/draw/fplot.m:324 [error] error 'plot: wrong type argument 'cell array'' does not match <bad input in position 3>
+- plot/draw/fplot.m:325 [warning] fplot: function called with too many outputs
+- plot/draw/fplot.m:328 [error] error 'arrayfun: all values must be scalars when UniformOutput = true; use the 'UniformOutput', false options' does not match <invalid function FCN>
 - plot/draw/hist.m:274 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
 - plot/draw/hist.m:278 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
 - plot/draw/hist.m:290 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      .          O(3x1)       E(3x2)      Dimensions don't match
@@ -1816,9 +1797,6 @@ Files: 864, blocks passed 6889, failed 3251, skipped 456, pass rate 67.9% (57 s)
 - plot/draw/patch.m:320 [error] expected an error but none was raised
 - plot/draw/patch.m:321 [error] expected an error but none was raised
 - plot/draw/patch.m:322 [error] expected an error but none was raised
-- plot/draw/pie.m:106 [error] error ''pie' undefined' does not match <Invalid call>
-- plot/draw/pie.m:107 [error] error ''pie' undefined' does not match <all data in X must be finite>
-- plot/draw/pie.m:108 [error] error ''pie' undefined' does not match <all data in X must be finite>
 - plot/draw/pie3.m:105 [error] error ''pie3' undefined' does not match <Invalid call>
 - plot/draw/pie3.m:106 [error] error ''pie3' undefined' does not match <all data in X must be finite>
 - plot/draw/pie3.m:107 [error] error ''pie3' undefined' does not match <all data in X must be finite>
@@ -1996,15 +1974,13 @@ Files: 864, blocks passed 6889, failed 3251, skipped 456, pass rate 67.9% (57 s)
 - plot/util/gco.m:65 [error] error 'gco: invalid graphics handle (-1)' does not match <HFIG must be a graphics handle>
 - plot/util/gnuplot_binary.m:68 [test] 'gnuplot_binary' undefined
 - plot/util/groot.m:66 [assert] 'groot' undefined
-- plot/util/hgload.m:114 [test] 'hgsave' undefined
-- plot/util/hgload.m:136 [error] error ''hgload' undefined' does not match <Invalid call>
-- plot/util/hgload.m:137 [error] error ''hgload' undefined' does not match <PROP_STRUCT must be a struct>
-- plot/util/hgload.m:138 [error] error ''hgload' undefined' does not match <unable to locate file>
-- plot/util/hgload.m:139 [error] error ''hgload' undefined' does not match <unable to locate file>
-- plot/util/hgsave.m:136 [error] error ''hgsave' undefined' does not match <Invalid call>
-- plot/util/hgsave.m:137 [error] error ''hgsave' undefined' does not match <no current figure to save>
-- plot/util/hold.m:171 [test] 'fill' undefined
-- plot/util/hold.m:187 [test] 'fill' undefined
+- plot/util/hgload.m:114 [test] element number 2 undefined in return list
+- plot/util/hgload.m:137 [error] error 'openfig: argument must be a string' does not match <PROP_STRUCT must be a struct>
+- plot/util/hgload.m:138 [error] error 'openfig: unable to find file %%_A_REALLY_UNLIKELY_FILENAME_%%.fig' does not match <unable to locate file>
+- plot/util/hgload.m:139 [error] error 'openfig: unable to find file %%_A_REALLY_UNLIKELY_FILENAME_%%.fig' does not match <unable to locate file>
+- plot/util/hgsave.m:136 [error] error 'savefig: no current figure' does not match <Invalid call>
+- plot/util/hgsave.m:137 [error] error 'savefig: no current figure' does not match <no current figure to save>
+- plot/util/hold.m:187 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
 - plot/util/isfigure.m:60 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      .          O(1x1)       E(1x2)      Dimensions don't match
 - plot/util/isgraphics.m:57 [test] 'surface' undefined
 - plot/util/isgraphics.m:110 [error] error 'isgraphics: argument must be a string' does not match <TYPE must be a string>
@@ -2016,9 +1992,7 @@ Files: 864, blocks passed 6889, failed 3251, skipped 456, pass rate 67.9% (57 s)
 - plot/util/isprop.m:79 [test] assert (cond) failed
 - plot/util/isprop.m:85 [error] expected an error but none was raised
 - plot/util/isprop.m:86 [error] expected an error but none was raised
-- plot/util/linkaxes.m:122 [test] 'linkaxes' undefined
-- plot/util/linkaxes.m:168 [error] error ''linkaxes' undefined' does not match <Invalid call>
-- plot/util/linkaxes.m:169 [error] error ''linkaxes' undefined' does not match <HAX must be a vector of axes handles>
+- plot/util/linkaxes.m:122 [test] xlim: LIMITS must be a 2-element vector
 - plot/util/linkprop.m:146 [test] 'linkprop' undefined
 - plot/util/linkprop.m:178 [error] error ''linkprop' undefined' does not match <Invalid call>
 - plot/util/linkprop.m:179 [error] error ''linkprop' undefined' does not match <Invalid call>
@@ -2030,11 +2004,11 @@ Files: 864, blocks passed 6889, failed 3251, skipped 456, pass rate 67.9% (57 s)
 - plot/util/newplot.m:242 [test] 'newplot' undefined
 - plot/util/newplot.m:254 [test] 'plotyy' undefined
 - plot/util/newplot.m:267 [test] 'newplot' undefined
-- plot/util/openfig.m:130 [test] 'hgsave' undefined
-- plot/util/openfig.m:148 [error] error ''openfig' undefined' does not match <cannot find file>
-- plot/util/openfig.m:149 [error] error ''openfig' undefined' does not match <cannot find file>
-- plot/util/openfig.m:150 [error] error ''hgsave' undefined' does not match <input argument 3 must be a string>
-- plot/util/openfig.m:160 [error] error ''hgsave' undefined' does not match <unknown option 'foobar'>
+- plot/util/openfig.m:130 [test] assert (cond) failed
+- plot/util/openfig.m:148 [error] error 'openfig: unable to find file %%_A_REALLY_UNLIKELY_FILENAME_%%.fig' does not match <cannot find file>
+- plot/util/openfig.m:149 [error] error 'openfig: unable to find file %%_A_REALLY_UNLIKELY_FILENAME_%%.fig' does not match <cannot find file>
+- plot/util/openfig.m:150 [error] expected an error but none was raised
+- plot/util/openfig.m:160 [error] expected an error but none was raised
 - plot/util/print.m:851 [error] error ''plotyy' undefined' does not match <a graphics handle>
 - plot/util/printd.m:105 [test] 'printd' undefined
 - plot/util/rotate.m:185 [error] error ''rotate' undefined' does not match <Invalid call>
@@ -2050,11 +2024,10 @@ Files: 864, blocks passed 6889, failed 3251, skipped 456, pass rate 67.9% (57 s)
 - plot/util/saveas.m:159 [error] error 'saveas: invalid figure handle' does not match <H must be a graphics handle>
 - plot/util/saveas.m:160 [error] error 'saveas: invalid figure handle' does not match <FILENAME must be a string>
 - plot/util/saveas.m:161 [error] error 'saveas: invalid figure handle' does not match <FMT must be a string>
-- plot/util/savefig.m:103 [test] 'savefig' undefined
-- plot/util/savefig.m:126 [error] error ''savefig' undefined' does not match <must be a figure handle or filename>
-- plot/util/savefig.m:127 [error] error ''savefig' undefined' does not match <H must be a valid figure handle>
-- plot/util/savefig.m:128 [error] error ''savefig' undefined' does not match <FILENAME must be a string>
-- plot/util/savefig.m:135 [warning] 'savefig' undefined
+- plot/util/savefig.m:126 [error] error 'savefig: no current figure' does not match <must be a figure handle or filename>
+- plot/util/savefig.m:127 [error] error 'savefig: no current figure' does not match <H must be a valid figure handle>
+- plot/util/savefig.m:128 [error] error 'savefig: argument must be a string' does not match <FILENAME must be a string>
+- plot/util/savefig.m:135 [warning] expected a warning but none was issued
 - plot/util/struct2hdl.m:793 [test] 'hdl2struct' undefined
 - plot/util/subplot.m:621 [test] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
 - plot/util/subplot.m:636 [test] Invalid call to subplot
@@ -2331,7 +2304,7 @@ Files: 864, blocks passed 6889, failed 3251, skipped 456, pass rate 67.9% (57 s)
 - sparse/spconvert.m:79 [error] expected an error but none was raised
 - sparse/sprand.m:72 [test] sprand: RC must be a scalar or vector of length min (M, N)
 - sparse/sprandn.m:72 [test] sprandn: RC must be a scalar or vector of length min (M, N)
-- sparse/sprandsym.m:167 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       0.09        0.1       Abs err 0.010000000000000009 exceeds tol 0.01
+- sparse/sprandsym.m:167 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       0.08        0.1       Abs err 0.020000000000000004 exceeds tol 0.01
 - sparse/sprandsym.m:175 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      .          O(3x1)       E(2x1)      Dimensions don't match
 - sparse/spstats.m:69 [test] 'spstats' undefined
 - sparse/spy.m:88 [error] expected an error but none was raised
@@ -2720,7 +2693,37 @@ Files: 864, blocks passed 6889, failed 3251, skipped 456, pass rate 67.9% (57 s)
 - statistics/mean.m:867 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      ()          O(single)       E(double)      Class single != double
 - statistics/mean.m:921 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      ()          O(single)       E(double)      Class single != double
 - statistics/mean.m:922 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      ()          O(single)       E(double)      Class single != double
-- statistics/mean.m:923 [assert] timeout
+- statistics/mean.m:923 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      ()          O(single)       E(double)      Class single != double
+- statistics/mean.m:924 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      ()          O(single)       E(double)      Class single != double
+- statistics/mean.m:925 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      ()          O(single)       E(double)      Class single != double
+- statistics/mean.m:928 [test] Invalid call to mean
+- statistics/mean.m:937 [test] Invalid call to mean
+- statistics/mean.m:943 [test] Invalid call to mean
+- statistics/mean.m:952 [test] Invalid call to mean
+- statistics/mean.m:958 [test] Invalid call to mean
+- statistics/mean.m:965 [test] Invalid call to mean
+- statistics/mean.m:969 [test] Invalid call to mean
+- statistics/mean.m:975 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       35184372088832        35184372088833       Abs err 1 exceeds tol 0.0078125
+- statistics/mean.m:977 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       35184372088832        35184372088833       Abs err 1 exceeds tol 0.0078125
+- statistics/mean.m:980 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       35184372088832        35184372088833       Abs err 1 exceeds tol 0.0078125
+- statistics/mean.m:982 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       35184372088832        35184372088833       Abs err 1 exceeds tol 0.0078125
+- statistics/mean.m:984 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       35184372088832        35184372088833       Abs err 1 exceeds tol 0.0078125
+- statistics/mean.m:986 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       35184372088832        35184372088833       Abs err 1 exceeds tol 0.0078125
+- statistics/mean.m:988 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       35184372088832        35184372088833       Abs err 1 exceeds tol 0.0078125
+- statistics/mean.m:1006 [error] error 'Invalid call to mean' does not match <WEIGHTS must be single or double>
+- statistics/mean.m:1007 [error] error 'Invalid call to mean' does not match <WEIGHTS must be single or double>
+- statistics/mean.m:1008 [error] error 'Invalid call to mean' does not match <WEIGHTS must be nonnegative>
+- statistics/mean.m:1009 [error] error 'Invalid call to mean' does not match <paired input argument for 'Weights' is missing>
+- statistics/mean.m:1016 [error] error 'Invalid call to mean' does not match <WEIGHTS vector must have the same length as the operating dimension>
+- statistics/mean.m:1018 [error] error 'Invalid call to mean' does not match <WEIGHTS array must have the same size as X>
+- statistics/mean.m:1020 [error] error 'Invalid call to mean' does not match <WEIGHTS vector must have the same length as the operating dimension>
+- statistics/mean.m:1022 [error] error 'Invalid call to mean' does not match <WEIGHTS vector must have the same length as the operating dimension>
+- statistics/mean.m:1024 [error] error 'Invalid call to mean' does not match <WEIGHTS array must have the same size as X>
+- statistics/mean.m:1026 [error] error 'Invalid call to mean' does not match <WEIGHTS vector must have the same length as the operating dimension>
+- statistics/mean.m:1028 [error] error 'Invalid call to mean' does not match <WEIGHTS array must have the same size as X>
+- statistics/mean.m:1030 [error] error 'Invalid call to mean' does not match <WEIGHTS array must have the same size as the operating page>
+- statistics/mean.m:1032 [error] error 'mean: VECDIM must contain non-repeating positive integers' does not match <DIM must be a positive integer>
+- statistics/mean.m:1041 [error] error 'mean: VECDIM must contain positive integers' does not match <DIM must be a positive integer>
 - statistics/meansq.m:138 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      ()          O(double)       E(single)      Class double != single
 - statistics/median.m:603 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      ()          O(uint8)       E(double)      Class uint8 != double
 - statistics/median.m:610 [test] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason      ()          O(logical)       E(double)      Class logical != double
@@ -2803,8 +2806,8 @@ Files: 864, blocks passed 6889, failed 3251, skipped 456, pass rate 67.9% (57 s)
 - statistics/mode.m:622 [error] error 'mode: VECDIM must contain non-repeating positive integers' does not match <mode: VECDIM must be a vector of non-repeating positive integers>
 - statistics/mode.m:624 [error] error 'mode: VECDIM must contain positive integers' does not match <mode: VECDIM must be a vector of non-repeating positive integers>
 - statistics/mode.m:626 [error] expected an error but none was raised
-- statistics/moment.m:216 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       3.3306690738754696E-16        3.3306690738754695E-17       Abs err 2.997602166487923E-16 exceeds tol 2.220446049250313E-16
-- statistics/moment.m:217 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       0.9421003627417497        0.09421003627417496       Abs err 0.8478903264675748 exceeds tol 2.220446049250313E-16
+- statistics/moment.m:216 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       1.4488410471358294E-15        1.4488410471358292E-16       Abs err 1.3039569424222465E-15 exceeds tol 2.220446049250313E-16
+- statistics/moment.m:217 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       0.8763241343969149        0.08763241343969148       Abs err 0.7886917209572234 exceeds tol 2.220446049250313E-16
 - statistics/normalize.m:520 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
 - statistics/normalize.m:521 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
 - statistics/normalize.m:522 [assert] ASSERT errors for:  assert (cond,expected,tol)    Location  |  Observed  |  Expected  |  Reason     (1)       0.6        0.6666666666666666       Abs err 0.06666666666666665 exceeds tol 2.220446049250313E-16
@@ -3026,12 +3029,6 @@ Files: 864, blocks passed 6889, failed 3251, skipped 456, pass rate 67.9% (57 s)
 - strings/index.m:118 [error] expected an error but none was raised
 - strings/index.m:120 [error] expected an error but none was raised
 - strings/isletter.m:47 [error] expected an error but none was raised
-- strings/isstring.m:54 [assert] 'isstring' undefined
-- strings/isstring.m:55 [assert] 'isstring' undefined
-- strings/isstring.m:56 [assert] 'isstring' undefined
-- strings/isstring.m:59 [assert] 'isstring' undefined
-- strings/isstring.m:60 [assert] 'isstring' undefined
-- strings/isstring.m:62 [error] error ''isstring' undefined' does not match <Invalid call>
 - strings/isstrprop.m:153 [assert] isstrprop: invalid string type: "graphic"
 - strings/isstrprop.m:155 [assert] ASSERT errors for:  assert (cond,expected,tol)    Observed and expected values differ
 - strings/isstrprop.m:157 [assert] ischar: wrong type argument 'cell array'

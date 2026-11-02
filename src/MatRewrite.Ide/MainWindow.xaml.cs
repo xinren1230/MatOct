@@ -83,6 +83,8 @@ public partial class MainWindow : Window
         InitPaths();
         figures = new WpfBackend(Dispatcher);
         FigureWindow.CallbackSink = it.Graphics.RaiseCallback;
+        FigureWindow.Interp = it;
+        FigureWindow.EvalSink = c => Dispatcher.Invoke(() => Execute(c, ">> " + c + "\n"));
         it.Graphics.Backend = figures;
         it.InputReader = ReadInputLine;
         it.Paused += info => Dispatcher.Invoke(() => OnPaused(info));
@@ -111,6 +113,7 @@ public partial class MainWindow : Window
         InputBindings.Add(new KeyBinding(new RelayCommand(() => OnCloseTab(this, new RoutedEventArgs())), Key.W, ModifierKeys.Control));
         InputBindings.Add(new KeyBinding(new RelayCommand(() => SwitchTab(1)), Key.Tab, ModifierKeys.Control));
         InputBindings.Add(new KeyBinding(new RelayCommand(() => SwitchTab(-1)), Key.Tab, ModifierKeys.Control | ModifierKeys.Shift));
+        InitPhase13();
         Loaded += (_, _) => Input.Focus();
     }
 
@@ -181,7 +184,7 @@ public partial class MainWindow : Window
         {
             var code = Input.Text;
             Input.Clear();
-            if (code.Trim().Length > 0) { history.Add(code); }
+            if (code.Trim().Length > 0) { history.Add(code); AddHistory(code); }
             historyPos = history.Count;
             if (waitingForInput)
             {
@@ -657,6 +660,28 @@ public partial class MainWindow
         hoverTip.Placement = System.Windows.Controls.Primitives.PlacementMode.Center;
         hoverTip.Content = HoverText(name, v);
         hoverTip.IsOpen = true;
+    }
+
+    /// <summary>Automation: open the variable editor for a workspace variable.</summary>
+    internal Window OpenVariableEditor(string name)
+    {
+        var v = it.GetVar(name) ?? throw new InvalidOperationException("no variable " + name);
+        var ve = new VariableEditorWindow(name, v, (n, nv) => { it.SetVar(n, nv); RefreshWorkspace(); }) { Owner = this };
+        ve.Show();
+        return ve;
+    }
+
+    internal static void SaveWindowPng(Window win, string path)
+    {
+        win.UpdateLayout();
+        var dpi = VisualTreeHelper.GetDpi(win);
+        var fe = (FrameworkElement)win.Content;
+        var rtb = new RenderTargetBitmap((int)Math.Ceiling(fe.ActualWidth * dpi.DpiScaleX), (int)Math.Ceiling(fe.ActualHeight * dpi.DpiScaleY), 96 * dpi.DpiScaleX, 96 * dpi.DpiScaleY, PixelFormats.Pbgra32);
+        rtb.Render(fe);
+        var enc = new PngBitmapEncoder();
+        enc.Frames.Add(BitmapFrame.Create(rtb));
+        using var fs = File.Create(path);
+        enc.Save(fs);
     }
 
     /// <summary>Save a PNG of this window (used by --screenshot).</summary>

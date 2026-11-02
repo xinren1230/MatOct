@@ -34,6 +34,8 @@
             <MenuItem Header="_Run">
                 <MenuItem Header="_Run script" Click="OnRun" InputGestureText="F5" />
                 <MenuItem Header="Run _selection" Click="OnRunSelection" InputGestureText="F9" />
+                <MenuItem Header="Run se_ction (%%)" Click="OnRunSection" InputGestureText="Ctrl+Enter" />
+                <MenuItem Header="Run section and _advance" Click="OnRunSectionAdvance" InputGestureText="Ctrl+Shift+Enter" />
                 <MenuItem Header="_Interrupt" Click="OnInterrupt" InputGestureText="Ctrl+Break / Ctrl+Shift+C" />
             </MenuItem>
             <MenuItem Header="_Debug">
@@ -50,6 +52,10 @@
             <MenuItem Header="_Window">
                 <MenuItem Header="_Close all figures" Click="OnCloseFigures" />
                 <MenuItem Header="C_lear command window" Click="OnClearOutput" />
+            </MenuItem>
+            <MenuItem Header="_Help">
+                <MenuItem Header="_Help browser..." Click="OnHelpBrowser" InputGestureText="F1" />
+                <MenuItem Header="Help on _word at cursor" Click="OnHelpWord" InputGestureText="Ctrl+F1" />
             </MenuItem>
         </Menu>
         <ToolBarTray DockPanel.Dock="Top">
@@ -161,7 +167,9 @@
                     </ListView>
                 </DockPanel>
                 <GridSplitter Grid.Row="3" HorizontalAlignment="Stretch" />
-                <DockPanel Grid.Row="4">
+                <TabControl Grid.Row="4" x:Name="BottomTabs" Padding="0">
+                    <TabItem Header="Problems">
+                <DockPanel>
                     <TextBlock DockPanel.Dock="Top" Padding="4,2" Background="#EEE" x:Name="ProblemsTitle" Text="Problems" />
                     <ListView x:Name="ProblemList" MouseDoubleClick="OnProblemDoubleClick">
                         <ListView.View>
@@ -172,6 +180,14 @@
                         </ListView.View>
                     </ListView>
                 </DockPanel>
+                    </TabItem>
+                    <TabItem Header="Command History" x:Name="HistoryTab">
+                        <DockPanel>
+                            <TextBlock DockPanel.Dock="Bottom" Padding="4,2" Foreground="Gray" Text="Double-click to run again" />
+                            <ListBox x:Name="HistoryList" FontFamily="Consolas" MouseDoubleClick="OnHistoryDoubleClick" />
+                        </DockPanel>
+                    </TabItem>
+                </TabControl>
             </Grid>
         </Grid>
     </DockPanel>

@@ -455,8 +455,15 @@ public static class Renderer3D
                 var p = an.Position;
                 var r = new SKRect(P(p[0], p[1] + p[3]).X, P(p[0], p[1] + p[3]).Y, P(p[0] + p[2], p[1]).X, P(p[0] + p[2], p[1]).Y);
                 if (an.Kind == "ellipse") cv.DrawOval(r, pen);
-                else if (an.Kind == "rectangle" || an.Kind == "textbox") cv.DrawRect(r, pen);
-                if (an.Text != "") { int k = 0; foreach (var ln in an.Text.Split('\n')) cv.DrawText(ln, r.Left + 4, r.Top + txt.TextSize + 2 + k++ * txt.TextSize * 1.2f, txt); }
+                else if (an.Kind == "rectangle" || an.Kind == "textbox")
+                {
+                    bool noLine = an.Props.TryGetValue("linestyle", out var lsv) && lsv is MatRewrite.Core.Runtime.MatrixValue lsm && lsm.IsChar && lsm.AsString() == "none";
+                    if (!noLine) cv.DrawRect(r, pen);
+                }
+                bool centered = an.Props.TryGetValue("horizontalalignment", out var hav) && hav is MatRewrite.Core.Runtime.MatrixValue ham && ham.IsChar && ham.AsString() == "center";
+                if (centered) txt.TextAlign = SKTextAlign.Center;
+                if (an.Text != "") { int k = 0; foreach (var ln in an.Text.Split('\n')) cv.DrawText(ln, centered ? r.MidX : r.Left + 4, r.Top + txt.TextSize + 2 + k++ * txt.TextSize * 1.2f, txt); }
+                txt.TextAlign = SKTextAlign.Left;
                 continue;
             }
             var a = P(an.X[0], an.Y[0]); var b = P(an.X[1], an.Y[1]);

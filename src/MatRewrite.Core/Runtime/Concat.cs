@@ -10,6 +10,7 @@ public static class Concat
     static Value Join(List<Value> items, bool horiz)
     {
         if (items.Count > 0 && items.Any(v => v is MapValue)) return MapValue.Merge(items);
+        if (items.Any(v => v is StructValue { Tag: not null })) return Tagged.Concat(items, horiz);
         if (items.Any(v => v is ObjectValue || v is ObjectArrayValue))
         {
             var parts = items.Where(v => !(v is MatrixValue em && em.Numel == 0))

@@ -11,6 +11,12 @@ public static class Program
     public static int Main(string[] argv)
     {
         if (argv.Length >= 2 && argv[0] == "--test") return TestDriver.RunOne(argv[1]);
+        if (argv.Length >= 2 && argv[0] == "--octave-tests")
+        {
+            // Isolate test side effects (savepath, history, appdata) from the user's real config folder.
+            if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("MATRW_CONFIG_DIR")))
+                Environment.SetEnvironmentVariable("MATRW_CONFIG_DIR", Path.Combine(Path.GetTempPath(), "matoct-test-config-" + Environment.ProcessId));
+        }
         if (argv.Length >= 2 && argv[0] == "--octave-tests") return TestDriver.RunAll(argv.Skip(1).ToArray());
         Console.OutputEncoding = Encoding.UTF8;
         var stdout = new StreamWriter(Console.OpenStandardOutput(), new UTF8Encoding(false)) { AutoFlush = false };
@@ -19,7 +25,7 @@ public static class Program
         bool gui = !argv.Contains("--no-gui");
 #if WPF_FIGURES
         MatRewrite.Plotting.Wpf.WpfBackend? wpf = null;
-        if (gui) { wpf = new MatRewrite.Plotting.Wpf.WpfBackend(); MatRewrite.Plotting.Wpf.FigureWindow.CallbackSink = it.Graphics.RaiseCallback; it.Graphics.Backend = wpf; wpf.WindowClosed += f => { try { it.Graphics.Close(f); } catch { } }; }
+        if (gui) { wpf = new MatRewrite.Plotting.Wpf.WpfBackend(); MatRewrite.Plotting.Wpf.FigureWindow.CallbackSink = it.Graphics.RaiseCallback; MatRewrite.Plotting.Wpf.FigureWindow.Interp = it; it.Graphics.Backend = wpf; wpf.WindowClosed += f => { try { it.Graphics.Close(f); } catch { } }; }
         else it.Graphics.Backend = new MatRewrite.Plotting.FileOnlyBackend();
 #else
         it.Graphics.Backend = new MatRewrite.Plotting.FileOnlyBackend();

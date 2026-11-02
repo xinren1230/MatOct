@@ -158,6 +158,14 @@ public static class MatV5
                 };
                 if (logical) kind = NumKind.Logical;
                 var (rt, rn, rp, rnext) = Tag(d, pos);
+                if ((kind == NumKind.Int64 || kind == NumKind.UInt64) && !complex && (rt == miINT64 || rt == miUINT64))
+                {
+                    var l = new long[rn / 8];
+                    for (int q = 0; q < l.Length; q++) l[q] = BitConverter.ToInt64(d, rp + q * 8);
+                    var m64 = MatrixValue.FromI64(1, l.Length, l, kind);
+                    m64.SetDims(dims);
+                    return (name, m64);
+                }
                 var re = Nums(d, rt, rp, rn);
                 double[]? im = null;
                 if (complex) { var (it, inn, ip, inext) = Tag(d, rnext); im = Nums(d, it, ip, inn); }
@@ -249,7 +257,9 @@ public static class MatV5
                     NumKind.Single => (miSINGLE, x => BitConverter.GetBytes((float)x)),
                     _ => (miDOUBLE, x => BitConverter.GetBytes(x))
                 };
-                Elem(s, type, m.Re.SelectMany(enc).ToArray());
+                if (m.Is64 && !m.IsComplex)
+                    Elem(s, type, Enumerable.Range(0, m.Re.Length).SelectMany(k => m.Kind == NumKind.UInt64 ? BitConverter.GetBytes(m.U64(k)) : BitConverter.GetBytes(m.I64(k))).ToArray());
+                else Elem(s, type, m.Re.SelectMany(enc).ToArray());
                 if (m.IsComplex) Elem(s, type, m.Im!.SelectMany(enc).ToArray());
                 break;
             }

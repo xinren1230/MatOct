@@ -153,6 +153,30 @@ public sealed class MatrixValue : ArrayValue
     }
     public NumKind Kind;
     public bool DoubleQuoted; // display only
+    /// <summary>Exact 64-bit integer sidecar (int64/uint64, uint64 stored as bit pattern). Self-validating: an entry is used only while it still matches Re.</summary>
+    public long[]? L;
+    public bool Is64 => Kind == NumKind.Int64 || Kind == NumKind.UInt64;
+    static double U2D(long v) => (double)(ulong)v;
+    /// <summary>Exact int64 value at k (falls back to the double).</summary>
+    public long I64(int k)
+    {
+        var re = Re[k];
+        if (L != null && L.Length == Re.Length && (double)L[k] == re) return L[k];
+        return re >= 9.2233720368547758e18 ? long.MaxValue : re <= -9.2233720368547758e18 ? long.MinValue : (long)re;
+    }
+    public ulong U64(int k)
+    {
+        var re = Re[k];
+        if (L != null && L.Length == Re.Length && U2D(L[k]) == re) return (ulong)L[k];
+        return re >= 1.8446744073709552e19 ? ulong.MaxValue : re <= 0 ? 0 : (ulong)re;
+    }
+    public string ExactString(int k) => Kind == NumKind.UInt64 ? U64(k).ToString(System.Globalization.CultureInfo.InvariantCulture) : I64(k).ToString(System.Globalization.CultureInfo.InvariantCulture);
+    public static MatrixValue FromI64(int r, int c, long[] v, NumKind k)
+    {
+        var m = new MatrixValue(r, c, k);
+        for (int i = 0; i < v.Length; i++) m.Re[i] = k == NumKind.UInt64 ? U2D(v[i]) : v[i];
+        m.L = v; return m;
+    }
 
     public MatrixValue(int r, int c, NumKind kind = NumKind.Double, bool complex = false)
     {
@@ -237,7 +261,7 @@ public sealed class MatrixValue : ArrayValue
         return new MatrixValue(R, C, Re, Im, NumKind.Double) { ND = ND };
     }
 
-    public MatrixValue Copy() => new(R, C, (double[])Re.Clone(), (double[]?)Im?.Clone(), Kind) { DoubleQuoted = DoubleQuoted, ND = ND };
+    public MatrixValue Copy() => new(R, C, (double[])Re.Clone(), (double[]?)Im?.Clone(), Kind) { DoubleQuoted = DoubleQuoted, ND = ND, L = (long[]?)L?.Clone() };
 
     public override ArrayValue Gather(int[] lin, int r, int c)
     {
@@ -247,6 +271,7 @@ public sealed class MatrixValue : ArrayValue
             m.Re[k] = Re[lin[k]];
             if (Im != null) m.Im![k] = Im[lin[k]];
         }
+        if (L != null && Is64) { var l = new long[lin.Length]; for (int k = 0; k < lin.Length; k++) l[k] = Kind == NumKind.UInt64 ? (long)U64(lin[k]) : I64(lin[k]); m.L = l; }
         return m;
     }
     public override ArrayValue Resized(int r, int c)
@@ -263,6 +288,11 @@ public sealed class MatrixValue : ArrayValue
     public override void SetFrom(int dst, ArrayValue src, int srcIdx)
     {
         var s = (MatrixValue)src;
+        if (Is64 && s.Kind == Kind && s.L != null)
+        {
+            if (L == null || L.Length != Re.Length) { var l = new long[Re.Length]; for (int i = 0; i < l.Length; i++) l[i] = Kind == NumKind.UInt64 ? (long)U64(i) : I64(i); L = l; }
+            L[dst] = Kind == NumKind.UInt64 ? (long)s.U64(srcIdx) : s.I64(srcIdx);
+        }
         Re[dst] = s.Re[srcIdx];
         if (s.Im != null) { Im ??= new double[Re.Length]; Im[dst] = s.Im[srcIdx]; }
         else if (Im != null) Im[dst] = 0;
@@ -329,7 +359,11 @@ public sealed class StructValue : ArrayValue
         foreach (var f in Fields) d[f] = MatrixValue.Empty();
         return d;
     }
-    public override string ClassName => "struct";
+    /// <summary>Non-null for MATLAB value types built on a scalar struct: table, timetable, categorical, datetime, duration.</summary>
+    public string? Tag;
+    public Dictionary<string, object>? Meta;
+    public override string ClassName => Tag ?? "struct";
+    public override int[] Dims => Tag != null ? Tagged.TagDims(this) : base.Dims;
     public Value Get(string f, int k = 0)
     {
         if (!Elems[k].TryGetValue(f, out var v)) throw new OctaveException($"invalid use of undefined value");
@@ -345,7 +379,7 @@ public sealed class StructValue : ArrayValue
     public void Set(string f, Value v, int k = 0) { AddField(f); Elems[k][f] = v; }
     public StructValue Copy()
     {
-        var s = new StructValue(R, C, Fields) { ND = ND };
+        var s = new StructValue(R, C, Fields) { ND = ND, Tag = Tag, Meta = Meta == null ? null : new Dictionary<string, object>(Meta) };
         for (int k = 0; k < Elems.Length; k++) s.Elems[k] = new Dictionary<string, Value>(Elems[k]);
         return s;
     }

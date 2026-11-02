@@ -1,5 +1,6 @@
 // MatRewrite - GPL-3.0-or-later
 using MatRewrite.Core.Graphics;
+using MatRewrite.Core.Runtime;
 using SP = ScottPlot;
 
 namespace MatRewrite.Plotting;
@@ -66,13 +67,35 @@ public static class FigureRenderer
             {
                 case LineSeries l:
                 {
+                    if (l.Props.TryGetValue("visible", out var lv) && lv is MatrixValue lvm && lvm.IsChar && lvm.AsString() == "off") break;
                     var sc = plot.Add.Scatter(TX(l.X), TY(l.Y));
                     sc.Color = ToColor(l.Color);
-                    sc.LineWidth = l.Style == LineStyle.None ? 0 : (float)Math.Max(1, l.LineWidth * 2);
+                    sc.LineWidth = l.Style == LineStyle.None ? 0 : (float)Math.Max(0.5, l.LineWidth * 2);
                     sc.LinePattern = Pattern(l.Style);
-                    sc.MarkerShape = Shape(l.Marker, l.MarkerFilled || l.Marker == Marker.Point);
-                    sc.MarkerSize = l.Marker == Marker.None ? 0 : (float)(l.Marker == Marker.Point ? l.MarkerSize / 2 : l.MarkerSize);
-                    if (l.DisplayName != "") sc.LegendText = l.DisplayName;
+                    if (l.DisplayName != "") sc.LegendText = Tex(l.DisplayName);
+                    void StyleMarkers(SP.Plottables.Scatter m)
+                    {
+                        bool filled = l.MarkerFilled || l.Marker == Marker.Point;
+                        m.MarkerShape = Shape(l.Marker, filled);
+                        m.MarkerSize = l.Marker == Marker.None ? 0 : (float)(l.Marker == Marker.Point ? l.MarkerSize / 2 : l.MarkerSize * Pt);
+                        var edge = ToColor(l.MarkerEdge ?? l.Color);
+                        m.MarkerLineColor = edge;
+                        m.MarkerLineWidth = (float)Math.Max(1, l.LineWidth * 1.5);
+                        m.MarkerFillColor = filled ? ToColor(l.MarkerFace ?? l.Color) : SP.Colors.Transparent;
+                        m.MarkerStyle.OutlineColor = edge; m.MarkerStyle.OutlineWidth = (float)Math.Max(1, l.LineWidth * 1.5);
+                        if (l.Marker == Marker.Point) m.MarkerFillColor = edge;
+                    }
+                    if (l.MarkerIndices == null || l.Marker == Marker.None) StyleMarkers(sc);
+                    else
+                    {
+                        sc.MarkerSize = 0;
+                        var idx = l.MarkerIndices.Where(i => i >= 1 && i <= l.X.Length).Select(i => i - 1).ToArray();
+                        if (idx.Length > 0)
+                        {
+                            var mk = plot.Add.Scatter(TX(idx.Select(i => l.X[i]).ToArray()), TY(idx.Select(i => l.Y[i]).ToArray()));
+                            mk.LineWidth = 0; mk.Color = ToColor(l.Color); StyleMarkers(mk);
+                        }
+                    }
                     break;
                 }
                 case ScatterSeries p:
@@ -90,6 +113,21 @@ public static class FigureRenderer
                         }
                         var m = plot.Add.Marker(p.X[i], p.Y[i], shape, (float)Math.Sqrt(size) * 1.5f, col);
                         if (i == 0 && p.DisplayName != "") m.LegendText = p.DisplayName;
+                    }
+                    break;
+                }
+                case PatchSeries ps when !ax.Is3D:
+                {
+                    foreach (var (px, py) in ps.Polys)
+                    {
+                        var xs = TX(px); var ys = TY(py);
+                        var pts = Enumerable.Range(0, Math.Min(xs.Length, ys.Length)).Where(i => double.IsFinite(xs[i]) && double.IsFinite(ys[i])).Select(i => new SP.Coordinates(xs[i], ys[i])).ToArray();
+                        if (pts.Length < 2) continue;
+                        var pg = plot.Add.Polygon(pts);
+                        pg.FillColor = ps.FaceColor is Rgb fc ? ToColor(fc).WithAlpha(ps.FaceAlpha) : SP.Colors.Transparent;
+                        pg.LineColor = ps.EdgeColor is Rgb ec ? ToColor(ec) : SP.Colors.Transparent;
+                        pg.LineWidth = (float)Math.Max(0.5, ps.LineWidth);
+                        if (ps.DisplayName != "") pg.LegendText = ps.DisplayName;
                     }
                     break;
                 }
@@ -201,9 +239,9 @@ public static class FigureRenderer
                 }
             }
         }
-        if (ax.Title != "") plot.Title(ax.Title);
-        if (ax.XLabel != "") plot.XLabel(ax.XLabel);
-        if (ax.YLabel != "") plot.YLabel(ax.YLabel);
+        if (ax.Title != "") plot.Title(Tex(ax.Title));
+        if (ax.XLabel != "") plot.XLabel(Tex(ax.XLabel));
+        if (ax.YLabel != "") plot.YLabel(Tex(ax.YLabel));
         if (ax.Grid) plot.ShowGrid(); else plot.HideGrid();
         if (ax.LegendVisible)
         {
@@ -229,6 +267,156 @@ public static class FigureRenderer
         if (ax.YDirReverse) plot.Axes.SetLimits(xl[0], xl[1], yl[1], yl[0]);
         else plot.Axes.SetLimits(xl[0], xl[1], yl[0], yl[1]);
         if (ax.Equal || ax.Square) plot.Axes.SquareUnits();
+        ApplyStyle(plot, ax, lastImage);
+    }
+
+    // ---- Phase 13: MATLAB axes styling (fonts, ticks, colours, box, grid, legend) ----
+    static string? PS(GObject? o, string k) => o != null && o.Props.TryGetValue(k, out var v) && v is MatrixValue m && m.IsChar ? m.AsString() : null;
+    static double? PN(GObject? o, string k) => o != null && o.Props.TryGetValue(k, out var v) && v is MatrixValue m && !m.IsChar && m.Numel >= 1 ? m.Re[0] : null;
+    static double[]? PV(GObject? o, string k) => o != null && o.Props.TryGetValue(k, out var v) && v is MatrixValue m && !m.IsChar ? m.Re.ToArray() : null;
+    static Rgb? PC(GObject? o, string k)
+    {
+        if (o == null || !o.Props.TryGetValue(k, out var v) || v is not MatrixValue m) return null;
+        if (!m.IsChar && m.Numel == 3) return new Rgb(m.Re[0], m.Re[1], m.Re[2]);
+        return m.IsChar ? Rgb.FromName(m.AsString().ToLowerInvariant()) : null;
+    }
+    static string[]? PL(GObject? o, string k)
+    {
+        if (o == null || !o.Props.TryGetValue(k, out var v)) return null;
+        if (v is CellValue c) return c.Data.Select(x => x is MatrixValue xm && xm.IsChar ? xm.AsString() : x is MatrixValue xn && xn.Numel == 1 ? Renderer3D.Fmt(xn.Re[0], true) : "").ToArray();
+        if (v is MatrixValue m && m.IsChar)
+        {
+            if (m.R > 1) return Enumerable.Range(0, m.R).Select(r => new string(Enumerable.Range(0, m.C).Select(cc => (char)m.Re[r + cc * m.R]).ToArray()).TrimEnd()).ToArray();
+            return m.AsString().Split('|');
+        }
+        if (v is MatrixValue n && !n.IsChar) return n.Re.Select(x => Renderer3D.Fmt(x, true)).ToArray();
+        return null;
+    }
+    static readonly Dictionary<string, string> TexMap = new()
+    {
+        ["alpha"] = "α", ["beta"] = "β", ["gamma"] = "γ", ["delta"] = "δ", ["epsilon"] = "ε", ["zeta"] = "ζ", ["eta"] = "η", ["theta"] = "θ",
+        ["iota"] = "ι", ["kappa"] = "κ", ["lambda"] = "λ", ["mu"] = "μ", ["nu"] = "ν", ["xi"] = "ξ", ["pi"] = "π", ["rho"] = "ρ", ["sigma"] = "σ",
+        ["tau"] = "τ", ["upsilon"] = "υ", ["phi"] = "φ", ["chi"] = "χ", ["psi"] = "ψ", ["omega"] = "ω", ["Gamma"] = "Γ", ["Delta"] = "Δ",
+        ["Theta"] = "Θ", ["Lambda"] = "Λ", ["Xi"] = "Ξ", ["Pi"] = "Π", ["Sigma"] = "Σ", ["Phi"] = "Φ", ["Psi"] = "Ψ", ["Omega"] = "Ω",
+        ["infty"] = "∞", ["pm"] = "±", ["circ"] = "°", ["times"] = "×", ["leq"] = "≤", ["geq"] = "≥", ["neq"] = "≠", ["approx"] = "≈",
+        ["rightarrow"] = "→", ["leftarrow"] = "←", ["partial"] = "∂", ["nabla"] = "∇", ["int"] = "∫", ["sum"] = "∑", ["sqrt"] = "√", ["cdot"] = "·", ["deg"] = "°",
+    };
+    /// <summary>Minimal TeX interpreter: greek letters/symbols and ^{..}/_{..} with unicode super/subscripts where available.</summary>
+    public static string Tex(string s)
+    {
+        if (string.IsNullOrEmpty(s) || (s.IndexOf('\\') < 0 && s.IndexOf('^') < 0 && s.IndexOf('_') < 0)) return s;
+        var r = System.Text.RegularExpressions.Regex.Replace(s, @"\\([A-Za-z]+)", m => TexMap.TryGetValue(m.Groups[1].Value, out var u) ? u : m.Value);
+        const string sup = "⁰¹²³⁴⁵⁶⁷⁸⁹", sub = "₀₁₂₃₄₅₆₇₈₉";
+        string Conv(string t, string tbl, string extra) => new(t.Select(ch => char.IsDigit(ch) ? tbl[ch - '0'] : ch == '-' ? extra[0] : ch == '+' ? extra[1] : ch).ToArray());
+        r = System.Text.RegularExpressions.Regex.Replace(r, @"\^\{([^}]*)\}|\^([0-9+-])", m => Conv(m.Groups[1].Success && m.Groups[1].Length > 0 ? m.Groups[1].Value : m.Groups[2].Value, sup, "⁻⁺"));
+        r = System.Text.RegularExpressions.Regex.Replace(r, @"_\{([^}]*)\}|_([0-9])", m => Conv(m.Groups[1].Success && m.Groups[1].Length > 0 ? m.Groups[1].Value : m.Groups[2].Value, sub, "₋₊"));
+        return r;
+    }
+    /// <summary>MATLAB points to ScottPlot pixels.</summary>
+    const float Pt = 1.33f;
+
+    static void Font(SP.LabelStyle st, GObject? primary, GObject ax, double scale)
+    {
+        var name = PS(primary, "fontname") ?? PS(ax, "fontname");
+        if (name != null && name != "*" && !name.Equals("Helvetica", StringComparison.OrdinalIgnoreCase)) st.FontName = name;
+        var sz = PN(primary, "fontsize") ?? (PN(ax, "fontsize") is double a ? a * scale : null);
+        if (sz is double z && z > 0) st.FontSize = (float)(z * Pt);
+        var w = PS(primary, "fontweight") ?? (primary == null ? PS(ax, "fontweight") : null);
+        if (w != null) st.Bold = w == "bold";
+        var an = PS(primary, "fontangle") ?? PS(ax, "fontangle");
+        if (an != null) st.Italic = an is "italic" or "oblique";
+        if (PC(primary, "color") is Rgb c) st.ForeColor = ToColor(c);
+    }
+
+    static void AxColor(SP.IAxis a, SP.Color c)
+    {
+        a.FrameLineStyle.Color = c; a.MajorTickStyle.Color = c; a.MinorTickStyle.Color = c;
+        a.TickLabelStyle.ForeColor = c; a.Label.ForeColor = c;
+    }
+
+    static void ApplyStyle(SP.Plot plot, Axes ax, SP.Plottables.Heatmap? lastImage)
+    {
+        var bottom = plot.Axes.Bottom; var left = plot.Axes.Left;
+        // tick labels
+        Font(bottom.TickLabelStyle, null, ax, 1); Font(left.TickLabelStyle, null, ax, 1);
+        if (PS(ax, "fontweight") == null) { bottom.TickLabelStyle.Bold = false; left.TickLabelStyle.Bold = false; }
+        // title / labels
+        Font(plot.Axes.Title.Label, ax.TitleObj, ax, 1.1);
+        if (ax.TitleObj == null || PS(ax.TitleObj, "fontweight") == null) { if (PS(ax, "fontweight") is null) { } }
+        Font(bottom.Label, ax.XLabelObj, ax, 1.1); Font(left.Label, ax.YLabelObj, ax, 1.1);
+        // colours
+        if (PC(ax, "xcolor") is Rgb xc) { var c = ToColor(xc); AxColor(bottom, c); plot.Axes.Top.FrameLineStyle.Color = c; }
+        if (PC(ax, "ycolor") is Rgb yc) { var c = ToColor(yc); AxColor(left, c); plot.Axes.Right.FrameLineStyle.Color = c; }
+        if (PC(ax, "color") is Rgb bg) plot.DataBackground.Color = ToColor(bg);
+        // axis line width
+        if (PN(ax, "linewidth") is double lw)
+        {
+            float w = (float)Math.Max(0.5, lw * 2);
+            foreach (var a in new SP.IAxis[] { bottom, left, plot.Axes.Top, plot.Axes.Right }) a.FrameLineStyle.Width = w;
+            bottom.MajorTickStyle.Width = left.MajorTickStyle.Width = w;
+        }
+        // ticks
+        var tl = PV(ax, "ticklength");
+        var dir = PS(ax, "tickdir");
+        foreach (var a in new SP.IAxis[] { bottom, left })
+        {
+            if (tl is { Length: > 0 }) { a.MajorTickStyle.Length = (float)(tl[0] * 400); a.MinorTickStyle.Length = (float)(tl[0] * 200); }
+            if (dir == "none") { a.MajorTickStyle.Length = 0; a.MinorTickStyle.Length = 0; }
+            else if (dir == "in") { a.MajorTickStyle.Length = -Math.Abs(a.MajorTickStyle.Length); a.MinorTickStyle.Length = -Math.Abs(a.MinorTickStyle.Length); }
+        }
+        void Manual(SP.IAxis axis, string pos, string lab, bool log)
+        {
+            var tv = PV(ax, pos); var tlab = PL(ax, lab);
+            if (tv == null && tlab == null) return;
+            if (tv == null) return; // labels without positions: keep auto ticks
+            var gen = new SP.TickGenerators.NumericManual();
+            for (int i = 0; i < tv.Length; i++)
+            {
+                double at = log ? Math.Log10(tv[i]) : tv[i];
+                string text = tlab != null ? (tlab.Length == 0 ? "" : Tex(tlab[i % tlab.Length])) : Renderer3D.Fmt(tv[i], true);
+                gen.AddMajor(at, text);
+            }
+            axis.TickGenerator = gen;
+        }
+        // MATLAB-like sparse automatic ticks (ScottPlot's default density is much finer)
+        if (!ax.XLog) bottom.TickGenerator = new SP.TickGenerators.NumericAutomatic { TickDensity = 0.3 };
+        if (!ax.YLog) left.TickGenerator = new SP.TickGenerators.NumericAutomatic { TickDensity = 0.3 };
+        Manual(bottom, "xtick", "xticklabel", ax.XLog);
+        Manual(left, "ytick", "yticklabel", ax.YLog);
+        if (PN(ax, "xticklabelrotation") is double xr) bottom.TickLabelStyle.Rotation = (float)-xr;
+        // box
+        if (!ax.Box || PS(ax, "box") == "off")
+        {
+            plot.Axes.Top.FrameLineStyle.Width = 0; plot.Axes.Right.FrameLineStyle.Width = 0;
+        }
+        // grids
+        bool xg = PS(ax, "xgrid") is string xs0 ? xs0 == "on" : ax.Grid, yg = PS(ax, "ygrid") is string ys0 ? ys0 == "on" : ax.Grid;
+        bool xmg = PS(ax, "xminorgrid") is string xm0 ? xm0 == "on" : ax.MinorGrid, ymg = PS(ax, "yminorgrid") is string ym0 ? ym0 == "on" : ax.MinorGrid;
+        if (xg || yg || xmg || ymg)
+        {
+            plot.ShowGrid();
+            plot.Grid.XAxisStyle.MajorLineStyle.Width = xg ? 1 : 0;
+            plot.Grid.YAxisStyle.MajorLineStyle.Width = yg ? 1 : 0;
+            if (xmg) { plot.Grid.XAxisStyle.MinorLineStyle.Width = 1; plot.Grid.XAxisStyle.MinorLineStyle.Color = SP.Colors.Black.WithAlpha(0.08); }
+            if (ymg) { plot.Grid.YAxisStyle.MinorLineStyle.Width = 1; plot.Grid.YAxisStyle.MinorLineStyle.Color = SP.Colors.Black.WithAlpha(0.08); }
+            if (PC(ax, "gridcolor") is Rgb gc) plot.Grid.MajorLineColor = ToColor(gc).WithAlpha(0.25);
+            var gls = PS(ax, "gridlinestyle");
+            if (gls is "--" or ":" or "-.") plot.Grid.MajorLinePattern = gls == ":" ? SP.LinePattern.Dotted : SP.LinePattern.Dashed;
+        }
+        // legend
+        var lg = ax.LegendObj;
+        if (lg is { Deleted: true }) plot.HideLegend();
+        else if (lg != null && ax.LegendVisible)
+        {
+            var fname = PS(lg, "fontname") ?? PS(ax, "fontname");
+            if (fname != null && fname != "*" && !fname.Equals("Helvetica", StringComparison.OrdinalIgnoreCase)) plot.Legend.FontName = fname;
+            var fsz = PN(lg, "fontsize") ?? (PN(ax, "fontsize") is double af ? af * 0.9 : null);
+            if (fsz is double fz) plot.Legend.FontSize = (float)(fz * Pt);
+            if (PC(lg, "textcolor") is Rgb tc) plot.Legend.FontColor = ToColor(tc);
+            if (PS(lg, "box") == "off") { plot.Legend.OutlineWidth = 0; plot.Legend.ShadowFillStyle.Color = SP.Colors.Transparent; }
+            if (PC(lg, "color") is Rgb lbg) plot.Legend.BackgroundFillStyle.Color = ToColor(lbg);
+            if (PS(lg, "orientation") == "horizontal") plot.Legend.Orientation = SP.Orientation.Horizontal;
+        }
     }
 
     static void AddSeg(SP.Plot plot, double x0, double y0, double x1, double y1, SP.Color c)
@@ -272,13 +460,13 @@ public static class FigureRenderer
     static int Lcm(int a, int b) { int g = Gcd(a, b); return a / g * b; }
     static int Gcd(int a, int b) => b == 0 ? a : Gcd(b, a % b);
 
-    /// <summary>Render a whole figure to an image file.</summary>
-    public static void Save(Figure f, string path, int width, int height)
+    /// <summary>Draw a whole figure onto a canvas (vector where possible).</summary>
+    public static void DrawTo(SkiaSharp.SKCanvas canvas, Figure f, int width, int height, bool vector)
     {
         var (rows, cols, cells) = Layout(f);
-        using var surface = SkiaSharp.SKSurface.Create(new SkiaSharp.SKImageInfo(width, height));
-        var canvas = surface.Canvas;
-        canvas.Clear(SkiaSharp.SKColors.White);
+        var bg = f.Props.TryGetValue("color", out var bv) && bv is MatrixValue bm && !bm.IsChar && bm.Numel == 3
+            ? new SkiaSharp.SKColor((byte)(bm.Re[0] * 255), (byte)(bm.Re[1] * 255), (byte)(bm.Re[2] * 255)) : SkiaSharp.SKColors.White;
+        canvas.Clear(bg);
         double cw = (double)width / cols, ch = (double)height / rows;
         foreach (var (ax, r, c, rs, cs) in cells)
         {
@@ -290,20 +478,49 @@ public static class FigureRenderer
             var plot = new SP.Plot();
             Apply(plot, ax, f.Colormap);
             int w = (int)(cw * cs), h = (int)(ch * rs);
-            using var img = plot.GetImage(w, h);
-            using var sk = SkiaSharp.SKImage.FromEncodedData(img.GetImageBytes(SP.ImageFormat.Png));
-            canvas.DrawImage(sk, (float)(c * cw), (float)(r * ch));
+            float x0 = (float)(c * cw), y0 = (float)(r * ch);
+            if (vector)
+            {
+                canvas.Save();
+                canvas.Translate(x0, y0);
+                canvas.ClipRect(new SkiaSharp.SKRect(0, 0, w, h));
+                plot.RenderManager.Render(canvas, new SP.PixelRect(0, w, h, 0));
+                canvas.Restore();
+            }
+            else
+            {
+                using var img = plot.GetImage(w, h);
+                using var sk = SkiaSharp.SKImage.FromEncodedData(img.GetImageBytes(SP.ImageFormat.Png));
+                canvas.DrawImage(sk, x0, y0);
+            }
         }
         Renderer3D.DrawAnnotations(canvas, f, width, height);
+    }
+
+    /// <summary>Render a whole figure to a file (png/jpg/bmp/webp raster, svg/pdf vector).</summary>
+    public static void Save(Figure f, string path, int width, int height)
+    {
         var ext = Path.GetExtension(path).ToLowerInvariant();
-        var fmt = ext switch { ".jpg" or ".jpeg" => SkiaSharp.SKEncodedImageFormat.Jpeg, ".bmp" => SkiaSharp.SKEncodedImageFormat.Bmp, ".webp" => SkiaSharp.SKEncodedImageFormat.Webp, _ => SkiaSharp.SKEncodedImageFormat.Png };
-        if (ext == ".svg" && cells.Count == 1 && !Renderer3D.Handles(cells[0].ax) && f.Annotations.Count == 0)
+        if (ext == ".pdf" || ext == ".eps" || ext == ".ps")
         {
-            var plot = new SP.Plot();
-            Apply(plot, cells[0].ax, f.Colormap);
-            plot.SaveSvg(path, width, height);
+            using var fs = File.Create(path);
+            using var doc = SkiaSharp.SKDocument.CreatePdf(fs);
+            var pc = doc.BeginPage(width, height);
+            DrawTo(pc, f, width, height, true);
+            doc.EndPage();
+            doc.Close();
             return;
         }
+        if (ext == ".svg")
+        {
+            using (var fs = File.Create(path))
+            using (var sc = SkiaSharp.SKSvgCanvas.Create(new SkiaSharp.SKRect(0, 0, width, height), fs))
+                DrawTo(sc, f, width, height, true);
+            return;
+        }
+        using var surface = SkiaSharp.SKSurface.Create(new SkiaSharp.SKImageInfo(width, height));
+        DrawTo(surface.Canvas, f, width, height, false);
+        var fmt = ext switch { ".jpg" or ".jpeg" => SkiaSharp.SKEncodedImageFormat.Jpeg, ".bmp" => SkiaSharp.SKEncodedImageFormat.Bmp, ".webp" => SkiaSharp.SKEncodedImageFormat.Webp, _ => SkiaSharp.SKEncodedImageFormat.Png };
         using var snap = surface.Snapshot();
         using var data = snap.Encode(fmt, 95);
         File.WriteAllBytes(path, data.ToArray());

@@ -57,7 +57,8 @@ public static partial class BuiltinLibrary
             it.Out.WriteLine("\n\t\tMATLABPATH\n");
             it.Out.WriteLine("\t" + Directory.GetCurrentDirectory() + "  (current folder)");
             foreach (var d in it.SearchPath) it.Out.WriteLine("\t" + d);
-            it.Out.WriteLine("\t<built-in CoreLib>\n");
+            it.Out.WriteLine($"\t<matoct>/toolbox/builtin        ({it.Builtins.Count} built-in functions)");
+            it.Out.WriteLine($"\t<matoct>/toolbox/core           ({CoreMLib.Names.Count()} library .m functions)\n");
             return Array.Empty<Value>();
         });
         Reg("genpath", (it, a, n) =>

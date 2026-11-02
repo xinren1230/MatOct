@@ -12,7 +12,7 @@ using ScottPlot.WPF;
 namespace MatRewrite.Plotting.Wpf;
 
 /// <summary>A WPF window that shows one figure; each axes is a WpfPlot placed on a grid.</summary>
-public sealed class FigureWindow : Window
+public sealed partial class FigureWindow : Window
 {
     readonly Grid grid = new();
     public Figure Figure { get; }
@@ -20,7 +20,7 @@ public sealed class FigureWindow : Window
     public FigureWindow(Figure f)
     {
         Figure = f;
-        Content = grid;
+        Content = BuildChrome();
         Width = f.Width; Height = f.Height;
         // Phase 6: forward UI events to the interpreter thread (run at drawnow/pause).
         SizeChanged += (_, e) =>
@@ -61,6 +61,7 @@ public sealed class FigureWindow : Window
     public void Refresh()
     {
         Title = Figure.WindowTitle;
+        plotAxes.Clear();
         grid.Children.Clear(); grid.RowDefinitions.Clear(); grid.ColumnDefinitions.Clear();
         var (rows, cols, cells) = FigureRenderer.Layout(Figure);
         for (int i = 0; i < rows; i++) grid.RowDefinitions.Add(new RowDefinition());
@@ -76,6 +77,7 @@ public sealed class FigureWindow : Window
             }
             var wp = new WpfPlot();
             FigureRenderer.Apply(wp.Plot, ax, Figure.Colormap);
+            HookPlot(wp, ax);
             Grid.SetRow(wp, r); Grid.SetColumn(wp, c); Grid.SetRowSpan(wp, rs); Grid.SetColumnSpan(wp, cs);
             grid.Children.Add(wp);
             wp.Refresh();

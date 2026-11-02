@@ -1,6 +1,6 @@
 ; MatOct installer (Inno Setup 6). Build: ISCC.exe MatOct.iss  (run build-dist.ps1 first)
 #define AppName "MatOct"
-#define AppVer "0.12.0"
+#define AppVer "0.13.0"
 [Setup]
 AppId={{8F3D2C51-7B1A-4E0C-A9D2-5E1F0C3B7A12}
 UsePreviousAppDir=no

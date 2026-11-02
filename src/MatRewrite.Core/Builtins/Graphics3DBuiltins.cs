@@ -422,11 +422,13 @@ namespace MatRewrite.Core.Builtins
                     switch (p)
                     {
                         case "string": an.Text = a[k + 1] is CellValue c ? string.Join("\n", c.Data.Select(v => S(v, "annotation"))) : S(a[k + 1], "annotation"); break;
+                        case "edgecolor" when IsString(a[k + 1]) && S(a[k + 1], "annotation") == "none": an.Props["linestyle"] = a[k + 1]; break;
                         case "color": case "edgecolor": an.Color = ParseColor(a[k + 1], "annotation"); break;
                         case "fontsize": an.FontSize = D(a[k + 1], "annotation"); break;
                         case "position": an.Position = M(a[k + 1], "annotation").Re.ToArray(); break;
                         case "x": an.X = M(a[k + 1], "annotation").Re.ToArray(); break;
                         case "y": an.Y = M(a[k + 1], "annotation").Re.ToArray(); break;
+                        case "linestyle": case "horizontalalignment": an.Props[p] = a[k + 1]; break;
                         default: break; // linewidth, headstyle, fitboxtotext, ... accepted and ignored
                     }
                 }
