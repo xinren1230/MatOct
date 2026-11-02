@@ -2,6 +2,17 @@
 
 All notable changes to MatOct. Detailed notes (Chinese) live in `docs/phaseN.md`.
 
+## [0.17.0] - 2026-11-02
+MatOct is a MATLAB-style IDE for GNU Octave, written in C#.
+### Changed
+- Octave test-suite pass rate out of the box: **93.7 % → 94.6 %** (9795/10354 blocks); with `--lib`: 93.2 % → 94.2 % (9794/10400).
+- Octave-faithful `optimset`/`optimget` (option list, case-insensitive prefix matching, ambiguity errors, `optimset(fname)` defaults); more Octave m-files used by default (`int2str`, `condest`, `methods`, `hanning`, `spy`, `center`, `kurtosis`, `skewness`, `bin2dec`, `hex2dec`). Note: `hanning` now follows current Octave (`hanning(3)` = `[0 1 0]`).
+### Fixed
+- New `isprime` builtin (Miller-Rabin, Gaussian primes, validation); `sort` along any dimension of N-d arrays (fixes N-d `median`).
+- `repmat`/`resize` on cell and struct arrays; `{a{:}, b{:}}` with empty cs-lists; char ranges (`'a':'e'`).
+- `stairs` axes-handle argument and validation; `sprintf('%s', 65)` gives `A`.
+- New `getpwuid`, `getuid`/`geteuid`/`getgid`/`getegid`, `is_sq_string`/`is_dq_string`, `__keywords__`, `__operators__`.
+
 ## [0.16.0] - 2026-11-02
 MatOct is a MATLAB-style IDE for GNU Octave, written in C#.
 ### Changed

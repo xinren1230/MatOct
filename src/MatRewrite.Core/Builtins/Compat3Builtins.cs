@@ -169,7 +169,23 @@ public static partial class BuiltinLibrary
                 }
                 return r;
             }
-            throw new OctaveException("resize: invalid argument");
+            {
+                var od = x.Dims; var lin = new List<int>(); int tot = nd.Aggregate(1, (p, q) => p * q);
+                for (int k = 0; k < tot; k++)
+                {
+                    int rem = k, src = 0, mul = 1;
+                    for (int d = 0; d < nd.Length; d++)
+                    {
+                        int s = rem % nd[d]; rem /= nd[d]; int odd = d < od.Length ? od[d] : 1;
+                        if (s >= odd) throw new OctaveException("resize: invalid argument");
+                        src += s * mul; mul *= odd;
+                    }
+                    lin.Add(src);
+                }
+                var g = x.Gather(lin.ToArray(), nd[0], tot / Math.Max(1, nd[0]));
+                if (nd[0] == 0) g = x.Gather(Array.Empty<int>(), 0, nd.Skip(1).Aggregate(1, (p, q) => p * q));
+                g.SetDims(nd); return g;
+            }
         });
         Reg1("typecast", a =>
         {

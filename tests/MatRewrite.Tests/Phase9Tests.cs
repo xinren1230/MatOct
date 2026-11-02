@@ -42,7 +42,7 @@ public class Phase9Tests
     // ---- misc
     [Fact] public void FftShift() => Assert.Equal("4 5 1 2 3", Run("printf('%g ', fftshift(1:5))"));
     [Fact] public void IfftShift() => Assert.Equal("3 4 5 1 2", Run("printf('%g ', ifftshift(1:5))"));
-    [Fact] public void Hanning() => Assert.Equal("0.5 1 0.5", Run("printf('%g ', hanning(3))"));
+    [Fact] public void Hanning() => Assert.Equal("0 1 0", Run("printf('%g ', hanning(3))"));
     [Fact] public void Beta() => Assert.Equal("0.0833333", Run("printf('%g', beta(2,3))"));
     [Fact] public void Bincoeff() => Assert.Equal("10", Run("printf('%g', bincoeff(5,2))"));
     [Fact] public void Base2Dec() => Assert.Equal("255", Run("printf('%g', base2dec('ff',16))"));

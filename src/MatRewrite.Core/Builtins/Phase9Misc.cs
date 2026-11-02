@@ -281,8 +281,20 @@ public static partial class BuiltinLibrary
         {
             if (a.Length < 1) Usage("stairs");
             int k = 0; MatrixValue x, y;
-            if (a.Length >= 2 && !IsString(a[1])) { x = M(a[0], "stairs"); y = M(a[1], "stairs"); k = 2; } else { y = M(a[0], "stairs"); x = RowD(Enumerable.Range(1, y.Numel).Select(i => (double)i)); k = 1; }
-            if (x.Numel != y.Numel) throw new OctaveException("stairs: X and Y must have identical dimensions");
+            if (a.Length >= 2 && a[0] is MatrixValue { Numel: 1, IsChar: false } h0 && it.Graphics.Lookup(h0.Re[0]) is Graphics.Axes) a = a.Skip(1).ToArray();
+            static bool Num2D(Value v) => v is MatrixValue { IsChar: false } mv && mv.Dims.Length <= 2;
+            if (a.Length >= 2 && !IsString(a[1]))
+            {
+                if (!Num2D(a[0]) || !Num2D(a[1])) throw new OctaveException("stairs: X and Y must be numeric 2-D vectors or matrices");
+                x = M(a[0], "stairs"); y = M(a[1], "stairs"); k = 2;
+                if (!(x.Numel == y.Numel || (x.R == 1 || x.C == 1) && x.Numel == y.R)) throw new OctaveException("stairs: X and Y sizes must match");
+            }
+            else
+            {
+                if (!Num2D(a[0])) throw new OctaveException("stairs: Y must be a numeric 2-D vector or matrix");
+                y = M(a[0], "stairs"); x = RowD(Enumerable.Range(1, y.Numel).Select(i => (double)i)); k = 1;
+            }
+            if (x.Numel != y.Numel) throw new OctaveException("stairs: X and Y sizes must match");
             int N = y.Numel; var xs = new double[Math.Max(0, 2 * N - 1)]; var ys = new double[xs.Length];
             for (int i = 0; i < N; i++) { xs[2 * i] = x.Re[i]; ys[2 * i] = y.Re[i]; if (i + 1 < N) { xs[2 * i + 1] = x.Re[i + 1]; ys[2 * i + 1] = y.Re[i]; } }
             if (nout >= 2) return Out(ColD(xs), ColD(ys));

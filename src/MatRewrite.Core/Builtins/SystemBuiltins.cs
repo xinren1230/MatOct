@@ -176,6 +176,25 @@ public static partial class BuiltinLibrary
             return Num(0);
         });
         Reg1("isvarname", a => Bool(IsString(a[0]) && System.Text.RegularExpressions.Regex.IsMatch(S(a[0], "isvarname"), @"^[A-Za-z_]\w*$") && !Lexing.Lexer.IsKeyword(S(a[0], "isvarname"))));
+        Reg1("is_sq_string", a => Bool(a.Length == 1 && a[0] is MatrixValue { IsChar: true }));
+        Reg1("is_dq_string", a => Bool(a.Length == 1 && a[0] is MatrixValue { IsChar: true }));
+        foreach (var nm in new[] { "geteuid", "getuid", "getegid", "getgid" }) Reg1(nm, a => Num(OperatingSystem.IsWindows() ? 0 : 1000));
+        Reg1("getpwuid", a =>
+        {
+            var r = new StructValue(); r.Set("name", Str(Environment.UserName)); r.Set("passwd", Str("x"));
+            r.Set("uid", a.Length > 0 ? a[0] : Num(0)); r.Set("gid", Num(0)); r.Set("gecos", Str(""));
+            r.Set("dir", Str(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile))); r.Set("shell", Str("")); return r;
+        });
+        Reg1("__keywords__", a =>
+        {
+            var ks = Lexing.Lexer.Keywords.OrderBy(x => x, StringComparer.Ordinal).ToArray();
+            var c = new CellValue(ks.Length, 1); for (int i = 0; i < ks.Length; i++) c.Data[i] = Str(ks[i]); return c;
+        });
+        Reg1("__operators__", a =>
+        {
+            var ops = new[] { "!", "~", "!=", "~=", "\"", "#", "%", "&", "&&", "'", "(", ")", "*", "^", "+", "++", ",", "-", "--", ".'", ".*", ".^", "./", "/", ".\\", "\\", ":", ";", "<", "<=", "=", "==", ">", ">=", "[", "]", "|", "||" };
+            var c = new CellValue(ops.Length, 1); for (int i = 0; i < ops.Length; i++) c.Data[i] = Str(ops[i]); return c;
+        });
         Reg1("iskeyword", a => Bool(Lexing.Lexer.IsKeyword(S(a[0], "iskeyword"))));
         Reg("tic", (it, a, n) =>
         {

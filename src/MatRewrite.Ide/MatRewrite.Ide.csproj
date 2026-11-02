@@ -11,7 +11,7 @@
     <AssemblyName>MatOct</AssemblyName>
     <Product>MatOct</Product>
     <ApplicationIcon>app.ico</ApplicationIcon>
-    <Version>0.16.0</Version>
+    <Version>0.17.0</Version>
   </PropertyGroup>
 
   <ItemGroup>

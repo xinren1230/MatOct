@@ -98,7 +98,27 @@ public static partial class BuiltinLibrary
         Binary2("nchoosek", (n, k) => Math.Round(Math.Exp(MathNet.Numerics.SpecialFunctions.GammaLn(n + 1) - MathNet.Numerics.SpecialFunctions.GammaLn(k + 1) - MathNet.Numerics.SpecialFunctions.GammaLn(n - k + 1))));
         Reg1("gcd", a => a.Skip(1).Aggregate(M(a[0], "gcd"), (acc, v) => Ops.Elementwise(acc, M(v, "gcd"), "gcd", Gcd, null)));
         Reg1("lcm", a => a.Skip(1).Aggregate(M(a[0], "lcm"), (acc, v) => Ops.Elementwise(acc, M(v, "lcm"), "lcm", (x, y) => x == 0 || y == 0 ? 0 : Math.Abs(x * y) / Gcd(x, y), null)));
-        Pred("isprime", (x, _) => IsPrime(x));
+        Reg1("isprime", a =>
+        {
+            if (a.Length != 1) throw new OctaveException("Invalid call to isprime");
+            var m = M(a[0], "isprime");
+            var r = new MatrixValue(m.R, m.C, NumKind.Logical) { ND = (int[]?)m.ND?.Clone() };
+            for (int k = 0; k < m.Numel; k++)
+            {
+                double re = m.Re[k], im = m.Im?[k] ?? 0;
+                if (re != Math.Floor(re) || im != Math.Floor(im)) throw new OctaveException("isprime: X contains non-integer entries");
+                bool v;
+                if (m.IsComplex)
+                {
+                    double ar = Math.Abs(re), ai = Math.Abs(im);
+                    if (ar == 0 || ai == 0) { double q = ar + ai; v = IsPrime(q) && q % 4 == 3; }
+                    else v = IsPrime(ar * ar + ai * ai);
+                }
+                else v = IsPrime(Math.Abs(re));
+                r.Re[k] = v ? 1 : 0;
+            }
+            return r;
+        });
         Reg1("primes", a => { int n = I(a[0], "primes"); return MatrixValue.Row(Enumerable.Range(2, Math.Max(0, n - 1)).Where(k => IsPrime(k)).Select(k => (double)k)); });
         Reg1("factor", a => { long n = (long)D(a[0], "factor"); var f = new List<double>(); for (long p = 2; p * p <= n; p++) while (n % p == 0) { f.Add(p); n /= p; } if (n > 1 || f.Count == 0) f.Add(n); return MatrixValue.Row(f); });
 
@@ -138,8 +158,18 @@ public static partial class BuiltinLibrary
     static bool IsPrime(double x)
     {
         if (x < 2 || x != Math.Floor(x)) return false;
-        long n = (long)x;
-        for (long p = 2; p * p <= n; p++) if (n % p == 0) return false;
+        if (x >= 18446744073709551615.0) return false;
+        ulong n = (ulong)x;
+        if (n < 4) return n >= 2;
+        foreach (ulong sp in new ulong[] { 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37 }) { if (n == sp) return true; if (n % sp == 0) return false; }
+        ulong d = n - 1; int sh = 0; while ((d & 1) == 0) { d >>= 1; sh++; }
+        foreach (ulong b in new ulong[] { 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37 })
+        {
+            var y = System.Numerics.BigInteger.ModPow(b, d, n); if (y == 1 || y == n - 1) continue;
+            bool comp = true;
+            for (int t = 1; t < sh; t++) { y = y * y % n; if (y == n - 1) { comp = false; break; } }
+            if (comp) return false;
+        }
         return true;
     }
 

@@ -264,12 +264,14 @@ public static partial class BuiltinLibrary
             var m = M(src, "sort");
             var numArg = a.Skip(1).FirstOrDefault(v => !IsString(v));
             int d = numArg != null ? I(numArg, "sort") : DefDim(m);
-            var idx = new MatrixValue(m.R, m.C);
+            var idx = new MatrixValue(m.R, m.C); if (m.ND != null) idx.SetDims(m.Dims);
             var res = m.Copy();
-            int len = d == 1 ? m.R : m.C, cnt = d == 1 ? m.C : m.R;
+            var dd = m.Dims; int stride = 1; for (int q = 0; q < d - 1 && q < dd.Length; q++) stride *= dd[q];
+            int len = d - 1 < dd.Length ? dd[d - 1] : 1, cnt = len == 0 ? 0 : m.Numel / len;
             for (int t = 0; t < cnt; t++)
             {
-                var pos = Enumerable.Range(0, len).Select(k => d == 1 ? k + t * m.R : t + k * m.R).ToArray();
+                int lo = t % stride, hi = t / stride;
+                var pos = Enumerable.Range(0, len).Select(k => lo + k * stride + hi * stride * len).ToArray();
                 Func<int, double> key = p => m.IsComplex ? m.At(p).Magnitude : m.Re[p];
                 var order = Enumerable.Range(0, len).ToArray();
                 // stable sort, NaN last (first for descend)

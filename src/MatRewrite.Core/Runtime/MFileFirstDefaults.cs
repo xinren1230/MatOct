@@ -124,6 +124,8 @@ public static class MFileFirstDefaults
         "xline",
         "yline",
         "waterfall",
-        "ribbon"
+        "ribbon",
+        // 0.17 A/B
+        "int2str", "condest", "methods", "hanning", "spy", "center", "kurtosis", "bin2dec", "skewness", "hex2dec"
     };
 }

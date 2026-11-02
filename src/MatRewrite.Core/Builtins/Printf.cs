@@ -123,7 +123,8 @@ public static class Printf
                 else
                 {
                     double d = (double)item;
-                    body = d == Math.Floor(d) && Math.Abs(d) < 1e15 ? ShortG(d) : ShortG(d);
+                    if (d == Math.Floor(d) && d >= 0 && d < 256 && prec == null) return Pad(((char)(int)d).ToString(), width, flags, false);
+                    body = ShortG(d);
                     if (prec is int p1) body = FormatG(d, p1, flags.Contains('#'));
                 }
                 return Pad(body, width, flags, false);

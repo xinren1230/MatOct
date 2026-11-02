@@ -857,6 +857,9 @@ public sealed partial class Interpreter
                 var m = new MatrixValue(1, (int)n);
                 for (int k = 0; k < n; k++) m.Re[k] = a + k * st;
                 if (n > 0 && m.Re[n - 1] == 0) { double b = ScalarOf(Eval(re.Stop), "colon"); if (b == 0) m.Re[n - 1] = b; }
+                if (re.Start is StringExpr or IdentExpr && re.Stop is StringExpr or IdentExpr
+                    && Eval(re.Start) is MatrixValue { IsChar: true } && Eval(re.Stop) is MatrixValue { IsChar: true })
+                    return new List<Value> { new MatrixValue(1, (int)n, m.Re, null, NumKind.Char) };
                 return new List<Value> { m };
             }
             case MatrixExpr me: return new List<Value> { BuildMatrix(me.Rows, false) };
@@ -923,6 +926,7 @@ public sealed partial class Interpreter
                 foreach (var v in EvalArg(ex))
                     items.Add(cell ? (v is CellValue cv0 && false ? cv0 : new CellValue(1, 1, new[] { v })) : v);
             }
+            if (items.Count == 0) { rowVals.Add(cell ? new CellValue(1, 0) : MatrixValue.Empty()); continue; }
             rowVals.Add(Concat.Horz(items));
         }
         if (rowVals.Count == 0) return cell ? new CellValue(0, 0) : MatrixValue.Empty();
