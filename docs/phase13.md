@@ -30,3 +30,11 @@
 - 图例的点击区域为估算值（ScottPlot 未提供图例矩形 API）。
 - `title(legendHandle, ...)` 尚不支持。
 - .fig 为 MatOct 自有 JSON 格式，不能读取 MATLAB 二进制 .fig。
+
+## 0.13.1：Nature/Science 出版风格
+MatOct 定位：MATLAB 的平替，给 Octave 做的 MATLAB 风格界面（C# 编写）。
+- `figstyle('nature'|'science'|'default'|'classic', 'Columns', 1|2)`：期刊栏宽（Nature 89/183 mm，Science 57/121 mm）、字号 7–9 pt、线宽、Okabe-Ito 配色；`groot` 默认值（`set(groot,'DefaultAxesFontSize',8)` 等）。
+- 新默认外观：Arial、无边框、刻度朝外、无框图例、parula 色图；旧外观用 `figstyle('classic')`。
+- `panellabel`：自动标注 a、b、c。
+- `exportgraphics`/`print`：`Width`/`Height`/`Units`（mm/cm/in/pt）与 `Resolution`/`-rN`；PDF 嵌入字体、SVG 为矢量。
+- `parula`、`MarkerIndices`；饼图标题修复；README 图库以 Nature 风格重新生成（docs/img/example-*.png）。

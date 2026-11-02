@@ -47,7 +47,7 @@ namespace MatRewrite.Core.Builtins
                         if (t == "axes" && prop == "colororder") return ColorOrderM();
                         if (TypeDefaults[t].TryGetValue(prop, out var f)) return f();
                         if (CommonDefaults.TryGetValue(prop, out var cf)) return cf();
-                        if (t == "figure" && prop == "colormap") return it.CallFunction("viridis", new Value[] { Num(64) }, 1)[0];
+                        if (t == "figure" && prop == "colormap") return it.CallFunction("parula", new Value[] { Num(64) }, 1)[0];
                     }
             }
             if (o is RootObject && it.Graphics.RootProps.TryGetValue(p, out var rp)) return rp;

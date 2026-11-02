@@ -76,7 +76,7 @@ public sealed partial class FigureWindow : Window
                 continue;
             }
             var wp = new WpfPlot();
-            FigureRenderer.Apply(wp.Plot, ax, Figure.Colormap);
+            FigureRenderer.Apply(wp.Plot, ax, Figure.Colormap, MatRewrite.Core.Graphics.FigStyle.Current.ScreenPxPerPt * Math.Max(1, wp.DisplayScale));
             HookPlot(wp, ax);
             Grid.SetRow(wp, r); Grid.SetColumn(wp, c); Grid.SetRowSpan(wp, rs); Grid.SetColumnSpan(wp, cs);
             grid.Children.Add(wp);

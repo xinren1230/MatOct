@@ -4,11 +4,8 @@ namespace MatRewrite.Core.Graphics;
 /// <summary>RGB colour with components in [0,1].</summary>
 public readonly record struct Rgb(double R, double G, double B)
 {
-    public static readonly Rgb[] DefaultOrder =
-    {
-        new(0, 0.447, 0.741), new(0.850, 0.325, 0.098), new(0.929, 0.694, 0.125), new(0.494, 0.184, 0.556),
-        new(0.466, 0.674, 0.188), new(0.301, 0.745, 0.933), new(0.635, 0.078, 0.184)
-    };
+    /// <summary>Current default colour order (set by the active <see cref="FigStyle"/>).</summary>
+    public static Rgb[] DefaultOrder = FigStyle.OkabeIto;
     public static Rgb? FromChar(char c) => c switch
     {
         'r' => new Rgb(1, 0, 0), 'g' => new Rgb(0, 1, 0), 'b' => new Rgb(0, 0, 1), 'c' => new Rgb(0, 1, 1),
@@ -78,7 +75,7 @@ public sealed class LineSeries : Series
     public Rgb Color;
     public LineStyle Style = LineStyle.Solid;
     public Marker Marker = Marker.None;
-    public double LineWidth = 0.5, MarkerSize = 6;
+    public double LineWidth = FigStyle.Current.LineWidth, MarkerSize = FigStyle.Current.MarkerSize;
     public bool MarkerFilled;
     /// <summary>Marker edge colour (null = same as line colour, "auto").</summary>
     public Rgb? MarkerEdge;
@@ -188,7 +185,7 @@ public sealed class TextSeries : Series
     public double? Z;
     public string Text = "";
     public Rgb Color = new(0, 0, 0);
-    public double FontSize = 10;
+    public double FontSize = FigStyle.Current.FontSize;
     public string HAlign = "left";
 }
 
@@ -218,7 +215,9 @@ public sealed class Axes : GObject
     public string Lighting = "flat"; // none | flat | gouraud (lighting command)
     public readonly List<Series> Children = new();
     public LabelObject? TitleObj, XLabelObj, YLabelObj, ZLabelObj;
-    public bool Hold, Grid, MinorGrid, Box = true, Visible = true;
+    public bool Hold, Grid = FigStyle.Current.Grid, MinorGrid, Box = FigStyle.Current.Box, Visible = true;
+    /// <summary>Bold panel label drawn at the top-left corner of the axes cell (panellabel).</summary>
+    public string? PanelLabel;
     public bool LegendVisible;
     /// <summary>Legend object (handle returned by legend()); carries FontSize/FontName/... props.</summary>
     public GenericObject? LegendObj, ColorbarObj;
@@ -244,7 +243,9 @@ public sealed class Figure : GObject
     public string Name = "";
     public readonly List<Axes> Axes = new();
     public Axes? CurrentAxes;
-    public string Colormap = "viridis";
+    public string Colormap = FigStyle.Current.Colormap;
+    /// <summary>Physical width (pt) used while exporting; 0 = style width.</summary>
+    public double ExportWidthPt;
     public bool Visible = true;
     public int Width = 560, Height = 420;
     public bool NumberTitle = true;

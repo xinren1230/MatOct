@@ -250,7 +250,7 @@ namespace MatRewrite.Core.Builtins
                 foreach (var o in objs)
                 {
                     if (o is RootObject)
-                        for (int k = 1; k + 1 < a.Length; k += 2) if (IsString(a[k])) it.Graphics.RootProps[S(a[k], "set")] = a[k + 1];
+                        for (int k = 1; k + 1 < a.Length; k += 2) if (IsString(a[k])) { it.Graphics.RootProps[S(a[k], "set")] = a[k + 1]; Graphics.FigStyle.ApplyRootDefault(S(a[k], "set"), a[k + 1]); }
                     ApplyPairs(it, o, a.Skip(1).ToArray(), "set");
                 }
                 return Array.Empty<Value>();

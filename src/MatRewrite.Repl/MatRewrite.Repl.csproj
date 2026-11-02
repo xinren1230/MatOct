@@ -14,7 +14,7 @@
     <AssemblyName>matrw</AssemblyName>
     <Product>MatOct</Product>
     <ApplicationIcon>app.ico</ApplicationIcon>
-    <Version>0.13.0</Version>
+    <Version>0.13.1</Version>
   </PropertyGroup>
 
   <!-- On Windows, figures open as WPF windows. -->

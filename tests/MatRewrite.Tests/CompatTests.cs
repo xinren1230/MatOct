@@ -32,7 +32,7 @@ public class CompatTests
     [Fact] public void Lookup() => Assert.Equal("0 1 2 3", Run("printf('%d ', lookup([1 2 3], [0 1.5 2 9]))"));
     [Fact] public void Signbit() => Assert.Equal("1 0", Run("printf('%d ', signbit([-1 1]))"));
     [Fact] public void IsaCell() => Assert.Equal("0 1", Run("printf('%d ', isa(1, {'char','double'}))"));
-    [Fact] public void RootColorOrder() => Assert.Equal("7 3", Run("printf('%d ', size(get(0, 'defaultaxescolororder')))"));
+    [Fact] public void RootColorOrder() => Assert.Equal("8 3", Run("printf('%d ', size(get(0, 'defaultaxescolororder')))"));
     [Fact] public void SortRowsIdx() => Assert.Equal("2 3 1", Run("printf('%d ', __sort_rows_idx__([3 1; 1 2; 2 0], 'ascend'))"));
 
     // ---- test runner

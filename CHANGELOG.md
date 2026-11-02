@@ -2,6 +2,18 @@
 
 All notable changes to MatOct. Detailed notes (Chinese) live in `docs/phaseN.md`.
 
+## [0.13.1] - 2026-11-02
+MatOct is a MATLAB-style IDE/interface for GNU Octave, written in C# (MATLAB 的平替，给 Octave 做的 MATLAB 风格界面).
+### Added
+- `figstyle` presets `nature`, `nature2`, `science`, `science2`, `default`, `classic` (journal column widths, font sizes, line widths); `groot` and `set(groot,'Default…')` defaults.
+- `panellabel` (bold a/b/c panel letters).
+- `exportgraphics`/`print`/`saveas` with physical `Width`/`Height`/`Units` and `Resolution` (`-rN`); vector PDF (embedded fonts) and SVG.
+- `parula` colormap; `MarkerIndices` and more line properties.
+### Changed
+- New default publication look: Arial, no box, outward ticks, Okabe-Ito colour order, parula, frameless legend. Use `figstyle('classic')` for the old look.
+- `colormap` with no arguments returns the colormap matrix.
+- README gallery regenerated in Nature style; pie titles fixed.
+
 ## [0.13.0] - 2026-11-02
 ### Added
 - MATLAB-style **figure editor**: Edit Plot mode, live **Property Inspector**, point dragging and data table for XData/YData, context menus, Insert menu (title/labels/legend/colorbar/text/arrow/line/rectangle), datatips, zoom, pan.

@@ -9,8 +9,8 @@
   <img alt="Octave compatibility" src="https://img.shields.io/badge/Octave%20tests-90%25%20(lib)-brightgreen">
 </p>
 
-<p align="center"><b>MatOct</b> — a MATLAB-style IDE and numerical computing environment, written from scratch in C# as a rewrite of GNU Octave.<br>
-<b>MatOct</b> —— 用 C# 重写 GNU Octave 的 MATLAB 风格数值计算环境与 IDE。</p>
+<p align="center"><b>MatOct</b> — a MATLAB-style IDE/interface for GNU Octave, written in C#.<br>
+<b>MatOct</b> —— MATLAB 的平替，给 Octave 做的 MATLAB 风格界面（C# 编写）。</p>
 
 <p align="center"><a href="#english">English</a> · <a href="#中文">中文</a></p>
 
@@ -52,6 +52,22 @@ All images below were produced by MatOct itself with `exportgraphics` — see [`
 | <img src="docs/img/example-surf.png" width="420"> | <img src="docs/img/example-bar-pie.png" width="420"> |
 | **imagesc + colormap + colorbar** | |
 | <img src="docs/img/example-imagesc.png" width="420"> | |
+
+### Publication style (Nature / Science) / 期刊出版风格
+Figures use a clean journal look by default (Arial, 7–9 pt text, no box, outward ticks, Okabe-Ito colours, parula colormap, frameless legend).
+`figstyle` switches presets and sizes figures to journal column widths; `exportgraphics`/`print` write exact physical sizes and DPI, and PDF/SVG stay vector.
+默认采用简洁的期刊风格；`figstyle` 切换 Nature/Science 预设并按栏宽设定尺寸，`exportgraphics`/`print` 按毫米/厘米与 DPI 导出，PDF/SVG 为矢量。
+
+<p align="center"><img src="docs/img/example-nature.png" alt="Nature-style three-panel figure" width="820"></p>
+
+```matlab
+figstyle('nature', 'Columns', 2)        % 183 mm wide; also 'science', 'default', 'classic'
+subplot(1,3,1); plot(t, y, '-o', 'MarkerIndices', 1:10:numel(t)); legend('sin','cos')
+panellabel                               % bold a, b, c on every axes
+exportgraphics(gcf, 'fig1.pdf')          % vector PDF at the preset width, fonts embedded
+exportgraphics(gcf, 'fig1.png', 'Width', 89, 'Units', 'mm', 'Resolution', 600)
+set(groot, 'DefaultAxesFontSize', 8)     % groot defaults work too
+```
 
 ---
 

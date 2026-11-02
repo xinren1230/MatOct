@@ -1,4 +1,4 @@
-// MatRewrite - a C# reimplementation of the GNU Octave core.
+// MatOct - a MATLAB-style IDE for GNU Octave, written in C#. GPL-3.0-or-later
 // Copyright (C) 2026 Xinren Chen. Licensed under GPL-3.0-or-later.
 using System.Numerics;
 using MatRewrite.Core.Parsing;

@@ -25,8 +25,8 @@ namespace MatRewrite.Core.Builtins
             var black = R_(0, 0, 0); var dark = R_(0.15, 0.15, 0.15);
             var lineLike = new (string, Func<Value>)[]
             {
-                ("color", R_(0, 0.447, 0.741)), ("linestyle", S_("-")), ("linewidth", N_(0.5)), ("marker", S_("none")),
-                ("markersize", N_(6)), ("markeredgecolor", S_("auto")), ("markerfacecolor", S_("none")),
+                ("color", R_(0, 0.447, 0.741)), ("linestyle", S_("-")), ("linewidth", () => Num(Graphics.FigStyle.Current.LineWidth)), ("marker", S_("none")),
+                ("markersize", () => Num(Graphics.FigStyle.Current.MarkerSize)), ("markeredgecolor", S_("auto")), ("markerfacecolor", S_("none")),
                 ("xdata", R_(0, 1)), ("ydata", R_(0, 1)), ("zdata", E), ("xdatasource", S_("")), ("ydatasource", S_("")),
                 ("zdatasource", S_("")), ("interpreter", S_("tex")), ("linejoin", S_("round")),
             };
@@ -48,8 +48,8 @@ namespace MatRewrite.Core.Builtins
             var axes = D_(
                 ("position", R_(0.13, 0.11, 0.775, 0.815)), ("outerposition", R_(0, 0, 1, 1)), ("innerposition", R_(0.13, 0.11, 0.775, 0.815)),
                 ("units", S_("normalized")), ("color", R_(1, 1, 1)), ("xcolor", dark), ("ycolor", dark), ("zcolor", dark),
-                ("fontsize", N_(10)), ("fontname", S_("*")), ("fontweight", S_("normal")), ("fontangle", S_("normal")), ("fontunits", S_("points")),
-                ("fontsizemode", S_("auto")), ("linewidth", N_(0.5)), ("xtickmode", S_("auto")), ("ytickmode", S_("auto")), ("ztickmode", S_("auto")),
+                ("fontsize", () => Num(Graphics.FigStyle.Current.FontSize)), ("fontname", () => Str(Graphics.FigStyle.Current.FontName)), ("fontweight", S_("normal")), ("fontangle", S_("normal")), ("fontunits", S_("points")),
+                ("fontsizemode", S_("auto")), ("linewidth", () => Num(Graphics.FigStyle.Current.AxesLineWidth)), ("xtickmode", S_("auto")), ("ytickmode", S_("auto")), ("ztickmode", S_("auto")),
                 ("xticklabelmode", S_("auto")), ("yticklabelmode", S_("auto")), ("zticklabelmode", S_("auto")),
                 ("xlimmode", S_("auto")), ("ylimmode", S_("auto")), ("zlimmode", S_("auto")), ("climmode", S_("auto")), ("alim", R_(0, 1)), ("alimmode", S_("auto")),
                 ("colororderindex", N_(1)), ("linestyleorder", S_("-")), ("linestyleorderindex", N_(1)),
@@ -58,11 +58,11 @@ namespace MatRewrite.Core.Builtins
                 ("cameraupvector", R_(0, 1, 0)), ("cameraupvectormode", S_("auto")), ("cameraviewangle", N_(6.6086)), ("cameraviewanglemode", S_("auto")),
                 ("projection", S_("orthographic")), ("xaxislocation", S_("bottom")), ("yaxislocation", S_("left")), ("xdir", S_("normal")), ("zdir", S_("normal")),
                 ("xminorgrid", S_("off")), ("yminorgrid", S_("off")), ("zminorgrid", S_("off")), ("zgrid", S_("off")),
-                ("xminortick", S_("off")), ("yminortick", S_("off")), ("zminortick", S_("off")), ("tickdir", S_("in")), ("tickdirmode", S_("auto")),
+                ("xminortick", S_("off")), ("yminortick", S_("off")), ("zminortick", S_("off")), ("tickdir", () => Str(Graphics.FigStyle.Current.TickDir)), ("tickdirmode", S_("auto")),
                 ("ticklength", R_(0.01, 0.025)), ("layer", S_("bottom")), ("gridlinestyle", S_("-")), ("gridalpha", N_(0.15)), ("gridcolor", R_(0.15, 0.15, 0.15)),
                 ("minorgridlinestyle", S_(":")), ("minorgridalpha", N_(0.25)), ("minorgridcolor", R_(0.1, 0.1, 0.1)),
                 ("activepositionproperty", S_("outerposition")), ("positionconstraint", S_("outerposition")),
-                ("labelfontsizemultiplier", N_(1.1)), ("titlefontsizemultiplier", N_(1.1)), ("titlefontweight", S_("bold")),
+                ("labelfontsizemultiplier", N_(1.1)), ("titlefontsizemultiplier", N_(1.1)), ("titlefontweight", () => Str(Graphics.FigStyle.Current.TitleBold ? "bold" : "normal")),
                 ("tightinset", R_(0.04, 0.04, 0.01, 0.02)), ("looseinset", R_(0.13, 0.11, 0.095, 0.075)), ("ambientlightcolor", R_(1, 1, 1)),
                 ("sortmethod", S_("childorder")), ("zscale", S_("linear")), ("xticklabel", () => new CellValue(0, 1)), ("yticklabel", () => new CellValue(0, 1)),
                 ("zticklabel", () => new CellValue(0, 1)), ("ztick", E), ("currentpoint", () => new MatrixValue(2, 3)), ("drawmode", S_("normal")),
@@ -71,7 +71,7 @@ namespace MatRewrite.Core.Builtins
                 ("alphamap", Alpha64), ("alphascale", S_("linear")),
                 ("ticklabelinterpreter", S_("tex")), ("xtick", E), ("ytick", E), ("xlim", R_(0, 1)), ("ylim", R_(0, 1)), ("zlim", R_(0, 1)), ("clim", R_(0, 1)),
                 ("view", R_(0, 90)), ("xscale", S_("linear")), ("yscale", S_("linear")), ("nextplot", S_("replace")), ("xgrid", S_("off")), ("ygrid", S_("off")),
-                ("box", S_("off")), ("xdir", S_("normal")), ("ydir", S_("normal")), ("colororder", E), ("title", E), ("xlabel", E), ("ylabel", E), ("zlabel", E),
+                ("box", () => Str(Graphics.FigStyle.Current.Box ? "on" : "off")), ("xdir", S_("normal")), ("ydir", S_("normal")), ("colororder", E), ("title", E), ("xlabel", E), ("ylabel", E), ("zlabel", E),
                 ("colormap", E), ("nextseriesindex", N_(1)), ("fontsmoothing", S_("on")));
             var text = D_(
                 ("string", S_("")), ("position", R_(0, 0, 0)), ("units", S_("data")), ("fontsize", N_(10)), ("fontname", S_("*")),

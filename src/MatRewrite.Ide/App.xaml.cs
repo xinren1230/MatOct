@@ -15,13 +15,16 @@ public partial class App : Application
     {
         base.OnStartup(e);
         var w = new MainWindow();
-        string? file = null, shot = null; bool run = false, exit = false; var breaks = new List<int>(); var condBreaks = new List<(int, string)>(); var extra = new List<string>(); string? spShot = null; string? helpShot = null, helpTopic = null; string? inspShot = null, varShot = null, varName = "A";
+        string? file = null, shot = null; bool run = false, exit = false; var breaks = new List<int>(); var condBreaks = new List<(int, string)>(); var extra = new List<string>(); string? spShot = null; string? helpShot = null, helpTopic = null; string? inspShot = null, varShot = null, varName = "A"; string? demoFile = null, demoRec = null; double demoCps = 40;
         var a = e.Args;
         for (int i = 0; i < a.Length; i++)
         {
             switch (a[i])
             {
                 case "--run": run = true; break;
+                case "--demo-record" when i + 1 < a.Length: demoRec = Path.GetFullPath(a[++i]); break;
+                case "--demo-type" when i + 1 < a.Length: demoFile = Path.GetFullPath(a[++i]); break;
+                case "--demo-cps" when i + 1 < a.Length && double.TryParse(a[i + 1], System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out var cps): demoCps = cps; i++; break;
                 case "--exit": exit = true; break;
                 case "--screenshot" when i + 1 < a.Length: shot = Path.GetFullPath(a[++i]); break;
                 case "--input" when i + 1 < a.Length: w.AutoInput = a[++i]; break;
@@ -36,7 +39,16 @@ public partial class App : Application
                 default: if (!a[i].StartsWith("--")) file = a[i]; break;
             }
         }
+        if (demoRec != null) { w.WindowState = WindowState.Normal; w.WindowStartupLocation = WindowStartupLocation.Manual; w.Left = 40; w.Top = 40; w.Width = 1600; w.Height = 900; }
         w.Show();
+        if (demoFile != null && File.Exists(demoFile))
+        {
+            var code = File.ReadAllText(demoFile).Replace("\r", "");
+            var t0 = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(1500) };
+            t0.Tick += (_, _) => { t0.Stop(); w.StartDemo(code, demoCps, () => { w.MarkAllClean(); if (exit) Shutdown(); }, demoRec); };
+            t0.Start();
+            return;
+        }
         foreach (var x in extra) if (File.Exists(x)) w.LoadFile(x);
         if (file != null && File.Exists(file))
         {

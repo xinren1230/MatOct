@@ -28,7 +28,18 @@ public static class Renderer3D
     sealed record Mark(double Depth, SKPoint P, SKColor Color, float Size, Marker M) : Prim(Depth);
     sealed record Txt(double Depth, SKPoint P, SKColor Color, float Size, string Text, string Align) : Prim(Depth);
 
-    public static void Draw(SKCanvas cv, Axes ax, string colormap, float left, float top, float w, float h)
+    /// <summary>Canvas zoom for the legacy px-based 3D/annotation layout at <paramref name="pxPerPt"/> device pixels per point.</summary>
+    static float Zoom(double pxPerPt) => (float)Math.Max(0.3, (pxPerPt > 0 ? pxPerPt : FigStyle.Current.ScreenPxPerPt) * 0.75);
+
+    public static void Draw(SKCanvas cv, Axes ax, string colormap, float left, float top, float w, float h, double pxPerPt = 0)
+    {
+        float k = Zoom(pxPerPt);
+        cv.Save(); cv.Translate(left, top); cv.Scale(k);
+        DrawCore(cv, ax, colormap, 0, 0, w / k, h / k);
+        cv.Restore();
+    }
+
+    static void DrawCore(SKCanvas cv, Axes ax, string colormap, float left, float top, float w, float h)
     {
         var cmap = FigureRenderer.Colormap(colormap);
         var (xl, yl) = MatRewrite.Core.Builtins.BuiltinLibrary.Limits(ax);
@@ -37,9 +48,9 @@ public static class Renderer3D
         double ca = Math.Cos(az), sa = Math.Sin(az), ce = Math.Cos(el), se = Math.Sin(el);
         bool flat = !ax.Is3D;
 
-        using var titlePaint = new SKPaint { Color = SKColors.Black, TextSize = 14, IsAntialias = true, FakeBoldText = true, TextAlign = SKTextAlign.Center };
-        using var labelPaint = new SKPaint { Color = SKColors.Black, TextSize = 12, IsAntialias = true, TextAlign = SKTextAlign.Center };
-        using var tickPaint = new SKPaint { Color = new SKColor(40, 40, 40), TextSize = 10, IsAntialias = true, TextAlign = SKTextAlign.Center };
+        using var titlePaint = new SKPaint { Color = SKColors.Black, TextSize = 12, IsAntialias = true, FakeBoldText = FigStyle.Current.TitleBold, Typeface = SKTypeface.FromFamilyName(FigureRenderer.ResolveFont(null)), TextAlign = SKTextAlign.Center };
+        using var labelPaint = new SKPaint { Color = SKColors.Black, TextSize = 11, IsAntialias = true, Typeface = SKTypeface.FromFamilyName(FigureRenderer.ResolveFont(null)), TextAlign = SKTextAlign.Center };
+        using var tickPaint = new SKPaint { Color = new SKColor(40, 40, 40), TextSize = 10, IsAntialias = true, Typeface = SKTypeface.FromFamilyName(FigureRenderer.ResolveFont(null)), TextAlign = SKTextAlign.Center };
 
         float titleH = ax.Title != "" ? 24 : 6;
         float cbW = ax.Colorbar ? 60 : 0;
@@ -433,7 +444,15 @@ public static class Renderer3D
     }
 
     /// <summary>Draw figure annotations (normalized figure units, origin bottom-left).</summary>
-    public static void DrawAnnotations(SKCanvas cv, Figure f, float w, float h)
+    public static void DrawAnnotations(SKCanvas cv, Figure f, float w, float h, double pxPerPt = 0)
+    {
+        float k = Zoom(pxPerPt);
+        cv.Save(); cv.Scale(k);
+        DrawAnnotationsCore(cv, f, w / k, h / k);
+        cv.Restore();
+    }
+
+    static void DrawAnnotationsCore(SKCanvas cv, Figure f, float w, float h)
     {
         using var pen = new SKPaint { IsStroke = true, IsAntialias = true, StrokeWidth = 1.2f };
         using var txt = new SKPaint { IsAntialias = true };

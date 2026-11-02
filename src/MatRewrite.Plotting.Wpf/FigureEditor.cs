@@ -493,7 +493,7 @@ public sealed partial class FigureWindow
             if (Keyboard.Modifiers.HasFlag(ModifierKeys.Shift)) d.l.Y[d.idx] = c.Y;
             else { d.l.X[d.idx] = c.X; d.l.Y[d.idx] = c.Y; }
             wp.Reset();
-            FigureRenderer.Apply(wp.Plot, ax, Figure.Colormap);
+            FigureRenderer.Apply(wp.Plot, ax, Figure.Colormap, MatRewrite.Core.Graphics.FigStyle.Current.ScreenPxPerPt * Math.Max(1, wp.DisplayScale));
             var hl = wp.Plot.Add.ScatterPoints(d.l.X, d.l.Y); hl.MarkerShape = SP.MarkerShape.OpenSquare; hl.MarkerSize = 7; hl.Color = new SP.Color(20, 20, 20);
             wp.Menu?.Clear();
             wp.UserInputProcessor.Disable();

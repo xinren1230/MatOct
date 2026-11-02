@@ -66,7 +66,7 @@ public static class Program
             }
             if (!quiet)
             {
-                stdout.WriteLine($"MatOct {BuiltinLibrary.Version} - a C# reimplementation of the GNU Octave language");
+                stdout.WriteLine($"MatOct {BuiltinLibrary.Version} - a MATLAB-style IDE for GNU Octave, written in C#");
                 stdout.WriteLine("Licensed under GPL-3.0-or-later. Type 'exit' to quit.\n");
             }
             return Interactive(it, stdout);

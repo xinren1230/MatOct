@@ -57,7 +57,7 @@ namespace MatRewrite.Core.Builtins
                 case (Figure f, "visible"): return Str(f.Visible ? "on" : "off");
                 case (Figure f, "numbertitle"): return Str(f.NumberTitle ? "on" : "off");
                 case (Figure f, "integerhandle"): return Str(f.Handle == Math.Floor(f.Handle) && f.Handle > 0 ? "on" : "off");
-                case (Figure f, "colormap"): return it.CallFunction(f.Colormap.StartsWith("custom") ? "viridis" : f.Colormap, new Value[] { Num(64) }, 1)[0];
+                case (Figure f, "colormap"): return it.CallFunction(f.Colormap.StartsWith("custom") ? "parula" : f.Colormap, new Value[] { Num(64) }, 1)[0];
                 case (Axes ax, "title"): return Num(g.Label(ax, "title").Handle);
                 case (Axes ax, "xlabel"): return Num(g.Label(ax, "xlabel").Handle);
                 case (Axes ax, "ylabel"): return Num(g.Label(ax, "ylabel").Handle);

@@ -90,7 +90,7 @@ public partial class MainWindow : Window
         it.Paused += info => Dispatcher.Invoke(() => OnPaused(info));
         it.Resumed += () => Dispatcher.BeginInvoke(OnResumed);
         figures.WindowClosed += f => { try { it.Graphics.Close(f); } catch { } };
-        AppendOutput($"MatOct {MatRewrite.Core.Builtins.BuiltinLibrary.Version} - a C# reimplementation of the GNU Octave language\n\n");
+        AppendOutput($"MatOct {MatRewrite.Core.Builtins.BuiltinLibrary.Version} - a MATLAB-style IDE for GNU Octave, written in C#\n\n");
         Editor.Text = "% New script\nx = linspace(0, 2*pi, 100);\nplot(x, sin(x), 'r-', x, cos(x), 'b--');\ntitle('Demo'); legend('sin', 'cos'); grid on;\n";
         dirty = false; UpdateTab(doc);
         UpdateTitle();

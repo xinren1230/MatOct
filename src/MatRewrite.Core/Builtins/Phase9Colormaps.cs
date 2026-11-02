@@ -117,6 +117,7 @@ public static partial class BuiltinLibrary
         Reg("hsv2rgb", (it, a, n) => Out(ColorConv(it, a, "hsv2rgb", "HSV")));
         Reg("rgb2hsv", (it, a, n) => Out(ColorConv(it, a, "rgb2hsv", "RGB")));
         C("viridis", (it, n) => LutMap(ViridisLut, n));
+        C("parula", (it, n) => LutMap(Graphics.FigStyle.ParulaLut, n));
         C("turbo", (it, n) => LutMap(TurboLut, n));
         C("hot", (it, n) =>
         {

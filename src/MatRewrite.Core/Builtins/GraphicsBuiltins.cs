@@ -38,6 +38,7 @@ namespace MatRewrite.Core.Builtins
 
         static void RegisterGraphics()
         {
+            RegisterFigStyle();
             RegG("figure", (it, a, n) =>
             {
                 var g = it.Graphics;
@@ -218,12 +219,12 @@ namespace MatRewrite.Core.Builtins
                         : throw new OctaveException("colormap: invalid argument");
                     if (!(name is "default" or "viridis" or "parula" or "jet" or "gray" or "hot" or "cool" or "turbo" or "magma" or "inferno" or "plasma") && CustomColormaps.Get(name) == null)
                         throw new OctaveException($"colormap: invalid MAP name '{name}'");
-                    f.Colormap = name == "default" ? "viridis" : name;
+                    f.Colormap = name == "default" ? "parula" : name;
                     it.Graphics.Touch(f);
                 }
                 if (CustomColormaps.Get(f.Colormap) is { } cmap)
                     return n > 0 || a.Length == 0 ? Out(MapMatrix(f.Colormap, cmap.Length)) : Array.Empty<Value>();
-                return n > 0 || a.Length == 0 ? Out(Str(f.Colormap)) : Array.Empty<Value>();
+                return n > 0 || a.Length == 0 ? Out(it.CallFunction(f.Colormap, new Value[] { Num(64) }, 1)[0]) : Array.Empty<Value>();
             });
 
             foreach (var nm in new[] { "jet", "gray", "hot", "cool" })
@@ -347,7 +348,7 @@ namespace MatRewrite.Core.Builtins
                 if (a.Length < 1) throw new OctaveException("Invalid call to set");
                 if (a[0] is MatrixValue r0 && !r0.IsChar && r0.Numel == 1 && r0.Re[0] == 0)
                 {
-                    for (int k = 1; k + 1 < a.Length; k += 2) it.Graphics.RootProps[S(a[k], "set")] = a[k + 1];
+                    for (int k = 1; k + 1 < a.Length; k += 2) { it.Graphics.RootProps[S(a[k], "set")] = a[k + 1]; Graphics.FigStyle.ApplyRootDefault(S(a[k], "set"), a[k + 1]); }
                     return Array.Empty<Value>();
                 }
                 foreach (var h in M(a[0], "set").Re)
@@ -374,6 +375,7 @@ namespace MatRewrite.Core.Builtins
                     var hs = it.Graphics.Figures.Keys.OrderByDescending(k => k).Select(k => (double)k).ToArray();
                     var rp = S(a[1], "get").ToLowerInvariant();
                     if (it.Graphics.RootProps.TryGetValue(rp, out var rv)) return Out(rv);
+                    if (Graphics.FigStyle.RootDefault(rp) is { } sv) return Out(sv);
                     return rp switch
                     {
                         "defaultaxescolororder" => Out(ColorOrderMatrix()),
@@ -391,7 +393,7 @@ namespace MatRewrite.Core.Builtins
                         "defaultaxesfontsize" or "defaulttextfontsize" => Out(Num(10)),
                         "defaultaxesfontname" or "defaulttextfontname" => Out(Str("*")),
                         "defaultlinelinewidth" or "defaultaxeslinewidth" => Out(Num(0.5)),
-                        "defaultfigurecolormap" => Out(it.CallFunction("viridis", new Value[] { Num(64) }, 1)[0]),
+                        "defaultfigurecolormap" => Out(it.CallFunction("parula", new Value[] { Num(64) }, 1)[0]),
                         "children" => Out(new MatrixValue(hs.Length, hs.Length == 0 ? 0 : 1, hs)),
                         "currentfigure" => Out(it.Graphics.Current == null ? new MatrixValue(0, 0, Array.Empty<double>()) : new MatrixValue(1, 1, new[] { it.Graphics.Current.Handle })),
                         _ => throw new OctaveException("get: unknown root property")
@@ -404,19 +406,32 @@ namespace MatRewrite.Core.Builtins
             RegG("print", (it, a, n) =>
             {
                 Figure f = it.Graphics.Gcf();
-                string? file = null; string? dev = null; int w = 0, h = 0;
+                string? file = null; string? dev = null; int w = 0, h = 0; double dpi = 300;
                 foreach (var v in a)
                 {
                     if (v is MatrixValue m && !m.IsChar) { f = it.Graphics.Lookup(m.Re[0]) as Figure ?? throw new OctaveException("print: invalid figure handle"); continue; }
                     var s = S(v, "print");
                     if (s.StartsWith("-d")) dev = s[2..];
                     else if (s.StartsWith("-S")) { var p = s[2..].Split(','); w = int.Parse(p[0]); h = int.Parse(p[1]); }
-                    else if (s.StartsWith("-r") || s.StartsWith("-")) { }
+                    else if (s.StartsWith("-r") && double.TryParse(s[2..], System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out var rr) && rr > 0) dpi = rr;
+                    else if (s.StartsWith("-")) { }
                     else file = s;
                 }
                 if (file == null) throw new OctaveException("print: no output file specified");
-                if (!Path.HasExtension(file)) file += "." + (dev switch { null => "png", "jpeg" or "jpg" => "jpg", "svg" => "svg", "bmp" => "bmp", "png" => "png", _ => dev });
-                Export(it, f, file, w, h);
+                if (!Path.HasExtension(file)) file += "." + (dev switch { null => "png", "jpeg" or "jpg" => "jpg", "svg" => "svg", "bmp" => "bmp", "png" => "png", "pdf" => "pdf", _ => dev });
+                if (w > 0 && h > 0) Export(it, f, file, w, h);
+                else
+                {
+                    // honour an explicitly set PaperPosition [x y w h] (PaperUnits, default inches)
+                    double wpt = 0, hpt = 0;
+                    if (f.Props.TryGetValue("paperposition", out var pp) && pp is MatrixValue pm && !pm.IsChar && pm.Numel == 4 && pm.Re[2] > 0)
+                    {
+                        var u = f.Props.TryGetValue("paperunits", out var pu) && pu is MatrixValue pum && pum.IsChar ? pum.AsString() : "inches";
+                        if (u == "normalized") u = "inches";
+                        wpt = FigStyle.ToPt(pm.Re[2], u); hpt = FigStyle.ToPt(pm.Re[3], u);
+                    }
+                    ExportPhys(it, f, file, wpt, hpt, dpi);
+                }
                 return Array.Empty<Value>();
             });
             RegG("saveas", (it, a, n) =>
@@ -424,9 +439,24 @@ namespace MatRewrite.Core.Builtins
                 var f = it.Graphics.Lookup(D(a[0], "saveas")) as Figure ?? throw new OctaveException("saveas: invalid figure handle");
                 var file = S(a[1], "saveas");
                 if (a.Length > 2 && !Path.HasExtension(file)) file += "." + S(a[2], "saveas");
-                Export(it, f, file, 0, 0);
+                ExportPhys(it, f, file, 0, 0, 300);
                 return Array.Empty<Value>();
             });
+        }
+
+        /// <summary>Export at a physical size (points; 0 = style width / figure aspect) and resolution (dpi, raster only).</summary>
+        internal static void ExportPhys(Interpreter it, Figure f, string file, double widthPt, double heightPt, double dpi)
+        {
+            if (widthPt <= 0) widthPt = heightPt > 0 ? heightPt * f.Width / Math.Max(1, f.Height) : FigStyle.Current.WidthPt;
+            if (heightPt <= 0) heightPt = widthPt * f.Height / Math.Max(1, f.Width);
+            var ext = Path.GetExtension(file).ToLowerInvariant();
+            bool vector = ext is ".pdf" or ".svg" or ".eps" or ".ps";
+            double k = vector ? 1 : dpi / 72.0;
+            int w = Math.Max(16, (int)Math.Round(widthPt * k)), h = Math.Max(16, (int)Math.Round(heightPt * k));
+            if (!vector && (long)w * h > 400_000_000L) throw new OctaveException("print: requested image is too large");
+            var old = f.ExportWidthPt;
+            f.ExportWidthPt = widthPt;
+            try { Export(it, f, file, w, h); } finally { f.ExportWidthPt = old; }
         }
 
         static void Export(Interpreter it, Figure f, string file, int w, int h)
@@ -561,7 +591,7 @@ namespace MatRewrite.Core.Builtins
         }
 
         static readonly HashSet<string> LineProps = new(StringComparer.OrdinalIgnoreCase)
-        { "color", "linewidth", "linestyle", "marker", "markersize", "displayname", "markerfacecolor", "markeredgecolor" };
+        { "color", "linewidth", "linestyle", "marker", "markersize", "displayname", "markerfacecolor", "markeredgecolor", "markerindices", "tag", "visible", "linejoin", "clipping", "userdata", "seriesindex" };
 
         static List<double> Plot(Interpreter it, Value[] a, string fn)
         {
