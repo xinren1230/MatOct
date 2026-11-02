@@ -305,29 +305,92 @@ public static partial class BuiltinLibrary
             RegG(nm, (it, a, nout) =>
             {
                 if (a.Length < 1) Usage(nm);
-                var v = M(a[0], nm); var ax = it.Graphics.Gca();
+                string V = isX ? "X" : "Y";
+                if (a[0] is not MatrixValue v || v.IsChar || v.IsComplex) throw new OctaveException($"{nm}: {V} must be a real numeric value");
+                if (v.Numel > 0 && v.R != 1 && v.C != 1) throw new OctaveException($"{nm}: {V} must be a scalar or vector");
+                if (v.Numel == 0) return nout > 0 ? Out(new MatrixValue(0, 1)) : Array.Empty<Value>();
+                int k = 1; string? spec = null; Value? label = null;
+                if (k < a.Length && IsString(a[k]) && GraphicsFmt(S(a[k], nm))) spec = S(a[k++], nm);
+                if (k < a.Length && (a[k] is CellValue || (IsString(a[k]) && (a.Length - k) % 2 == 1))) label = a[k++];
+                var ax = it.Graphics.Gca();
                 var lim = M(Fc(it, "get", Num(ax.Handle), Str(isX ? "ylim" : "xlim")), nm).Re;
                 var hs = new List<double>();
-                foreach (var p in v.Re)
+                for (int q = 0; q < v.Numel; q++)
                 {
-                    var h = isX ? Fc(it, "line", RowD(new[] { p, p }), RowD(lim)) : Fc(it, "line", RowD(lim), RowD(new[] { p, p }));
-                    hs.Add(D(h, nm));
+                    double p = v.Re[q];
+                    var gh = D(Fc(it, "hggroup", Num(ax.Handle)), nm);
+                    var g = (Graphics.GenericObject)it.Graphics.Lookup(gh)!;
+                    var h = isX ? Fc(it, "line", RowD(new[] { p, p }), RowD(lim), Str("parent"), Num(gh)) : Fc(it, "line", RowD(lim), RowD(new[] { p, p }), Str("parent"), Num(gh));
+                    if (spec != null && it.Graphics.Lookup(D(h, nm)) is Graphics.LineSeries ls) ApplyFmt(ls, spec);
+                    g.Props["value"] = Num(p);
+                    Value lab = label is CellValue lc && lc.Numel == v.Numel && v.Numel > 1 && lc.Data[q] is not CellValue ? lc.Data[q] : label ?? Str("");
+                    g.Props["label"] = lab;
+                    for (int r = k; r + 1 < a.Length; r += 2) g.Props[S(a[r], nm).ToLowerInvariant()] = a[r + 1];
+                    hs.Add(gh);
                 }
                 return nout > 0 ? Out(ColD(hs.ToArray())) : Array.Empty<Value>();
             });
         RegG("polar", (it, a, nout) =>
         {
-            if (a.Length < 1) Usage("polar");
-            MatrixValue th, r; int k;
-            if (a.Length >= 2 && !IsString(a[1])) { th = M(a[0], "polar"); r = M(a[1], "polar"); k = 2; }
-            else { var z = M(a[0], "polar"); th = RowD(Enumerable.Range(0, z.Numel).Select(i => Math.Atan2(z.Im?[i] ?? 0, z.Re[i]))); r = RowD(Enumerable.Range(0, z.Numel).Select(i => Math.Sqrt(z.Re[i] * z.Re[i] + Math.Pow(z.Im?[i] ?? 0, 2)))); k = 1; }
-            if (th.Numel != r.Numel && th.Numel != 1 && r.Numel != 1) throw new OctaveException("polar: THETA and RHO must be the same size");
-            int N = Math.Max(th.Numel, r.Numel);
-            var xs = Enumerable.Range(0, N).Select(i => r.Re[r.Numel == 1 ? 0 : i] * Math.Cos(th.Re[th.Numel == 1 ? 0 : i]));
-            var ys = Enumerable.Range(0, N).Select(i => r.Re[r.Numel == 1 ? 0 : i] * Math.Sin(th.Re[th.Numel == 1 ? 0 : i]));
-            var h = Fc(it, "line", RowD(xs), RowD(ys));
-            Fc(it, "axis", Str("equal"));
-            return nout > 0 ? Out(h) : Array.Empty<Value>();
+            if (a.Length < 1 || a.Length > 3) Usage("polar");
+            MatrixValue th, r; Value? fmt = null;
+            if (a.Length == 1 || (a.Length == 2 && IsString(a[1])))
+            {
+                var z = M(a[0], "polar");
+                th = new MatrixValue(z.R, z.C); r = new MatrixValue(z.R, z.C);
+                for (int i = 0; i < z.Numel; i++) { double re = z.Re[i], im = z.Im?[i] ?? 0; th.Re[i] = Math.Atan2(im, re); r.Re[i] = Math.Sqrt(re * re + im * im); }
+                if (a.Length == 2) fmt = a[1];
+            }
+            else
+            {
+                if (a.Length == 3) { if (!IsString(a[2])) throw new OctaveException("polar: FMT argument must be a string"); fmt = a[2]; }
+                if (a[0].NDims > 2 || a[1].NDims > 2) throw new OctaveException("polar: THETA and RHO must be 2-D objects");
+                th = M(a[0], "polar"); r = M(a[1], "polar");
+            }
+            bool tv = th.R == 1 || th.C == 1, rv = r.R == 1 || r.C == 1;
+            MatrixValue X, Y;
+            if (th.Numel == 1 && r.Numel == 1) { X = MatrixValue.Scalar(r.Re[0] * Math.Cos(th.Re[0])); Y = MatrixValue.Scalar(r.Re[0] * Math.Sin(th.Re[0])); }
+            else if (th.Numel == 1) throw new OctaveException("polar: Can't plot constant THETA with varying RHO");
+            else if (tv && rv)
+            {
+                if (th.Numel != r.Numel) throw new OctaveException("polar: THETA and RHO vector lengths must match");
+                X = new MatrixValue(th.Numel, 1); Y = new MatrixValue(th.Numel, 1);
+                for (int i = 0; i < th.Numel; i++) { X.Re[i] = r.Re[i] * Math.Cos(th.Re[i]); Y.Re[i] = r.Re[i] * Math.Sin(th.Re[i]); }
+            }
+            else if (tv || rv)
+            {
+                var v = tv ? th : r; var m = tv ? r : th; int n = v.Numel;
+                bool byRow;
+                if (m.R == n) byRow = false; else if (m.C == n) byRow = true;
+                else throw new OctaveException(tv ? "polar: THETA vector and RHO matrix sizes must match" : "polar: THETA matrix and RHO vector sizes must match");
+                // lines are the columns of the (oriented) data
+                int R = byRow ? m.C : m.R, C = byRow ? m.R : m.C;
+                X = new MatrixValue(R, C); Y = new MatrixValue(R, C);
+                for (int i = 0; i < R; i++) for (int j = 0; j < C; j++)
+                {
+                    double mv = byRow ? m.Re[j + i * m.R] : m.Re[i + j * m.R], vv = v.Re[i];
+                    double t = tv ? vv : mv, rr = tv ? mv : vv;
+                    X.Re[i + j * R] = rr * Math.Cos(t); Y.Re[i + j * R] = rr * Math.Sin(t);
+                }
+            }
+            else
+            {
+                if (th.R != r.R || th.C != r.C) throw new OctaveException("polar: THETA and RHO matrix dimensions must match");
+                X = new MatrixValue(th.R, th.C); Y = new MatrixValue(th.R, th.C);
+                for (int i = 0; i < th.Numel; i++) { X.Re[i] = r.Re[i] * Math.Cos(th.Re[i]); Y.Re[i] = r.Re[i] * Math.Sin(th.Re[i]); }
+            }
+            var pa = fmt != null ? new Value[] { X, Y, fmt } : new Value[] { X, Y };
+            var hs = it.CallFunction("plot", pa, 1);
+            var ax = it.Graphics.Gca();
+            double rmax = r.Numel > 0 ? r.Re.Select(Math.Abs).Max() : 1;
+            if (!(rmax > 0) || double.IsInfinity(rmax)) rmax = 1;
+            double raw = rmax / 3, mag = Math.Pow(10, Math.Floor(Math.Log10(raw))), f = raw / mag;
+            double stp = (f <= 1 ? 1 : f <= 2 ? 2 : f <= 5 ? 5 : 10) * mag;
+            int nt = (int)Math.Ceiling(rmax / stp - 1e-9);
+            ax.Props["rtick"] = RowD(Enumerable.Range(0, nt + 1).Select(k => k * stp).ToArray());
+            ax.Props["ttick"] = RowD(Enumerable.Range(0, 12).Select(k => k * 30.0).ToArray());
+            it.CallFunction("axis", new Value[] { Str("equal") }, 0);
+            return nout > 0 && hs.Length > 0 ? Out(hs[0]) : Array.Empty<Value>();
         });
         RegG("quiver", (it, a, nout) =>
         {

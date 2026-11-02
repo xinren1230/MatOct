@@ -67,6 +67,7 @@ namespace MatRewrite.Core.Builtins
                 case Figure: s.UnionWith(new[] { "currentaxes", "colormap", "name", "number" }); break;
                 case Axes: s.UnionWith(new[] { "title", "xlabel", "ylabel", "zlabel", "xlim", "ylim", "zlim", "clim", "view", "xscale", "yscale", "nextplot", "xgrid", "ygrid", "box", "ydir", "colororder", "xtick", "ytick" }); break;
                 case LabelObject: s.UnionWith(TypeDefaults["text"].Keys); break;
+                case BarSeries: s.UnionWith(new[] { "xdata", "ydata", "barwidth", "barlayout", "horizontal", "basevalue", "showbaseline", "baseline", "bargroup", "facecolor", "edgecolor", "linewidth", "linestyle", "hittestarea" }); break;
             }
             return s.Where(k => !k.StartsWith("__"));
         }
@@ -144,6 +145,12 @@ namespace MatRewrite.Core.Builtins
                 if (!c.Deleted && (all || !IsHidden(c))) Walk(it, c, depth + 1, max, all, acc);
         }
 
+        static bool IsEq(Interpreter it, Value a, Value b)
+        {
+            var r = it.CallFunction("isequal", new[] { a, b }, 1);
+            return r.Length > 0 && r[0] is MatrixValue m && m.Numel == 1 && m.Re[0] != 0;
+        }
+
         static bool ValEq(Value a, Value b)
         {
             if (a is MatrixValue x && b is MatrixValue y)
@@ -161,36 +168,49 @@ namespace MatRewrite.Core.Builtins
         {
             var g = it.Graphics; int k = 0;
             var roots = new List<GObject>();
+            if (a.Length > 0 && a[0].Numel == 0 && a[0] is MatrixValue { IsChar: false }) return Out(new MatrixValue(0, 1));
             if (a.Length > 0 && a[0] is MatrixValue hm && !hm.IsChar)
             {
-                foreach (var h in hm.Re) { var o = g.Lookup(h) ?? throw new OctaveException("findobj: invalid graphics handle"); roots.Add(o); }
+                foreach (var h in hm.Re) { var o = g.Lookup(h); if (o == null || o.Deleted) throw new OctaveException("findobj: invalid graphics handles in input HLIST"); roots.Add(o); }
                 k = 1;
             }
+            else if (a.Length > 0 && !IsString(a[0])) throw new OctaveException("findobj: properties and options must be strings");
             else roots.Add(g.Root);
             int max = int.MaxValue;
-            if (k < a.Length && IsString(a[k]) && S(a[k], "findobj") == "flat") { max = 0; k++; }
-            if (k + 1 < a.Length && IsString(a[k]) && S(a[k], "findobj") == "-depth") { max = (int)D(a[k + 1], "findobj"); k += 2; }
-            var cand = new List<GObject>();
-            foreach (var r in roots) Walk(it, r, 0, max, all, cand);
-            // predicate expression: terms joined by -and/-or/-xor, optional -not prefix
-            Func<GObject, bool>? pred = null; string op = "-and"; bool neg = false;
+            if (k < a.Length && IsString(a[k]) && S(a[k], "findobj").Equals("flat", StringComparison.OrdinalIgnoreCase)) { max = 0; k++; }
+            if (k + 1 < a.Length && IsString(a[k]) && S(a[k], "findobj") == "-depth") { max = (int)Math.Min(int.MaxValue, D(a[k + 1], "findobj")); k += 2; }
+            // level-order collection, as Octave does
+            var cand = new List<GObject>(roots);
+            var level = new List<GObject>(roots);
+            for (int d = 0; d < max && level.Count > 0; d++)
+            {
+                var next = new List<GObject>();
+                foreach (var o in level) foreach (var c in g.ChildrenOf(o)) if (!c.Deleted && (all || !IsHidden(c))) next.Add(c);
+                cand.AddRange(next); level = next;
+            }
+            // terms joined by operators; precedence: -and > -or > -xor
+            var terms = new List<Func<GObject, bool>>(); var ops = new List<string>();
+            string op = "-and"; bool neg = false;
             while (k < a.Length)
             {
-                if (!IsString(a[k]) && a[k] is not CellValue) throw new OctaveException("findobj: properties and options must be strings");
-                var s = IsString(a[k]) ? S(a[k], "findobj") : "";
+                if (!IsString(a[k])) throw new OctaveException("findobj: properties and options must be strings");
+                var s = S(a[k], "findobj");
                 Func<GObject, bool>? term = null;
                 switch (s.ToLowerInvariant())
                 {
                     case "-and" or "-or" or "-xor": op = s.ToLowerInvariant(); k++; continue;
                     case "-not": neg = !neg; k++; continue;
+                    case "-depth": k += 2; continue;
                     case "-property":
                     {
+                        if (k + 1 >= a.Length) throw new OctaveException("findobj: inconsistent number of arguments");
                         var pn = S(a[k + 1], "findobj").ToLowerInvariant(); k += 2;
                         term = o => { try { GetAny(it, o, pn); return true; } catch (OctaveException) { return false; } };
                         break;
                     }
                     case "-regexp":
                     {
+                        if (k + 2 >= a.Length) throw new OctaveException("findobj: inconsistent number of arguments");
                         var pn = S(a[k + 1], "findobj"); var rx = new System.Text.RegularExpressions.Regex(S(a[k + 2], "findobj")); k += 3;
                         term = o => { try { var v = GetAny(it, o, pn); return IsString(v) && rx.IsMatch(S(v, "findobj")); } catch (OctaveException) { return false; } };
                         break;
@@ -199,18 +219,28 @@ namespace MatRewrite.Core.Builtins
                     {
                         if (k + 1 >= a.Length) throw new OctaveException("findobj: inconsistent number of arguments");
                         var pn = s; var want = a[k + 1]; k += 2;
-                        term = o => { try { return ValEq(GetAny(it, o, pn), want); } catch (OctaveException) { return false; } };
+                        term = o => { try { var v = GetAny(it, o, pn); return v is MatrixValue || want is MatrixValue ? ValEq(v, want) : IsEq(it, v, want); } catch (OctaveException) { return false; } };
                         break;
                     }
                 }
                 var t0 = term!; bool n0 = neg; neg = false;
-                Func<GObject, bool> t1 = n0 ? o => !t0(o) : t0;
-                if (pred == null) pred = t1;
-                else { var p0 = pred; pred = op switch { "-or" => o => p0(o) || t1(o), "-xor" => o => p0(o) ^ t1(o), _ => o => p0(o) && t1(o) }; }
+                terms.Add(n0 ? o => !t0(o) : t0);
+                if (terms.Count > 1) ops.Add(op);
                 op = "-and";
             }
+            Func<GObject, bool>? pred = null;
+            if (terms.Count > 0)
+                pred = o =>
+                {
+                    var vals = terms.Select(t => t(o)).ToList(); var os = new List<string>(ops);
+                    foreach (var lvl in new[] { "-and", "-or", "-xor" })
+                        for (int i = 0; i < os.Count;)
+                            if (os[i] == lvl) { vals[i] = lvl == "-and" ? vals[i] && vals[i + 1] : lvl == "-or" ? vals[i] || vals[i + 1] : vals[i] ^ vals[i + 1]; vals.RemoveAt(i + 1); os.RemoveAt(i); }
+                            else i++;
+                    return vals[0];
+                };
             var res = cand.Where(o => pred == null || pred(o)).Select(o => o.Handle).ToArray();
-            return Out(new MatrixValue(res.Length, 1, res));
+            return Out(res.Length == 0 ? new MatrixValue(0, 0) : new MatrixValue(res.Length, 1, res));
         }
     }
 }

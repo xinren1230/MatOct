@@ -30,7 +30,7 @@ namespace MatRewrite.Core.Builtins
             finally { it.Graphics.Flush(); }
         });
 
-        static readonly HashSet<string> AxesArgFns = new() { "surf", "mesh", "surfc", "meshc", "meshz", "surfl", "plot", "plot3", "bar", "barh",
+        static readonly HashSet<string> AxesArgFns = new() { "polar", "errorbar", "surf", "mesh", "surfc", "meshc", "meshz", "surfl", "plot", "plot3", "bar", "barh",
             "contour", "contourf", "contour3", "scatter", "scatter3", "image", "imagesc", "pcolor", "stairs", "stem", "stem3", "area", "fill",
             "errorbar", "quiver", "quiver3", "semilogx", "semilogy", "loglog", "hist", "pie", "pie3", "polar", "rose", "comet", "feather", "compass", "waterfall", "ribbon", "light" };
 
@@ -145,8 +145,8 @@ namespace MatRewrite.Core.Builtins
                 it.Graphics.Add(ax, s);
                 return n > 0 ? Out(H(s)) : Array.Empty<Value>();
             });
-            RegG("bar", (it, a, n) => Out(Bar(it, a, n, false, "bar")).Take(n > 0 ? 1 : 0).ToArray());
-            RegG("barh", (it, a, n) => Out(Bar(it, a, n, true, "barh")).Take(n > 0 ? 1 : 0).ToArray());
+            RegG("bar", (it, a, n) => BarFn(it, a, n, false, "bar"));
+            RegG("barh", (it, a, n) => BarFn(it, a, n, true, "barh"));
             RegG("hist", (it, a, n) =>
             {
                 var y = M(a[0], "hist");
@@ -274,7 +274,7 @@ namespace MatRewrite.Core.Builtins
                 if (labels != null && labels.Count > 0)
                 {
                     ax.LegendLabels = labels.ToArray();
-                    var tl = targets ?? ax.Children;
+                    var tl = targets ?? ax.Children.Where(c => !(c is GenericObject g && g.Props.ContainsKey("__bar__")) && c is not PatchSeries { Group: BarSeries }).ToList();
                     for (int i = 0; i < tl.Count && i < labels.Count; i++) tl[i].DisplayName = labels[i];
                 }
                 var lg = LegendOf(it, ax);
@@ -314,6 +314,8 @@ namespace MatRewrite.Core.Builtins
                 if (rows < 1 || cols < 1 || cells.Length == 0 || cells.Any(c => c < 1 || c > rows * cols))
                     throw new OctaveException("subplot: INDEX value must be >= 1 and <= ROWS*COLS");
                 var ax = it.Graphics.Subplot(rows, cols, cells.OrderBy(x => x).ToArray());
+                var rest = a.Skip(a.Length == 1 ? 1 : 3).Where(v => !(IsString(v) && S(v, "subplot").ToLowerInvariant() is "align" or "replace")).ToArray();
+                for (int q = 0; q + 1 < rest.Length; q += 2) it.CallFunction("set", new[] { H(ax), rest[q], rest[q + 1] }, 0);
                 return n > 0 ? Out(H(ax)) : Array.Empty<Value>();
             });
             RegG("axis", (it, a, n) =>
@@ -533,6 +535,8 @@ namespace MatRewrite.Core.Builtins
                 {
                     case LineSeries l: Acc(l.X, l.Y); break;
                     case ScatterSeries sc: Acc(sc.X, sc.Y); break;
+                    case BarSeries b when b.X1 != null:
+                        { var cx = b.X1.Concat(b.X2!); var cy = b.Y0!.Concat(b.Y1!); if (b.Horizontal) Acc(cy, cx); else Acc(cx, cy); break; }
                     case BarSeries b: Acc(b.X.Select(v => v - b.Width / 2).Concat(b.X.Select(v => v + b.Width / 2)), b.Y.Append(0)); break;
                     case ImageSeries im: Acc(new[] { im.X0 - 0.5, im.X1 + 0.5 }, new[] { im.Y0 - 0.5, im.Y1 + 0.5 }); break;
                     case SurfaceSeries sf: Acc(sf.X.Cast<double>(), sf.Y.Cast<double>()); break;
@@ -575,6 +579,12 @@ namespace MatRewrite.Core.Builtins
         }
 
         /// <summary>Parse a line spec like "r--o"; false if it is not a valid format.</summary>
+        internal static bool GraphicsFmt(string s) => s.Length > 0 && s.Length <= 4 && ParseFmt(s, out _, out _, out _);
+        internal static void ApplyFmt(LineSeries l, string s)
+        {
+            if (!ParseFmt(s, out var st, out var mk, out var col)) return;
+            if (st != null) l.Style = st.Value; if (mk != null) l.Marker = mk.Value; if (col != null) l.Color = col.Value;
+        }
         static bool ParseFmt(string s, out LineStyle? style, out Marker? marker, out Rgb? color)
         {
             style = null; marker = null; color = null;
@@ -680,46 +690,7 @@ namespace MatRewrite.Core.Builtins
             for (int j = 0; j < m.C; j++) yield return m.Re.Skip(j * m.R).Take(m.R).ToArray();
         }
 
-        static Value Bar(Interpreter it, Value[] a, int n, bool horiz, string fn)
-        {
-            if (a.Length == 0) throw new OctaveException($"Invalid call to {fn}");
-            MatrixValue? xm = null, ym;
-            int k = 0;
-            if (a[0] is MatrixValue c0 && c0.IsChar) throw new OctaveException($"{fn}: Y must be numeric");
-            var m0 = M(a[0], fn); k = 1;
-            if (k < a.Length && a[k] is MatrixValue m1 && !m1.IsChar && !(m1.Numel == 1 && m0.Numel > 1)) { xm = m0; ym = m1; k++; }
-            else ym = m0;
-            if (xm != null)
-            {
-                if (!(xm.R == 1 || xm.C == 1) || xm.ND != null) throw new OctaveException($"{fn}: X must be a vector");
-                if (xm.Re.Distinct().Count() != xm.Numel) throw new OctaveException($"{fn}: X vector values must be unique");
-                int yl = (ym.R == 1 || ym.C == 1) ? ym.Numel : ym.R;
-                if (xm.Numel != yl) throw new OctaveException($"{fn}: length of X and Y must be equal");
-            }
-            double width = 0.8;
-            if (k < a.Length && a[k] is MatrixValue wm && !wm.IsChar && wm.Numel == 1) { width = wm.Re[0]; k++; }
-            Rgb? col = null;
-            for (; k < a.Length; k++)
-                if (IsString(a[k]))
-                {
-                    var s = S(a[k], fn);
-                    if (s.Length == 1 && Rgb.FromChar(s[0]) is Rgb c) col = c;
-                    else if (s.Equals("facecolor", StringComparison.OrdinalIgnoreCase) && k + 1 < a.Length) { col = ParseColor(a[++k], fn); }
-                }
-            var ax = PrepareAxes(it);
-            bool vec = ym.R == 1 || ym.C == 1;
-            var cols = vec ? new List<double[]> { ym.Re.ToArray() } : Columns(ym).ToList();
-            int rows = cols[0].Length;
-            var xs = xm?.Re.ToArray() ?? Enumerable.Range(1, rows).Select(i => (double)i).ToArray();
-            if (xs.Length != rows) throw new OctaveException($"{fn}: length of X and Y must be equal");
-            double last = 0;
-            for (int g = 0; g < cols.Count; g++)
-            {
-                var s = it.Graphics.Add(ax, new BarSeries { X = xs, Y = cols[g], Width = width, Color = col ?? ax.NextColor(), GroupIndex = g, GroupCount = cols.Count, Horizontal = horiz });
-                last = s.Handle;
-            }
-            return Num(last);
-        }
+        static bool OnOffB(Value v, string fn) => IsString(v) ? S(v, fn).ToLowerInvariant() switch { "on" => true, "off" => false, var z => throw new OctaveException($"{fn}: invalid value '{z}'") } : D(v, fn) != 0;
 
         internal static GenericObject LegendOf(Interpreter it, Axes ax)
         {
@@ -787,8 +758,20 @@ namespace MatRewrite.Core.Builtins
                     case (ScatterSeries s, "markerfacecolor"): s.Filled = !(IsString(v) && S(v, fn) == "none"); if (!IsString(v) || S(v, fn).Length == 1) s.Color = ParseColor(v, fn); break;
                     case (ScatterSeries s, "markeredgecolor" or "color"): s.Color = ParseColor(v, fn); break;
                     case (ScatterSeries, "linewidth"): break;
-                    case (BarSeries b, "facecolor"): b.Color = ParseColor(v, fn); break;
-                    case (BarSeries b, "barwidth"): b.Width = D(v, fn); break;
+                    case (BarSeries b, "facecolor"): b.Color = ParseColor(v, fn); if (b.Patch != null) { b.Patch.FaceColor = b.Color; b.Patch.Props["facecolor"] = Rgbv(b.Color); } break;
+                    case (BarSeries b, "barwidth"): foreach (var mb in b.Members ?? new() { b }) mb.Width = D(v, fn); BarRecompute(it, (b.Members ?? new() { b })[0]); break;
+                    case (BarSeries b, "barlayout"):
+                    { var lay = S(v, fn).ToLowerInvariant(); if (lay is not ("grouped" or "stacked")) throw new OctaveException($"{fn}: invalid value for barlayout"); foreach (var mb in b.Members ?? new() { b }) mb.Layout = lay; BarRecompute(it, (b.Members ?? new() { b })[0]); break; }
+                    case (BarSeries b, "horizontal"): { bool hz = OnOffB(v, fn);
+                        if (hz != b.Horizontal) { var bax = b.Parent; string f0 = hz ? "xtick" : "ytick", f1 = hz ? "ytick" : "xtick"; if (bax.Props.Remove(f0, out var tk)) bax.Props[f1] = tk; } foreach (var mb in b.Members ?? new() { b }) mb.Horizontal = hz; BarRecompute(it, (b.Members ?? new() { b })[0]); break; }
+                    case (BarSeries b, "basevalue"): { var bvv = D(v, fn); foreach (var mb in b.Members ?? new() { b }) mb.BaseValue = bvv; BarRecompute(it, (b.Members ?? new() { b })[0]); break; }
+                    case (BarSeries b, "showbaseline"): { bool sb = OnOffB(v, fn); foreach (var mb in b.Members ?? new() { b }) mb.ShowBaseline = sb; if (b.Baseline != null) b.Baseline.Props["visible"] = Str(sb ? "on" : "off"); break; }
+                    case (BarSeries b, "xdata"): { var nx = M(v, fn).Re.ToArray(); foreach (var mb in b.Members ?? new() { b }) mb.X = nx;
+                        { string tk = b.Horizontal ? "ytick" : "xtick"; if (b.Parent.Props.ContainsKey(tk) && nx.Length <= 15 && nx.All(q => q == Math.Floor(q))) b.Parent.Props[tk] = MatrixValue.Row(nx.OrderBy(q => q).ToArray()); }
+                        BarRecompute(it, (b.Members ?? new() { b })[0]); break; }
+                    case (BarSeries b, "ydata"): b.Y = M(v, fn).Re.ToArray(); BarRecompute(it, (b.Members ?? new() { b })[0]); break;
+                    case (BarSeries b, "edgecolor" or "linewidth" or "linestyle"):
+                    { var vv = p == "edgecolor" && !(IsString(v) && S(v, fn) is "none" or "flat" or "interp") ? Rgbv(ParseColor(v, fn)) : v; b.Props[p] = vv; if (b.Patch != null) b.Patch.Props[p] = vv; break; }
                     case (Figure f, "name"): f.Name = S(v, fn); break;
                     case (Figure f, "numbertitle"): f.NumberTitle = S(v, fn) == "on"; break;
                     case (Figure f, "visible"): f.Visible = S(v, fn) == "on"; break;

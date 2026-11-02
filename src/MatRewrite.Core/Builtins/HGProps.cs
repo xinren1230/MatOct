@@ -81,6 +81,12 @@ namespace MatRewrite.Core.Builtins
                 case (Axes ax, "colororder"): return ColorOrderM();
                 case (Axes ax, "xtick") when !ax.Props.ContainsKey("xtick"): return MatrixValue.Row(Ticks(Limits(ax).x, ax.XLog));
                 case (Axes ax, "ytick") when !ax.Props.ContainsKey("ytick"): return MatrixValue.Row(Ticks(Limits(ax).y, ax.YLog));
+                case (Axes ax, "xticklabel" or "yticklabel") when !ax.Props.ContainsKey(p):
+                {
+                    var tv = GetGeneric(it, ax, p[0] + "tick") as MatrixValue;
+                    var labs = (tv?.Re ?? Array.Empty<double>()).Select(d => (Value)Str(d.ToString("G5", System.Globalization.CultureInfo.InvariantCulture))).ToArray();
+                    return new CellValue(labs.Length, labs.Length == 0 ? 0 : 1, labs);
+                }
                 case (Axes ax, "colormap"): return GetGeneric(it, ax.Figure, "colormap");
                 case (LabelObject l, "string"): return Str(l.Text);
                 case (LabelObject l, "position"):
@@ -109,7 +115,7 @@ namespace MatRewrite.Core.Builtins
                 case (LineSeries l, "zdata"): return l.Z == null ? new MatrixValue(0, 0) : MatrixValue.Row(l.Z);
                 case (LineSeries l, "linestyle"): return Str(l.Style switch { LineStyle.Solid => "-", LineStyle.Dashed => "--", LineStyle.Dotted => ":", LineStyle.DashDot => "-.", _ => "none" });
                 case (LineSeries l, "marker"): return Str(MarkerName(l.Marker));
-                case (TextSeries t, "string"): return Str(t.Text);
+                case (TextSeries t, "string"): return t.Props.TryGetValue("__string", out var tsv) ? tsv : Str(t.Text);
                 case (TextSeries t, "position"): return MatrixValue.Row(new[] { t.X, t.Y, t.Z ?? 0 });
                 case (TextSeries t, "color"): return Rgbv(t.Color);
                 case (TextSeries t, "fontsize"): return Num(t.FontSize);
@@ -130,8 +136,24 @@ namespace MatRewrite.Core.Builtins
                 case (PatchSeries ps, "facealpha"): return Num(ps.FaceAlpha);
                 case (PatchSeries ps, "linewidth"): return Num(ps.LineWidth);
                 case (Annotation an, "string"): return Str(an.Text);
+                case (BarSeries b, "xdata"): return MatrixValue.Col(b.X);
+                case (BarSeries b, "ydata"): return MatrixValue.Col(b.Y);
+                case (BarSeries b, "barwidth"): return Num(b.Width);
+                case (BarSeries b, "barlayout"): return Str(b.Layout);
+                case (BarSeries b, "horizontal"): return Str(b.Horizontal ? "on" : "off");
+                case (BarSeries b, "basevalue"): return Num(EffBase(b));
+                case (PatchSeries { Group: BarSeries pb }, "xdata" or "ydata" or "vertices"): BarRecompute(it, (pb.Members ?? new() { pb })[0]); return o.Props[p];
+                case (BarSeries b, "showbaseline"): return Str(b.ShowBaseline ? "on" : "off");
+                case (BarSeries b, "baseline"): return HandleOrEmpty(b.Baseline);
+                case (BarSeries b, "bargroup"): return MatrixValue.Col((b.Members ?? new() { b }).Select(m => m.Handle));
+                case (BarSeries b, "facecolor"): return Rgbv(b.Color);
+                case (BarSeries b, "edgecolor"): return b.Props.TryGetValue("edgecolor", out var bec) ? bec : MatrixValue.Row(new double[] { 0, 0, 0 });
+                case (BarSeries b, "linewidth"): return b.Props.TryGetValue("linewidth", out var blw) ? blw : Num(0.5);
+                case (BarSeries b, "linestyle"): return b.Props.TryGetValue("linestyle", out var bls) ? bls : Str("-");
+                case (BarSeries b, "hittestarea"): return Str("off");
                 case (_, "displayname"): return Str(o.DisplayName);
             }
+            if (o is GenericObject && BaselineGet(it, o, p) is Value blv) return blv;
             if (o.Props.TryGetValue(p, out var bag)) return bag;
             if (TryDefault(it, o, p, out var dv)) return dv;
             return null;

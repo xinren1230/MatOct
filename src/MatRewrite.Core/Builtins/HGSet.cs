@@ -32,6 +32,7 @@ namespace MatRewrite.Core.Builtins
             if (p.StartsWith("default")) return true;
             if (p == "parent") { Reparent(it, o, v, fn); return true; }
             if (p is "children" or "type") return true;
+            if (o is GenericObject && BaselineSet(it, o, p, v, fn)) return true;
             switch (o, p)
             {
                 case (RootObject, "currentfigure"):
@@ -73,7 +74,7 @@ namespace MatRewrite.Core.Builtins
                 case (Axes ax, "colormap"): it.CallFunction("colormap", new Value[] { Num(ax.Handle), v }, 0); return true;
                 case (LabelObject l, "string"): l.Text = LabelString(v, fn); return true;
                 case (TextSeries t, "position"): { var w = Vec(v, fn); if (w.Length >= 2) { t.X = w[0]; t.Y = w[1]; t.Z = w.Length > 2 ? w[2] : null; } return true; }
-                case (TextSeries t, "string"): t.Text = LabelString(v, fn); return true;
+                case (TextSeries t, "string"): t.Text = LabelString(v, fn); if (v is CellValue || v is MatrixValue { R: > 1 }) t.Props["__string"] = v; else t.Props.Remove("__string"); return true;
                 case (ImageSeries im, "cdata"): { var m = M(v, fn); im.C = ToGrid(m); return true; }
                 case (ImageSeries im, "xdata"): { var w = Vec(v, fn); if (w.Length > 0) { im.X0 = w[0]; im.X1 = w[^1]; } return true; }
                 case (ImageSeries im, "ydata"): { var w = Vec(v, fn); if (w.Length > 0) { im.Y0 = w[0]; im.Y1 = w[^1]; } return true; }

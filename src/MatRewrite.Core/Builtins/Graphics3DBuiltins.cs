@@ -349,7 +349,16 @@ namespace MatRewrite.Core.Builtins
 
             RegG("errorbar", (it, a, n) =>
             {
-                var nums = a.TakeWhile(v => !IsString(v)).Select(v => M(v, "errorbar").Re.ToArray()).ToList();
+                var raw = a.TakeWhile(v => !IsString(v)).ToList();
+                if (raw.Count < 2) throw new OctaveException("Invalid call to errorbar");
+                for (int q = 0; q < raw.Count; q++) if (raw[q] is not MatrixValue && raw[q] is not Sparse.SparseValue) throw new OctaveException($"errorbar: data argument {q + 1} must be numeric");
+                if (raw.Count > 6) throw new OctaveException("errorbar: too many arguments to plot");
+                for (int q = 1; q < raw.Count; q++) if (raw[q].Numel != raw[0].Numel) throw new OctaveException($"errorbar: size of argument {q + 1} does not match others");
+                string fmt0 = raw.Count < a.Length ? S(a[raw.Count], "errorbar") : "";
+                if (raw.Count == 2 && fmt0.Contains("~>")) throw new OctaveException("errorbar: 2 column errorplot is only valid for xerr");
+                if (raw.Count == 6 && !(fmt0.Contains("~>") || fmt0.Contains("#~>"))) throw new OctaveException("errorbar: 6 columns only valid for xyerr and boxxy");
+                if (raw.Count == 5) throw new OctaveException("errorbar: error plot requires 2, 3, 4, or 6 arguments");
+                var nums = raw.Select(v => M(v, "errorbar").Re.ToArray()).ToList();
                 double[] x, y, l, u;
                 switch (nums.Count)
                 {
@@ -375,8 +384,15 @@ namespace MatRewrite.Core.Builtins
 
             RegG("text", (it, a, n) =>
             {
-                if (a.Length < 3) throw new OctaveException("Invalid call to text");
                 var ax = it.Graphics.Gca();
+                if (a.Length == 0 || (a.Length % 2 == 0 && IsString(a[0])))
+                {
+                    var s0 = new TextSeries { X = 0, Y = 0 };
+                    it.Graphics.Add(ax, s0);
+                    if (a.Length > 0) SetProps(it, s0, a, "text");
+                    return n > 0 ? Out(Num(s0.Handle)) : Array.Empty<Value>();
+                }
+                if (a.Length < 3) throw new OctaveException("Invalid call to text");
                 bool has3 = a.Length >= 4 && !IsString(a[2]) && a[2] is MatrixValue;
                 var xs = M(a[0], "text").Re; var ys = M(a[1], "text").Re;
                 var zs = has3 ? M(a[2], "text").Re : null;
@@ -385,11 +401,24 @@ namespace MatRewrite.Core.Builtins
                 if ((a.Length - (has3 ? 4 : 3)) % 2 != 0) throw new OctaveException("Invalid call to text");
                 if (!(tv is CellValue) && !(tv is MatrixValue tcm && (tcm.IsChar || tcm.Numel == 0))) throw new OctaveException("text: STRING must be a character string");
                 { int nt = tv is CellValue tcc ? tcc.Numel : ((MatrixValue)tv).R; if (xs.Length > 1 && nt > 1 && nt != xs.Length) throw new OctaveException("text: invalid combination of points and text strings"); }
-                var texts = tv is CellValue cv ? cv.Data.Select(v => S(v, "text")).ToArray() : new[] { LabelText(new[] { tv }, "text") };
+                static string CS(Value v) => v is MatrixValue mm && mm.Numel == 0 ? "" : v is MatrixValue nm && !nm.IsChar ? ((MatrixValue)Num2StrValue(nm, Str("%g"))).AsString() : S(v, "text");
                 var made = new List<double>();
                 for (int i = 0; i < xs.Length; i++)
                 {
-                    var s = new TextSeries { X = xs[i], Y = ys[i], Z = zs?[i], Text = texts[Math.Min(i, texts.Length - 1)] };
+                    Value raw; string txt;
+                    if (tv is CellValue cv)
+                    {
+                        if (xs.Length > 1 && cv.Numel == xs.Length) { txt = CS(cv.Data[i]); raw = Str(txt); }
+                        else { var col = new CellValue(cv.Numel, 1); for (int q = 0; q < cv.Numel; q++) col.Data[q] = Str(CS(cv.Data[q])); raw = col; txt = string.Join("\n", col.Data.Select(v => S(v, "text"))); }
+                    }
+                    else
+                    {
+                        var tm = (MatrixValue)tv;
+                        if (xs.Length > 1 && tm.R == xs.Length && tm.R > 1) { txt = tm.RowString(i).TrimEnd(); raw = Str(txt); }
+                        else { raw = tm; txt = LabelText(new[] { tv }, "text"); }
+                    }
+                    var s = new TextSeries { X = xs[i], Y = ys[i], Z = zs?[i], Text = txt };
+                    if (raw is CellValue || raw is MatrixValue { R: > 1 }) s.Props["__string"] = raw;
                     it.Graphics.Add(ax, s);
                     var rest = a.Skip(has3 ? 4 : 3).ToArray();
                     if (rest.Length > 0) SetProps(it, s, rest, "text");

@@ -856,6 +856,7 @@ public sealed partial class Interpreter
                 var (a, st, n) = RangeParams(re);
                 var m = new MatrixValue(1, (int)n);
                 for (int k = 0; k < n; k++) m.Re[k] = a + k * st;
+                if (n > 0 && m.Re[n - 1] == 0) { double b = ScalarOf(Eval(re.Stop), "colon"); if (b == 0) m.Re[n - 1] = b; }
                 return new List<Value> { m };
             }
             case MatrixExpr me: return new List<Value> { BuildMatrix(me.Rows, false) };

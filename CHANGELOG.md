@@ -2,6 +2,18 @@
 
 All notable changes to MatOct. Detailed notes (Chinese) live in `docs/phaseN.md`.
 
+## [0.16.0] - 2026-11-02
+MatOct is a MATLAB-style IDE for GNU Octave, written in C#.
+### Changed
+- Octave test-suite pass rate out of the box: **92.6 % → 93.7 %** (9707/10356 blocks); with `--lib`: 93.2 %.
+- `bar`/`barh` now create Octave-style hggroup bar series (patch children, baseline, `barwidth`/`basevalue`/`horizontal`/stacked props); stacked bars really stack, grouped bars use Octave's geometry, integer xticks 1..N.
+- New `xline`/`yline` (hggroup + line, `value`/`label`), rewritten `polar` (Octave validation, `rtick`/`ttick`).
+### Fixed
+- `findobj`/`findall`: level-order results, `-and` > `-or` > `-xor` precedence, struct values, empty results, HLIST validation; `subplot(…, prop, value)`.
+- `text`: no-argument / property-only calls, cellstr and multi-row strings, one string per object.
+- `errorbar` and `funm` input validation with Octave messages; `stemleaf`.
+- Char vertical concatenation pads unequal rows; ranges keep `-0` at the limit.
+
 ## [0.15.0] - 2026-11-02
 MatOct is a MATLAB-style IDE for GNU Octave, written in C#.
 ### Changed

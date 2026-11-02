@@ -150,6 +150,26 @@ public static partial class BuiltinLibrary
             if (A0 is not MatrixValue m || m.IsChar || m.Kind == NumKind.Logical || m.Dims.Length > 2 || m.R != m.C) throw new OctaveException("funm: A must be a numeric square matrix");
             if (!(a[1] is FunctionHandleValue || IsString(a[1]))) throw new OctaveException("funm: FUN must be a function handle or function name");
             if (a.Length > 2 && !(a[2] is StructValue sv && sv.Numel == 1)) throw new OctaveException("funm: OPTIONS must be a scalar struct");
+            if (a.Length > 2 && a[2] is StructValue os)
+                foreach (var fnm in os.Fields.ToList())
+                {
+                    var fv = os.Get(fnm);
+                    bool num = fv is MatrixValue fm && !fm.IsChar, sc = num && ((MatrixValue)fv).Numel == 1;
+                    switch (fnm.ToLowerInvariant())
+                    {
+                        case "tolblk": case "toltay":
+                            if (!sc || !(((MatrixValue)fv).Re[0] > 0)) throw new OctaveException($"funm: {(fnm.ToLowerInvariant() == "tolblk" ? "TolBlk" : "TolTay")} must be a positive scalar"); break;
+                        case "maxterms": case "maxsqrt":
+                            { if (!sc || !(((MatrixValue)fv).Re[0] > 0) || ((MatrixValue)fv).Re[0] != Math.Floor(((MatrixValue)fv).Re[0])) throw new OctaveException($"funm: {(fnm.ToLowerInvariant() == "maxterms" ? "MaxTerms" : "MaxSqrt")} must be a positive integer"); break; }
+                        case "ord":
+                            if (!num || ((MatrixValue)fv).Numel != m.R || ((MatrixValue)fv).Kind == NumKind.Logical && false) throw new OctaveException("funm: Ord must be a numeric or logical vector of length N"); break;
+                        case "display":
+                            if (fv is MatrixValue dm && dm.IsChar) { var ds = dm.AsString().ToLowerInvariant(); if (ds is not ("on" or "off" or "notify" or "final" or "iter" or "none")) throw new OctaveException("funm: invalid string value specified for Display"); }
+                            else if (!sc) throw new OctaveException("funm: Display must be a string or scalar value");
+                            else if (((MatrixValue)fv).Re[0] < 0) throw new OctaveException("funm: Display must be a string or scalar value >= 0");
+                            break;
+                    }
+                }
             bool single = m.Kind == NumKind.Single;
             if (m.Kind != NumKind.Double) m = (MatrixValue)Fc(it, "double", m);
             string fname = a[1] is FunctionHandleValue fh ? (fh.Name ?? "") : ((MatrixValue)a[1]).AsString();

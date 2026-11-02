@@ -83,7 +83,7 @@ public static partial class BuiltinLibrary
         {
             double lo = D(a[0], "colon"), st = a.Length > 2 ? D(a[1], "colon") : 1, hi = D(a[^1], "colon");
             long n = Interpreter.RangeCount(lo, st, hi);
-            var m = new MatrixValue(1, (int)n); for (int k = 0; k < n; k++) m.Re[k] = lo + k * st; return m;
+            var m = new MatrixValue(1, (int)n); for (int k = 0; k < n; k++) m.Re[k] = lo + k * st; if (n > 0 && m.Re[n - 1] == 0 && hi == 0) m.Re[n - 1] = hi; return m;
         });
         Reg1("repmat", a =>
         {

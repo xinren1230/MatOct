@@ -87,6 +87,13 @@ public static class Concat
         else
         {
             C = nonEmpty[0].C;
+            // Octave pads rows of an all-char vertical concatenation (string_fill_char)
+            if (!anyCell && !anyStruct && nonEmpty.All(a => a is MatrixValue { IsChar: true }) && nonEmpty.Any(a => a.C != C))
+            {
+                int mc = nonEmpty.Max(a => a.C);
+                nonEmpty = nonEmpty.Select(a => (ArrayValue)PadChar((MatrixValue)a, mc)).ToList();
+                C = mc;
+            }
             foreach (var a in nonEmpty)
                 if (a.C != C) throw new OctaveException($"vertical dimensions mismatch ({nonEmpty[0].R}x{nonEmpty[0].C} vs {a.R}x{a.C})");
             R = nonEmpty.Sum(a => a.R);
@@ -111,4 +118,12 @@ public static class Concat
 
     static int FirstR(List<ArrayValue> a) => a.FirstOrDefault(x => x.Numel > 0)?.R ?? 0;
     static int FirstC(List<ArrayValue> a) => a.FirstOrDefault(x => x.Numel > 0)?.C ?? 0;
+
+    static MatrixValue PadChar(MatrixValue a, int mc)
+    {
+        if (a.C == mc) return a;
+        var r = new MatrixValue(a.R, mc, NumKind.Char);
+        for (int i = 0; i < a.R; i++) for (int j = 0; j < mc; j++) r.SetFrom(i + j * a.R, j < a.C ? a : MatrixValue.Str(" "), j < a.C ? i + j * a.R : 0);
+        return r;
+    }
 }

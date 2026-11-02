@@ -151,6 +151,12 @@ public static class FigureRenderer
                     double groupW = b.Width;
                     double each = b.GroupCount > 1 ? groupW / b.GroupCount : groupW;
                     double step = b.X.Length > 1 ? Enumerable.Range(1, b.X.Length - 1).Min(i => Math.Abs(b.X[i] - b.X[i - 1])) : 1;
+                    if (b.X1 != null && b.X2 != null && b.Y0 != null && b.Y1 != null)
+                    {
+                        for (int i = 0; i < b.X1.Length; i++)
+                            bars.Add(new SP.Bar { Position = (b.X1[i] + b.X2[i]) / 2, Size = b.X2[i] - b.X1[i], ValueBase = b.Y0[i], Value = b.Y1[i], FillColor = ToColor(b.Color), LineWidth = 0.4f, LineColor = SP.Colors.Black.WithAlpha(0.6) });
+                    }
+                    else
                     for (int i = 0; i < b.X.Length; i++)
                     {
                         double pos = b.X[i];

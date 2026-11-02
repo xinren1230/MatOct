@@ -102,6 +102,14 @@ public sealed class BarSeries : Series
     public Rgb Color;
     public int GroupIndex, GroupCount = 1;
     public bool Horizontal;
+    // Octave-style bar object state (bar/barh); geometry is computed by __bar__'s algorithm.
+    public List<BarSeries>? Members;
+    public string Layout = "grouped";
+    public double BaseValue;
+    public bool ShowBaseline = true;
+    public double[]? X1, X2, Y0, Y1;
+    public PatchSeries? Patch;
+    public GenericObject? Baseline;
 }
 
 public sealed class ImageSeries : Series
