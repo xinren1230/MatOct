@@ -1,6 +1,4 @@
 # MatOct
-
-基于 Octave 的 MATLAB 风格界面软件（C# 重写）
 A MATLAB-style IDE built on a C# rewrite of GNU Octave.
 
 **License: GPL-3.0-or-later** (see LICENSE). MatOct is a port of GNU Octave and is distributed under the same GPL-3.0 terms.
