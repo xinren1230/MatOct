@@ -319,6 +319,7 @@ public static partial class BuiltinLibrary
             bool all = a.Length > 1 && S(a[1], "file_in_loadpath") == "all";
             var hits = new List<string>();
             foreach (var d in dirs) foreach (var x in f) { var p = Path.IsPathRooted(x) ? x : Path.Combine(d, x); if (File.Exists(p)) { hits.Add(p); if (!all) return Out(Str(p)); } }
+            foreach (var x in f) if (!Path.IsPathRooted(x) && x.EndsWith(".m") && !x.Contains('/') && CoreMLib.Get(x[..^2]) != null) { hits.Add("<core>/" + x); if (!all) return Out(Str("<core>/" + x)); }
             if (all) return Out(new CellValue(hits.Count, 1, hits.Select(h => (Value)Str(h)).ToArray()));
             return Out(new MatrixValue(0, 0));
         });

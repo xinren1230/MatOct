@@ -71,6 +71,9 @@ public static partial class BuiltinLibrary
         Unary("gammaln", x => x > 0 || double.IsNaN(x) ? GammaLn(x) : MathNet.Numerics.SpecialFunctions.GammaLn(x));
         Unary("erf", MathNet.Numerics.SpecialFunctions.Erf);
         Unary("erfc", MathNet.Numerics.SpecialFunctions.Erfc);
+        Unary("erfinv", x => x == 1 ? double.PositiveInfinity : x == -1 ? double.NegativeInfinity : x > 1 || x < -1 || double.IsNaN(x) ? double.NaN : MathNet.Numerics.SpecialFunctions.ErfInv(x));
+        Unary("erfcinv", x => x == 0 ? double.PositiveInfinity : x == 2 ? double.NegativeInfinity : x < 0 || x > 2 || double.IsNaN(x) ? double.NaN : MathNet.Numerics.SpecialFunctions.ErfcInv(x));
+        Unary("roundb", x => Math.Round(x, MidpointRounding.ToEven));
         Unary("factorial", x => x < 0 || x != Math.Floor(x) ? throw new OctaveException("factorial: all N must be real non-negative integers") : Math.Round(MathNet.Numerics.SpecialFunctions.Gamma(x + 1)));
         Reg1("real", a => { var m = M(a[0], "real"); return new MatrixValue(m.R, m.C, (double[])m.Re.Clone()) { ND = (int[]?)m.ND?.Clone() }; });
         Reg1("imag", a => { var m = M(a[0], "imag"); return new MatrixValue(m.R, m.C, m.Im == null ? new double[m.Numel] : (double[])m.Im.Clone()) { ND = (int[]?)m.ND?.Clone() }; });

@@ -2,6 +2,16 @@
 
 All notable changes to MatOct. Detailed notes (Chinese) live in `docs/phaseN.md`.
 
+## [0.18.0] - 2026-11-03
+MatOct is a MATLAB-style IDE for GNU Octave, written in C#.
+### Changed
+- Octave test-suite pass rate out of the box: **94.6 % → 95.7 %** (9911/10354 blocks); with `--lib`: 94.2 % → 95.0 % (9877/10400).
+- More Octave m-files used by default (`getfield`, `setfield`, `isfile`, `isfolder`); new core `subsref`/`subsasgn`.
+### Fixed
+- Octave-compatible argument validation and error messages for `colorbar`, `camlight`, `annotation`, `stem`, `patch`, `saveas`, `savefig`, `hgsave`, `figure`, `campos`/`camtarget`/`camup`/`camva`, `axis`, `isprop`, `fullfile`, `computer`, `pathdef`, `gco`, `delete`, `dir`, `help`, `which`.
+- `fullfile` broadcasts over cell-string arguments; `strfind` accepts a cell PATTERN; `unlink` returns `[err, msg]`.
+- New: `stat`, `system` (status/output), `S_ISDIR` & friends, `erfinv`, `erfcinv`, `roundb`, `__methods__`, `isjava`, `list_in_columns`.
+
 ## [0.17.0] - 2026-11-02
 MatOct is a MATLAB-style IDE for GNU Octave, written in C#.
 ### Changed

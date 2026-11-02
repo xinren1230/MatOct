@@ -185,6 +185,45 @@ public static partial class BuiltinLibrary
             r.Set("uid", a.Length > 0 ? a[0] : Num(0)); r.Set("gid", Num(0)); r.Set("gecos", Str(""));
             r.Set("dir", Str(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile))); r.Set("shell", Str("")); return r;
         });
+        Reg("stat", (it, a, n) =>
+        {
+            if (a.Length != 1) throw new OctaveException("Invalid call to stat");
+            string f = S(a[0], "stat");
+            FileSystemInfo fi = Directory.Exists(f) ? new DirectoryInfo(f) : new FileInfo(f);
+            if (!fi.Exists) return new Value[] { new MatrixValue(0, 0), Num(-1), Str("No such file or directory") };
+            bool dir = fi is DirectoryInfo;
+            int mode = 0;
+            try { if (!OperatingSystem.IsWindows()) mode = (int)File.GetUnixFileMode(f); else mode = 0x1A4; } catch { mode = 0x1A4; }
+            string perm = "";
+            string rwx = "rwxrwxrwx";
+            for (int i = 0; i < 9; i++) perm += (mode & (1 << (8 - i))) != 0 ? rwx[i] : '-';
+            var r = new StructValue();
+            double t(DateTime d) => (d.ToUniversalTime() - DateTime.UnixEpoch).TotalSeconds;
+            long size = dir ? 4096 : ((FileInfo)fi).Length;
+            r.Set("dev", Num(0)); r.Set("ino", Num(0)); r.Set("mode", Num(mode | (dir ? 0x4000 : 0x8000)));
+            r.Set("modestr", Str((dir ? "d" : "-") + perm)); r.Set("nlink", Num(1));
+            r.Set("uid", Num(OperatingSystem.IsWindows() ? 0 : 1000)); r.Set("gid", Num(OperatingSystem.IsWindows() ? 0 : 1000));
+            r.Set("rdev", Num(0)); r.Set("size", Num(size)); r.Set("atime", Num(Math.Floor(t(fi.LastAccessTime))));
+            r.Set("mtime", Num(Math.Floor(t(fi.LastWriteTime)))); r.Set("ctime", Num(Math.Floor(t(fi.CreationTime))));
+            r.Set("blksize", Num(4096)); r.Set("blocks", Num(Math.Ceiling(size / 512.0)));
+            return new Value[] { r, Num(0), Str("") };
+        });
+        Reg("system", (it, a, n) =>
+        {
+            if (a.Length < 1 || a.Length > 3) throw new OctaveException("Invalid call to system");
+            string cmd = S(a[0], "system");
+            bool retOut = n >= 2 || (a.Length > 1 && D(a[1], "system") != 0);
+            var psi = OperatingSystem.IsWindows() ? new System.Diagnostics.ProcessStartInfo("cmd.exe", "/c " + cmd) : new System.Diagnostics.ProcessStartInfo("/bin/sh", new[] { "-c", cmd });
+            psi.RedirectStandardOutput = true; psi.UseShellExecute = false;
+            using var p = System.Diagnostics.Process.Start(psi)!;
+            string o = p.StandardOutput.ReadToEnd(); p.WaitForExit();
+            if (!retOut) { it.Out.Write(o); return new Value[] { Num(p.ExitCode) }; }
+            return new Value[] { Num(p.ExitCode), Str(o) };
+        });
+        foreach (var (nm, bits) in new[] { ("S_ISDIR", 0x4000), ("S_ISREG", 0x8000), ("S_ISLNK", 0xA000), ("S_ISCHR", 0x2000), ("S_ISBLK", 0x6000), ("S_ISFIFO", 0x1000), ("S_ISSOCK", 0xC000) })
+            Reg1(nm, a => { if (a.Length != 1) throw new OctaveException($"Invalid call to {nm}"); return MatrixValue.Bool((((long)D(a[0], nm)) & 0xF000) == bits); });
+        foreach (var nm in new[] { "__event_manager_file_remove__", "__event_manager_file_renamed__", "__event_manager_enabled__" })
+            Reg(nm, (it, a, n) => nm.EndsWith("enabled__") ? new Value[] { MatrixValue.Bool(false) } : Array.Empty<Value>());
         Reg1("__keywords__", a =>
         {
             var ks = Lexing.Lexer.Keywords.OrderBy(x => x, StringComparer.Ordinal).ToArray();

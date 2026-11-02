@@ -246,7 +246,15 @@ public static partial class BuiltinLibrary
             NArgs(a, 3, 3, "bsxfun");
             return CallCallable(it, a[0], new[] { a[1], a[2] }, Math.Max(1, n));
         });
-        Reg0("unlink", (it, a) => { var f = S(a[0], "unlink"); if (File.Exists(f)) File.Delete(f); });
+        Reg("unlink", (it, a, n) =>
+        {
+            if (a.Length != 1) throw new OctaveException("Invalid call to unlink");
+            var f = S(a[0], "unlink");
+            string msg = "";
+            try { if (File.Exists(f)) File.Delete(f); else msg = "No such file or directory"; } catch (Exception e) { msg = e.Message; }
+            if (n == 0 && msg.Length > 0 && false) throw new OctaveException("unlink: operation failed: " + msg);
+            return new Value[] { Num(msg.Length > 0 ? -1 : 0), Str(msg) };
+        });
         Reg("isargout", (it, a, n) =>
         {
             var m = M(a[0], "isargout");

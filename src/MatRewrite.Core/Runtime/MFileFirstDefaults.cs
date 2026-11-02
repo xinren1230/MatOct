@@ -126,6 +126,6 @@ public static class MFileFirstDefaults
         "waterfall",
         "ribbon",
         // 0.17 A/B
-        "int2str", "condest", "methods", "hanning", "spy", "center", "kurtosis", "bin2dec", "skewness", "hex2dec"
+        "int2str", "condest", "methods", "getfield", "setfield", "isfile", "isfolder", "hanning", "spy", "center", "kurtosis", "bin2dec", "skewness", "hex2dec"
     };
 }

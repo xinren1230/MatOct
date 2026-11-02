@@ -190,7 +190,17 @@ namespace MatRewrite.Core.Builtins
                 var ax = it.Graphics.Gca();
                 LightObject? lo = null;
                 int k = 0;
-                if (k < a.Length && !IsString(a[k]) && it.Graphics.Lookup(D(a[k], "camlight")) is LightObject existing) { lo = existing; k++; }
+                if (a.Length > 4 || a.Any(v => v is CellValue)) throw new OctaveException("Invalid call to camlight");
+                if (a.Length > 0 && !IsString(a[0]) && a[0].Numel == 1 && it.Graphics.Lookup(D(a[0], "camlight")) is { } hobj)
+                {
+                    if (hobj is LightObject existing) lo = existing;
+                    else if (hobj is Axes hax) ax = hax;
+                    else throw new OctaveException("camlight: HL must be a handle to an axes or light object");
+                    k++;
+                }
+                if (a.Length - k > 3) throw new OctaveException("Invalid call to camlight");
+                if (k < a.Length && IsString(a[k]) && S(a[k], "camlight").ToLowerInvariant() is var p0 && p0 is not ("headlight" or "right" or "left" or "infinite" or "local"))
+                    throw new OctaveException($"camlight: invalid light position '{S(a[k], "camlight")}'");
                 lo ??= it.Graphics.Add(ax, new LightObject());
                 lo.CameraRelative = true; lo.Az = 30; lo.El = 30; // 'right' is the default
                 var nums = new List<double>();
@@ -431,23 +441,32 @@ namespace MatRewrite.Core.Builtins
             {
                 int k = 0;
                 var f = it.Graphics.Gcf();
-                if (a.Length > 0 && !IsString(a[0])) { if (it.Graphics.Lookup(D(a[0], "annotation")) is Figure ff) f = ff; k = 1; }
-                if (k >= a.Length) throw new OctaveException("Invalid call to annotation");
+                if (a.Length > 0 && !IsString(a[0]) && a[0] is not CellValue) { if (it.Graphics.Lookup(D(a[0], "annotation")) is Figure ff) f = ff; k = 1; }
+                if (k >= a.Length || !IsString(a[k])) throw new OctaveException("Invalid call to annotation");
                 var kind = S(a[k++], "annotation").ToLowerInvariant();
                 if (kind is not ("line" or "arrow" or "doublearrow" or "textarrow" or "textbox" or "rectangle" or "ellipse"))
-                    throw new OctaveException($"annotation: unknown annotation type '{kind}'");
-                var an = it.Graphics.Register(new Annotation { Kind = kind });
+                    throw new OctaveException($"annotation: unknown annotation TYPE {kind}");
+                bool boxy = kind is "textbox" or "rectangle" or "ellipse";
+                double[]? pos = null, ax1 = null, ay1 = null;
                 if (k < a.Length && !IsString(a[k]))
                 {
-                    var m1 = M(a[k++], "annotation");
-                    if (m1.Numel == 4 && (kind is "textbox" or "rectangle" or "ellipse")) an.Position = m1.Re.ToArray();
+                    if (boxy)
+                    {
+                        var m1 = a[k] as MatrixValue;
+                        if (m1 == null || m1.Numel != 4 || (m1.R != 1 && m1.C != 1)) throw new OctaveException("annotation: POS must be a 4-element vector");
+                        pos = m1.Re.ToArray(); k++;
+                    }
                     else
                     {
-                        if (m1.Numel != 2 || k >= a.Length) throw new OctaveException("annotation: X and Y must be 2-element vectors");
-                        var m2 = M(a[k++], "annotation");
-                        an.X = m1.Re.ToArray(); an.Y = m2.Re.ToArray();
+                        if (k + 1 >= a.Length) throw new OctaveException("Invalid call to annotation");
+                        if (a[k] is not MatrixValue m1 || a[k + 1] is not MatrixValue m2 || m1.Numel != 2 || m2.Numel != 2) throw new OctaveException("annotation: X and Y must be 2-element vectors");
+                        ax1 = m1.Re.ToArray(); ay1 = m2.Re.ToArray(); k += 2;
                     }
                 }
+                if ((a.Length - k) % 2 != 0) { it.Warning("annotation: couldn't parse PROP/VAL pairs, skipping"); a = a.Take(k).ToArray(); }
+                var an = it.Graphics.Register(new Annotation { Kind = kind });
+                if (pos != null) an.Position = pos;
+                if (ax1 != null) { an.X = ax1; an.Y = ay1; }
                 if (kind is "textbox" or "rectangle" or "ellipse" && an.Position == null) an.Position = new[] { 0.3, 0.3, 0.1, 0.1 };
                 for (; k + 1 < a.Length; k += 2)
                 {

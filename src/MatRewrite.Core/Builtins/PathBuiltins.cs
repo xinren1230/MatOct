@@ -114,6 +114,7 @@ public static partial class BuiltinLibrary
         Reg0("pathtool", (it, a) => { if (it.PathToolRequested != null) it.PathToolRequested(); else Builtins_path(it); });
         Reg("which", (it, a, n) =>
         {
+            if (a.Length == 0 || a.Any(v => !IsString(v))) throw new OctaveException("Invalid call to which");
             bool all = a.Any(v => IsString(v) && S(v, "which") == "-all");
             var names = a.Where(v => !(IsString(v) && S(v, "which") == "-all")).Select(v => S(v, "which")).ToList();
             var results = new List<Value>();

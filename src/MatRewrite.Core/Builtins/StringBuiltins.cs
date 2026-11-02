@@ -250,6 +250,19 @@ public static partial class BuiltinLibrary
         Reg1("strncmpi", a => { int n = I(a[2], "strncmpi"); return CompareStr(a[0], a[1], (x, y) => x.Length >= n && y.Length >= n && string.Equals(x[..n], y[..n], StringComparison.OrdinalIgnoreCase), true); });
         Reg1("strfind", a =>
         {
+            if (a.Length >= 2 && a[1] is CellValue pc && IsString(a[0]))
+            {
+                var str0 = S(a[0], "strfind");
+                var outc = new CellValue(pc.R, pc.C);
+                for (int i = 0; i < pc.Data.Length; i++)
+                {
+                    var p1 = IsString(pc.Data[i]) ? S(pc.Data[i], "strfind") : throw new OctaveException("strfind: PATTERN must be a string or cell array of strings");
+                    var hits = new List<double>();
+                    if (p1.Length > 0) for (int k = str0.IndexOf(p1, StringComparison.Ordinal); k >= 0; k = str0.IndexOf(p1, k + 1, StringComparison.Ordinal)) hits.Add(k + 1);
+                    outc.Data[i] = hits.Count == 0 ? new MatrixValue(1, 0) : MatrixValue.Row(hits);
+                }
+                return outc;
+            }
             var pat = S(a[1], "strfind");
             Value F(string s)
             {

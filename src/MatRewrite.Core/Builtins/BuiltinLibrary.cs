@@ -43,6 +43,7 @@ public static partial class BuiltinLibrary
         foreach (var kv in keep13) cur!.Builtins[kv.Key] = kv.Value;
         RegisterPhase13AppData(); RegisterPhase13Help(); RegisterFigureEdit(); RegisterFft();
         RegisterPaths();
+        RegisterValidation();
         cur = null;
     }
 

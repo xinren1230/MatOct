@@ -96,6 +96,43 @@ public static partial class BuiltinLibrary
             it.Out.Write($"Methods for class {ci.Name}:\n" + string.Join("  ", names) + "\n\n");
             return Array.Empty<Value>();
         });
+        Reg("__methods__", (it, a, n) =>
+        {
+            var ci = a[0] is ObjectValue o ? o.Cls : IsString(a[0]) ? it.FindClass(S(a[0], "__methods__")) : null;
+            if (ci == null) return new Value[] { new CellValue(0, 1), Bool(false), new MatrixValue(0, 1, NumKind.Logical) };
+            var own = ci.Chain().SelectMany(c => c.Methods.Keys.Where(k => !c.MethodAccess.ContainsKey(k))).Append(ci.Name).Distinct().ToList();
+            var hm = new[] { "delete", "eq", "ge", "gt", "le", "lt", "ne" };
+            var all = own.Concat(ci.IsHandle ? hm : Array.Empty<string>()).Distinct().OrderBy(x => x, StringComparer.Ordinal).ToList();
+            var fh = new MatrixValue(all.Count, 1, NumKind.Logical);
+            for (int i = 0; i < all.Count; i++) fh.Re[i] = ci.IsHandle && hm.Contains(all[i]) && !own.Contains(all[i]) ? 1 : 0;
+            return new Value[] { new CellValue(all.Count, 1, all.Select(x => (Value)Str(x)).ToArray()), Bool(true), fh };
+        });
+        Reg1("isjava", a => Bool(false));
+        Reg1("list_in_columns", a =>
+        {
+            if (a.Length < 1 || a.Length > 3) throw new OctaveException("Invalid call to list_in_columns");
+            var items = a[0] is CellValue c ? c.Data.Select(v => S(v, "list_in_columns")).ToList() : IsString(a[0]) ? CharRows(a[0]) : throw new OctaveException("list_in_columns: ARG must be a cellstr or char array");
+            int width = a.Length > 1 && a[1].Numel > 0 ? (int)D(a[1], "list_in_columns") : 80;
+            string prefix = a.Length > 2 ? S(a[2], "list_in_columns") : "";
+            if (items.Count == 0) return Str("\n");
+            int w = items.Max(x => x.Length) + 2;
+            int ncols = Math.Max(1, (width - prefix.Length) / w);
+            int nrows = (items.Count + ncols - 1) / ncols;
+            ncols = (items.Count + nrows - 1) / nrows;
+            var sb = new System.Text.StringBuilder();
+            for (int r = 0; r < nrows; r++)
+            {
+                sb.Append(prefix);
+                for (int col = 0; col < ncols; col++)
+                {
+                    int i = r + col * nrows; if (i >= items.Count) break;
+                    bool last = col == ncols - 1 || r + (col + 1) * nrows >= items.Count;
+                    sb.Append(last ? items[i] : items[i].PadRight(w));
+                }
+                sb.Append('\n');
+            }
+            return Str(sb.ToString());
+        });
         Reg1("isprop", a => Bool(a[0] is ObjectValue o && (o.Props.ContainsKey(S(a[1], "isprop")) || o.Cls.Chain().Any(c => c.Constants.ContainsKey(S(a[1], "isprop"))))));
         Reg1("ismethod", a => Bool(a[0] is ObjectValue o && o.Cls.FindMethod(S(a[1], "ismethod"), out _) != null));
         Reg1("isvalid", a => Bool(a[0] is ObjectValue o && o.Cls.IsHandle && !o.Deleted));
@@ -109,6 +146,7 @@ public static partial class BuiltinLibrary
         });
     }
 
+    static List<string> CharRows(Value v) { var m = (MatrixValue)v; var l = new List<string>(); for (int r = 0; r < m.R; r++) { var cs = new char[m.C]; for (int j = 0; j < m.C; j++) cs[j] = (char)m.Re[r + j * m.R]; l.Add(new string(cs).TrimEnd()); } return l; }
     /// <summary>struct(obj) and fieldnames(obj) support.</summary>
     internal static StructValue ObjectToStruct(ObjectValue o)
     {

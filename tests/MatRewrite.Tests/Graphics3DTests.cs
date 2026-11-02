@@ -65,7 +65,7 @@ public class Graphics3DTests : IDisposable
     [Fact] public void ErrorbarLimits() => Assert.Equal("hggroup 1", Run("h = errorbar(1:3, [1 2 3], [0.5 0.5 0.5]); yl = ylim; printf('%s %d', get(h,'type'), yl(1) <= 0.5)"));
     [Fact] public void TextObject() => Assert.Equal("text hello [2 3 0]", Run("plot(1:5); h = text(2, 3, 'hello'); printf('%s %s %s', get(h,'type'), get(h,'string'), mat2str(get(h,'position')))"));
     [Fact] public void AnnotationTypes() => Assert.Equal("hggroup", Run("plot(1:3); annotation('arrow',[0.1 0.4],[0.1 0.4]); annotation('textbox',[0.5 0.5 0.2 0.1],'String','hi'); h = annotation('line',[0 1],[0 1]); disp(get(h,'type'))"));
-    [Fact] public void AnnotationBadType() => Assert.Contains("unknown annotation type", Assert.Throws<OctaveException>(() => Run("annotation('blob')")).Message);
+    [Fact] public void AnnotationBadType() => Assert.Contains("unknown annotation TYPE", Assert.Throws<OctaveException>(() => Run("annotation('blob')")).Message);
 
     [Fact]
     public void SurfPngHasColormapColors()

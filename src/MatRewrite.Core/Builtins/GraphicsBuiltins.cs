@@ -202,6 +202,32 @@ namespace MatRewrite.Core.Builtins
             });
             RegG("colorbar", (it, a, n) =>
             {
+                {
+                    var locs = new[] { "north", "south", "east", "west", "northoutside", "southoutside", "eastoutside", "westoutside" };
+                    int i = 0;
+                    if (a.Length > 0 && !IsString(a[0]) && a[0].Numel == 1 && it.Graphics.Lookup(D(a[0], "colorbar")) is Graphics.Axes) i = 1;
+                    for (; i < a.Length; i++)
+                    {
+                        if (!IsString(a[i])) throw new OctaveException($"colorbar: expected string argument at position {i + 1}");
+                        var s0 = S(a[i], "colorbar").ToLowerInvariant();
+                        if (s0 is "off" or "hide" or "on" or "show" or "delete") continue;
+                        if (locs.Contains(s0)) { if (i != 0 && !(i == 1 && !IsString(a[0]))) throw new OctaveException("colorbar: LOC specification must occur as first arg"); continue; }
+                        if (s0 == "peer")
+                        {
+                            if (++i >= a.Length) throw new OctaveException("colorbar: missing axes handle after \"peer\"");
+                            if (a[i].Numel != 1 || IsString(a[i]) || it.Graphics.Lookup(D(a[i], "colorbar")) is not Graphics.Axes) throw new OctaveException("colorbar: invalid axes handle following \"peer\"");
+                            continue;
+                        }
+                        if (s0 == "location")
+                        {
+                            if (++i >= a.Length) throw new OctaveException("colorbar: missing value after \"location\"");
+                            if (!IsString(a[i]) || !locs.Contains(S(a[i], "colorbar").ToLowerInvariant())) throw new OctaveException("colorbar: unrecognized colorbar location");
+                            continue;
+                        }
+                        if (i == a.Length - 1) throw new OctaveException("colorbar: PROP/VAL inputs must occur in pairs");
+                        i++;
+                    }
+                }
                 var ax = it.Graphics.Gca();
                 ax.Colorbar = !(a.Length > 0 && IsString(a[0]) && S(a[0], "colorbar") is "off" or "hide");
                 var cbo = ColorbarOf(it, ax);
