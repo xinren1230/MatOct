@@ -13,14 +13,14 @@ public static class SparseBridge
         "sparse", "sortrows", "full", "issparse", "nnz", "nzmax", "nonzeros", "find", "size", "numel", "rows", "columns", "length",
         "ndims", "isempty", "class", "isnumeric", "isreal", "islogical", "isfloat", "isa", "speye", "spones", "spfun",
         "spalloc", "sprand", "sprandn", "sprandsym", "spdiags", "spzeros", "eigs", "svds", "isscalar", "isvector",
-        "ismatrix", "issquare", "isrow", "iscolumn", "disp", "display", "spfun", "spy",
+        "ismatrix", "issquare", "isrow", "iscolumn", "disp", "display", "spfun", "spy", "iscomplex", "isequal", "isobject", "size_equal", "ischar", "isstruct", "iscell", "iscellstr", "is_function_handle", "isinteger", "isstring", "isjava",
     };
 
     /// <summary>Functions whose result keeps sparsity in Octave.</summary>
     static readonly HashSet<string> KeepSparse = new()
     {
         "abs", "sqrt", "real", "imag", "conj", "sign", "floor", "ceil", "round", "fix", "sin", "tan", "asin", "atan",
-        "sinh", "tanh", "asinh", "atanh", "expm1", "log1p", "sum", "prod", "cumsum", "max", "min", "diag", "tril", "triu",
+        "sinh", "tanh", "asinh", "atanh", "expm1", "log1p", "sum", "sumsq", "prod", "cumsum", "max", "min", "diag", "tril", "triu",
         "reshape", "repmat", "kron", "fliplr", "flipud", "circshift", "logical", "double", "not", "and", "or", "xor",
         "uminus", "uplus", "inv", "power", "rdivide", "spfun", "cat", "horzcat", "vertcat", "permute", "rot90", "any", "all",
         "transpose", "ctranspose", "sort", "nth_element", "ipermute", "squeeze", "flip", "cummax", "cummin", "cumprod", "hsv2rgb", "rgb2hsv", "eq", "ne", "lt", "le", "gt", "ge", "isnan", "isinf",

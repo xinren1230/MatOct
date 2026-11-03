@@ -2,6 +2,24 @@
 
 All notable changes to MatOct. Detailed notes (Chinese) live in `docs/phaseN.md`.
 
+## [0.23.0] - 2026-11-03
+
+MatOct is a MATLAB-style IDE for GNU Octave, written in C#.
+
+### Changed
+- Octave core test suite: 10253 / 10397 blocks pass (98.6 %); with the Octave script library on the path: 10141 / 10400 (97.5 %).
+- `funm` now runs Octave's own m-file implementation.
+- `var` / `std` accept sparse input; `sumsq` keeps sparsity.
+
+### Fixed
+- Exact int64/uint64 arithmetic, printing and literal handling.
+- Faithful ports of `ichol`, `ilu` (ilu0 / crout / ilutp, real and complex) and complex sparse arithmetic.
+- New `airy` (all kinds, scaling option), `tmpfile`, `__blas_version__`, `__lapack_version__`.
+- `complex(z)` keeps the imaginary part and preserves single precision; `log` handles signed zero (fixes `cosint`).
+- `switch` matches function handles in case labels.
+- `schur(A, "complex")` returns a correct factorisation for real, defective matrices.
+- `fopen` / `is_valid_file_id` validate file ids like Octave.
+
 ## [0.22.0] - 2026-11-03
 
 MatOct is a MATLAB-style IDE for GNU Octave, written in C#.

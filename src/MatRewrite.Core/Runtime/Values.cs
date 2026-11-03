@@ -210,6 +210,15 @@ public sealed class MatrixValue : ArrayValue
     public MatrixValue CastTo(NumKind k) => Copy().CastInPlace(k);
 
     public static MatrixValue Scalar(double d) => new(1, 1, new[] { d });
+    /// <summary>Numeric literal; integers beyond flintmax keep an exact 64-bit sidecar for int64()/uint64().</summary>
+    public static MatrixValue Lit(double d, string text)
+    {
+        var m = Scalar(d);
+        if (Math.Abs(d) >= 9007199254740992.0 && text.Length > 0 && text.TrimStart('-').All(char.IsDigit)
+            && System.Numerics.BigInteger.TryParse(text, out var b) && b >= long.MinValue && b <= ulong.MaxValue)
+            m.L = new[] { b < 0 ? (long)b : unchecked((long)(ulong)b) };
+        return m;
+    }
     public static MatrixValue Cplx(double re, double im) => new MatrixValue(1, 1, new[] { re }, new[] { im }).Narrow();
     public static MatrixValue Cplx(Complex z) => Cplx(z.Real, z.Imaginary);
     public static MatrixValue Bool(bool b) => new(1, 1, new[] { b ? 1.0 : 0.0 }, null, NumKind.Logical);

@@ -75,6 +75,7 @@ public static class MFileFirstDefaults
         "unique",
         "validateattributes",
         "var",
+        "funm",
         "version",
         "view",
         // phase 6: plotting m-files now run on the full HG object model

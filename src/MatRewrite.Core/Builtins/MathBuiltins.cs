@@ -45,7 +45,7 @@ public static partial class BuiltinLibrary
         Reg1("abs", a => { NArgs(a, 1, 1, "abs"); var m = M(a[0], "abs"); if (!m.IsComplex) return Ops.Map(m, Math.Abs); var r = new MatrixValue(m.R, m.C) { ND = (int[]?)m.ND?.Clone() }; for (int k = 0; k < m.Numel; k++) r.Re[k] = m.At(k).Magnitude; return r; });
         Unary("sqrt", Math.Sqrt, Complex.Sqrt, x => x < 0);
         Unary("exp", Math.Exp, Complex.Exp);
-        Unary("log", Math.Log, Complex.Log, x => x < 0);
+        Unary("log", Math.Log, z => new Complex(Math.Log(Complex.Abs(z)), Math.Atan2(z.Imaginary, z.Real)), x => x < 0);
         Unary("log2", Math.Log2, z => Complex.Log(z) / Math.Log(2), x => x < 0);
         Unary("log10", Math.Log10, Complex.Log10, x => x < 0);
         Unary("log1p", Log1p, z => Complex.Log(1 + z), x => x < -1);
@@ -80,9 +80,14 @@ public static partial class BuiltinLibrary
         Reg1("conj", a => { var m = M(a[0], "conj").Copy(); m.Kind = NumKind.Double; if (m.Im != null) for (int k = 0; k < m.Numel; k++) m.Im[k] = -m.Im[k]; return m; });
         BuiltinFn angle = (it, a, n) => { var m = M(a[0], "angle"); var r = new MatrixValue(m.R, m.C) { ND = (int[]?)m.ND?.Clone() }; for (int k = 0; k < m.Numel; k++) r.Re[k] = Math.Atan2(m.Im?[k] ?? 0, m.Re[k]); return Out(r); };
         Reg("angle", angle); Reg("arg", angle);
-        Reg1("complex", a => { var re = M(a[0], "complex"); var im = a.Length > 1 ? M(a[1], "complex") : Fill(re.R, re.C, 0);
+        Reg1("complex", a => { var re = M(a[0], "complex");
+            if (a.Length == 1 && re.Im != null) { return re.Copy(); } var im = a.Length > 1 ? M(a[1], "complex") : Fill(re.R, re.C, 0);
             var r = Ops.Elementwise(re, im, "complex", (x, y) => x, null); r.Im = new double[r.Numel];
-            var imB = Ops.Elementwise(re, im, "complex", (x, y) => y, null); Array.Copy(imB.Re, r.Im, r.Numel); return r; });
+            var imB = Ops.Elementwise(re, im, "complex", (x, y) => y, null); Array.Copy(imB.Re, r.Im, r.Numel);
+            bool sgl = re.Kind == NumKind.Single || im.Kind == NumKind.Single;
+            r.Kind = sgl ? NumKind.Single : NumKind.Double;
+            if (sgl) for (int q = 0; q < r.Numel; q++) { r.Re[q] = (float)r.Re[q]; r.Im[q] = (float)r.Im[q]; }
+            return r; });
 
         Pred("isnan", (r, i) => double.IsNaN(r) || double.IsNaN(i));
         Pred("isinf", (r, i) => double.IsInfinity(r) || double.IsInfinity(i));

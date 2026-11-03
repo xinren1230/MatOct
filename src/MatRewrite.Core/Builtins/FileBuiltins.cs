@@ -18,6 +18,7 @@ public static partial class BuiltinLibrary
             NArgs(a, 1, 4, "fopen");
             if (a[0] is MatrixValue fm && !fm.IsChar)
             {
+                if (fm.Numel == 1 && fm.Re[0] != Math.Floor(fm.Re[0])) throw new OctaveException("fopen: invalid stream number = " + fm.Re[0].ToString("G6", System.Globalization.CultureInfo.InvariantCulture));
                 if (fm.Numel == 1 && it.Files.TryGetValue((int)fm.Re[0], out var of)) return Out(Str(of.Name), Str(of.Mode), Str("native"));
                 return Out(Num(-1), Str(""), Str(""));
             }
@@ -162,7 +163,17 @@ public static partial class BuiltinLibrary
         Reg1("isfile", a => Bool(IsString(a[0]) && File.Exists(S(a[0], "isfile"))));
         Reg1("isfolder", a => Bool(IsString(a[0]) && Directory.Exists(S(a[0], "isfolder"))));
         Reg1("isdir", a => Bool(IsString(a[0]) && Directory.Exists(S(a[0], "isdir"))));
-        Reg1("is_valid_file_id", a => Bool(a[0] is MatrixValue m && m.Numel == 1 && m.Re[0] >= 0));
+        Reg("is_valid_file_id", (it, a, n) =>
+        {
+            if (a.Length != 1) throw new OctaveException("Invalid call to is_valid_file_id");
+            return Out(Bool(a[0] is MatrixValue m && !m.IsChar && m.Numel == 1 && m.Re[0] == Math.Floor(m.Re[0]) && (m.Re[0] is 0 or 1 or 2 || it.Files.ContainsKey((int)m.Re[0]))));
+        });
+        Reg("tmpfile", (it, a, n) =>
+        {
+            var path = Path.Combine(Path.GetTempPath(), "oct-" + Guid.NewGuid().ToString("N")[..6]);
+            var r = it.CallFunction("fopen", new Value[] { Str(path), Str("w+b") }, 1);
+            return Out(r[0], Str(""));
+        });
         Reg1("fileread", a =>
         {
             var p = S(a[0], "fileread");

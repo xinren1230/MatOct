@@ -161,6 +161,12 @@ public static partial class BuiltinLibrary
             var m = M(a[0], "schur");
             if (m.R != m.C) throw new OctaveException("schur: argument must be a square matrix");
             string opt = a.Length > 1 && a[1] is MatrixValue om && om.IsChar ? om.AsString().ToLowerInvariant() : "";
+            if (!m.IsComplex && (opt == "complex" || opt == "c") && m.Numel > 0 && m.Kind == NumKind.Double && !m.Re.Any(v => double.IsNaN(v) || double.IsInfinity(v)))
+            {
+                var (U0, T0) = RealSchur(To2D(m)); bool tri = true;
+                for (int i = 1; i < m.R && tri; i++) if (T0[i, i - 1] != 0) tri = false;
+                if (tri) { var Tm0 = From2D(T0); var Um0 = From2D(U0); return n <= 1 ? Out(Tm0) : Out(Um0, Tm0); }
+            }
             if (m.IsComplex || opt == "complex" || opt == "c" || m.Numel == 0) return oldSchur(it, new[] { a[0] }, n);
             if (m.Re.Any(v => double.IsNaN(v) || double.IsInfinity(v)))
             {

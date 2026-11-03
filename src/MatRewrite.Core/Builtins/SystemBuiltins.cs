@@ -6,6 +6,8 @@ namespace MatRewrite.Core.Builtins;
 public static partial class BuiltinLibrary
 {
     public static readonly string Version = GetVersion();
+    /// <summary>GNU Octave language level the runtime targets (reported by OCTAVE_VERSION / version).</summary>
+    public const string OctaveCompatVersion = "12.0.0";
     static string GetVersion()
     {
         var asm = System.Reflection.Assembly.GetAssembly(typeof(BuiltinLibrary))!;
@@ -422,7 +424,6 @@ public static partial class BuiltinLibrary
         Reg0("run", (it, a) => it.RunFileHere(S(a[0], "run")));
         Reg0("source", (it, a) => it.RunFileHere(S(a[0], "source")));
         Reg1("isdeployed", a => Bool(false));
-        Reg1("is_valid_file_id", a => Bool(a[0] is MatrixValue m && m.Numel == 1 && m.Re[0] is 0 or 1 or 2));
         Reg0("assert", (it, a) =>
         {
             if (a.Length == 1)

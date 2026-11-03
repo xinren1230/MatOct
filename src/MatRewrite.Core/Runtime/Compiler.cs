@@ -29,6 +29,7 @@ public sealed partial class Interpreter
             case NumberExpr n when !n.Imag:
             {
                 double v = n.Value;
+                if (Math.Abs(v) >= 9007199254740992.0) { var t = n.Text; return _ => MatrixValue.Lit(v, t); }
                 return _ => MatrixValue.Scalar(v);
             }
             case ParenExpr p:

@@ -491,6 +491,8 @@ public sealed partial class Interpreter
             if (s.Numel == l.Numel && s.R == l.R) { for (int i = 0; i < s.Numel; i++) if (s.Re[i] != l.Re[i]) return false; return true; }
             return false;
         }
+        if (subj is FunctionHandleValue fa && label is FunctionHandleValue fb)
+            return ReferenceEquals(fa, fb) || (fa.Name != null && fa.Name == fb.Name);
         return false;
     }
 
@@ -750,7 +752,7 @@ public sealed partial class Interpreter
         switch (e)
         {
             case ValueExpr ve: return ve.Value;
-            case NumberExpr n: return n.Imag ? MatrixValue.Cplx(0, n.Value) : MatrixValue.Scalar(n.Value);
+            case NumberExpr n: return n.Imag ? MatrixValue.Cplx(0, n.Value) : MatrixValue.Lit(n.Value, n.Text);
             case StringExpr s: return MatrixValue.Str(s.Value, s.DoubleQuoted);
             case BinaryExpr b: return EvalBinary(b);
             case UnaryExpr u: return Ops.Unary(u.Op, Eval(u.Operand));

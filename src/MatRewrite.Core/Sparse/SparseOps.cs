@@ -36,6 +36,23 @@ public static class SparseOps
             if (op == "\\" && sa != null && sa.R == (bv is SparseValue x ? x.R : ((MatrixValue)bv).R) && !IsScalarNum(av))
                 return Solve(sa, bv);
         }
+        else
+        {
+            if (sa != null && sb != null && SameSize(sa, sb) && op is "+" or "-" or ".*") return CombineC(sa, sb, op);
+            if ((op is "*" or ".*" or "/" or "./") && sa != null && bv is MatrixValue kb && kb.Numel == 1 && !kb.IsChar && kb.ND == null)
+            {
+                var k = new System.Numerics.Complex(kb.Re[0], kb.Im?[0] ?? 0);
+                bool okk = true;
+                if (op is "/" or "./") { if (k == System.Numerics.Complex.Zero) okk = false; else k = 1 / k; }
+                if (okk && double.IsFinite(k.Real) && double.IsFinite(k.Imaginary)) return ScaleC(sa, k);
+            }
+            if ((op is "*" or ".*") && sb != null && av is MatrixValue ka && ka.Numel == 1 && !ka.IsChar && ka.ND == null)
+            {
+                var k = new System.Numerics.Complex(ka.Re[0], ka.Im?[0] ?? 0);
+                if (double.IsFinite(k.Real) && double.IsFinite(k.Imaginary)) return ScaleC(sb, k);
+            }
+            if (op == "*" && sa != null && sb != null && sa.C == sb.R) return MulSSC(sa, sb);
+        }
         var res = dense(op, Dense(av), Dense(bv));
         if (res is not MatrixValue rm || rm.ND != null) return res;
         bool both = sa != null && sb != null;
@@ -52,6 +69,58 @@ public static class SparseOps
         };
         if (!keep) return res;
         return SparseValue.FromDense(rm);
+    }
+
+    static System.Numerics.Complex Cx(SparseValue a, int p) => new(a.Re[p], a.Im?[p] ?? 0);
+    static SparseValue MkC(int r, int c, int[] cp, List<int> ri, List<System.Numerics.Complex> v)
+    {
+        var re = v.Select(z => z.Real).ToArray(); var im = v.Select(z => z.Imaginary).ToArray();
+        return new SparseValue(r, c, cp, ri.ToArray(), re, im.Any(x => x != 0) ? im : null);
+    }
+    static SparseValue ScaleC(SparseValue a, System.Numerics.Complex k)
+    {
+        var cp = new int[a.C + 1]; var ri = new List<int>(); var v = new List<System.Numerics.Complex>();
+        for (int j = 0; j < a.C; j++) { for (int p = a.Cp[j]; p < a.Cp[j + 1]; p++) { var z = Cx(a, p) * k; if (z != System.Numerics.Complex.Zero) { ri.Add(a.Ri[p]); v.Add(z); } } cp[j + 1] = ri.Count; }
+        return MkC(a.R, a.C, cp, ri, v);
+    }
+    static SparseValue CombineC(SparseValue a, SparseValue b, string op)
+    {
+        var cp = new int[a.C + 1]; var ri = new List<int>(); var vv = new List<System.Numerics.Complex>();
+        bool mult = op == ".*"; double beta = op == "-" ? -1 : 1;
+        for (int j = 0; j < a.C; j++)
+        {
+            int p = a.Cp[j], pe = a.Cp[j + 1], q = b.Cp[j], qe = b.Cp[j + 1];
+            while (p < pe || q < qe)
+            {
+                int ia = p < pe ? a.Ri[p] : int.MaxValue, ib = q < qe ? b.Ri[q] : int.MaxValue;
+                System.Numerics.Complex v; int i;
+                if (ia == ib) { i = ia; v = mult ? Cx(a, p) * Cx(b, q) : Cx(a, p) + beta * Cx(b, q); p++; q++; }
+                else if (ia < ib) { i = ia; v = mult ? Cx(a, p) * 0 : Cx(a, p); p++; }
+                else { i = ib; v = mult ? 0 * Cx(b, q) : beta * Cx(b, q); q++; }
+                if (v != System.Numerics.Complex.Zero) { ri.Add(i); vv.Add(v); }
+            }
+            cp[j + 1] = ri.Count;
+        }
+        return MkC(a.R, a.C, cp, ri, vv);
+    }
+    static SparseValue MulSSC(SparseValue a, SparseValue b)
+    {
+        var cp = new int[b.C + 1]; var ri = new List<int>(); var vv = new List<System.Numerics.Complex>();
+        var acc = new System.Numerics.Complex[a.R]; var mark = new int[a.R]; Array.Fill(mark, -1); var rows = new List<int>();
+        for (int j = 0; j < b.C; j++)
+        {
+            rows.Clear();
+            for (int q = b.Cp[j]; q < b.Cp[j + 1]; q++)
+            {
+                int k = b.Ri[q]; var bq = Cx(b, q);
+                for (int p = a.Cp[k]; p < a.Cp[k + 1]; p++)
+                { int i = a.Ri[p]; if (mark[i] != j) { mark[i] = j; acc[i] = 0; rows.Add(i); } acc[i] += Cx(a, p) * bq; }
+            }
+            rows.Sort();
+            foreach (var i in rows) if (acc[i] != System.Numerics.Complex.Zero) { ri.Add(i); vv.Add(acc[i]); }
+            cp[j + 1] = ri.Count;
+        }
+        return MkC(a.R, b.C, cp, ri, vv);
     }
 
     static bool SameSize(SparseValue a, SparseValue b) => a.R == b.R && a.C == b.C;

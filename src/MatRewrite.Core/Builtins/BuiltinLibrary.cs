@@ -44,6 +44,7 @@ public static partial class BuiltinLibrary
         RegisterPhase13AppData(); RegisterPhase13Help(); RegisterFigureEdit(); RegisterFft();
         RegisterPaths();
         RegisterValidation();
+        RegisterInt64();
         cur = null;
     }
 

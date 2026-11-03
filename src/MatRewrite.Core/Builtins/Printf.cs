@@ -41,6 +41,7 @@ public static class Printf
     sealed class Spec { public string Flags = ""; public int? Width; public int? Prec; public char Conv; public bool StarW, StarP; }
 
     // items: either string (from char args) or double
+    static double Dbl(object o) => o is System.Numerics.BigInteger b ? (double)b : (double)o;
     public static string Format(string fmt, IList<Value> args)
     {
         var items = new List<object>();
@@ -49,7 +50,7 @@ public static class Printf
             if (a is MatrixValue m)
             {
                 if (m.IsChar) { items.Add(m.AsString()); continue; }
-                for (int k = 0; k < m.Numel; k++) items.Add(m.Re[k]);
+                for (int k = 0; k < m.Numel; k++) items.Add(m.Is64 && Math.Abs(m.Re[k]) >= 9007199254740992.0 ? (object)(m.Kind == NumKind.UInt64 ? new System.Numerics.BigInteger(m.U64(k)) : new System.Numerics.BigInteger(m.I64(k))) : m.Re[k]);
             }
             else if (a is CellValue) throw new OctaveException("printf: wrong type argument 'cell array'");
             else if (a is StructValue) throw new OctaveException("printf: wrong type argument 'struct'");
@@ -111,7 +112,7 @@ public static class Printf
         return sb.ToString();
     }
 
-    static double ToNum(object o) => o is double d ? d : (o is string s && s.Length > 0 ? s[0] : 0);
+    static double ToNum(object o) => o is double d ? d : o is System.Numerics.BigInteger bq ? (double)bq : (o is string s && s.Length > 0 ? s[0] : 0);
 
     static string FormatOne(char conv, string flags, int? width, int? prec, object item, List<object> items, ref int idx)
     {
@@ -122,7 +123,7 @@ public static class Printf
                 if (item is string str) body = prec is int p0 && p0 < str.Length ? str[..p0] : str;
                 else
                 {
-                    double d = (double)item;
+                    double d = Dbl(item);
                     if (d == Math.Floor(d) && d >= 0 && d < 256 && prec == null) return Pad(((char)(int)d).ToString(), width, flags, false);
                     body = ShortG(d);
                     if (prec is int p1) body = FormatG(d, p1, flags.Contains('#'));
@@ -130,7 +131,7 @@ public static class Printf
                 return Pad(body, width, flags, false);
             case 'c':
                 if (item is string cs) return Pad(cs, width, flags, false);
-                return Pad(((char)(int)(double)item).ToString(), width, flags, false);
+                return Pad(((char)(int)Dbl(item)).ToString(), width, flags, false);
             case 'd': case 'i': case 'u':
             case 'x': case 'X': case 'o':
             case 'f': case 'F': case 'e': case 'E': case 'g': case 'G':
@@ -140,7 +141,15 @@ public static class Printf
                     // numeric conversion of a string argument: Octave prints the string
                     return Pad(s2, width, flags.Replace("0", ""), false);
                 }
-                double d = (double)item;
+                if (item is System.Numerics.BigInteger bi && conv is 'd' or 'i' or 'u' or 'x' or 'X' or 'o')
+                {
+                    var ab = System.Numerics.BigInteger.Abs(bi);
+                    string bb = conv switch { 'x' => ((ulong)(bi & ulong.MaxValue)).ToString("x", Inv), 'X' => ((ulong)(bi & ulong.MaxValue)).ToString("X", Inv), 'o' => Convert.ToString(unchecked((long)(ulong)(bi & ulong.MaxValue)), 8), _ => ab.ToString(Inv) };
+                    string sg = conv is 'x' or 'X' or 'o' ? "" : bi.Sign < 0 ? "-" : flags.Contains('+') ? "+" : flags.Contains(' ') ? " " : "";
+                    if (prec is int pp && bb.Length < pp) bb = bb.PadLeft(pp, '0');
+                    return PadNum(sg + bb, width, flags);
+                }
+                double d = Dbl(item);
                 char cv = conv;
                 if ((cv is 'd' or 'i' or 'u' or 'x' or 'X' or 'o') && (d != Math.Floor(d) || double.IsInfinity(d) || double.IsNaN(d)))
                 {
