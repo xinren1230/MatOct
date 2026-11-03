@@ -140,7 +140,14 @@ public static partial class BuiltinLibrary
         Reg1("ctranspose", a => Ops.Transpose((ArrayValue)a[0], true));
 
         // constants
-        void Const(string name, double v) => Reg1(name, a => { return FillN(DimsN(a, name), v); });
+        void Const(string name, double v) => Reg1(name, a =>
+        {
+            bool sg = a.Length > 0 && IsString(a[^1]) && S(a[^1], name) == "single";
+            if (a.Length > 1 && IsString(a[^2]) && S(a[^2], name) == "like" && a[^1] is MatrixValue lk && lk.Kind == NumKind.Single) sg = true;
+            var r = FillN(DimsN(a, name), v);
+            if (sg && r is MatrixValue rm) { rm.Kind = NumKind.Single; }
+            return r;
+        });
         Const("pi", Math.PI); Const("e", Math.E); Const("Inf", double.PositiveInfinity); Const("inf", double.PositiveInfinity);
         Const("NaN", double.NaN); Const("nan", double.NaN); Const("NA", double.NaN);
         Reg1("eps", a =>

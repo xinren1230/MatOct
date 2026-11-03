@@ -306,10 +306,27 @@ public static partial class BuiltinLibrary
         Reg1("substr", a => { var s = S(a[0], "substr"); int o = I(a[1], "substr"); int l = a.Length > 2 ? I(a[2], "substr") : s.Length - o + 1; return Str(s.Substring(o - 1, l)); });
         Reg1("index", a => Num(S(a[0], "index").IndexOf(S(a[1], "index"), StringComparison.Ordinal) + 1));
         Reg1("rindex", a => Num(S(a[0], "rindex").LastIndexOf(S(a[1], "rindex"), StringComparison.Ordinal) + 1));
+        static string OctRep(string r)
+        {
+            var sb = new System.Text.StringBuilder();
+            for (int i = 0; i < r.Length; i++)
+            {
+                char c = r[i];
+                if (c == '\\' && i + 1 < r.Length)
+                {
+                    char d = r[++i];
+                    sb.Append(d switch { 'n' => "\n", 't' => "\t", 'r' => "\r", '$' => "$$", _ => d.ToString() });
+                }
+                else if (c == '$' && i + 1 < r.Length && char.IsDigit(r[i + 1])) { sb.Append("${").Append(r[++i]).Append('}'); }
+                else if (c == '$') sb.Append("$$");
+                else sb.Append(c);
+            }
+            return sb.ToString();
+        }
         Reg1("regexprep", a =>
         {
             var pat = ConvertRegex(S(a[1], "regexprep"));
-            var rep = Regex.Replace(S(a[2], "regexprep"), @"\$(\d)", "$${$1}");
+            var rep = OctRep(S(a[2], "regexprep"));
             bool once = a.Skip(3).Any(v => IsString(v) && S(v, "regexprep") == "once");
             bool icase = a.Skip(3).Any(v => IsString(v) && S(v, "regexprep") == "ignorecase");
             var re = new Regex(pat, icase ? RegexOptions.IgnoreCase : RegexOptions.None);

@@ -424,6 +424,7 @@ public static partial class BuiltinLibrary
         RegG("rose", (it, a, nout) =>
         {
             if (a.Length is < 1 or > 2) Usage("rose");
+            if (nout >= 2) return it.CallFunction("__rose_bins__", a, 2);
             var th = M(a[0], "rose").Re; int nb = 20; double[] ctr;
             if (a.Length == 2 && M(a[1], "rose").Numel > 1) ctr = M(a[1], "rose").Re; else { if (a.Length == 2) nb = I(a[1], "rose"); ctr = Enumerable.Range(0, nb).Select(i => (i + .5) * 2 * Math.PI / nb).ToArray(); }
             var cnt = new double[ctr.Length];

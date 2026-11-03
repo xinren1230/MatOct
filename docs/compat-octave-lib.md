@@ -2,7 +2,7 @@
 
 Mode: Octave m-file library on path (/workspace/octave-src/scripts)
 
-Files: 864, blocks passed 9877, failed 523, skipped 458, pass rate 95.0% (88 s)
+Files: 864, blocks passed 9953, failed 447, skipped 458, pass rate 95.7% (75 s)
 
 | Area | Files | Pass | Fail | Skip | Rate |
 |---|---:|---:|---:|---:|---:|
@@ -11,21 +11,21 @@ Files: 864, blocks passed 9877, failed 523, skipped 458, pass rate 95.0% (88 s)
 | @ftp | 14 | 14 | 0 | 0 | 100.0% |
 | audio | 32 | 68 | 1 | 28 | 98.6% |
 | elfun | 27 | 83 | 0 | 0 | 100.0% |
-| general | 67 | 1497 | 45 | 15 | 97.1% |
+| general | 67 | 1504 | 38 | 15 | 97.5% |
 | geometry | 15 | 148 | 10 | 0 | 93.7% |
-| gui | 26 | 86 | 5 | 8 | 94.5% |
+| gui | 26 | 89 | 2 | 8 | 97.8% |
 | help | 16 | 37 | 11 | 1 | 77.1% |
 | image | 50 | 531 | 14 | 24 | 97.4% |
 | io | 7 | 35 | 7 | 3 | 83.3% |
 | java | 4 | 14 | 1 | 14 | 93.3% |
 | legacy | 9 | 137 | 7 | 0 | 95.1% |
-| linear-algebra | 36 | 515 | 30 | 1 | 94.5% |
-| miscellaneous | 92 | 598 | 33 | 18 | 94.8% |
+| linear-algebra | 36 | 523 | 22 | 1 | 96.0% |
+| miscellaneous | 92 | 599 | 32 | 18 | 94.9% |
 | ode | 9 | 160 | 0 | 90 | 100.0% |
-| optimization | 14 | 125 | 16 | 5 | 88.7% |
+| optimization | 14 | 126 | 15 | 5 | 89.4% |
 | path | 4 | 6 | 1 | 0 | 85.7% |
-| plot | 197 | 889 | 156 | 13 | 85.1% |
-| polynomial | 27 | 283 | 8 | 0 | 97.3% |
+| plot | 197 | 905 | 140 | 13 | 86.6% |
+| polynomial | 27 | 289 | 2 | 0 | 99.3% |
 | prefs | 6 | 24 | 0 | 0 | 100.0% |
 | profiler | 3 | 10 | 1 | 0 | 90.9% |
 | set | 9 | 316 | 5 | 2 | 98.4% |
@@ -33,8 +33,8 @@ Files: 864, blocks passed 9877, failed 523, skipped 458, pass rate 95.0% (88 s)
 | sparse | 29 | 242 | 48 | 198 | 83.4% |
 | specfun | 21 | 419 | 19 | 0 | 95.7% |
 | special-matrix | 11 | 193 | 0 | 0 | 100.0% |
-| statistics | 49 | 1713 | 67 | 0 | 96.2% |
-| strings | 34 | 491 | 16 | 26 | 96.8% |
+| statistics | 49 | 1744 | 36 | 0 | 98.0% |
+| strings | 34 | 494 | 13 | 26 | 97.4% |
 | testfun | 13 | 253 | 19 | 2 | 93.0% |
 | time | 14 | 377 | 0 | 1 | 100.0% |
 | web | 3 | 18 | 0 | 0 | 100.0% |
@@ -43,7 +43,6 @@ Files: 864, blocks passed 9877, failed 523, skipped 458, pass rate 95.0% (88 s)
 
 - audio/lin2mu.m:103 [error] error 'double: wrong type argument 'cell array'' does not match <invalid conversion>
 - general/accumarray.m:452 [test] 'x' undefined
-- general/bitcmp.m:92 [test] ASSERT errors for:  assert (,)    Location  |  Observed  |  Expected  |  Reason      ()           O            E         Class double != single
 - general/bitcmp.m:100 [test] ASSERT errors for:  assert (,)    Location  |  Observed  |  Expected  |  Reason      ()           O            E         Class double != uint8
 - general/bitcmp.m:108 [test] ASSERT errors for:  assert (,)    Location  |  Observed  |  Expected  |  Reason      ()           O            E         Class double != uint16
 - general/bitcmp.m:116 [test] ASSERT errors for:  assert (,)    Location  |  Observed  |  Expected  |  Reason      ()           O            E         Class double != uint32
@@ -58,7 +57,7 @@ Files: 864, blocks passed 9877, failed 523, skipped 458, pass rate 95.0% (88 s)
 - general/fliplr.m:77 [test] =: nonconformant arguments (op1 is 1x1x1, op2 is 1x4)
 - general/integral.m:247 [test] ASSERT errors for:  assert (,,)    Location  |  Observed  |  Expected  |  Reason      ()         1.9475       1.9475      Rel err 6.2282e-12 exceeds tol 1e-12 by 5e-12
 - general/integral.m:271 [test] ASSERT errors for:  assert (,)    Location  |  Observed  |  Expected  |  Reason      []        'double'     'single'     Strings don't match
-- general/integral.m:281 [test] ASSERT errors for:  assert (,,)    Location  |  Observed  |  Expected  |  Reason      ()           0       -6.4701e-17+2.0944i   Abs err 2.0944 exceeds tol 2.2204e-16 by 2
+- general/integral.m:281 [test] ASSERT errors for:  assert (,,)    Location  |  Observed  |  Expected  |  Reason      ()           0       4.6502e-16+2.0944i   Abs err 2.0944 exceeds tol 2.2204e-16 by 2
 - general/integral.m:294 [assert] '__inline_ctor__' undefined
 - general/integral2.m:326 [assert] ASSERT errors for:  assert (,,)    Location  |  Observed  |  Expected  |  Reason      ()         1.3863       1.3863      Abs err 2.0662e-07 exceeds tol 1e-07 by 1e-07
 - general/interp2.m:643 [test] interp2: XI, YI must have uniform spacing ('meshgrid' format)
@@ -66,12 +65,6 @@ Files: 864, blocks passed 9877, failed 523, skipped 458, pass rate 95.0% (88 s)
 - general/isequal.m:509 [shared] Array dimensions exceeded supported range.
 - general/isequal.m:532 [assert] ASSERT errors for:  assert (,)    Location  |  Observed  |  Expected  |  Reason      ()           1            0         Abs err 1 exceeds tol 0 by 1
 - general/isequal.m:535 [assert] ASSERT errors for:  assert (,)    Location  |  Observed  |  Expected  |  Reason      ()           1            0         Abs err 1 exceeds tol 0 by 1
-- general/isuniform.m:99 [test] ASSERT errors for:  assert (,)    Location  |  Observed  |  Expected  |  Reason      ()           O            E         Class double != single
-- general/logspace.m:119 [assert] ASSERT errors for:  assert (,)    Location  |  Observed  |  Expected  |  Reason     (1)          NaN          Inf        'NaN' mismatch     (2)          NaN          Inf        'NaN' mismatch     (3)          NaN          Inf        'NaN' mismatch
-- general/logspace.m:120 [assert] ASSERT errors for:  assert (,)    Location  |  Observed  |  Expected  |  Reason     (1)          NaN           0         'NaN' mismatch     (2)          NaN           1         'NaN' mismatch     (3)          NaN          Inf        'NaN' mismatch
-- general/logspace.m:137 [assert] ASSERT errors for:  assert (,)    Location  |  Observed  |  Expected  |  Reason     (1)          NaN          Inf        'NaN' mismatch     (2)          NaN           1         'NaN' mismatch     (3)          NaN           0         'NaN' mismatch
-- general/logspace.m:138 [assert] ASSERT errors for:  assert (,)    Location  |  Observed  |  Expected  |  Reason     (1)          NaN           0         'NaN' mismatch     (3)          NaN           1         'NaN' mismatch
-- general/logspace.m:139 [assert] ASSERT errors for:  assert (,)    Location  |  Observed  |  Expected  |  Reason     (1)          NaN          Inf        'NaN' mismatch     (3)          NaN           1         'NaN' mismatch
 - general/nextpow2.m:137 [test] ASSERT errors for:  assert (,)    Location  |  Observed  |  Expected  |  Reason     (54)          53           54        Abs err 1 exceeds tol 0 by 1     (55)          54           55        Abs err 1 exceeds tol 0 by 1     (56)          55           56        Abs err 1 exceeds tol 0 by 1     (57)          56           57        Abs err 1 exceeds tol 0 by 1     (58)          57           58        Abs err 1 exceeds tol 0 by 1     (59)          58           59        Abs err 1 exceeds tol 0 by 1     (60)          59           60        Abs err 1 exceeds tol 0 by 1     (61)          60           61        Abs err 1 exceeds tol 0 by 1     (62)          61           62        Abs err 1 exceeds tol 0 by 1     (63)          62           63        Abs err 1 exceeds tol 0 by 1
 - general/num2str.m:230 [assert] ASSERT errors for:  assert (,)    Location  |  Observed  |  Expected  |  Reason      []         'NaN'         'NA'       Strings don't match
 - general/num2str.m:231 [assert] ASSERT errors for:  assert (,)    Location  |  Observed  |  Expected  |  Reason      []        'NaN+1i'     'NA+1i'      Strings don't match
@@ -99,9 +92,6 @@ Files: 864, blocks passed 9877, failed 523, skipped 458, pass rate 95.0% (88 s)
 - geometry/griddatan.m:171 [test] '__dsearchn__' undefined
 - gui/getpixelposition.m:98 [test] '__get_position__' undefined
 - gui/getpixelposition.m:114 [test] '__get_position__' undefined
-- gui/rmappdata.m:68 [test] ASSERT errors for:  assert (,)    Location  |  Observed  |  Expected  |  Reason      ()           1            0         Abs err 1 exceeds tol 0 by 1
-- gui/rmappdata.m:73 [test] ASSERT errors for:  assert (,)    Location  |  Observed  |  Expected  |  Reason      ()           1            0         Abs err 1 exceeds tol 0 by 1
-- gui/rmappdata.m:85 [error] expected an error but none was raised
 - help/__unimplemented__.m:1317 [test] unable to open macros.texi for reading
 - help/__unimplemented__.m:1321 [test] unable to open macros.texi for reading
 - help/get_first_help_sentence.m:189 [assert] 'get_help_text' undefined
@@ -152,10 +142,6 @@ Files: 864, blocks passed 9877, failed 523, skipped 458, pass rate 95.0% (88 s)
 - linear-algebra/funm.m:969 [test] ASSERT errors for:  assert (,,)    Location  |  Observed  |  Expected  |  Reason     (1)        2.718282     2.718282     Abs err 4.885e-15 exceeds tol 2.2204e-16 by 5e-15     (2)        7.389056     7.389056     Abs err 2.3093e-14 exceeds tol 2.2204e-16 by 2e-14     (3)        20.08554     20.08554     Abs err 1.0658e-14 exceeds tol 2.2204e-16 by 1e-14     (4)        54.59815     54.59815     Abs err 2.4158e-13 exceeds tol 2.2204e-16 by 2e-13     (5)        148.4132     148.4132     Abs err 5.6843e-14 exceeds tol 2.2204e-16 by 6e-14
 - linear-algebra/funm.m:982 [test] 'balance' undefined
 - linear-algebra/gls.m:221 [test] matrix power with non-integer exponent is not implemented yet
-- linear-algebra/isdefinite.m:85 [test] chol: input matrix must be positive definite
-- linear-algebra/isdefinite.m:89 [test] ASSERT errors for:  assert (,)    Location  |  Observed  |  Expected  |  Reason      ()           0            1         Abs err 1 exceeds tol 0 by 1
-- linear-algebra/isdefinite.m:93 [test] ASSERT errors for:  assert (,)    Location  |  Observed  |  Expected  |  Reason      ()           0            1         Abs err 1 exceeds tol 0 by 1
-- linear-algebra/isdefinite.m:98 [test] chol: input matrix must be positive definite
 - linear-algebra/logm.m:185 [test] 'balance' undefined
 - linear-algebra/logm.m:192 [assert] 'balance' undefined
 - linear-algebra/logm.m:193 [test] 'balance' undefined
@@ -164,10 +150,6 @@ Files: 864, blocks passed 9877, failed 523, skipped 458, pass rate 95.0% (88 s)
 - linear-algebra/normest1.m:385 [error] error 'normest1: X0 must have 5 columns' does not match <X0 must have 2 columns>
 - linear-algebra/null.m:82 [test] Invalid call to svd
 - linear-algebra/null.m:122 [assert] Invalid call to svd
-- linear-algebra/ols.m:229 [test] element number 2 undefined in return list
-- linear-algebra/ols.m:235 [test] element number 2 undefined in return list
-- linear-algebra/ols.m:243 [test] element number 2 undefined in return list
-- linear-algebra/ols.m:250 [test] element number 2 undefined in return list
 - linear-algebra/ordeig.m:127 [test] ASSERT errors for:  assert (,,)    Location  |  Observed  |  Expected  |  Reason     (3)        -1.1473        0+1i       Abs err 1.5219 exceeds tol 0.0001 by 2     (4)        0.068588      -0-1i       Abs err 1.0023 exceeds tol 0.0001 by 1
 - linear-algebra/rank.m:157 [test] ASSERT errors for:  assert (,)    Location  |  Observed  |  Expected  |  Reason      ()           3            1         Abs err 2 exceeds tol 0 by 2
 - linear-algebra/rref.m:126 [test] ASSERT errors for:  assert (,,)    Location  |  Observed  |  Expected  |  Reason      ()           2            1         Abs err 1 exceeds tol 2e-08 by 1
@@ -181,7 +163,6 @@ Files: 864, blocks passed 9877, failed 523, skipped 458, pass rate 95.0% (88 s)
 - miscellaneous/getfield.m:64 [test] merge: wrong type argument 'cell array'
 - miscellaneous/inputParser.m:937 [test] expected error <failed validation of 'line'> but got <binary operator '>' not implemented for 'struct' operations>
 - miscellaneous/inputParser.m:1013 [error] error 'binary operator '>' not implemented for 'struct' operations' does not match <failed validation of 'a'.*ischar>
-- miscellaneous/ls.m:138 [test] ls: command exited abnormally with status 2
 - miscellaneous/memoize.m:80 [test] assert () failed
 - miscellaneous/memoize.m:88 [test] 'MemoizedFunction' object cannot be indexed with (
 - miscellaneous/methods.m:152 [test] methods: class 'ftp' not found
@@ -218,9 +199,8 @@ Files: 864, blocks passed 9877, failed 523, skipped 458, pass rate 95.0% (88 s)
 - optimization/optimset.m:232 [test] invalid use of undefined value
 - optimization/optimset.m:249 [warning] expected a warning but none was issued
 - optimization/optimset.m:250 [error] expected an error but none was raised
-- optimization/qp.m:478 [test] chol: input matrix must be positive definite
-- optimization/qp.m:485 [test] chol: input matrix must be positive definite
-- optimization/sqp.m:781 [test] operator *: nonconformant arguments (op1 is 5x3, op2 is 0x0)
+- optimization/qp.m:485 [test] '__qp__' undefined
+- optimization/sqp.m:781 [test] '__qp__' undefined
 - path/savepath.m:211 [test] ASSERT errors for:  assert (,)    Location  |  Observed  |  Expected  |  Reason      .        O(2067x1)      E(0x1)      Dimensions don't match
 - plot/appearance/annotation.m:1479 [test] Object reference not set to an instance of an object.
 - plot/appearance/annotation.m:1495 [test] set: argument must be a scalar, not empty
@@ -310,12 +290,6 @@ Files: 864, blocks passed 9877, failed 523, skipped 458, pass rate 95.0% (88 s)
 - plot/draw/patch.m:275 [test] ASSERT errors for:  assert (,,)    Location  |  Observed  |  Expected  |  Reason      .          O(0x0)       E(3x1)      Dimensions don't match
 - plot/draw/patch.m:306 [test] ASSERT errors for:  assert (,)    Location  |  Observed  |  Expected  |  Reason     (1)           0           -0.1       Abs err 0.1 exceeds tol 0 by 0.1     (2)           1           1.9        Abs err 0.9 exceeds tol 0 by 0.9
 - plot/draw/polar.m:659 [test] ASSERT errors for:  assert (,,)    Location  |  Observed  |  Expected  |  Reason     (2)        0.44706       0.447       Abs err 5.8824e-05 exceeds tol 2.2204e-16 by 6e-05     (3)        0.69804       0.741       Abs err 0.042961 exceeds tol 2.2204e-16 by 0.04
-- plot/draw/rose.m:182 [test] ASSERT errors for:  assert (,)    Location  |  Observed  |  Expected  |  Reason      .         O(1x29)      E(19x1)      Dimensions don't match
-- plot/draw/rose.m:188 [test] ASSERT errors for:  assert (,)    Location  |  Observed  |  Expected  |  Reason     (1)           1            16        Abs err 15 exceeds tol 0 by 2e+01     (2)           24           1         Abs err 23 exceeds tol 0 by 2e+01
-- plot/draw/rose.m:196 [test] ASSERT errors for:  assert (,)    Location  |  Observed  |  Expected  |  Reason     (1)           1            16        Abs err 15 exceeds tol 0 by 2e+01     (2)           24           1         Abs err 23 exceeds tol 0 by 2e+01
-- plot/draw/rose.m:204 [test] ASSERT errors for:  assert (,)    Location  |  Observed  |  Expected  |  Reason      .          O(1x6)       E(4x1)      Dimensions don't match
-- plot/draw/rose.m:211 [test] ASSERT errors for:  assert (,)    Location  |  Observed  |  Expected  |  Reason      .          O(1x6)       E(4x1)      Dimensions don't match
-- plot/draw/rose.m:217 [test] ASSERT errors for:  assert (,)    Location  |  Observed  |  Expected  |  Reason      ()           0            42        Abs err 42 exceeds tol 0 by 4e+01
 - plot/draw/semilogx.m:116 [test] assert () failed
 - plot/draw/semilogy.m:116 [test] assert () failed
 - plot/draw/smooth3.m:193 [test] ASSERT errors for:  assert (,)    Location  |  Observed  |  Expected  |  Reason      []        'double'     'single'     Strings don't match
@@ -342,10 +316,6 @@ Files: 864, blocks passed 9877, failed 523, skipped 458, pass rate 95.0% (88 s)
 - plot/draw/stream3.m:226 [test] '__streameuler3d__' undefined
 - plot/draw/surfnorm.m:199 [error] error 'surfnorm: first argument must be axes handle' does not match <X, Y, and Z must be 2-D real matrices>
 - plot/draw/surfnorm.m:200 [error] error 'surfnorm: first argument must be axes handle' does not match <X, Y, and Z must be 2-D real matrices>
-- plot/draw/trisurf.m:178 [error] expected an error but none was raised
-- plot/draw/trisurf.m:179 [error] expected an error but none was raised
-- plot/draw/trisurf.m:180 [error] expected an error but none was raised
-- plot/draw/trisurf.m:181 [error] expected an error but none was raised
 - plot/draw/xline.m:775 [test] __go_text__: argument must be a string
 - plot/draw/yline.m:736 [test] __go_text__: argument must be a string
 - plot/util/__next_line_color__.m:72 [test] ASSERT errors for:  assert (,,)    Location  |  Observed  |  Expected  |  Reason     (1)           0            1         Abs err 1 exceeds tol 0 by 1     (2)        0.44706         0         Abs err 0.44706 exceeds tol 0 by 0.4     (3)        0.69804         0         Abs err 0.69804 exceeds tol 0 by 0.7  ASSERT errors for:  assert (,,)    Location  |  Observed  |  Expected  |  Reason     (1)        0.83529         0         Abs err 0.83529 exceeds tol 0 by 0.8     (2)        0.36863         1         Abs err 0.63137 exceeds tol 0 by 0.6  ASSERT errors for:  assert (,,)    Location  |  Observed  |  Expected  |  Reason     (2)        0.61961         0         Abs err 0.61961 exceeds tol 0 by 0.6     (3)        0.45098         1         Abs err 0.54902 exceeds tol 0 by 0.5
@@ -355,18 +325,12 @@ Files: 864, blocks passed 9877, failed 523, skipped 458, pass rate 95.0% (88 s)
 - plot/util/clf.m:139 [test] ASSERT errors for:  assert (,)    Location  |  Observed  |  Expected  |  Reason      []       'tabloid'    'usletter'    Strings don't match
 - plot/util/close.m:171 [test] assert () failed
 - plot/util/colstyle.m:78 [test] ASSERT errors for:  assert (,)    Location  |  Observed  |  Expected  |  Reason      .         1  0  0        'r'        Expected string, but observed number
-- plot/util/copyobj.m:228 [test] addproperty: a 'aliminclude' property already exists in the graphics object
+- plot/util/copyobj.m:228 [test] max_recursion_depth exceeded
 - plot/util/findall.m:58 [test] Object reference not set to an instance of an object.
 - plot/util/gnuplot_binary.m:68 [test] gnuplot_binary: NEW_PROG must be a non-empty string
 - plot/util/hgload.m:114 [test] The input string '{' was not in a correct format.
-- plot/util/hgload.m:137 [error] error 'openfig: argument must be a string' does not match <PROP_STRUCT must be a struct>
-- plot/util/hgload.m:138 [error] error 'openfig: unable to find file %%_A_REALLY_UNLIKELY_FILENAME_%%.fig' does not match <unable to locate file>
-- plot/util/hgload.m:139 [error] error 'openfig: unable to find file %%_A_REALLY_UNLIKELY_FILENAME_%%.fig' does not match <unable to locate file>
 - plot/util/isfigure.m:60 [test] ASSERT errors for:  assert (,)    Location  |  Observed  |  Expected  |  Reason      .          O(1x1)       E(1x2)      Dimensions don't match
 - plot/util/ishold.m:69 [test] assert () failed
-- plot/util/isprop.m:75 [assert] ASSERT errors for:  assert (,)    Location  |  Observed  |  Expected  |  Reason      ()           0            1         Abs err 1 exceeds tol 0 by 1
-- plot/util/isprop.m:76 [assert] ASSERT errors for:  assert (,)    Location  |  Observed  |  Expected  |  Reason      .          O(1x1)       E(2x3)      Dimensions don't match
-- plot/util/isprop.m:77 [assert] ASSERT errors for:  assert (,)    Location  |  Observed  |  Expected  |  Reason      .          O(1x1)       E(1x3)      Dimensions don't match
 - plot/util/isprop.m:79 [test] assert () failed
 - plot/util/linkaxes.m:122 [test] ASSERT errors for:  assert (,)    Location  |  Observed  |  Expected  |  Reason     (1)           1            0         Abs err 1 exceeds tol 0 by 1
 - plot/util/linkprop.m:146 [test] ASSERT errors for:  assert (,)    Location  |  Observed  |  Expected  |  Reason     (2)           1            0         Abs err 1 exceeds tol 0 by 1     (3)           0            1         Abs err 1 exceeds tol 0 by 1
@@ -377,19 +341,13 @@ Files: 864, blocks passed 9877, failed 523, skipped 458, pass rate 95.0% (88 s)
 - plot/util/print.m:851 [error] error 'get: unknown axes property __autopos_tag__' does not match <a graphics handle>
 - plot/util/printd.m:105 [test] 'mkstemp' undefined
 - plot/util/savefig.m:135 [warning] expected a warning but none was issued
-- plot/util/struct2hdl.m:793 [test] addproperty: a 'units' property already exists in the graphics object
-- polynomial/padecoef.m:114 [test] ASSERT errors for:  assert (,,)    Location  |  Observed  |  Expected  |  Reason     (2)           1            2         Abs err 1 exceeds tol 2.2204e-16 by 1     (4)           1            2         Abs err 1 exceeds tol 2.2204e-16 by 1
-- polynomial/padecoef.m:121 [test] ASSERT errors for:  assert (,,)    Location  |  Observed  |  Expected  |  Reason     (2)           1            2         Abs err 1 exceeds tol 2.2204e-16 by 1     (4)           1            2         Abs err 1 exceeds tol 2.2204e-16 by 1
-- polynomial/padecoef.m:128 [test] ASSERT errors for:  assert (,,)    Location  |  Observed  |  Expected  |  Reason     (2)           -2           -6        Abs err 4 exceeds tol 2.2204e-16 by 4     (3)           2            12        Abs err 10 exceeds tol 2.2204e-16 by 1e+01     (5)           2            6         Abs err 4 exceeds tol 2.2204e-16 by 4     (6)           2            12        Abs err 10 exceeds tol 2.2204e-16 by 1e+01
-- polynomial/padecoef.m:137 [test] ASSERT errors for:  assert (,,)    Location  |  Observed  |  Expected  |  Reason     (2)          -0.5         -1.5       Abs err 1 exceeds tol 2.2204e-16 by 1     (3)           2            12        Abs err 10 exceeds tol 2.2204e-16 by 1e+01     (5)          0.5          1.5        Abs err 1 exceeds tol 2.2204e-16 by 1     (6)           2            12        Abs err 10 exceeds tol 2.2204e-16 by 1e+01
-- polynomial/padecoef.m:146 [test] ASSERT errors for:  assert (,,)    Location  |  Observed  |  Expected  |  Reason     (2)         0.6627       2.6508      Abs err 1.9881 exceeds tol 2.2204e-16 by 2     (3)         -2.82        -28.2       Abs err 25.38 exceeds tol 2.2204e-16 by 3e+01     (4)           6           120        Abs err 114 exceeds tol 2.2204e-16 by 1e+02     (6)         0.6627       2.6508      Abs err 1.9881 exceeds tol 2.2204e-16 by 2     (7)          2.82         28.2       Abs err 25.38 exceeds tol 2.2204e-16 by 3e+01     (8)           6           120        Abs err 114 exceeds tol 2.2204e-16 by 1e+02
-- polynomial/padecoef.m:155 [test] ASSERT errors for:  assert (,,)    Location  |  Observed  |  Expected  |  Reason     (2)           7       56.0000000045   Abs err 49 exceeds tol 0.01 by 5e+01     (3)          -42      -1512.00000012   Abs err 1470 exceeds tol 0.01 by 1e+03     (4)          210      25200.0000018   Abs err 24990 exceeds tol 0.01 by 2e+04     (5)          -840     -277200.000019   Abs err 2.7636e+05 exceeds tol 0.01 by 3e+05     (6)          2520     1995840.00012   Abs err 1.9933e+06 exceeds tol 0.01 by 2e+06     (7)         -5040     -8648640.00051   Abs err 8.6436e+06 exceeds tol 0.01 by 9e+06     (8)          5040     17297280.001   Abs err 1.7292e+07 exceeds tol 0.01 by 2e+07     (10)          7       56.0000000008   Abs err 49 exceeds tol 0.01 by 5e+01     (11)          42      1512.00000004   Abs err 1470 exceeds tol 0.01 by 1e+03     (12)         210      25200.0000009   Abs err 24990 exceeds tol 0.01 by 2e+04     (13)         840      277200.000012   Abs err 2.7636e+05 exceeds tol 0.01 by 3e+05     (14)         2520     1995840.00009   Abs err 1.9933e+06 exceeds tol 0.01 by 2e+06     (15)         5040     8648640.00044   Abs err 8.6436e+06 exceeds tol 0.01 by 9e+06     (16)         5040     17297280.001   Abs err 1.7292e+07 exceeds tol 0.01 by 2e+07
+- plot/util/struct2hdl.m:793 [test] max_recursion_depth exceeded
 - polynomial/poly.m:108 [test] ASSERT errors for:  assert (,)    Location  |  Observed  |  Expected  |  Reason      ()           0            1         Abs err 1 exceeds tol 0 by 1
 - polynomial/residue.m:340 [test] ASSERT errors for:  assert (,,)    Location  |  Observed  |  Expected  |  Reason     (1)          NaN      -0-0.092593i   'NaN' mismatch     (2)          NaN       0.22222+0i    'NaN' mismatch     (3)          NaN      0+0.092593i    'NaN' mismatch     (4)          NaN       0.22222+0i    'NaN' mismatch
 - profiler/profile.m:123 [test] '__profiler_enable__' undefined
 - set/powerset.m:103 [test] sort: argument must be a string
 - set/powerset.m:108 [test] sort: argument must be a string
-- set/unique.m:412 [test] ASSERT errors for:  assert (,,)    Location  |  Observed  |  Expected  |  Reason      .         O(32x1)      E(34x1)      Dimensions don't match  ASSERT errors for:  assert (,,)    Location  |  Observed  |  Expected  |  Reason     (1)           10           34        Abs err 24 exceeds tol 0 by 2e+01     (2)           13           14        Abs err 1 exceeds tol 0 by 1     (3)           10           34        Abs err 24 exceeds tol 0 by 2e+01     (4)           24           16        Abs err 8 exceeds tol 0 by 8     (6)           12           6         Abs err 6 exceeds tol 0 by 6     (7)           10           34        Abs err 24 exceeds tol 0 by 2e+01     (8)           24           16        Abs err 8 exceeds tol 0 by 8     (10)          12           6         Abs err 6 exceeds tol 0 by 6     (11)          8            7         Abs err 1 exceeds tol 0 by 1     (12)          17           31        Abs err 14 exceeds tol 0 by 1e+01     (13)          32           28        Abs err 4 exceeds tol 0 by 4     (14)          17           31        Abs err 14 exceeds tol 0 by 1e+01     (15)          18           12        Abs err 6 exceeds tol 0 by 6     (16)          28           18        Abs err 10 exceeds tol 0 by 1e+01     (17)          5            8         Abs err 3 exceeds tol 0 by 3     (18)          17           31        Abs err 14 exceeds tol 0 by 1e+01     (19)          18           12        Abs err 6 exceeds tol 0 by 6     (20)          28           18        Abs err 10 exceeds tol 0 by 1e+01     (21)          5            8         Abs err 3 exceeds tol 0 by 3     (22)          21           2         Abs err 19 exceeds tol 0 by 2e+01     (24)          3            22        Abs err 19 exceeds tol 0 by 2e+01     (26)          6            1         Abs err 5 exceeds tol 0 by 5     (27)          2            21        Abs err 19 exceeds tol 0 by 2e+01     (28)          26           10        Abs err 16 exceeds tol 0 by 2e+01     (30)          6            1         Abs err 5 exceeds tol 0 by 5     (31)          2            21        Abs err 19 exceeds tol 0 by 2e+01     (32)          26           10        Abs err 16 exceeds tol 0 by 2e+01     (33)          11           9         Abs err 2 exceeds tol 0 by 2     (34)          31           3         Abs err 28 exceeds tol 0 by 3e+01     (35)          23           11        Abs err 12 exceeds tol 0 by 1e+01     (36)          31           3         Abs err 28 exceeds tol 0 by 3e+01     (37)          20           23        Abs err 3 exceeds tol 0 by 3     (38)          14           27        Abs err 13 exceeds tol 0 by 1e+01     (39)          25           26        Abs err 1 exceeds tol 0 by 1     (40)          31           3         Abs err 28 exceeds tol 0 by 3e+01     (41)          20           23        Abs err 3 exceeds tol 0 by 3     (42)          14           27        Abs err 13 exceeds tol 0 by 1e+01     (43)          25           26        Abs err 1 exceeds tol 0 by 1     (44)          16           24        Abs err 8 exceeds tol 0 by 8     (45)          22           4         Abs err 18 exceeds tol 0 by 2e+01     (46)          7            32        Abs err 25 exceeds tol 0 by 3e+01     (47)          22           4         Abs err 18 exceeds tol 0 by 2e+01     (48)          9            25        Abs err 16 exceeds tol 0 by 2e+01     (49)          17           20        Abs err 3 exceeds tol 0 by 3     (50)          27           19        Abs err 8 exceeds tol 0 by 8     (51)          22           4         Abs err 18 exceeds tol 0 by 2e+01     (52)          9            25        Abs err 16 exceeds tol 0 by 2e+01     (53)          17           20        Abs err 3 exceeds tol 0 by 3     (54)          27           19        Abs err 8 exceeds tol 0 by 8     (55)          4            33        Abs err 29 exceeds tol 0 by 3e+01     (56)          19           13        Abs err 6 exceeds tol 0 by 6     (57)          1            5         Abs err 4 exceeds tol 0 by 4     (58)          19           13        Abs err 6 exceeds tol 0 by 6     (59)          13           15        Abs err 2 exceeds tol 0 by 2     (60)          26           2         Abs err 24 exceeds tol 0 by 2e+01     (61)          1            24        Abs err 23 exceeds tol 0 by 2e+01     (62)          19           13        Abs err 6 exceeds tol 0 by 6     (63)          13           15        Abs err 2 exceeds tol 0 by 2     (64)          26           2         Abs err 24 exceeds tol 0 by 2e+01     (65)          1            24        Abs err 23 exceeds tol 0 by 2e+01     (66)          15           17        Abs err 2 exceeds tol 0 by 2
+- set/unique.m:412 [test] ASSERT errors for:  assert (,,)    Location  |  Observed  |  Expected  |  Reason      .         O(35x1)      E(34x1)      Dimensions don't match  ASSERT errors for:  assert (,,)    Location  |  Observed  |  Expected  |  Reason     (1)           24           34        Abs err 10 exceeds tol 0 by 1e+01     (2)           16           14        Abs err 2 exceeds tol 0 by 2     (3)           24           34        Abs err 10 exceeds tol 0 by 1e+01     (4)           9            16        Abs err 7 exceeds tol 0 by 7     (5)           13           30        Abs err 17 exceeds tol 0 by 2e+01     (6)           31           6         Abs err 25 exceeds tol 0 by 3e+01     (7)           24           34        Abs err 10 exceeds tol 0 by 1e+01     (8)           9            16        Abs err 7 exceeds tol 0 by 7     (9)           13           30        Abs err 17 exceeds tol 0 by 2e+01     (10)          31           6         Abs err 25 exceeds tol 0 by 3e+01     (11)          3            7         Abs err 4 exceeds tol 0 by 4     (12)          19           31        Abs err 12 exceeds tol 0 by 1e+01     (13)          11           28        Abs err 17 exceeds tol 0 by 2e+01     (14)          19           31        Abs err 12 exceeds tol 0 by 1e+01     (15)          28           12        Abs err 16 exceeds tol 0 by 2e+01     (16)          26           18        Abs err 8 exceeds tol 0 by 8     (17)          21           8         Abs err 13 exceeds tol 0 by 1e+01     (18)          19           31        Abs err 12 exceeds tol 0 by 1e+01     (19)          28           12        Abs err 16 exceeds tol 0 by 2e+01     (20)          26           18        Abs err 8 exceeds tol 0 by 8     (21)          21           8         Abs err 13 exceeds tol 0 by 1e+01     (22)          12           2         Abs err 10 exceeds tol 0 by 1e+01     (23)          18           29        Abs err 11 exceeds tol 0 by 1e+01     (24)          1            22        Abs err 21 exceeds tol 0 by 2e+01     (25)          18           29        Abs err 11 exceeds tol 0 by 1e+01     (26)          5            1         Abs err 4 exceeds tol 0 by 4     (27)          6            21        Abs err 15 exceeds tol 0 by 2e+01     (28)          22           10        Abs err 12 exceeds tol 0 by 1e+01     (29)          18           29        Abs err 11 exceeds tol 0 by 1e+01     (30)          5            1         Abs err 4 exceeds tol 0 by 4     (31)          6            21        Abs err 15 exceeds tol 0 by 2e+01     (32)          22           10        Abs err 12 exceeds tol 0 by 1e+01     (33)          8            9         Abs err 1 exceeds tol 0 by 1     (34)          10           3         Abs err 7 exceeds tol 0 by 7     (35)          34           11        Abs err 23 exceeds tol 0 by 2e+01     (36)          10           3         Abs err 7 exceeds tol 0 by 7     (37)          29           23        Abs err 6 exceeds tol 0 by 6     (38)          20           27        Abs err 7 exceeds tol 0 by 7     (39)          25           26        Abs err 1 exceeds tol 0 by 1     (40)          10           3         Abs err 7 exceeds tol 0 by 7     (41)          29           23        Abs err 6 exceeds tol 0 by 6     (42)          20           27        Abs err 7 exceeds tol 0 by 7     (43)          25           26        Abs err 1 exceeds tol 0 by 1     (44)          32           24        Abs err 8 exceeds tol 0 by 8     (46)          2            32        Abs err 30 exceeds tol 0 by 3e+01     (48)          6            25        Abs err 19 exceeds tol 0 by 2e+01     (49)          27           20        Abs err 7 exceeds tol 0 by 7     (50)          7            19        Abs err 12 exceeds tol 0 by 1e+01     (52)          6            25        Abs err 19 exceeds tol 0 by 2e+01     (53)          27           20        Abs err 7 exceeds tol 0 by 7     (54)          7            19        Abs err 12 exceeds tol 0 by 1e+01     (55)          17           33        Abs err 16 exceeds tol 0 by 2e+01     (56)          33           13        Abs err 20 exceeds tol 0 by 2e+01     (57)          23           5         Abs err 18 exceeds tol 0 by 2e+01     (58)          33           13        Abs err 20 exceeds tol 0 by 2e+01     (60)          14           2         Abs err 12 exceeds tol 0 by 1e+01     (61)          35           24        Abs err 11 exceeds tol 0 by 1e+01     (62)          33           13        Abs err 20 exceeds tol 0 by 2e+01     (64)          14           2         Abs err 12 exceeds tol 0 by 1e+01     (65)          35           24        Abs err 11 exceeds tol 0 by 1e+01     (66)          30           17        Abs err 13 exceeds tol 0 by 1e+01
 - set/uniquetol.m:317 [assert] ASSERT errors for:  assert (,)    Location  |  Observed  |  Expected  |  Reason      ()           O            E         non-sparse != sparse
 - set/uniquetol.m:318 [assert] ASSERT errors for:  assert (,)    Location  |  Observed  |  Expected  |  Reason      ()           O            E         non-sparse != sparse
 - signal/movfun.m:1589 [test] ASSERT errors for:  assert (,)    Location  |  Observed  |  Expected  |  Reason     (9)          NaN           0         'NaN' mismatch     (10)         NaN           0         'NaN' mismatch
@@ -465,31 +423,6 @@ Files: 864, blocks passed 9877, failed 523, skipped 458, pass rate 95.0% (88 s)
 - statistics/bounds.m:110 [test] ASSERT errors for:  assert (,)    Location  |  Observed  |  Expected  |  Reason      .          O(3x3)       E(1x3)      Dimensions don't match
 - statistics/bounds.m:156 [test] ASSERT errors for:  assert (,)    Location  |  Observed  |  Expected  |  Reason      ()           1           NaN        'NaN' mismatch
 - statistics/bounds.m:168 [test] ASSERT errors for:  assert (,)    Location  |  Observed  |  Expected  |  Reason    (3,1)          12          NaN        'NaN' mismatch
-- statistics/corr.m:172 [assert] ASSERT errors for:  assert (,)    Location  |  Observed  |  Expected  |  Reason      ()           O            E         Class double != single
-- statistics/corr.m:192 [test] ASSERT errors for:  assert (,)    Location  |  Observed  |  Expected  |  Reason      ()           O            E         Class double != single
-- statistics/cov.m:386 [assert] ASSERT errors for:  assert (,)    Location  |  Observed  |  Expected  |  Reason    (1,2)          0           NaN        'NaN' mismatch
-- statistics/cov.m:387 [assert] ASSERT errors for:  assert (,)    Location  |  Observed  |  Expected  |  Reason    (1,2)          0           NaN        'NaN' mismatch
-- statistics/cov.m:388 [assert] ASSERT errors for:  assert (,)    Location  |  Observed  |  Expected  |  Reason    (1,2)          0           NaN        'NaN' mismatch
-- statistics/cov.m:417 [assert] ASSERT errors for:  assert (,)    Location  |  Observed  |  Expected  |  Reason    (2,1)          0           NaN        'NaN' mismatch
-- statistics/cov.m:418 [assert] ASSERT errors for:  assert (,)    Location  |  Observed  |  Expected  |  Reason    (1,2)          0           NaN        'NaN' mismatch
-- statistics/discrete_cdf.m:69 [assert] ASSERT errors for:  assert (,,)    Location  |  Observed  |  Expected  |  Reason     (4)          0.9           1         Abs err 0.1 exceeds tol 2.2204e-16 by 0.1
-- statistics/discrete_cdf.m:72 [assert] ASSERT errors for:  assert (,,)    Location  |  Observed  |  Expected  |  Reason     (4)          0.9           1         Abs err 0.1 exceeds tol 2.3842e-07 by 0.1
-- statistics/discrete_cdf.m:74 [assert] ASSERT errors for:  assert (,,)    Location  |  Observed  |  Expected  |  Reason     (2)           0           0.1        Abs err 0.1 exceeds tol 2.3842e-07 by 0.1     (3)          0.5          0.6        Abs err 0.1 exceeds tol 2.3842e-07 by 0.1
-- statistics/discrete_cdf.m:76 [assert] ASSERT errors for:  assert (,,)    Location  |  Observed  |  Expected  |  Reason     (4)          0.9           1         Abs err 0.1 exceeds tol 2.3842e-07 by 0.1
-- statistics/discrete_inv.m:84 [assert] ASSERT errors for:  assert (,,)    Location  |  Observed  |  Expected  |  Reason     (3)          0.3          0.1        Abs err 0.2 exceeds tol 1.1921e-07 by 0.2
-- statistics/discrete_pdf.m:70 [assert] ASSERT errors for:  assert (,,)    Location  |  Observed  |  Expected  |  Reason     (4)           0           0.1        Abs err 0.1 exceeds tol 1.1102e-15 by 0.1
-- statistics/discrete_pdf.m:73 [assert] ASSERT errors for:  assert (,,)    Location  |  Observed  |  Expected  |  Reason     (2)           0           0.1        Abs err 0.1 exceeds tol 5.9605e-07 by 0.1     (3)           0           0.1        Abs err 0.1 exceeds tol 5.9605e-07 by 0.1     (4)           0           0.1        Abs err 0.1 exceeds tol 5.9605e-07 by 0.1
-- statistics/discrete_pdf.m:75 [assert] ASSERT errors for:  assert (,,)    Location  |  Observed  |  Expected  |  Reason     (2)           0           0.1        Abs err 0.1 exceeds tol 5.9605e-07 by 0.1     (3)           0           0.1        Abs err 0.1 exceeds tol 5.9605e-07 by 0.1     (4)           0           0.1        Abs err 0.1 exceeds tol 5.9605e-07 by 0.1
-- statistics/discrete_pdf.m:77 [assert] ASSERT errors for:  assert (,,)    Location  |  Observed  |  Expected  |  Reason     (4)           0           0.1        Abs err 0.1 exceeds tol 5.9605e-07 by 0.1
-- statistics/empirical_cdf.m:52 [assert] ASSERT errors for:  assert (,,)    Location  |  Observed  |  Expected  |  Reason     (4)          0.9           1         Abs err 0.1 exceeds tol 2.2204e-16 by 0.1
-- statistics/empirical_cdf.m:53 [assert] ASSERT errors for:  assert (,,)    Location  |  Observed  |  Expected  |  Reason     (4)          0.9           1         Abs err 0.1 exceeds tol 2.2204e-16 by 0.1
-- statistics/empirical_cdf.m:56 [assert] ASSERT errors for:  assert (,,)    Location  |  Observed  |  Expected  |  Reason     (4)          0.9           1         Abs err 0.1 exceeds tol 2.2204e-16 by 0.1
-- statistics/empirical_cdf.m:57 [assert] ASSERT errors for:  assert (,,)    Location  |  Observed  |  Expected  |  Reason     (2)          0.1          0.1        Abs err 1.4901e-09 exceeds tol 2.2204e-16 by 1e-09     (3)          0.6          0.6        Abs err 2.3842e-08 exceeds tol 2.2204e-16 by 2e-08     (4)          0.9           1         Abs err 0.1 exceeds tol 2.2204e-16 by 0.1
-- statistics/empirical_cdf.m:58 [assert] ASSERT errors for:  assert (,,)    Location  |  Observed  |  Expected  |  Reason     (2)           0           0.1        Abs err 0.1 exceeds tol 2.2204e-16 by 0.1     (3)          0.5          0.6        Abs err 0.1 exceeds tol 2.2204e-16 by 0.1
-- statistics/empirical_inv.m:56 [assert] ASSERT errors for:  assert (,,)    Location  |  Observed  |  Expected  |  Reason     (2)          0.1          0.1        Abs err 1.4901e-09 exceeds tol 2.2204e-16 by 1e-09     (3)          0.3          0.1        Abs err 0.2 exceeds tol 2.2204e-16 by 0.2     (4)          0.9          0.9        Abs err 2.3842e-08 exceeds tol 2.2204e-16 by 2e-08     (5)          1.9          1.9        Abs err 2.3842e-08 exceeds tol 2.2204e-16 by 2e-08
-- statistics/empirical_pdf.m:61 [assert] ASSERT errors for:  assert (,)    Location  |  Observed  |  Expected  |  Reason     (4)           0           0.1        Abs err 0.1 exceeds tol 0 by 0.1
-- statistics/empirical_pdf.m:64 [assert] ASSERT errors for:  assert (,)    Location  |  Observed  |  Expected  |  Reason      ()           O            E         Class double != single
-- statistics/empirical_pdf.m:65 [assert] ASSERT errors for:  assert (,)    Location  |  Observed  |  Expected  |  Reason      ()           O            E         Class double != single
 - statistics/iqr.m:351 [assert] ASSERT errors for:  assert (,)    Location  |  Observed  |  Expected  |  Reason      .          O(0x1)      E(0x1x2)     Dimensions don't match
 - statistics/iqr.m:355 [assert] ASSERT errors for:  assert (,)    Location  |  Observed  |  Expected  |  Reason      .          O(1x0)      E(1x0x2)     Dimensions don't match
 - statistics/iqr.m:356 [assert] ASSERT errors for:  assert (,)    Location  |  Observed  |  Expected  |  Reason      .          O(1x0)    E(1x0x1x1x1x1x1x1x2)   Dimensions don't match
@@ -513,9 +446,6 @@ Files: 864, blocks passed 9877, failed 523, skipped 458, pass rate 95.0% (88 s)
 - statistics/median.m:878 [assert] ASSERT errors for:  assert (,)    Location  |  Observed  |  Expected  |  Reason      ()           O            E         non-sparse != sparse
 - statistics/median.m:879 [assert] ASSERT errors for:  assert (,)    Location  |  Observed  |  Expected  |  Reason      ()           O            E         non-sparse != sparse
 - statistics/mode.m:311 [test] sparse: dimension mismatch
-- statistics/mode.m:384 [test] ASSERT errors for:  assert (,)    Location  |  Observed  |  Expected  |  Reason      []        'double'     'single'     Strings don't match
-- statistics/mode.m:511 [test] ASSERT errors for:  assert (,)    Location  |  Observed  |  Expected  |  Reason      ()           O            E         Class double != single
-- statistics/mode.m:536 [test] ASSERT errors for:  assert (,)    Location  |  Observed  |  Expected  |  Reason      ()           O            E         Class double != single
 - statistics/normalize.m:608 [test] assert () failed
 - statistics/normalize.m:613 [test] assert () failed
 - statistics/range.m:101 [test] ASSERT errors for:  assert (,)    Location  |  Observed  |  Expected  |  Reason      .          O(3x3)       E(1x3)      Dimensions don't match
@@ -524,9 +454,6 @@ Files: 864, blocks passed 9877, failed 523, skipped 458, pass rate 95.0% (88 s)
 - statistics/rms.m:105 [assert] ASSERT errors for:  assert (,)    Location  |  Observed  |  Expected  |  Reason      ()           O            E         Class double != single
 - statistics/rmse.m:638 [test] ASSERT errors for:  assert (,,)    Location  |  Observed  |  Expected  |  Reason      ()          Inf      4.7373373668443e+307   'Inf' mismatch
 - statistics/rmse.m:687 [error] expected an error but none was raised
-- statistics/var.m:696 [assert] ASSERT errors for:  assert (,)    Location  |  Observed  |  Expected  |  Reason      []        'double'     'single'     Strings don't match
-- statistics/var.m:700 [assert] ASSERT errors for:  assert (,)    Location  |  Observed  |  Expected  |  Reason      []        'double'     'single'     Strings don't match
-- statistics/var.m:705 [assert] ASSERT errors for:  assert (,)    Location  |  Observed  |  Expected  |  Reason      []        'double'     'single'     Strings don't match
 - statistics/var.m:904 [test] assert () failed
 - statistics/var.m:908 [test] assert () failed
 - strings/dec2base.m:287 [assert] ASSERT errors for:  assert (,)    Location  |  Observed  |  Expected  |  Reason      []      '0111111111111111111111111111111111111111111111111111111111111111' '1000000000000000000000000000000000000000000000000000000000000000'   Strings don't match
@@ -540,9 +467,6 @@ Files: 864, blocks passed 9877, failed 523, skipped 458, pass rate 95.0% (88 s)
 - strings/dec2hex.m:129 [assert] ASSERT errors for:  assert (,)    Location  |  Observed  |  Expected  |  Reason      []      'FEDCBA9876543000' 'FEDCBA9876543210'   Strings don't match
 - strings/isstrprop.m:157 [assert] ischar: wrong type argument 'cell array'
 - strings/native2unicode.m:87 [assert] '__native2unicode__' undefined
-- strings/strsplit.m:262 [assert] ASSERT errors for:  assert (,)    Location  |  Observed  |  Expected  |  Reason      .          O(1x2)       E(1x3)      Dimensions don't match
-- strings/strsplit.m:321 [assert] Invalid pattern '(\\\)+' at offset 6. Not enough )'s.
-- strings/strsplit.m:323 [assert] ASSERT errors for:  assert (,)    Location  |  Observed  |  Expected  |  Reason      .          O(1x1)       E(1x2)      Dimensions don't match
 - strings/strtok.m:224 [test] ASSERT errors for:  assert (,)    Location  |  Observed  |  Expected  |  Reason      []       'beg\end'      'beg'       Strings don't match
 - strings/strtrunc.m:73 [test] mat2cell: dimension vectors must add up to the size of the input (dim 1: 4 != 3)
 - testfun/assert.m:608 [error] error 'ASSERT errors for:  assert (,)    Location  |  Observed  |  Expected  |  Reason      ()          NaN           1         'NaN' mismatch' does not match <'NA' mismatch>

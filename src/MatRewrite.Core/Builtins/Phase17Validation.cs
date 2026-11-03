@@ -26,6 +26,15 @@ public static partial class BuiltinLibrary
 
     static void RegisterValidation()
     {
+        foreach (var bn in new[] { "bitand", "bitor", "bitxor", "bitshift" })
+            if (cur!.Builtins.TryGetValue(bn, out var bf))
+                cur!.Builtins[bn] = (it, a, n) =>
+                {
+                    var r = bf(it, a, n);
+                    if (a.Any(v => v is MatrixValue m && m.Kind == NumKind.Single) && !a.Any(v => v is MatrixValue m && m.IsInteger) && r.Length > 0 && r[0] is MatrixValue rm && rm.Kind == NumKind.Double)
+                    { rm = rm.Copy(); rm.Kind = NumKind.Single; r[0] = rm; }
+                    return r;
+                };
         Pre("stem", (it, a, n) =>
         {
             int k = 0;
@@ -133,6 +142,33 @@ public static partial class BuiltinLibrary
                     res[i] = ff0(it, a.Select(v => v is CellValue c ? c.Data[c.Numel == 1 ? 0 : i] : v).ToArray(), 1)[0];
                 return new Value[] { new CellValue(big.Rows, big.Cols, res) };
             };
+        Pre("trisurf", (it, a, n) =>
+        {
+            if (a.Length >= 5 && VNum(a[4]) && VNum(a[0]))
+            {
+                var c = a[4]; int nv = a[1].Numel, nt = a[0].Rows;
+                bool vec = c.Rows == 1 || c.Cols == 1;
+                if (vec ? c.Numel != nv && c.Numel != nt : c.Rows != nv && c.Rows != nt) throw new OctaveException("trisurf: the numbers of colors specified in C must equal the number of vertices in [X, Y, Z] or the number of triangles in TRI");
+                if (!vec && c.Cols != 3) throw new OctaveException("trisurf: TrueColor C matrix must have 3 columns");
+            }
+        });
+        if (cur!.Builtins.TryGetValue("isprop", out var ip0))
+            cur!.Builtins["isprop"] = (it, a, n) =>
+            {
+                if (a.Length == 2 && a[0] is MatrixValue hm && !hm.IsChar && IsString(a[1]))
+                {
+                    var r = new MatrixValue(hm.R, hm.C) { Kind = NumKind.Logical };
+                    for (int i = 0; i < hm.Numel; i++)
+                    {
+                        if (it.Graphics.Lookup(hm.Re[i]) == null) continue;
+                        try { it.CallFunction("get", new Value[] { Num(hm.Re[i]), a[1] }, 1); r.Re[i] = 1; } catch (OctaveException) { }
+                    }
+                    return new Value[] { r };
+                }
+                return ip0(it, a, n);
+            };
+        Pre("hgload", (it, a, n) => { if (a.Length >= 2 && a[1] is not StructValue) throw new OctaveException("hgload: PROP_STRUCT must be a struct"); });
+        Remap("hgload", m => m.Contains("unable to find file") ? "hgload: unable to locate file " + m.Split("file ").Last() : null);
         Pre("computer", (it, a, n) =>
         {
             if (a.Length > 1) throw new OctaveException("Invalid call to computer");

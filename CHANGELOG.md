@@ -2,6 +2,22 @@
 
 All notable changes to MatOct. Detailed notes (Chinese) live in `docs/phaseN.md`.
 
+## [0.19.0] - 2026-11-03
+
+MatOct is a MATLAB-style IDE for GNU Octave, written in C#.
+
+### Changed
+- Octave test suite: core 96.5 % (9988/10354), with-lib 95.7 % (9953/10400).
+
+### Fixed
+- Ranges clamp the last element to the stop value; linspace/logspace give exact endpoints, accept vector and complex limits, and keep the single class.
+- regexprep replacement escapes follow Octave ($N, \\$, \\n, \\t).
+- Matrix multiply propagates NaN*0.
+- NaN/Inf/pi/eps accept "single" and "like".
+- chol supports the [R, p] output and the "lower" option.
+- lookup and the bit functions handle the single class.
+- rose bin outputs; trisurf color validation; isprop on handle arrays; hgload validation.
+
 ## [0.18.0] - 2026-11-03
 MatOct is a MATLAB-style IDE for GNU Octave, written in C#.
 ### Changed

@@ -121,6 +121,7 @@ public static partial class BuiltinLibrary
                 return r;
             }
             var t = M(a[0], "lookup"); var y = M(a[1], "lookup");
+            if ((t.Kind == NumKind.Single) != (y.Kind == NumKind.Single)) { y = y.Copy(); for (int q = 0; q < y.Re.Length; q++) y.Re[q] = (float)y.Re[q]; if (t.Kind != NumKind.Single) { t = t.Copy(); for (int q = 0; q < t.Re.Length; q++) t.Re[q] = (float)t.Re[q]; } }
             int n = t.Numel; bool desc = n > 1 && t.Re[0] > t.Re[n - 1];
             var res = new MatrixValue(y.R, y.C) { ND = y.ND };
             for (int k = 0; k < y.Numel; k++)

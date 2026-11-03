@@ -289,7 +289,6 @@ public static class Ops
                 for (int k = 0; k < a.C; k++)
                 {
                     double bkj = b.Re[k + j * b.R];
-                    if (bkj == 0) continue;
                     for (int i = 0; i < a.R; i++) r.Re[i + j * a.R] += a.Re[i + k * a.R] * bkj;
                 }
             return r;

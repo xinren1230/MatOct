@@ -66,18 +66,49 @@ public static partial class BuiltinLibrary
             return rcls != null && rcls != "double" ? Fc(it, rcls, m) : m;
         });
         RegI("randperm", (it, a) => { int n = I(a[0], "randperm"); var p = Enumerable.Range(1, n).Select(x => (double)x).ToArray(); it.Rng.Shuffle(p); return MatrixValue.Row(p); });
+        static void LinFill(double[] r, double lo, double hi, int n)
+        {
+            if (lo == hi) { for (int k = 0; k < n; k++) r[k] = lo; return; }
+            double d = (hi - lo) / (n - 1);
+            for (int k = 0; k < n; k++) r[k] = n == 1 ? hi : lo + k * d;
+            if (n > 1) { r[0] = lo; r[n - 1] = hi; }
+            if (lo == -hi && n % 2 == 1 && n > 1) r[n / 2] = 0;
+        }
         Reg1("linspace", a =>
         {
-            double lo = D(a[0], "linspace"), hi = D(a[1], "linspace"); int n = a.Length > 2 ? I(a[2], "linspace") : 100;
+            var A0 = M(a[0], "linspace"); var B0 = M(a[1], "linspace"); int n = a.Length > 2 ? I(a[2], "linspace") : 100;
             if (n < 1) n = 1;
-            var m = new MatrixValue(1, n);
-            for (int k = 0; k < n; k++) m.Re[k] = n == 1 ? hi : lo + (hi - lo) * k / (n - 1);
-            return m;
+            if (A0.Numel == 1 && B0.Numel == 1 && !A0.IsComplex && !B0.IsComplex)
+            {
+                var m = new MatrixValue(1, n);
+                LinFill(m.Re, A0.Re[0], B0.Re[0], n);
+                if (A0.Kind == NumKind.Single || B0.Kind == NumKind.Single) m.Kind = NumKind.Single;
+                return m;
+            }
+            if (A0.IsComplex || B0.IsComplex)
+            {
+                if (A0.Numel != 1 || B0.Numel != 1) throw new OctaveException("linspace: complex vector input not supported");
+                var ca = A0.IsComplex ? new System.Numerics.Complex(A0.Re[0], A0.Im![0]) : A0.Re[0];
+                var cb = B0.IsComplex ? new System.Numerics.Complex(B0.Re[0], B0.Im![0]) : B0.Re[0];
+                var cm = new MatrixValue(1, n); cm.Im = new double[n];
+                for (int k = 0; k < n; k++) { var v = n == 1 ? cb : k == n - 1 ? cb : ca + (cb - ca) * k / (n - 1); cm.Re[k] = v.Real; cm.Im[k] = v.Imaginary; }
+                return cm;
+            }
+            int rows = Math.Max(A0.Numel, B0.Numel);
+            if (A0.Numel != 1 && B0.Numel != 1 && A0.Numel != B0.Numel) throw new OctaveException("linspace: vectors START and END must be the same length");
+            var mm = new MatrixValue(rows, n); var row = new double[n];
+            for (int r = 0; r < rows; r++)
+            {
+                LinFill(row, A0.Re[A0.Numel == 1 ? 0 : r], B0.Re[B0.Numel == 1 ? 0 : r], n);
+                for (int k = 0; k < n; k++) mm.Re[r + k * rows] = row[k];
+            }
+            return mm;
         });
         Reg1("logspace", a =>
         {
             double lo = D(a[0], "logspace"), hi = D(a[1], "logspace"); int n = a.Length > 2 ? I(a[2], "logspace") : 50;
-            return MatrixValue.Row(Enumerable.Range(0, n).Select(k => Math.Pow(10, n == 1 ? hi : lo + (hi - lo) * k / (n - 1))));
+            var lv = new double[Math.Max(n, 0)]; if (n > 0) LinFill(lv, lo, hi, n);
+            return MatrixValue.Row(lv.Select(v => Math.Pow(10, v)));
         });
         Reg1("colon", a =>
         {

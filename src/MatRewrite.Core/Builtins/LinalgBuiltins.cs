@@ -194,11 +194,30 @@ public static partial class BuiltinLibrary
             if (n <= 1) return Out(Ops.FromMathNet(qr.R));
             return Out(Ops.FromMathNet(qr.Q), Ops.FromMathNet(qr.R));
         });
-        Reg1("chol", a =>
+        Reg("chol", (it, a, nout) =>
         {
             var m = Square(a[0], "chol");
-            try { return Ops.FromMathNet(Ops.ToMathNet(m).Cholesky().Factor.Transpose()); }
-            catch (Exception) { throw new OctaveException("chol: input matrix must be positive definite"); }
+            if (m.IsComplex) { try { return new Value[] { Ops.FromMathNet(Ops.ToMathNetC(m).Cholesky().Factor.ConjugateTranspose()), Num(0) }; } catch (Exception) { if (nout < 2) throw new OctaveException("chol: input matrix must be positive definite"); return new Value[] { new MatrixValue(0, 0), Num(1) }; } }
+            bool lower = a.Skip(1).Any(v => IsString(v) && S(v, "chol").Equals("lower", StringComparison.OrdinalIgnoreCase));
+            int n = m.R; var R = new double[n, n]; int fail = 0;
+            for (int j = 0; j < n && fail == 0; j++)
+            {
+                double s = lower ? m.Re[j + j * n] : m.Re[j + j * n];
+                for (int k = 0; k < j; k++) s -= R[k, j] * R[k, j];
+                if (!(s > 0)) { fail = j + 1; break; }
+                double d = Math.Sqrt(s); R[j, j] = d;
+                for (int i = j + 1; i < n; i++)
+                {
+                    double t = lower ? m.Re[i + j * n] : m.Re[j + i * n];
+                    for (int k = 0; k < j; k++) t -= R[k, j] * R[k, i];
+                    R[j, i] = t / d;
+                }
+            }
+            if (fail > 0 && nout < 2) throw new OctaveException("chol: input matrix must be positive definite");
+            int q = fail > 0 ? fail - 1 : n;
+            var res = new MatrixValue(q, q);
+            for (int i = 0; i < q; i++) for (int j = i; j < q; j++) { if (lower) res.Re[j + i * q] = R[i, j]; else res.Re[i + j * q] = R[i, j]; }
+            return new Value[] { res, Num(fail) };
         });
         Reg1("expm", a =>
         {

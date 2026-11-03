@@ -477,11 +477,13 @@ public sealed partial class Interpreter
         return false;
     }
 
+    [ThreadStatic] static double lastRangeStop;
     public (double start, double step, long n) RangeParams(RangeExpr re)
     {
         double a = ScalarOf(Eval(re.Start), "colon");
         double st = re.Step != null ? ScalarOf(Eval(re.Step), "colon") : 1;
         double b = ScalarOf(Eval(re.Stop), "colon");
+        lastRangeStop = b;
         return (a, st, RangeCount(a, st, b));
     }
 
@@ -855,7 +857,9 @@ public sealed partial class Interpreter
             {
                 var (a, st, n) = RangeParams(re);
                 var m = new MatrixValue(1, (int)n);
+                double rb = lastRangeStop;
                 for (int k = 0; k < n; k++) m.Re[k] = a + k * st;
+                if (n > 0 && (st > 0 ? m.Re[n - 1] > rb : st < 0 && m.Re[n - 1] < rb)) m.Re[n - 1] = rb;
                 if (n > 0 && m.Re[n - 1] == 0) { double b = ScalarOf(Eval(re.Stop), "colon"); if (b == 0) m.Re[n - 1] = b; }
                 if (re.Start is StringExpr or IdentExpr && re.Stop is StringExpr or IdentExpr
                     && Eval(re.Start) is MatrixValue { IsChar: true } && Eval(re.Stop) is MatrixValue { IsChar: true })
