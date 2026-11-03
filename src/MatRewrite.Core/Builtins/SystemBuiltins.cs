@@ -6,6 +6,7 @@ namespace MatRewrite.Core.Builtins;
 public static partial class BuiltinLibrary
 {
     public static readonly string Version = GetVersion();
+    static string? editorCmd;
     /// <summary>GNU Octave language level the runtime targets (reported by OCTAVE_VERSION / version).</summary>
     public const string OctaveCompatVersion = "12.0.0";
     static string GetVersion()
@@ -119,7 +120,12 @@ public static partial class BuiltinLibrary
             var es = a[0] as StructValue ?? throw new OctaveException("rethrow: ERR must be a struct");
             throw new OctaveException(S(es.Get("message"), "rethrow"), es.HasField("identifier") ? S(es.Get("identifier"), "rethrow") : "");
         });
-        Reg("lasterr", (it, a, n) => new Value[] { Str(it.LastError), Str(it.LastErrorId) });
+        Reg("lasterr", (it, a, n) =>
+        {
+            var r = new Value[] { Str(it.LastError ?? ""), Str(it.LastErrorId ?? "") };
+            if (a.Length > 0) { it.LastError = S(a[0], "lasterr"); it.LastErrorId = a.Length > 1 ? S(a[1], "lasterr") : ""; if (n == 0) return Array.Empty<Value>(); }
+            return r;
+        });
         Reg("print_usage", (it, a, n) => throw new OctaveException($"Invalid call to {it.Current.Func?.Name ?? "function"}.", "Octave:invalid-fun-call"));
         Reg("eval", (it, a, n) =>
         {
@@ -152,7 +158,9 @@ public static partial class BuiltinLibrary
         Reg("feval", (it, a, n) =>
         {
             if (a.Length == 0) throw new OctaveException("Invalid call to feval");
-            return it.CallCallable(a[0], a.Skip(1).ToArray(), n);
+            try { return it.CallCallable(a[0], a.Skip(1).ToArray(), n); }
+            catch (OctaveException ex) when (a[0] is FunctionHandleValue fh && !fh.IsAnonymous && fh.Name != null && ex.Message == $"'{fh.Name}' undefined")
+            { throw new OctaveException($"feval: unable to find function for @{fh.Name}", "Octave:undefined-function"); }
         });
         Reg("builtin", (it, a, n) =>
         {
@@ -398,6 +406,12 @@ public static partial class BuiltinLibrary
         });
         Reg1("version", a => Str(Version));
         Reg1("OCTAVE_VERSION", a => Str(Version));
+        Reg1("EDITOR", a =>
+        {
+            var old = editorCmd ?? Environment.GetEnvironmentVariable("EDITOR") ?? "emacs";
+            if (a.Length > 0) editorCmd = a[0] is MatrixValue m && m.IsChar ? m.AsString() : throw new OctaveException("EDITOR: argument must be a string");
+            return Str(old);
+        });
         Reg1("computer", a => Str(Environment.OSVersion.Platform == PlatformID.Win32NT ? "x86_64-w64-mingw32" : "x86_64-pc-linux-gnu"));
         Reg1("ispc", a => Bool(OperatingSystem.IsWindows()));
         Reg1("isunix", a => Bool(!OperatingSystem.IsWindows()));
@@ -476,7 +490,11 @@ public static partial class BuiltinLibrary
             int fi = 1; int ntot = ns.Length == 0 ? 0 : ns.Max();
             if (a.Length > 2 && a[1] is MatrixValue m1 && !m1.IsChar && m1.Numel == 1 && !(a[1] is FunctionHandleValue)) { ntot = (int)m1.Re[0]; fi = 2; }
             if (ns.Any(q => q < 1 || q > ntot)) throw new OctaveException("nthargout: N must be a positive integer <= NTOT");
-            var r = it.CallCallable(a[fi], a.Skip(fi + 1).ToArray(), ntot);
+            Value[] r;
+            try { r = it.CallCallable(a[fi], a.Skip(fi + 1).ToArray(), ntot); }
+            catch (OctaveException ex) when (ex.Message.StartsWith("element number ") && ex.Message.EndsWith("undefined in return list") || ex.Message.Contains("called with too many outputs"))
+            { throw new OctaveException($"nthargout: too many output arguments: {ntot}"); }
+            if (r.Length < ntot || r.Take(ntot).Any(v => v == null)) throw new OctaveException($"nthargout: too many output arguments: {ntot}");
             if (ns.Length == 1) return Out(r[ns[0] - 1]);
             var c = new CellValue(1, ns.Length);
             for (int q = 0; q < ns.Length; q++) c.Data[q] = r[ns[q] - 1];

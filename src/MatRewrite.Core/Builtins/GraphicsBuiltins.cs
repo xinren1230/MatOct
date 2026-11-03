@@ -894,7 +894,7 @@ namespace MatRewrite.Core.Builtins
                     case (SurfaceSeries sf, "edgealpha"): sf.EdgeAlpha = Math.Clamp(D(v, fn), 0, 1); break;
                     case (SurfaceSeries sf, "facelighting"): { var fl = S(v, fn).ToLowerInvariant(); if (fl is not ("none" or "flat" or "gouraud" or "phong")) throw new OctaveException($"{fn}: invalid FaceLighting '{fl}'"); sf.FaceLighting = fl == "phong" ? "gouraud" : fl; break; }
                     case (SurfaceSeries, "linestyle" or "linewidth" or "ambientstrength" or "diffusestrength" or "specularstrength"): break;
-                    case (LightObject lo, "position"): { var m = M(v, fn); if (m.Numel != 3) throw new OctaveException("light: Position must be a 3-element vector"); lo.CameraRelative = false; lo.Az = Math.Atan2(m.Re[1], m.Re[0]) * 180 / Math.PI + 90; lo.El = Math.Atan2(m.Re[2], Math.Sqrt(m.Re[0] * m.Re[0] + m.Re[1] * m.Re[1])) * 180 / Math.PI; break; }
+                    case (LightObject lo, "position"): { var m = M(v, fn); if (m.Numel != 3) throw new OctaveException("light: Position must be a 3-element vector"); lo.CameraRelative = false; lo.RawPos = new[] { m.Re[0], m.Re[1], m.Re[2] }; lo.Az = Math.Atan2(m.Re[1], m.Re[0]) * 180 / Math.PI + 90; lo.El = Math.Atan2(m.Re[2], Math.Sqrt(m.Re[0] * m.Re[0] + m.Re[1] * m.Re[1])) * 180 / Math.PI; break; }
                     case (LightObject lo, "color"): lo.Color = ParseColor(v, fn); break;
                     case (LightObject lo, "visible"): lo.Visible = S(v, fn) == "on"; break;
                     case (LightObject, "style"): break;
@@ -1003,6 +1003,7 @@ namespace MatRewrite.Core.Builtins
     /// <summary>Colormap matrix (n x 3) for the built-in generator functions jet/gray/hot/cool.</summary>
     static MatrixValue LightPos(LightObject lo)
     {
+        if (lo.RawPos != null) return MatrixValue.Row(lo.RawPos);
         double az = (lo.Az - 90) * Math.PI / 180, el = lo.El * Math.PI / 180;
         return MatrixValue.Row(new[] { Math.Cos(el) * Math.Cos(az), Math.Cos(el) * Math.Sin(az), Math.Sin(el) });
     }

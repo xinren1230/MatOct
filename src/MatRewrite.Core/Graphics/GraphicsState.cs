@@ -69,7 +69,7 @@ public sealed class GraphicsState
     {
         RootObject => null,
         Figure => Root,
-        Axes a => a.Figure,
+        Axes a => a.Container ?? a.Figure,
         LabelObject l => l.Axes,
         GenericObject g when g.Owner != null => g.Owner,
         Series s => (GObject?)s.Group ?? s.Parent,

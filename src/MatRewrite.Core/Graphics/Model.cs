@@ -135,6 +135,7 @@ public sealed class SurfaceSeries : Series
 public sealed class LightObject : Series
 {
     public double Az, El;             // degrees (world or camera-relative)
+    public double[]? RawPos;          // literal Position as set by the user
     public bool CameraRelative;       // camlight
     public Rgb Color = new(1, 1, 1);
     public bool Visible = true;
@@ -212,6 +213,7 @@ public sealed class Annotation : GObject
 public sealed class Axes : GObject
 {
     public Figure Figure = null!;
+    public GObject? Container;
     public int Rows = 1, Cols = 1;
     public int[] Cells = { 1 }; // subplot cell indices (1-based, row-major)
     public string Title = "", XLabel = "", YLabel = "", ZLabel = "";

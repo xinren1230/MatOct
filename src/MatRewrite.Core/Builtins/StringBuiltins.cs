@@ -367,7 +367,13 @@ public static partial class BuiltinLibrary
         Reg1("undo_string_escapes", a => Str(S(a[0], "undo_string_escapes").Replace("\\", "\\\\").Replace("\n", "\\n").Replace("\t", "\\t").Replace("\"", "\\\"")));
         Reg1("cellstr", a =>
         {
-            if (a[0] is CellValue c) return c;
+            if (a[0] is CellValue c)
+            {
+                if (c.Data.All(v => v is MatrixValue { IsChar: true })) return c;
+                if (c.Data.Any(v => v is not MatrixValue { IsComplex: false })) throw new OctaveException("cellstr: argument STRING must be a 2-D character array");
+                // Octave converts through a string_vector: a column of char arrays.
+                return CellValue.ColOf(c.Data.Select(v => { var m = (MatrixValue)v; if (m.Numel == 0) return (Value)Str(""); var r = m.Copy(); r.Kind = NumKind.Char; r.Im = null; return r; }));
+            }
             return CellValue.ColOf(StrList(a[0], "cellstr").Select(s => Str(s.TrimEnd())));
         });
     }

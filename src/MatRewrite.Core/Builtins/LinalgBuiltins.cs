@@ -34,7 +34,10 @@ public static partial class BuiltinLibrary
         Reg1("inverse", a => Ops.Inv(Square(a[0], "inverse")));
         Reg1("pinv", a => Ops.FromMathNet(Ops.ToMathNet(M(a[0], "pinv")).PseudoInverse()));
         Reg1("trace", a => { var m = Square(a[0], "trace"); double s = 0; for (int k = 0; k < m.R; k++) s += m.Re[k + k * m.R]; return Num(s); });
-        Reg1("rank", a => { var m = M(a[0], "rank"); if (m.Numel == 0) return Num(0); return Num(Ops.ToMathNet(m).Rank()); });
+        Reg1("rank", a => { var m = M(a[0], "rank"); if (m.Numel == 0) return Num(0);
+            if (a.Length < 2) return Num(Ops.ToMathNet(m).Rank());
+            double tol = M(a[1], "rank").Re[0];
+            var sv = Ops.ToMathNet(m).Svd(false).S; int r = 0; foreach (var v in sv) if (Math.Abs(v) > tol) r++; return Num(r); });
         Reg1("norm", a =>
         {
             if (a.Length >= 2 && IsString(a[^1]) && S(a[^1], "norm").ToLowerInvariant() is "rows" or "columns" or "cols")
@@ -96,6 +99,7 @@ public static partial class BuiltinLibrary
             var r = new MatrixValue(x.R * y.R, x.C * y.C);
             for (int i = 0; i < x.R; i++) for (int j = 0; j < x.C; j++) for (int p = 0; p < y.R; p++) for (int q = 0; q < y.C; q++)
                             r.Re[(i * y.R + p) + (j * y.C + q) * r.R] = x.Re[i + j * x.R] * y.Re[p + q * y.R];
+            if (x.Kind == NumKind.Single || y.Kind == NumKind.Single) { r.Kind = NumKind.Single; for (int k = 0; k < r.Re.Length; k++) r.Re[k] = (float)r.Re[k]; }
             return r;
         });
         Reg1("dot", a =>

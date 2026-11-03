@@ -37,6 +37,20 @@ public static partial class BuiltinLibrary
                 if (a.Length >= 3 && a[0] is MatrixValue dm && dm.Numel == 1 && dm.Re[0] >= 1 && dm.Re[0] == Math.Floor(dm.Re[0]))
                 {
                     int d = (int)dm.Re[0]; int[]? first = null; int pos = 0;
+                    if (d >= 3 && a.Skip(1).All(v => v is MatrixValue mv && mv.Numel == 0 && !mv.IsChar))
+                    {
+                        var dims0 = ((MatrixValue)a[1]).Dims;
+                        var all = a.Skip(1).Select(v => ((MatrixValue)v).Dims).ToList();
+                        int nd = Math.Max(d, all.Max(x => x.Length));
+                        int[] Pad(int[] x) => Enumerable.Range(0, nd).Select(k => k < x.Length ? x[k] : 1).ToArray();
+                        var p0 = Pad(dims0);
+                        if (all.All(x => { var px = Pad(x); return Enumerable.Range(0, nd).All(k => k == d - 1 || px[k] == p0[k]); }))
+                        {
+                            var od = (int[])p0.Clone(); od[d - 1] = all.Sum(x => Pad(x)[d - 1]);
+                            var res = new MatrixValue(od[0], od[1]); res.SetDims(od);
+                            return new Value[] { res };
+                        }
+                    }
                     foreach (var v in a.Skip(1))
                     {
                         pos++;

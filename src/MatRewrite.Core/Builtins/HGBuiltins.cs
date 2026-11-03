@@ -101,7 +101,18 @@ namespace MatRewrite.Core.Builtins
             }
             if (flat.Count % 2 != 0) throw new OctaveException($"{fn}: invalid number of PROPERTY/VALUE arguments");
             for (int k = 0; k < flat.Count; k += 2)
+            {
                 if (!IsString(flat[k])) throw new OctaveException($"{fn}: PROPERTY must be a string");
+                if (IsString(flat[k + 1]) && S(flat[k + 1], fn) is "factory" or "default")
+                {
+                    var pn = S(flat[k], fn).ToLowerInvariant();
+                    var t = TypeOf(o);
+                    if (pn == "paperposition" && t == "figure" && S(flat[k + 1], fn) == "factory")
+                    { flat[k + 1] = MatrixValue.Row(new[] { 1.342185258002766, 3.319138943502075, 5.815629483994468, 4.361722112995850 }); continue; }
+                    if (S(flat[k + 1], fn) == "factory" ? (TypeDefaults.TryGetValue(t, out var d) && d.TryGetValue(pn, out var ff) && (flat[k + 1] = ff()) != null)
+                        : TryDefault(it, o, pn, out var dv) && (flat[k + 1] = dv) != null) { }
+                }
+            }
             SetProps(it, o, flat.ToArray(), fn);
         }
 

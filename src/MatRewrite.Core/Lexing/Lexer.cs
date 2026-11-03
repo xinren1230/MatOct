@@ -46,6 +46,7 @@ public sealed class Lexer
     char Peek(int k = 1) => pos + k < src.Length ? src[pos + k] : '\0';
     bool InMatrix => brackets.Count > 0 && brackets.Peek() != '(' && brackets.Peek() != 'a';
     bool afterAnonParams;
+    int anonBodyLevel = -1;
     Token? Last => toks.Count > 0 ? toks[^1] : null;
 
     bool LastEndsValue()
@@ -132,12 +133,14 @@ public sealed class Lexer
             }
 
             // implicit comma inside [] / {}
-            if (InMatrix && space && LastEndsValue() && StartsValue() && !(afterAnonParams && Last != null && Last.Is(")")))
-                Add(TokKind.Punct, ",", true);
+            if (anonBodyLevel > brackets.Count) anonBodyLevel = -1;
+            if (InMatrix && space && LastEndsValue() && StartsValue() && !(afterAnonParams && Last != null && Last.Is(")"))
+                && !(anonBodyLevel == brackets.Count && c != '@'))
+            { Add(TokKind.Punct, ",", true); anonBodyLevel = -1; }
 
             if (c == '\n')
             {
-                pos++;
+                pos++; anonBodyLevel = -1;
                 if (InMatrix) { if (!(Last != null && Last.Is(";"))) Add(TokKind.Punct, ";", space); }
                 else if (brackets.Count == 0) Add(TokKind.Newline, "\n", space);
                 line++; lineStart = pos;
@@ -157,7 +160,7 @@ public sealed class Lexer
                 {
                     bool cmdStart = AtStatementStart() && brackets.Count == 0;
                     Add(TokKind.Ident, w, space);
-                    if (cmdStart && CommandWords.Contains(w)) TryCommandSyntax();
+                    if (cmdStart && (CommandWords.Contains(w) || (!(w is "classdef" or "methods" or "properties" or "events" or "enumeration" or "arguments" or "spmd" or "parfor") && WordArgFollows()))) TryCommandSyntax();
                 }
                 continue;
             }
@@ -186,6 +189,7 @@ public sealed class Lexer
             if ("+-*/\\^'.<>=&|!~,;:()[]{}@".IndexOf(op[0]) < 0)
                 throw Err($"invalid character '{c}'");
             pos += op.Length;
+            if ((op == "," || op == ";") && anonBodyLevel == brackets.Count) anonBodyLevel = -1;
             switch (op)
             {
                 case "(": brackets.Push(Last != null && Last.Is("@") ? 'a' : '('); break;
@@ -194,6 +198,7 @@ public sealed class Lexer
                 case ")": case "]": case "}":
                     afterAnonParams = brackets.Count > 0 && brackets.Peek() == 'a';
                     if (brackets.Count > 0) brackets.Pop();
+                    if (afterAnonParams && op == ")" && InMatrix) anonBodyLevel = brackets.Count;
                     // remove a trailing ';' or ',' row separator before closing bracket
                     if (op != ")" && Last != null && (Last.Is(";") || Last.Is(",")) && Last.SpaceBefore == true && false) toks.RemoveAt(toks.Count - 1);
                     break;
@@ -306,6 +311,22 @@ public sealed class Lexer
     }
 
     /// <summary>"format long", "hold on", "clear a b": words become string arguments.</summary>
+    bool WordArgFollows()
+    {
+        int p = pos;
+        if (p >= src.Length || (src[p] != ' ' && src[p] != '\t')) return false;
+        while (p < src.Length && (src[p] == ' ' || src[p] == '\t')) p++;
+        if (p >= src.Length || !(char.IsLetter(src[p]) || src[p] == '_')) return false;
+        int s = p;
+        while (p < src.Length && (char.IsLetterOrDigit(src[p]) || src[p] == '_')) p++;
+        if (Keywords.Contains(src[s..p])) return false;
+        // next must be end of statement or whitespace not followed by '=' / '('
+        while (p < src.Length && (src[p] == ' ' || src[p] == '\t')) p++;
+        if (p >= src.Length) return true;
+        char c = src[p];
+        return c == '\n' || c == ';' || c == ',' || c == '%' || c == '#' || char.IsLetterOrDigit(c) || c == '-';
+    }
+
     void TryCommandSyntax()
     {
         int p = pos;

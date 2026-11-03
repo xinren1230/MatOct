@@ -394,8 +394,39 @@ public static partial class BuiltinLibrary
         }
 
     /// <summary>Help text for a function: leading comment block of its .m source, or a built-in note.</summary>
+    /// <summary>Raw help comment block of an m-file (Octave get_help_text), or null if not found.</summary>
+    public static string? RawHelp(Interpreter it, string name)
+    {
+        string? src = null;
+        var f = it.FindFile(name);
+        if (f != null && File.Exists(f)) src = File.ReadAllText(f);
+        src ??= CoreMLib.Get(name);
+        if (src == null) return null;
+        var sb = new System.Text.StringBuilder();
+        foreach (var raw in src.Replace("\r", "").Split('\n'))
+        {
+            var t = raw.Trim();
+            if (t.StartsWith("%") || t.StartsWith("#"))
+            {
+                var c = t.TrimStart('%', '#');
+                if (sb.Length == 0 && c.Trim().Length == 0) continue;
+                sb.Append(c.StartsWith(" ") ? c[1..] : c).Append('\n');
+            }
+            else if (sb.Length > 0)
+            {
+                if (sb.ToString().Contains("Copyright")) { sb.Clear(); continue; }
+                break;
+            }
+        }
+        if (sb.ToString().Contains("Copyright")) sb.Clear();
+        return sb.ToString();
+    }
+
     public static string HelpText(Interpreter it, string name)
     {
+        if (name.Length > 0 && name.All(ch => !char.IsLetterOrDigit(ch) && ch != '_'))
+            return "Operators:\n\n  !   ~   !=  ~=  \"   #   %   &   &&  '   (   )   *   **  +   ++  ,   -   --\n"
+                 + "  .'  .*  .^  ./  .\\  /   :   ;   <   <=  ==  =   >   >=  [   ]   \\   ^   |   ||\n";
         string? src = null;
         var f = it.FindFile(name);
         if (f != null && File.Exists(f)) src = File.ReadAllText(f);
@@ -437,6 +468,29 @@ public static partial class BuiltinLibrary
             it.Out.Write(txt); return Array.Empty<Value>();
         };
         Reg("help", h); Reg("doc", h);
+        Reg("unicode_idx", (it, a, n) =>
+        {
+            if (a.Length != 1 || a[0] is not MatrixValue m || !m.IsChar) throw new OctaveException("unicode_idx: STR must be a string or cellstring");
+            var r = new double[m.Numel]; int idx = 0;
+            for (int i = 0; i < m.Numel; i++)
+            {
+                var ch = (char)m.Re[i];
+                if (!(char.IsLowSurrogate(ch) && i > 0 && char.IsHighSurrogate((char)m.Re[i - 1]))) idx++;
+                r[i] = idx;
+            }
+            return new Value[] { new MatrixValue(m.Rows, m.Cols, r) };
+        });
+        Reg("get_help_text", (it, a, n) =>
+        {
+            var nm = S(a[0], "get_help_text");
+            var txt = RawHelp(it, nm);
+            string fmt;
+            if (txt == null) { txt = ""; fmt = it.Builtins.ContainsKey(nm) ? "Not documented" : "Not found"; }
+            else if (txt.Trim().Length == 0) fmt = "Not documented";
+            else if (txt.Contains("-*- texinfo -*-")) fmt = "texinfo";
+            else fmt = "plain text";
+            return new Value[] { Str(txt), Str(fmt) };
+        });
         Reg0("lookfor", (it, a) =>
         {
             var w = S(a[0], "lookfor");

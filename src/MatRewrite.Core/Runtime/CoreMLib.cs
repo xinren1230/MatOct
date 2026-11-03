@@ -32,11 +32,26 @@ public static class CoreMLib
             if (!r.StartsWith("OctaveLib.") && octave.Contains(name) && OctaveFirst.Contains(name)) continue;
             using var s = asm.GetManifestResourceStream(r)!;
             d[name] = new StreamReader(s).ReadToEnd();
-            if (r.StartsWith("OctaveLib.")) octave.Add(name); else octave.Remove(name);
+            if (r.StartsWith("OctaveLib.")) { octave.Add(name); rel[name] = stem["OctaveLib.".Length..].Replace('\\', '/'); } else octave.Remove(name);
         }
         return d;
     });
     static readonly HashSet<string> octave = new();
+    static readonly Dictionary<string, string> rel = new();
+    /// <summary>Writes the bundled Octave m-file to a cache folder (mirroring Octave's scripts layout) and returns its path.</summary>
+    public static string? Materialize(string name)
+    {
+        _ = all.Value;
+        if (!octave.Contains(name) || !rel.TryGetValue(name, out var r) || !all.Value.TryGetValue(name, out var src)) return null;
+        try
+        {
+            var p = Path.Combine(Path.GetTempPath(), "matoct-octave-lib", r.Replace('/', Path.DirectorySeparatorChar) + ".m");
+            if (!File.Exists(p) || new FileInfo(p).Length != System.Text.Encoding.UTF8.GetByteCount(src))
+            { Directory.CreateDirectory(Path.GetDirectoryName(p)!); File.WriteAllText(p, src); }
+            return p;
+        }
+        catch { return null; }
+    }
     static readonly HashSet<string> graphics = new();
     /// <summary>True for Octave library m-files from plot/, gui/ or image/ (MatOct renders these natively).</summary>
     public static bool IsOctaveGraphics(string name) { _ = all.Value; return graphics.Contains(name) || NativeFirst.Contains(name); }

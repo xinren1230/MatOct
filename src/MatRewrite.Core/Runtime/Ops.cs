@@ -344,7 +344,17 @@ public static class Ops
         if (!b.IsScalar) throw new OctaveException("operator ^: exponent must be a scalar for matrix power");
         if (a.R != a.C) throw new OctaveException("for x^y, only square matrix arguments are permitted and one argument must be scalar.  Use .^ for elementwise power.");
         double p = b.Re[0];
-        if (b.IsComplex || !IsInt(p)) throw new OctaveException("matrix power with non-integer exponent is not implemented yet");
+        if (b.IsComplex || !IsInt(p))
+        {
+            Complex cp = b.IsComplex ? new Complex(b.Re[0], b.Im![0]) : new Complex(p, 0);
+            var A = ToMathNetC(a); var evd = A.Evd();
+            var V = evd.EigenVectors; var dv = evd.EigenValues;
+            var D = Matrix<Complex>.Build.DenseDiagonal(a.R, a.R, k => Complex.Pow(dv[k], cp));
+            var R = FromMathNet(V * D * V.Inverse());
+            bool realOk = !a.IsComplex && !b.IsComplex && dv.All(z => z.Imaginary == 0 && z.Real >= 0);
+            if (realOk && R.Im != null) R = new MatrixValue(R.R, R.C, (double[])R.Re.Clone(), null, NumKind.Double);
+            return R;
+        }
         int n = (int)Math.Abs(p);
         var result = Identity(a.R);
         var bse = a;

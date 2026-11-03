@@ -376,6 +376,7 @@ public sealed partial class Interpreter
             if (k >= results.Count)
             {
                 if (k == 0) throw new OctaveException("value on right hand side of assignment is undefined");
+                if (a.Targets.Count != targets.Count) throw new OctaveException("some elements undefined in return list");
                 throw new OctaveException($"element number {k + 1} undefined in return list");
             }
             var name = AssignTo(targets[k], results[k]);
@@ -496,13 +497,24 @@ public sealed partial class Interpreter
         return false;
     }
 
+    static readonly System.Runtime.CompilerServices.ConditionalWeakTable<MatrixValue, object> colonArgs = new();
+    static MatrixValue ColonArg() { var v = MatrixValue.Str(":"); colonArgs.AddOrUpdate(v, true); return v; }
     [ThreadStatic] static double lastRangeStop;
+    [ThreadStatic] static NumKind lastRangeKind;
     public (double start, double step, long n) RangeParams(RangeExpr re)
     {
-        double a = ScalarOf(Eval(re.Start), "colon");
-        double st = re.Step != null ? ScalarOf(Eval(re.Step), "colon") : 1;
-        double b = ScalarOf(Eval(re.Stop), "colon");
+        var va = Eval(re.Start); var vst = re.Step != null ? Eval(re.Step) : null; var vb = Eval(re.Stop);
+        double a = ScalarOf(va, "colon");
+        double st = vst != null ? ScalarOf(vst, "colon") : 1;
+        double b = ScalarOf(vb, "colon");
         lastRangeStop = b;
+        lastRangeKind = NumKind.Double;
+        foreach (var vv in new[] { va, vst, vb })
+            if (vv is MatrixValue mk)
+            {
+                if (NumTypes.IsInt(mk.Kind)) { lastRangeKind = mk.Kind; break; }
+                if (mk.Kind == NumKind.Single) lastRangeKind = NumKind.Single;
+            }
         return (a, st, RangeCount(a, st, b));
     }
 
@@ -857,7 +869,7 @@ public sealed partial class Interpreter
                 return new List<Value> { Eval(e) };
             case ColonExpr:
                 if (endStack.Count > 0) return new List<Value> { MagicColon.Instance };
-                return new List<Value> { MatrixValue.Str(":") };
+                return new List<Value> { ColonArg() };
             case EndExpr:
             {
                 if (endStack.Count == 0) throw new OctaveException("'end': nonconformant arguments");
@@ -883,6 +895,8 @@ public sealed partial class Interpreter
                 if (re.Start is StringExpr or IdentExpr && re.Stop is StringExpr or IdentExpr
                     && Eval(re.Start) is MatrixValue { IsChar: true } && Eval(re.Stop) is MatrixValue { IsChar: true })
                     return new List<Value> { new MatrixValue(1, (int)n, m.Re, null, NumKind.Char) };
+                if (lastRangeKind == NumKind.Single) { for (int k = 0; k < n; k++) m.Re[k] = (float)m.Re[k]; m.Kind = NumKind.Single; }
+                else if (NumTypes.IsInt(lastRangeKind)) { for (int k = 0; k < n; k++) m.Re[k] = Math.Round(m.Re[k], MidpointRounding.AwayFromZero); m.Kind = lastRangeKind; }
                 return new List<Value> { m };
             }
             case MatrixExpr me: return new List<Value> { BuildMatrix(me.Rows, false) };
@@ -960,7 +974,7 @@ public sealed partial class Interpreter
     public List<Value> EvalArg(Expr ex)
     {
         if (ex is IndexExpr { Brace: true } || ex is FieldExpr) return EvalMulti(ex, 1);
-        if (ex is ColonExpr && endStack.Count == 0) return new List<Value> { MatrixValue.Str(":") };
+        if (ex is ColonExpr && endStack.Count == 0) return new List<Value> { ColonArg() };
         return new List<Value> { Eval(ex) };
     }
 
@@ -1389,6 +1403,11 @@ public sealed partial class Interpreter
             scope.Vars["varargin"] = CellValue.RowOf(args.Skip(fixedIn));
         if (preset != null) foreach (var kv in preset) scope.Vars[kv.Key] = kv.Value;
         bool needDefaults = f.Defaults != null && args.Length < fixedIn;
+        List<int>? colonDefaults = null;
+        if (f.Defaults != null)
+            for (int k = 0; k < Math.Min(fixedIn, args.Length) && k < f.Defaults.Count; k++)
+                if (f.Defaults[k] != null && (args[k] is MagicColon || args[k] is MatrixValue { IsChar: true, Numel: 1 } cm && cm.Re[0] == ':' && colonArgs.TryGetValue(cm, out _)))
+                    (colonDefaults ??= new()).Add(k);
 
         var save = Current; var saveEnd = endStack.Count == 0 ? null : endStack.ToList();
         Current = scope; depth++; CallStack.Add(scope); PushFile(f.File);
@@ -1396,6 +1415,8 @@ public sealed partial class Interpreter
         var saveLR = LocalRestores; LocalRestores = null;
         try
         {
+            if (colonDefaults != null)
+                foreach (var k in colonDefaults) if (f.Params[k] != "~") scope.Vars[f.Params[k]] = Eval(f.Defaults![k]!);
             if (needDefaults)
                 for (int k = args.Length; k < fixedIn && k < f.Defaults!.Count; k++)
                     if (f.Defaults[k] is { } dx && f.Params[k] != "~") scope.Vars[f.Params[k]] = Eval(dx);

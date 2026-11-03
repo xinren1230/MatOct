@@ -101,6 +101,7 @@ public static partial class BuiltinLibrary
             }
             var res = Fc(it, "__go_axes__", Num(hpar.Handle));
             var axo = g.Lookup(D(res, "axes"))!;
+            if (axo is Axes cax && hpar is GenericObject) cax.Container = hpar;
             if (a.Length > 0) ApplyPairs(it, axo, a, "axes");
             if (axo is Axes nax && !(axo.Props.TryGetValue("handlevisibility", out var hv) && IsString(hv) && S(hv, "axes") == "off"))
             { nax.Figure.CurrentAxes = nax; g.Current = nax.Figure; }

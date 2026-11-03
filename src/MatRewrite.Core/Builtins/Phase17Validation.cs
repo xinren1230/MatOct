@@ -167,13 +167,15 @@ public static partial class BuiltinLibrary
                 if (!(IsString(v) || v is CellValue c && c.Data.All(IsString)) && !(v is MatrixValue m0 && m0.Numel == 0))
                     throw new OctaveException("fullfile: input must be strings or cell strings");
             var cells = a.OfType<CellValue>().Where(c => c.Numel != 1).ToList();
-            if (cells.Count > 1 && cells.Any(c => c.Numel != cells[0].Numel)) throw new OctaveException("fullfile: cell arrays must be the same size");
+            if (cells.Count > 1 && cells.Any(c => c.Numel != cells[0].Numel)) throw new OctaveException("fullfile: cell string input must be scalar or of the same size");
         });
         if (cur!.Builtins.TryGetValue("fullfile", out var ff0))
             cur!.Builtins["fullfile"] = (it, a, n) =>
             {
                 var cs = a.OfType<CellValue>().ToList();
                 if (cs.Count == 0) return ff0(it, a, n);
+                var nb = cs.Where(c => c.Numel != 1).ToList();
+                if (nb.Count > 1 && nb.Any(c => c.Numel != nb[0].Numel)) throw new OctaveException("fullfile: cell string input must be scalar or of the same size");
                 var big = cs.FirstOrDefault(c => c.Numel != 1) ?? cs[0];
                 var res = new Value[big.Numel];
                 for (int i = 0; i < res.Length; i++)

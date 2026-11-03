@@ -109,6 +109,49 @@ public static partial class BuiltinLibrary
     {
         Reg1("__blas_version__", a => Str("OpenBLAS-compatible managed BLAS (MatOct)"));
         Reg1("__lapack_version__", a => Str("LAPACK 3.12 (MatOct managed)"));
+        Reg1("bitunpack", a =>
+        {
+            if (a.Length != 1 || a[0] is not MatrixValue m || m.IsComplex) throw new OctaveException("bitunpack: invalid input class");
+            var bytes = new List<byte>();
+            for (int i = 0; i < m.Numel; i++)
+            {
+                double v = m.Re[i];
+                bytes.AddRange(m.Kind switch
+                {
+                    NumKind.Double => BitConverter.GetBytes(v),
+                    NumKind.Single => BitConverter.GetBytes((float)v),
+                    NumKind.Logical or NumKind.Int8 or NumKind.UInt8 => new[] { unchecked((byte)(long)v) },
+                    NumKind.Char => new[] { (byte)(int)v },
+                    NumKind.Int16 => BitConverter.GetBytes((short)v), NumKind.UInt16 => BitConverter.GetBytes((ushort)v),
+                    NumKind.Int32 => BitConverter.GetBytes((int)v), NumKind.UInt32 => BitConverter.GetBytes((uint)v),
+                    NumKind.Int64 => BitConverter.GetBytes((long)v), _ => BitConverter.GetBytes((ulong)v),
+                });
+            }
+            var r = new double[bytes.Count * 8];
+            for (int i = 0; i < bytes.Count; i++) for (int b = 0; b < 8; b++) r[i * 8 + b] = (bytes[i] >> b) & 1;
+            return new MatrixValue(r.Length, 1, r, null, NumKind.Logical);
+        });
+        Reg1("bitpack", a =>
+        {
+            if (a.Length != 2 || a[0] is not MatrixValue m || m.Kind != NumKind.Logical) throw new OctaveException("bitpack: X must be a logical array");
+            var cls = S(a[1], "bitpack");
+            int sz = cls switch { "double" or "int64" or "uint64" => 8, "single" or "int32" or "uint32" => 4, "int16" or "uint16" => 2, "char" or "logical" or "int8" or "uint8" => 1, _ => throw new OctaveException($"bitpack: invalid data type to pack") };
+            if (m.Numel % (sz * 8) != 0) throw new OctaveException("bitpack: incorrect number of bits to make up output value");
+            int n = m.Numel / (sz * 8); var bytes = new byte[n * sz];
+            for (int i = 0; i < bytes.Length; i++) for (int b = 0; b < 8; b++) if (m.Re[i * 8 + b] != 0) bytes[i] |= (byte)(1 << b);
+            var o = new double[n];
+            for (int i = 0; i < n; i++)
+                o[i] = cls switch
+                {
+                    "double" => BitConverter.ToDouble(bytes, i * 8), "single" => BitConverter.ToSingle(bytes, i * 4),
+                    "int64" => BitConverter.ToInt64(bytes, i * 8), "uint64" => BitConverter.ToUInt64(bytes, i * 8),
+                    "int32" => BitConverter.ToInt32(bytes, i * 4), "uint32" => BitConverter.ToUInt32(bytes, i * 4),
+                    "int16" => BitConverter.ToInt16(bytes, i * 2), "uint16" => BitConverter.ToUInt16(bytes, i * 2),
+                    "int8" => (sbyte)bytes[i], _ => bytes[i],
+                };
+            var k = NumTypes.FromName(cls) ?? NumKind.Double;
+            return new MatrixValue(n, 1, o, null, k);
+        });
         Reg("airy", (it, a, n) =>
         {
             if (a.Length < 1 || a.Length > 3) throw new OctaveException("Invalid call to airy");

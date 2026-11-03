@@ -123,6 +123,15 @@ public static class Indexing
             }
             idx[k] = Convert(args[k], ext, "index", true).I;
         }
+        if (aEmpty && rhs.Numel != 1 && args.Any(x => x is MagicColon) && NDArray.Prod(idx.Select(x => x.Length).ToArray()) != rhs.Numel)
+        {
+            rk = 0;
+            for (int k = 0; k < n; k++)
+            {
+                if (args[k] is MagicColon) { int ext = rk < rd.Count ? rd[rk++] : 1; idx[k] = Convert(args[k], ext, "index", true).I; }
+                else if (idx[k].Length != 1) rk++;
+            }
+        }
         _ = rd; _ = rk;
         var cnt = idx.Select(x => x.Length).ToArray();
         int count = NDArray.Prod(cnt);

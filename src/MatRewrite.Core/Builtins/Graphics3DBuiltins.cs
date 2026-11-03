@@ -179,7 +179,7 @@ namespace MatRewrite.Core.Builtins
                 var ax = it.Graphics.Gca();
                 var lo = new LightObject { Az = -37.5 + 90 + 45, El = 45 };
                 // default position [1 0 1]
-                lo.Az = 90; lo.El = 45;
+                lo.Az = 90; lo.El = 45; lo.RawPos = new double[] { 1, 0, 1 };
                 it.Graphics.Add(ax, lo);
                 if (a.Length > 0) SetProps(it, lo, a, "light");
                 it.Graphics.Touch(ax.Figure);
@@ -202,7 +202,7 @@ namespace MatRewrite.Core.Builtins
                 if (k < a.Length && IsString(a[k]) && S(a[k], "camlight").ToLowerInvariant() is var p0 && p0 is not ("headlight" or "right" or "left" or "infinite" or "local"))
                     throw new OctaveException($"camlight: invalid light position '{S(a[k], "camlight")}'");
                 lo ??= it.Graphics.Add(ax, new LightObject());
-                lo.CameraRelative = true; lo.Az = 30; lo.El = 30; // 'right' is the default
+                lo.CameraRelative = true; lo.RawPos = null; lo.Az = 30; lo.El = 30; // 'right' is the default
                 var nums = new List<double>();
                 for (; k < a.Length; k++)
                 {

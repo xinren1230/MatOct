@@ -2,6 +2,24 @@
 
 All notable changes to MatOct. Detailed notes (Chinese) live in `docs/phaseN.md`.
 
+## [0.24.0] - 2026-11-03
+
+MatOct is a MATLAB-style IDE for GNU Octave, written in C#.
+
+### Changed
+- Octave core test suite: 10297 / 10397 blocks pass (99.0 %); with the Octave script library on the path: 10179 / 10400 (97.9 %).
+- Command syntax (`orient portrait`, `edit home none`, …) now works for any function name, not just a fixed list.
+- Ranges keep their integer / single class; `sparse ./ X` stays sparse (fixes sparse `var`, `mean`, `normalize`).
+- Built-in `__makeinfo__` (Texinfo to plain text without an external makeinfo), `get_help_text`, `unicode_idx`, `EDITOR`, `__get_position__`.
+
+### Fixed
+- Anonymous functions inside `{}` / `[]` no longer split on spaces (`{@(x) length (x) > 1, @min}`).
+- `lasterr(msg)` sets the last error (fixes `inputParser`); a magic colon `:` passed to a parameter with a default value now gets the default.
+- `rank(A, tol)`, `kron` with single inputs, `fullfile` cell size check, `islower`/`isupper`/… on cells, complex `sort` tie-break by phase.
+- `A^p` with a non-integer or complex exponent via eigendecomposition; `cat` of empties along dim ≥ 3; empty-array colon assignment.
+- Axes created inside a `uipanel` report the panel as parent; `set(h, prop, "factory")`; `help(".")` lists operators; `which(..., "-all")`.
+- `glob`, `file_in_loadpath`, `bitpack`/`bitunpack`, `cellstr`, `sort` of cells, `feval`/`nthargout` messages, light positions.
+
 ## [0.23.0] - 2026-11-03
 
 MatOct is a MATLAB-style IDE for GNU Octave, written in C#.

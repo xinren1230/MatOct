@@ -121,6 +121,7 @@ public static partial class BuiltinLibrary
             foreach (var name in names)
             {
                 var hits = WhichAll(it, name);
+                if (all && hits.Count == 0) it.Warning("which: '-all' not yet implemented - only the first result is returned");
                 if (n > 0) { results.Add(all ? CellCol(hits.Select(h => h.file)) : Str(hits.Count > 0 ? hits[0].file : "")); continue; }
                 if (hits.Count == 0) { it.Out.WriteLine($"'{name}' not found."); continue; }
                 foreach (var (file, desc) in all ? hits : hits.Take(1))
@@ -177,14 +178,17 @@ public static partial class BuiltinLibrary
             }
         }
         bool builtinFirst = it.PreferBuiltins && it.Builtins.ContainsKey(name) && !Interpreter.MFileFirst.Contains(name);
+        // An m-file of the same name on the path documents the function (as in Octave), so it is reported first.
+        if (builtinFirst && new[] { Directory.GetCurrentDirectory() }.Concat(it.SearchPath).Any(dd => File.Exists(Path.Combine(dd, name + ".m"))) || CoreMLib.IsOctaveLib(name)) builtinFirst = false;
         if (builtinFirst) res.Add(("built-in", $"built-in ({name})"));
         foreach (var dir in new[] { Directory.GetCurrentDirectory() }.Concat(it.SearchPath))
         {
             foreach (var p in new[] { Path.Combine(dir, name + ".m"), Path.Combine(dir, "@" + name, name + ".m") })
                 if (File.Exists(p)) res.Add((p, res.Count > 0 ? p + "  % Shadowed" : p));
         }
+        if (res.Count == 0 && CoreMLib.IsOctaveLib(name) && CoreMLib.Materialize(name) is { } mp) res.Add((mp, mp));
         if (it.Builtins.ContainsKey(name) && !builtinFirst) res.Add(("built-in", $"built-in ({name})" + (res.Count > 0 ? "  % Shadowed" : "")));
-        if (CoreMLib.Get(name) != null) res.Add(("<core>/" + name + ".m", $"<core>/{name}.m  (MatRewrite CoreLib)" + (res.Count > 0 ? "  % Shadowed" : "")));
+        if (CoreMLib.Get(name) != null && !(res.Count > 0 && CoreMLib.IsOctaveLib(name))) res.Add(("<core>/" + name + ".m", $"<core>/{name}.m  (MatRewrite CoreLib)" + (res.Count > 0 ? "  % Shadowed" : "")));
         return res;
     }
 }

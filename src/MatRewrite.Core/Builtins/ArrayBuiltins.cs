@@ -287,7 +287,7 @@ public static partial class BuiltinLibrary
             bool desc = a.Skip(1).Any(v => IsString(v) && S(v, "sort").Equals("descend", StringComparison.OrdinalIgnoreCase));
             if (src is CellValue cv)
             {
-                var strs = cv.Data.Select((v, k) => (s: S(v, "sort"), k)).ToList();
+                var strs = cv.Data.Select((v, k) => (s: v is MatrixValue nm && !nm.IsChar && !nm.IsComplex ? new string(nm.Re.Select(x => (char)x).ToArray()) : S(v, "sort"), k)).ToList();
                 var ord = desc ? strs.OrderByDescending(p => p.s, StringComparer.Ordinal).ToList() : strs.OrderBy(p => p.s, StringComparer.Ordinal).ToList();
                 var lin = ord.Select(p => p.k).ToArray();
                 return Out(cv.Gather(lin, cv.R, cv.C), new MatrixValue(cv.R, cv.C, lin.Select(k => k + 1.0).ToArray()));
@@ -312,6 +312,7 @@ public static partial class BuiltinLibrary
                     int c;
                     if (double.IsNaN(kx) || double.IsNaN(ky)) c = double.IsNaN(kx) && double.IsNaN(ky) ? 0 : double.IsNaN(kx) ? 1 : -1;
                     else c = kx.CompareTo(ky);
+                    if (c == 0 && m.IsComplex && !double.IsNaN(kx)) c = m.At(pos[x]).Phase.CompareTo(m.At(pos[y]).Phase);
                     if (desc) c = -c;
                     return c != 0 ? c : x.CompareTo(y);
                 };
@@ -586,6 +587,12 @@ public static partial class BuiltinLibrary
 
     static Value CharPred(Value v, Func<char, bool> f)
     {
+        if (v is CellValue cv)
+        {
+            var o = new Value[cv.Numel];
+            for (int k = 0; k < o.Length; k++) o[k] = CharPred(cv.Data[k], f);
+            return new CellValue(cv.Rows, cv.Cols, o);
+        }
         var m = M(v, "ischar");
         var r = new MatrixValue(m.R, m.C, NumKind.Logical) { ND = (int[]?)m.ND?.Clone() };
         if (m.IsChar) for (int k = 0; k < m.Numel; k++) r.Re[k] = f((char)(int)m.Re[k]) ? 1 : 0;
