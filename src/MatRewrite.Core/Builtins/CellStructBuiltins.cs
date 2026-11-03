@@ -75,7 +75,15 @@ public static partial class BuiltinLibrary
         Reg1("struct2cell", a =>
         {
             var s = (StructValue)a[0];
-            if (s.Numel != 1) throw new OctaveException("struct2cell: only scalar structs are supported");
+            if (s.Numel != 1)
+            {
+                int nf = s.Fields.Count, ne = s.Numel; var sd = s.Dims;
+                var c = new CellValue(nf, ne);
+                for (int e = 0; e < ne; e++) for (int f = 0; f < nf; f++) c.Data[f + e * nf] = s.Elems[e].TryGetValue(s.Fields[f], out var fv) ? fv : new MatrixValue(0, 0);
+                var nd = new[] { nf }.Concat(sd).ToArray(); int L = nd.Length; while (L > 2 && nd[L - 1] == 1) L--;
+                c.SetDims(nd.Take(L).ToArray());
+                return c;
+            }
             return CellValue.ColOf(s.Fields.Select(f => s.Elems[0][f]));
         });
         Reg1("cell2struct", a =>

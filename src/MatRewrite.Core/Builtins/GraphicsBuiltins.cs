@@ -287,6 +287,7 @@ namespace MatRewrite.Core.Builtins
                 for (int k = k0; k < a.Length; k++)
                 {
                     if (a[k] is CellValue c) { labels.AddRange(c.Data.Select(x => S(x, "legend"))); continue; }
+                    if (!IsString(a[k]) && !(a[k] is MatrixValue mc && mc.IsChar)) throw new OctaveException("Invalid call to legend");
                     var s = S(a[k], "legend");
                     if (s is "show" or "on") { ax.LegendVisible = true; labels = null!; break; }
                     if (s is "off" or "hide") { ax.LegendVisible = false; it.Graphics.Touch(ax.Figure); return Array.Empty<Value>(); }
@@ -352,10 +353,16 @@ namespace MatRewrite.Core.Builtins
                     var (xl, yl) = Limits(ax);
                     return Out(MatrixValue.Row(new[] { xl[0], xl[1], yl[0], yl[1] }));
                 }
+                if (a.Length > 1 && a[0] is MatrixValue h0 && !h0.IsChar && h0.Numel == 1 && it.Graphics.Lookup(h0.Re[0]) != null)
+                {
+                    it.CallFunction("axes", new Value[] { h0 }, 0);
+                    return it.CallFunction("axis", a.Skip(1).ToArray(), n);
+                }
                 foreach (var v in a)
                 {
                     if (v is MatrixValue m && !m.IsChar)
                     {
+                        if (m.Numel == 2) { ax.XLim = new[] { m.Re[0], m.Re[1] }; continue; }
                         if (m.Numel < 4) throw new OctaveException("axis: LIMITS vector must have 4, 6, or 8 elements");
                         ax.XLim = new[] { m.Re[0], m.Re[1] }; ax.YLim = new[] { m.Re[2], m.Re[3] };
                         continue;
@@ -652,7 +659,8 @@ namespace MatRewrite.Core.Builtins
                 if (k < a.Length && !IsString(a[k])) { second = M(a[k], fn); k++; }
                 string? spec = null;
                 if (k < a.Length && IsString(a[k]) && !LineProps.Contains(S(a[k], fn))) { spec = S(a[k], fn); k++; }
-                LineStyle? st = null; Marker? mk = null; Rgb? col = null;
+                LineStyle? st = null; Marker? mk = null; Rgb? col = null; string? keyLbl = null;
+                if (spec != null) { var mm = System.Text.RegularExpressions.Regex.Match(spec, ";([^;]*);?$"); if (mm.Success) { keyLbl = mm.Groups[1].Value; spec = spec[..mm.Index]; } }
                 if (spec != null && !ParseFmt(spec, out st, out mk, out col)) throw new OctaveException($"{fn}: invalid line specification '{spec}'");
                 foreach (var (x, y) in Pairs(first, second, fn))
                 {
@@ -662,6 +670,7 @@ namespace MatRewrite.Core.Builtins
                     it.Graphics.Add(ax, s);
                     made.Add(s);
                     handles.Add(s.Handle);
+                    if (keyLbl != null) it.CallFunction("set", new Value[] { Num(s.Handle), Str("displayname"), Str(keyLbl) }, 0);
                 }
             }
             if (k < a.Length) foreach (var s in made) SetProps(it, s, a.Skip(k).ToArray(), fn);

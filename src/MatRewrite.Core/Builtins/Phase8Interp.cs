@@ -44,7 +44,7 @@ public static partial class BuiltinLibrary
                 x = IsVec(y) ? RangeV(1, NumelOf(y)) : RangeV(1, SizeOf(y)[0]);
             }
             if (extrap == null && !extrapStr)
-                extrap = y is MatrixValue ym0 && ym0.Im != null ? new MatrixValue(1, 1, new[] { double.NaN }, new[] { double.NaN }) : Dn(double.NaN);
+                extrap = y is MatrixValue ym0 && ym0.Im != null ? new MatrixValue(1, 1, new[] { double.NaN }, new[] { double.NaN }) : Dn(BitConverter.Int64BitsToDouble(0x7FF00000000007A2));
             x = Ix(it, x, Colon);
             int nx = SizeOf(x)[0];
             var szx = SizeOf(xi ?? Dn(0));
@@ -398,7 +398,7 @@ public static partial class BuiltinLibrary
             }
             Value Finish2(double[] zi, int[] shape, double[] xa, double[] ya)
             {
-                double ev = extrap != null ? D(extrap, "interp2") : double.NaN;
+                double ev = extrap != null ? D(extrap, "interp2") : BitConverter.Int64BitsToDouble(0x7FF00000000007A2);
                 double x1 = xs[0], xe = xs[^1], y1 = ys[0], ye = ys[^1];
                 double evi = extrap is MatrixValue exm && exm.Im != null ? exm.Im[0] : 0;
                 double[]? im = evi != 0 ? new double[zi.Length] : null;

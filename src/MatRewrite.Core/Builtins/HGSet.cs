@@ -35,6 +35,15 @@ namespace MatRewrite.Core.Builtins
             if (o is GenericObject && BaselineSet(it, o, p, v, fn)) return true;
             switch (o, p)
             {
+                case (ContourSeries cs, "levellist"):
+                    cs.Levels = M(v, fn).Re.ToArray(); o.Props["levellistmode"] = Str("manual"); o.Props["levellist"] = v; return true;
+                case (ContourSeries cs2, "levelstep"):
+                    {
+                        double st = D(v, fn), zmin = double.MaxValue, zmax = double.MinValue;
+                        foreach (var z in cs2.Z) if (!double.IsNaN(z)) { zmin = Math.Min(zmin, z); zmax = Math.Max(zmax, z); }
+                        if (st > 0 && zmax >= zmin) { var L = new List<double>(); for (double q = Math.Ceiling(zmin / st) * st; q <= zmax + 1e-12; q += st) L.Add(q); cs2.Levels = L.ToArray(); o.Props["levellist"] = MatrixValue.Row(cs2.Levels); }
+                    }
+                    o.Props["levelstep"] = v; o.Props["levelstepmode"] = Str("manual"); if (!o.Props.ContainsKey("levellistmode")) o.Props["levellistmode"] = Str("auto"); return true;
                 case (RootObject, "currentfigure"):
                     if (v is MatrixValue cm && cm.IsEmpty) { g.Current = null; return true; }
                     g.Current = g.Lookup(D(v, fn)) as Figure ?? throw new OctaveException($"{fn}: currentfigure must be a figure handle"); return true;

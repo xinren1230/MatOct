@@ -149,7 +149,7 @@ public static partial class BuiltinLibrary
             return r;
         });
         Const("pi", Math.PI); Const("e", Math.E); Const("Inf", double.PositiveInfinity); Const("inf", double.PositiveInfinity);
-        Const("NaN", double.NaN); Const("nan", double.NaN); Const("NA", double.NaN);
+        Const("NaN", double.NaN); Const("nan", double.NaN); Const("NA", BitConverter.Int64BitsToDouble(0x7FF00000000007A2));
         Reg1("eps", a =>
         {
             if (a.Length == 1 && a[0] is MatrixValue m && !m.IsChar) return Ops.Map(m, x => { x = Math.Abs(x); if (x == 0) return double.Epsilon; return Math.BitIncrement(x) - x; });

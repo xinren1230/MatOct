@@ -54,6 +54,12 @@ public static partial class BuiltinLibrary
             NArgs(a, 3, 3, "merge");
             var m = M(a[0], "merge");
             if (m.Numel == 1) return Out(m.Re[0] != 0 ? a[1] : a[2]);
+            if (a[1] is CellValue tc && a[2] is CellValue fc)
+            {
+                var rc = new CellValue(m.R, m.C); if (m.ND != null) rc.SetDims(m.Dims);
+                for (int k = 0; k < m.Numel; k++) { var src = m.Re[k] != 0 ? tc : fc; rc.Data[k] = src.Numel == 1 ? src.Data[0] : src.Data[k]; }
+                return Out(rc);
+            }
             var t = M(a[1], "merge"); var f = M(a[2], "merge");
             var r = new MatrixValue(m.R, m.C, t.Kind) { ND = m.ND };
             for (int k = 0; k < m.Numel; k++)
@@ -353,7 +359,7 @@ public static partial class BuiltinLibrary
                 return Out(m, im);
             });
         }
-        Reg1("isna", a => { var d = a[0].Dims; var r = new MatrixValue(1, NDArray.Prod(d), NumKind.Logical); r.SetDims(d); return r; });
+        Reg1("isna", a => { var d = a[0].Dims; var r = new MatrixValue(1, NDArray.Prod(d), NumKind.Logical); if (a[0] is MatrixValue m && m.Kind is NumKind.Double or NumKind.Single) for (int i = 0; i < r.Re.Length; i++) { double v = m.Re[i]; if (Printf.IsNA(v) || (m.Im != null && Printf.IsNA(m.Im[i]))) r.Re[i] = 1; } r.SetDims(d); return r; });
         // index permutation used by Octave's sortrows.m
         RegI("__sort_rows_idx__", (it, a) =>
         {

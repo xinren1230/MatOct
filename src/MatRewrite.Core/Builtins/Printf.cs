@@ -174,7 +174,8 @@ public static class Printf
 
     static string PadNum(string body, int? width, string flags) => Pad(body, width, flags, true);
 
-    static string? NonFinite(double d) => double.IsNaN(d) ? "NaN" : double.IsInfinity(d) ? "Inf" : null;
+    public static bool IsNA(double d) => (BitConverter.DoubleToInt64Bits(d) & 0x7FFFFFFFFFFFFFFF) == 0x7FF00000000007A2;
+    static string? NonFinite(double d) => double.IsNaN(d) ? (IsNA(d) ? "NA" : "NaN") : double.IsInfinity(d) ? "Inf" : null;
 
     static string Pad(string s, int? width, string flags, bool numeric)
     {
@@ -185,7 +186,7 @@ public static class Printf
     /// <summary>%g formatting (C semantics).</summary>
     public static string FormatG(double d, int prec, bool alt = false)
     {
-        if (double.IsNaN(d)) return "NaN";
+        if (double.IsNaN(d)) return IsNA(d) ? "NA" : "NaN";
         if (double.IsInfinity(d)) return d > 0 ? "Inf" : "-Inf";
         if (prec == 0) prec = 1;
         if (d == 0) return alt ? "0." + new string('0', prec - 1) : "0";
@@ -208,7 +209,7 @@ public static class Printf
     /// <summary>Shortest reasonable representation (like %g with up to 5..17 digits as Octave does for %d of non-integers).</summary>
     public static string ShortG(double d)
     {
-        if (double.IsNaN(d)) return "NaN";
+        if (double.IsNaN(d)) return IsNA(d) ? "NA" : "NaN";
         if (double.IsInfinity(d)) return d > 0 ? "Inf" : "-Inf";
         if (d == Math.Floor(d) && Math.Abs(d) < 1e15) return ((long)d).ToString(Inv);
         return FormatG(d, 6);

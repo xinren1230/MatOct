@@ -49,7 +49,7 @@ namespace MatRewrite.Core.Builtins
                 ("position", R_(0.13, 0.11, 0.775, 0.815)), ("outerposition", R_(0, 0, 1, 1)), ("innerposition", R_(0.13, 0.11, 0.775, 0.815)),
                 ("units", S_("normalized")), ("color", R_(1, 1, 1)), ("xcolor", dark), ("ycolor", dark), ("zcolor", dark),
                 ("fontsize", () => Num(Graphics.FigStyle.Current.FontSize)), ("fontname", () => Str(Graphics.FigStyle.Current.FontName)), ("fontweight", S_("normal")), ("fontangle", S_("normal")), ("fontunits", S_("points")),
-                ("fontsizemode", S_("auto")), ("linewidth", () => Num(Graphics.FigStyle.Current.AxesLineWidth)), ("xtickmode", S_("auto")), ("ytickmode", S_("auto")), ("ztickmode", S_("auto")),
+                ("fontsizemode", S_("auto")), ("linewidth", () => Num(Graphics.FigStyle.Current.AxesLineWidth)), ("xtickmode", S_("auto")), ("xticklabelrotation", N_(0)), ("yticklabelrotation", N_(0)), ("zticklabelrotation", N_(0)), ("ytickmode", S_("auto")), ("ztickmode", S_("auto")),
                 ("xticklabelmode", S_("auto")), ("yticklabelmode", S_("auto")), ("zticklabelmode", S_("auto")),
                 ("xlimmode", S_("auto")), ("ylimmode", S_("auto")), ("zlimmode", S_("auto")), ("climmode", S_("auto")), ("alim", R_(0, 1)), ("alimmode", S_("auto")),
                 ("colororderindex", N_(1)), ("linestyleorder", S_("-")), ("linestyleorderindex", N_(1)),

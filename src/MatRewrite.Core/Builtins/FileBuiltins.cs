@@ -92,6 +92,7 @@ public static partial class BuiltinLibrary
         Reg("fread", (it, a, n) =>
         {
             var f = it.GetFile(a[0], "fread");
+            if (a.Length >= 2 && IsString(a[1])) a = new[] { a[0], Num(double.PositiveInfinity) }.Concat(a.Skip(1)).ToArray();
             var (rows, cols, rowsInf) = SizeSpec(a.Length > 1 ? a[1] : Num(double.PositiveInfinity), "fread");
             var (inK, outK) = Precision(a.Length > 2 ? S(a[2], "fread") : "uint8", true);
             int sz = ByteSize(inK);
@@ -602,6 +603,10 @@ public static partial class BuiltinLibrary
     // ---------------------------------------------------------------- dlmread / dlmwrite
     static Value DlmRead(Value[] a, string fn)
     {
+        double emptyVal = 0;
+        for (int q = 1; q + 1 < a.Length; q++)
+            if (IsString(a[q]) && S(a[q], fn).Equals("emptyvalue", StringComparison.OrdinalIgnoreCase))
+            { emptyVal = D(a[q + 1], fn); a = a.Take(q).Concat(a.Skip(q + 2)).ToArray(); break; }
         NArgs(a, 1, 6, fn);
         var path = S(a[0], fn);
         if (!File.Exists(path)) throw new OctaveException($"{fn}: unable to open file '{path}'");
@@ -629,14 +634,15 @@ public static partial class BuiltinLibrary
             rows.Add(parts.Select(p =>
             {
                 var t = p.Trim();
-                if (t == "") return 0.0;
+                if (t == "") return emptyVal;
                 var mt = NumRx.Match(t, 0);
-                if (!mt.Success) return 0.0;
+                if (!mt.Success) return emptyVal;
                 var s = mt.Value.TrimStart('+');
                 return s.TrimStart('-').ToLowerInvariant() switch
                 {
                     "inf" or "infinity" => s.StartsWith("-") ? double.NegativeInfinity : double.PositiveInfinity,
-                    "nan" or "na" => double.NaN,
+                    "nan" => double.NaN,
+                    "na" => BitConverter.Int64BitsToDouble(0x7FF00000000007A2),
                     _ => double.Parse(s, Inv)
                 };
             }).ToArray());
@@ -649,7 +655,7 @@ public static partial class BuiltinLibrary
             for (int j = 0; j < outC; j++)
             {
                 var row = rows[i + r0];
-                m.Re[i + j * outR] = j + c0 < row.Length ? row[j + c0] : 0;
+                m.Re[i + j * outR] = j + c0 < row.Length ? row[j + c0] : emptyVal;
             }
         return m;
     }

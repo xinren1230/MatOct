@@ -50,6 +50,14 @@ public sealed partial class Interpreter
 
     public int OpenFile(string name, string mode)
     {
+        if (name.StartsWith("<core>/") && name.EndsWith(".m") && CoreMLib.Get(name[7..^2]) is { } coreSrc)
+        {
+            var dir = Path.Combine(Path.GetTempPath(), "matoct-core");
+            Directory.CreateDirectory(dir);
+            var tmp = Path.Combine(dir, name[7..]);
+            try { File.WriteAllText(tmp, coreSrc); } catch (IOException) { }
+            name = tmp;
+        }
         var m = mode.Replace("t", "").Replace("b", "");
         if (m == "") m = "r";
         FileMode fm; FileAccess fa;

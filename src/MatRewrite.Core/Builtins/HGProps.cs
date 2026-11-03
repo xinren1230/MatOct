@@ -133,6 +133,11 @@ namespace MatRewrite.Core.Builtins
                 case (LightObject lo, "visible"): return Str(lo.Visible ? "on" : "off");
                 case (LightObject lo, "color"): return Rgbv(lo.Color);
                 case (ContourSeries cs, "levellist"): return MatrixValue.Row(cs.Levels);
+                case (GenericObject lgo, "string") when lgo.Type == "legend" && lgo.Parent is Axes lgax:
+                    {
+                        var labs = lgax.LegendLabels ?? lgax.Children.OfType<Series>().Where(c => c.DisplayName != "").Select(c => c.DisplayName).ToArray();
+                        return CellValue.RowOf(labs.Select(x => (Value)Str(x)));
+                    }
                 case (PatchSeries ps, "facealpha"): return Num(ps.FaceAlpha);
                 case (PatchSeries ps, "linewidth"): return Num(ps.LineWidth);
                 case (Annotation an, "string"): return Str(an.Text);

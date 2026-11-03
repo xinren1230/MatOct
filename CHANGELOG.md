@@ -2,6 +2,26 @@
 
 All notable changes to MatOct. Detailed notes (Chinese) live in `docs/phaseN.md`.
 
+## [0.20.0] - 2026-11-03
+
+MatOct is a MATLAB-style IDE for GNU Octave, written in C#.
+
+### Changed
+- Octave test suite: core 97.1 % (10054/10354), with-lib 96.3 % (10013/10400).
+- NA is now a distinct value (isna, printf/num2str print "NA"); interp1/interp2 extrapolate to NA by default and dlmread reads NA and supports "emptyvalue".
+- warning("error", ID) turns that warning into an error, and warning(..., "local") restores the state when the function returns.
+
+### Fixed
+- Iterative solvers (pcg, bicg, gmres, tfqmr) report flag 2 for a singular preconditioner.
+- bitand/bitor/bitxor/bitshift keep the integer class; bitcmp on integers.
+- sort, nth_element, cummax/cummin, flip and ipermute keep sparse results (median of sparse input).
+- cat of empty arrays along higher dimensions (iqr of empty N-D input).
+- min/max "omitnan"/"includenan"/"all"; range and bounds; struct2cell on struct arrays; structfun; merge with cell arguments; regexp "matches".
+- fread SIZE with a precision string (fileread, importdata); textread.
+- Axes ticklabelrotation properties; axis(hax, ...); ";label;" plot format strings; legend "string"; contour levellist/levelstep.
+- lasterr second output; switch on numeric arrays; toeplitz validation; meansq keeps single.
+- is_same_file and dir_encoding; fopen can read bundled function files (test, example, type).
+
 ## [0.19.0] - 2026-11-03
 
 MatOct is a MATLAB-style IDE for GNU Octave, written in C#.

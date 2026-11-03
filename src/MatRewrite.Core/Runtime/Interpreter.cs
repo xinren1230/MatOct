@@ -94,7 +94,7 @@ public sealed partial class Interpreter
         Out = output ?? Console.Out;
         Current = Base;
         BuiltinLibrary.RegisterAll(this);
-        Ops.Warn = msg => Warning(msg);
+        Ops.Warn = msg => Warning(msg, msg.Contains("singular") ? "Octave:singular-matrix" : msg.Contains("nearly singular") ? "Octave:nearly-singular-matrix" : "");
         InputReader = DefaultReader;
         ObjectArrayValue.DefaultFactory = ci => NewObject(ci);
     }
@@ -105,10 +105,13 @@ public sealed partial class Interpreter
     public void Warning(string msg, string id)
     {
         if (DisabledWarnings.Count > 0 && (DisabledWarnings.Contains("all") ? !EnabledWarnings.Contains(id ?? "") : (id != null && id != "" && DisabledWarnings.Contains(id)))) return;
+        if (ErrorWarnings.Count > 0 && id != null && (ErrorWarnings.Contains(id) || ErrorWarnings.Contains("all"))) throw new OctaveException(msg, id);
         LastWarning = msg; LastWarningId = id ?? "";
         Out.Flush(); Out.WriteLine("warning: " + msg);
     }
     public readonly HashSet<string> EnabledWarnings = new(StringComparer.Ordinal);
+    public readonly HashSet<string> ErrorWarnings = new(StringComparer.Ordinal);
+    public List<Action>? LocalRestores;
 
     // ------------------------------------------------------------ public API
     /// <summary>Execute code in the base workspace (like typing at the prompt).</summary>
@@ -251,6 +254,7 @@ public sealed partial class Interpreter
                 catch (Exception ex) when (ex is not ControlException && ex is not InterruptException)
                 {
                     var (msg, id) = ErrorInfo(ex);
+                    if (string.IsNullOrEmpty(id) && msg.StartsWith("Invalid call to ")) id = "Octave:invalid-fun-call";
                     LastError = msg; LastErrorId = id ?? "";
                     if (t.CatchVar != null) StoreVar(t.CatchVar, MakeErrorStruct(msg, id, (ex as OctaveException)?.Stack));
                     return ExecBlock(t.CatchBody);
@@ -472,7 +476,9 @@ public sealed partial class Interpreter
             if (s.IsChar || l.IsChar)
                 return s.IsChar && l.IsChar && s.AsString() == l.AsString();
             if (s.Numel == 0 || l.Numel == 0) return false;
-            return l.Numel == 1 ? s.Re[0] == l.Re[0] && (s.Numel == 1) : false;
+            if (l.Numel == 1 && s.Numel == 1) return s.Re[0] == l.Re[0];
+            if (s.Numel == l.Numel && s.R == l.R) { for (int i = 0; i < s.Numel; i++) if (s.Re[i] != l.Re[i]) return false; return true; }
+            return false;
         }
         return false;
     }
@@ -1374,6 +1380,7 @@ public sealed partial class Interpreter
         var save = Current; var saveEnd = endStack.Count == 0 ? null : endStack.ToList();
         Current = scope; depth++; CallStack.Add(scope); PushFile(f.File);
         endStack.Clear();
+        var saveLR = LocalRestores; LocalRestores = null;
         try
         {
             if (needDefaults)
@@ -1387,7 +1394,7 @@ public sealed partial class Interpreter
             if (!ReferenceEquals(oe, ex)) throw oe;
             throw;
         }
-        finally { Current = save; depth--; CallStack.RemoveAt(CallStack.Count - 1); PopFile(); endStack.Clear(); if (saveEnd != null) endStack.AddRange(saveEnd); }
+        finally { if (LocalRestores != null) foreach (var r in LocalRestores) r(); LocalRestores = saveLR; Current = save; depth--; CallStack.RemoveAt(CallStack.Count - 1); PopFile(); endStack.Clear(); if (saveEnd != null) endStack.AddRange(saveEnd); }
 
         var outs = new List<Value>();
         int want = Math.Max(1, nargout);

@@ -15,7 +15,7 @@ public class Phase8Tests
 
     // ---- interpolation
     [Fact] public void Interp1Linear() => Assert.Equal("1.5", Run("printf('%g', interp1([1 2], [1 2], 1.5))"));
-    [Fact] public void Interp1OutsideIsNaN() => Assert.Equal("NaN", Run("printf('%g', interp1([1 2], [1 2], 3))"));
+    [Fact] public void Interp1OutsideIsNaN() => Assert.Equal("1", Run("printf('%g', isnan(interp1([1 2], [1 2], 3)))"));
     [Fact] public void Interp1Extrap() => Assert.Equal("3", Run("printf('%g', interp1([1 2], [1 2], 3, 'linear', 'extrap'))"));
     [Fact] public void Interp1Spline() => Assert.Equal("9", Run("printf('%.6g', interp1(1:4, (1:4).^2, 3, 'spline'))"));
     [Fact] public void Interp1Nearest() => Assert.Equal("20", Run("printf('%g', interp1([1 2 3], [10 20 30], 2.4, 'nearest'))"));

@@ -16,7 +16,7 @@ public static partial class BuiltinLibrary
             for (int k = 0; k < r.Length; k++)
             {
                 double x = Math.Abs(m.Re[k]);
-                if (x == 0) r[k] = 0; else if (double.IsInfinity(x)) r[k] = double.PositiveInfinity; else if (double.IsNaN(x)) r[k] = double.NaN;
+                if (x == 0) r[k] = 0; else if (double.IsInfinity(x)) r[k] = double.PositiveInfinity; else if (double.IsNaN(x)) r[k] = m.Re[k];
                 else { int e = Math.ILogB(x); double f = x / Math.ScaleB(1.0, e); r[k] = f == 1 ? e : e + 1; }
             }
             var res = new MatrixValue(m.R, m.C, r, null) { ND = m.ND?.ToArray() };

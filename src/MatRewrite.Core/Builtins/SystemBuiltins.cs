@@ -87,6 +87,17 @@ public static partial class BuiltinLibrary
                         return Array.Empty<Value>();
                     }
                     Value old = id == "all" ? All() : One(id);
+                    if (a.Length > 2 && IsString(a[2]) && S(a[2], "warning") == "local")
+                    {
+                        bool wasErr = it.ErrorWarnings.Contains(id), wasOff = it.DisabledWarnings.Contains(id), wasEn = it.EnabledWarnings.Contains(id);
+                        (it.LocalRestores ??= new()).Add(() =>
+                        {
+                            if (wasErr) it.ErrorWarnings.Add(id); else it.ErrorWarnings.Remove(id);
+                            if (wasOff) it.DisabledWarnings.Add(id); else it.DisabledWarnings.Remove(id);
+                            if (wasEn) it.EnabledWarnings.Add(id); else it.EnabledWarnings.Remove(id);
+                        });
+                    }
+                    if (s0 == "error") it.ErrorWarnings.Add(id); else it.ErrorWarnings.Remove(id);
                     SetState(s0 == "error" ? "on" : s0, id);
                     return n > 0 ? new[] { old } : Array.Empty<Value>();
                 }
@@ -106,7 +117,7 @@ public static partial class BuiltinLibrary
             var es = a[0] as StructValue ?? throw new OctaveException("rethrow: ERR must be a struct");
             throw new OctaveException(S(es.Get("message"), "rethrow"), es.HasField("identifier") ? S(es.Get("identifier"), "rethrow") : "");
         });
-        Reg("lasterr", (it, a, n) => Out(Str(it.LastError)));
+        Reg("lasterr", (it, a, n) => new Value[] { Str(it.LastError), Str(it.LastErrorId) });
         Reg("print_usage", (it, a, n) => throw new OctaveException($"Invalid call to {it.Current.Func?.Name ?? "function"}", "Octave:invalid-fun-call"));
         Reg("eval", (it, a, n) =>
         {

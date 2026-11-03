@@ -33,8 +33,45 @@ public static partial class BuiltinLibrary
                     var r = bf(it, a, n);
                     if (a.Any(v => v is MatrixValue m && m.Kind == NumKind.Single) && !a.Any(v => v is MatrixValue m && m.IsInteger) && r.Length > 0 && r[0] is MatrixValue rm && rm.Kind == NumKind.Double)
                     { rm = rm.Copy(); rm.Kind = NumKind.Single; r[0] = rm; }
+                    else if (r.Length > 0 && r[0] is MatrixValue rd && rd.Kind == NumKind.Double && (bn == "bitshift" ? a.Take(1) : a).FirstOrDefault(v => v is MatrixValue m && m.IsInteger) is MatrixValue im)
+                    {
+                        string tn = NumTypes.Name(im.Kind);
+                        rd = rd.Copy();
+                        if (tn.StartsWith("uint") && tn != "uint64") { double mod = Math.Pow(2, int.Parse(tn.Substring(4))); for (int i = 0; i < rd.Re.Length; i++) { double v = rd.Re[i] % mod; rd.Re[i] = v < 0 ? v + mod : v; } }
+                        r[0] = Fc(it, tn, rd);
+                    }
                     return r;
                 };
+        Pre("toeplitz", (it, a, n) =>
+        {
+            static bool Vec(Value v) => v.Numel > 0 && v.Dims.Count(d => d != 1) <= 1;
+            if (a.Length > 2) throw new OctaveException("toeplitz: function called with too many inputs", "Octave:invalid-fun-call");
+            if (a.Length == 1 && !Vec(a[0])) throw new OctaveException("toeplitz: C must be a vector");
+            if (a.Length == 2 && (!Vec(a[0]) || !Vec(a[1]))) throw new OctaveException("toeplitz: C and R must be vectors");
+        });
+        if (cur!.Builtins.TryGetValue("meansq", out var msqf))
+            cur!.Builtins["meansq"] = (it, a, n) =>
+            {
+                var r = msqf(it, a, n);
+                if (a.Length > 0 && a[0] is MatrixValue m0 && m0.Kind == NumKind.Single && r.Length > 0 && r[0] is MatrixValue rm && rm.Kind == NumKind.Double) r[0] = Fc(it, "single", rm);
+                return r;
+            };
+        cur!.Builtins["dir_encoding"] = (it, a, n) => a.Length is < 1 or > 2 ? throw new OctaveException("Invalid call to dir_encoding") : new Value[] { MatrixValue.Str("utf-8") };
+        cur!.Builtins["is_same_file"] = (it, a, n) =>
+        {
+            if (a.Length != 2) throw new OctaveException("Invalid call to is_same_file");
+            static string[]? Names(Value v) => v is CellValue c ? c.Data.Select(x => x is MatrixValue m && m.IsChar ? m.AsString() : null).ToArray()! : (v is MatrixValue m2 && (m2.IsChar || m2.Numel == 0)) ? new[] { m2.Numel == 0 ? "" : m2.AsString() } : null;
+            static string Canon(string p) { try { if (p == "" || !(File.Exists(p) || Directory.Exists(p))) return "\0" + p; return Path.GetFullPath(p).TrimEnd('/', '\\'); } catch { return "\0" + p; } }
+            var x = Names(a[0]); var y = Names(a[1]);
+            if (x == null || y == null || x.Contains(null) || y.Contains(null)) throw new OctaveException("is_same_file: FILEPATH1 and FILEPATH2 must be strings or cell arrays of strings");
+            if (a[0] is CellValue && a[1] is CellValue && x.Length != y.Length) throw new OctaveException("is_same_file: cellstr arrays FILEPATH1 and FILEPATH2 must be the same size");
+            bool Eq(string p, string q) { var cp = Canon(p); return !cp.StartsWith("\0") && cp == Canon(q); }
+            int len = Math.Max(x.Length, y.Length);
+            var res = new MatrixValue(1, len, NumKind.Logical);
+            for (int i = 0; i < len; i++) res.Re[i] = Eq(x[x.Length == 1 ? 0 : i], y[y.Length == 1 ? 0 : i]) ? 1 : 0;
+            if (a[0] is CellValue c0) res.SetDims(c0.Dims); else if (a[1] is CellValue c1) res.SetDims(c1.Dims);
+            return new Value[] { res };
+        };
         Pre("stem", (it, a, n) =>
         {
             int k = 0;
@@ -169,6 +206,35 @@ public static partial class BuiltinLibrary
             };
         Pre("hgload", (it, a, n) => { if (a.Length >= 2 && a[1] is not StructValue) throw new OctaveException("hgload: PROP_STRUCT must be a struct"); });
         Remap("hgload", m => m.Contains("unable to find file") ? "hgload: unable to locate file " + m.Split("file ").Last() : null);
+        foreach (var mm in new[] { "min", "max" })
+        {
+            if (!cur!.Builtins.TryGetValue(mm, out var mm0)) continue;
+            var nm = mm;
+            cur!.Builtins[nm] = (it, a, n) =>
+            {
+                int L = a.Length; bool inc = false, all = false;
+                while (L > 1 && IsString(a[L - 1]))
+                {
+                    var o = S(a[L - 1], nm).ToLowerInvariant();
+                    if (o == "includenan") inc = true; else if (o == "all") all = true; else if (o != "omitnan") break;
+                    L--;
+                }
+                if (L == a.Length) return mm0(it, a, n);
+                var b = a.Take(L).ToArray();
+                if (all) { b[0] = it.CallFunction("reshape", new Value[] { b[0], Num(b[0].Numel), Num(1) }, 1)[0]; if (b.Length > 2) b = b.Take(2).ToArray(); }
+                var r = mm0(it, b, n);
+                if (inc && !(b.Length >= 2 && b[1].Numel > 0) && b[0].Numel > 0)
+                {
+                    var nan = it.CallFunction("isnan", new Value[] { b[0] }, 1)[0];
+                    var args = b.Length >= 3 ? new Value[] { nan, b[2] } : new Value[] { nan };
+                    if (b.Length < 3) { var d = b[0].Dims; int fd = 1; for (int i = 0; i < d.Length; i++) if (d[i] != 1) { fd = i + 1; break; } args = new Value[] { nan, Num(fd) }; }
+                    var an = M(it.CallFunction("any", args, 1)[0], nm);
+                    if (r[0] is MatrixValue v) { v = (MatrixValue)v.Gather(Enumerable.Range(0, v.Numel).ToArray(), v.R, v.C); v.SetDims(r[0].Dims); for (int i = 0; i < v.Numel && i < an.Numel; i++) if (an.Re[i] != 0) { v.Re[i] = double.NaN; if (v.Im != null) v.Im[i] = 0; } r = r.ToArray(); r[0] = v; }
+                }
+                return r;
+            };
+        }
+        cur!.Builtins.Remove("range"); cur!.Builtins.Remove("bounds");
         Pre("computer", (it, a, n) =>
         {
             if (a.Length > 1) throw new OctaveException("Invalid call to computer");

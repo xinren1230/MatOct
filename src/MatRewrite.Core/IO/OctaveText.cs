@@ -193,7 +193,8 @@ public static class OctaveText
         {
             "Inf" or "inf" => double.PositiveInfinity,
             "-Inf" or "-inf" => double.NegativeInfinity,
-            "NaN" or "nan" or "NA" or "-NaN" => double.NaN,
+            "NA" => BitConverter.Int64BitsToDouble(0x7FF00000000007A2),
+            "NaN" or "nan" or "-NaN" => double.NaN,
             _ => double.Parse(s, NumberStyles.Float, Inv)
         };
     }

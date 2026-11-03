@@ -416,6 +416,7 @@ public static partial class BuiltinLibrary
         }
         Value Get(string what)
         {
+            if (what == "matches") what = "match";
             switch (what)
             {
                 case "match": return once ? (matches.Count > 0 ? Str(matches[0].Value) : Str("")) : CellValue.RowOf(matches.Select(m => Str(m.Value)));

@@ -139,6 +139,7 @@ public static class NDArray
         if (dim == 1 && items.All(v => v.NDims == 2)) return (ArrayValue)Concat.Vert(items);
         if (dim == 2 && items.All(v => v.NDims == 2)) return (ArrayValue)Concat.Horz(items);
         var arrs = items.Where(v => v.Numel > 0 || v.NDims > 2).ToList();
+        if (arrs.Count == 0) { var ne = items.Where(v => v is ArrayValue && !(v.NDims == 2 && v.Dims[0] == 0 && v.Dims[1] == 0)).ToList(); if (ne.Count > 0) arrs = ne; }
         if (arrs.Count == 0) return items.Count > 0 && items[0] is ArrayValue a0 ? a0 : MatrixValue.Empty();
         // pick a common type using the 2-D concat rules on one element of each
         var proto = Concat.Horz(arrs.Select(v => v is ArrayValue av && av.Numel > 0 ? (Value)av.Gather(new[] { 0 }, 1, 1) : v is ArrayValue ev && v.NDims > 2 ? (Value)ev.EmptyLike(0, 0) : v).ToList());
