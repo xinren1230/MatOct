@@ -118,7 +118,7 @@ public static partial class BuiltinLibrary
             throw new OctaveException(S(es.Get("message"), "rethrow"), es.HasField("identifier") ? S(es.Get("identifier"), "rethrow") : "");
         });
         Reg("lasterr", (it, a, n) => new Value[] { Str(it.LastError), Str(it.LastErrorId) });
-        Reg("print_usage", (it, a, n) => throw new OctaveException($"Invalid call to {it.Current.Func?.Name ?? "function"}", "Octave:invalid-fun-call"));
+        Reg("print_usage", (it, a, n) => throw new OctaveException($"Invalid call to {it.Current.Func?.Name ?? "function"}.", "Octave:invalid-fun-call"));
         Reg("eval", (it, a, n) =>
         {
             var code = S(a[0], "eval");
@@ -339,6 +339,14 @@ public static partial class BuiltinLibrary
                 }
                 else it.ClearVar(pat);
             }
+        });
+        Reg("onCleanup", (it, a, n) =>
+        {
+            if (a.Length != 1) throw new OctaveException("Invalid call to onCleanup");
+            if (a[0] is not FunctionHandleValue) throw new OctaveException("onCleanup: argument must be a function handle");
+            var s = new StructValue(); s.Fields.Add("task"); s.Elems[0]["task"] = a[0];
+            Interpreter.Cleanups.Add(s, new object());
+            return Out(s);
         });
         Reg0("clearvars", (it, a) => { foreach (var nm in it.VariableNames.ToList()) it.ClearVar(nm); });
         Reg("input", (it, a, n) =>

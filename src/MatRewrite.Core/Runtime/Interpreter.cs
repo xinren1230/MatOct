@@ -164,7 +164,18 @@ public sealed partial class Interpreter
     public Value? GetVar(string name) => LookupVar(name);
     public void SetVar(string name, Value v) => StoreVar(name, v);
     public IEnumerable<string> VariableNames => Current.Vars.Keys.Concat(Current.Redirect.Keys).Distinct().OrderBy(s => s, StringComparer.Ordinal);
-    public void ClearVar(string name) { Current.Vars.Remove(name); Current.Redirect.Remove(name); }
+    public void ClearVar(string name) { Current.Vars.TryGetValue(name, out var old); Current.Vars.Remove(name); Current.Redirect.Remove(name); RunCleanup(old); }
+
+    /// <summary>onCleanup objects: their task runs when the variable is cleared or its function returns.</summary>
+    public static readonly System.Runtime.CompilerServices.ConditionalWeakTable<StructValue, object> Cleanups = new();
+    public void RunCleanup(Value? v)
+    {
+        if (v is StructValue s && Cleanups.TryGetValue(s, out _))
+        {
+            Cleanups.Remove(s);
+            if (s.Elems.Length > 0 && s.Elems[0].TryGetValue("task", out var t)) { try { CallFunction("feval", new[] { t }, 0); } catch (OctaveException) { } }
+        }
+    }
 
     // ------------------------------------------------------------ variables
     Value? LookupVar(string name) => LookupIn(Current, name);
@@ -1394,7 +1405,10 @@ public sealed partial class Interpreter
             if (!ReferenceEquals(oe, ex)) throw oe;
             throw;
         }
-        finally { if (LocalRestores != null) foreach (var r in LocalRestores) r(); LocalRestores = saveLR; Current = save; depth--; CallStack.RemoveAt(CallStack.Count - 1); PopFile(); endStack.Clear(); if (saveEnd != null) endStack.AddRange(saveEnd); }
+        finally {
+            foreach (var kv in scope.Vars.ToList())
+                if (kv.Value is StructValue cs && Cleanups.TryGetValue(cs, out _) && !f.Outputs.Contains(kv.Key)) { var keep = Current; try { RunCleanup(cs); } finally { Current = keep; } }
+            if (LocalRestores != null) foreach (var r in LocalRestores) r(); LocalRestores = saveLR; Current = save; depth--; CallStack.RemoveAt(CallStack.Count - 1); PopFile(); endStack.Clear(); if (saveEnd != null) endStack.AddRange(saveEnd); }
 
         var outs = new List<Value>();
         int want = Math.Max(1, nargout);

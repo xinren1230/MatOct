@@ -433,7 +433,12 @@ namespace MatRewrite.Core.Builtins
                 return Array.Empty<Value>();
             };
             RegG("savefig", save);
-            RegG("hgsave", save);
+            RegG("hgsave", (it, a, n) =>
+            {
+                int k = a.Length > 0 && IsString(a[0]) ? 0 : 1;
+                if (a.Length > k && IsString(a[k]) && Path.GetExtension(S(a[k], "hgsave")) is "" or ".ofig") return it.CallFunction("__hgsave_ofig__", a, n);
+                return save(it, a, n);
+            });
             BuiltinFn open = (it, a, n) =>
             {
                 if (a.Length < 1) throw new OctaveException("Invalid call to openfig");
@@ -443,8 +448,9 @@ namespace MatRewrite.Core.Builtins
                 if (!File.Exists(full)) throw new OctaveException($"openfig: unable to find file {path}");
                 return new Value[] { Num(FigureEditApi.OpenFig(it, full)) };
             };
-            RegG("openfig", open);
-            RegG("hgload", open);
+            static bool Ofig(Value[] a) { if (a.Length < 1 || !IsString(a[0])) return false; var p = S(a[0], "openfig"); if (Path.GetExtension(p) == ".ofig") return true; try { var fp = Path.GetFullPath(p); return File.Exists(fp) && File.ReadAllText(fp).TrimStart() is var t && t.Length > 0 && t[0] != '{'; } catch { return false; } }
+            RegG("openfig", (it, a, n) => Ofig(a) ? it.CallFunction("__openfig_ofig__", a, n) : open(it, a, n));
+            RegG("hgload", (it, a, n) => Ofig(a) ? it.CallFunction("__hgload_ofig__", a, n) : open(it, a, n));
             RegG("makemcode", (it, a, n) =>
             {
                 int i = 0;

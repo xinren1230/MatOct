@@ -26,7 +26,7 @@ public static partial class BuiltinLibrary
     static readonly HashSet<string> DoubleProps = new(StringComparer.OrdinalIgnoreCase) { "linewidth", "markersize", "fontsize", "rotation", "barwidth", "facealpha", "edgealpha" };
     static readonly HashSet<string> ColorProps = new(StringComparer.OrdinalIgnoreCase) { "color", "xcolor", "ycolor", "zcolor", "markeredgecolor", "markerfacecolor", "edgecolor", "facecolor", "backgroundcolor" };
     static readonly HashSet<string> ColorNoneOK = new(StringComparer.OrdinalIgnoreCase) { "markeredgecolor", "markerfacecolor", "edgecolor", "facecolor", "color", "backgroundcolor" };
-    static readonly HashSet<string> ReadOnlyProps = new(StringComparer.OrdinalIgnoreCase) { "type", "beingdeleted", "currentcharacter", "currentpoint", "screendepth", "screensize", "screenpixelsperinch", "extent", "tightinset" };
+    static readonly HashSet<string> ReadOnlyProps = new(StringComparer.OrdinalIgnoreCase) { "type", "beingdeleted", "currentcharacter", "screendepth", "screensize", "screenpixelsperinch", "extent", "tightinset" };
 
     /// <summary>Validate VALUE for PROP the way Octave's typed graphics properties do (radio, double, color, read-only).</summary>
     static void ValidatePropValue(GObject o, string p, Value v, string fn)

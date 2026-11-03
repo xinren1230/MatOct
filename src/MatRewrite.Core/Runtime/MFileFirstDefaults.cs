@@ -13,7 +13,7 @@ public static class MFileFirstDefaults
         "ode45", "ode23", "ode23s", "odeget", "ode15s", "ode15i", "assert",
         "rmse", "mape", "ishermitian", "polyfit", "nthargout", // phase 8 A/B
         "normalize", "quantile", "cov", "cart2sph", "sph2cart", "cart2pol", "pol2cart", "ndgrid", "compan", "istriu", "isbanded", "rescale", "blkdiag", "corr", "bitset",
-        "beep",
+        "beep", "hgsave", "hgload",
         "blanks",
         "camlight",
         "cast",

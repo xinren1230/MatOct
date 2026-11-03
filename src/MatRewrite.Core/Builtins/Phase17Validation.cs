@@ -103,7 +103,7 @@ public static partial class BuiltinLibrary
             if (a.Length == 3 && VNum(a[0]) && VNum(a[1]))
             {
                 if (a[2] is CellValue) throw new OctaveException("patch: invalid color specification C");
-                if (IsString(a[2]) && !LineSpecOk(S(a[2], "patch"))) throw new OctaveException("patch: invalid color specification C");
+                if (IsString(a[2]) && !LineSpecOk(S(a[2], "patch")) && !(S(a[2], "patch").ToLowerInvariant() is "black" or "white" or "red" or "green" or "blue" or "cyan" or "magenta" or "yellow")) throw new OctaveException("patch: invalid color specification C");
                 if (VNum(a[2]) && !IsND(a[2]) && (a[0].Rows == 1 || a[0].Cols == 1))
                 {
                     int nc = a[2].Numel, nx = a[0].Numel;

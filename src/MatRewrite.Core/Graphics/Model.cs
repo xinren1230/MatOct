@@ -238,7 +238,12 @@ public sealed class Axes : GObject
     public bool YDirReverse;
     public double[]? CLim;
     public int ColorIndex;
-    public Rgb NextColor() => Rgb.DefaultOrder[ColorIndex++ % Rgb.DefaultOrder.Length];
+    public Rgb NextColor()
+    {
+        if (Props.TryGetValue("colororder", out var v) && v is Runtime.MatrixValue m && m.Rows > 0 && m.Cols == 3)
+        { int i = ColorIndex++ % m.Rows; return new Rgb(m[i, 0], m[i, 1], m[i, 2]); }
+        return Rgb.DefaultOrder[ColorIndex++ % Rgb.DefaultOrder.Length];
+    }
     public void Reset()
     {
         Children.Clear(); ColorIndex = 0; LegendVisible = false; LegendLabels = null; Colorbar = false;

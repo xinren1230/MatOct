@@ -60,7 +60,9 @@ namespace MatRewrite.Core.Builtins
             RegG("gca", (it, a, n) => Out(H(it.Graphics.Gca())));
             RegG("clf", (it, a, n) =>
             {
-                var f = it.Graphics.Gcf();
+                var f = it.Graphics.Gcf(); bool rst = false;
+                foreach (var v in a) { if (v is MatrixValue hv && !hv.IsChar && hv.Numel == 1 && it.Graphics.Lookup(hv.Re[0]) is Figure hf) f = hf; else if (IsString(v) && S(v, "clf").ToLowerInvariant() == "reset") rst = true; }
+                if (rst) { try { it.CallFunction("reset", new Value[] { Num(f.Handle) }, 0); } catch (OctaveException) { } f.Props.Remove("papertype"); f.Props.Remove("papersize"); }
                 f.Axes.Clear(); f.CurrentAxes = null; f.Annotations.Clear(); it.Graphics.Touch(f);
                 return n > 0 ? Out(H(f)) : Array.Empty<Value>();
             });
@@ -114,7 +116,14 @@ namespace MatRewrite.Core.Builtins
                 }
                 return Array.Empty<Value>();
             });
-            RegG("ishold", (it, a, n) => Out(Bool(it.Graphics.Gca().Hold)));
+            RegG("ishold", (it, a, n) =>
+            {
+                Figure? f = it.Graphics.Current; Axes? ax = f?.CurrentAxes;
+                if (a.Length > 0) { var o = it.Graphics.Lookup(D(a[0], "ishold")); if (o is Axes ha) { ax = ha; f = ha.Figure; } else if (o is Figure hf) { f = hf; ax = hf.CurrentAxes; } else throw new OctaveException("ishold: H must be an axes or figure graphics handle"); }
+                if (f == null || ax == null) return Out(Bool(false));
+                bool fadd = !(f.Props.TryGetValue("nextplot", out var np) && IsString(np) && S(np, "ishold") != "add");
+                return Out(Bool(fadd && ax.Hold));
+            });
 
             RegG("plot", (it, a, n) => { var hs = Plot(it, a, "plot"); return n > 0 ? Out(MatrixValue.Col(hs)) : Array.Empty<Value>(); });
             RegG("line", (it, a, n) =>
@@ -720,6 +729,13 @@ namespace MatRewrite.Core.Builtins
                     var s = new LineSeries { X = x, Y = y, Color = col ?? ax.NextColor() };
                     if (mk != null) { s.Marker = mk.Value; s.Style = st ?? LineStyle.None; }
                     else s.Style = st ?? LineStyle.Solid;
+                    if (st == null && mk == null && ax.Props.TryGetValue("linestyleorder", out var lso) && lso is CellValue lsc && lsc.Numel > 1)
+                    {
+                        int L = ax.Props.TryGetValue("colororder", out var coV) && coV is MatrixValue coM && coM.Rows > 0 ? coM.Rows : Rgb.DefaultOrder.Length;
+                        int cnt = ax.Children.Count(c => c is LineSeries { Group: null });
+                        var sty = S(lsc.Data[(cnt / L) % lsc.Numel], fn);
+                        if (ParseFmt(sty, out var st2, out var mk2, out _)) { s.Style = st2 ?? (mk2 != null ? LineStyle.None : LineStyle.Solid); if (mk2 != null) s.Marker = mk2.Value; }
+                    }
                     it.Graphics.Add(ax, s);
                     made.Add(s);
                     handles.Add(s.Handle);
@@ -865,7 +881,7 @@ namespace MatRewrite.Core.Builtins
                     case (Figure f, "visible"): f.Visible = S(v, fn) == "on"; break;
                     case (Figure f, "position"): { var m = M(v, fn); if (m.Numel == 4) { f.Width = (int)m.Re[2]; f.Height = (int)m.Re[3]; } break; }
                     case (Figure f, "colormap"): f.Colormap = IsString(v) ? S(v, fn) : (NamedMapFor(M(v, fn)) ?? CustomMapName(M(v, fn))); break;
-                    case (Axes ax, "title"): ax.Title = S(v, fn); break;
+                    case (Axes ax, "title"): if (IsString(v)) ax.Title = S(v, fn); break;
                     case (Axes ax, "xlim"): ax.XLim = M(v, fn).Re.ToArray(); break;
                     case (Axes ax, "ylim"): ax.YLim = M(v, fn).Re.ToArray(); break;
                     case (Axes ax, "zlim"): ax.ZLim = M(v, fn).Re.ToArray(); break;

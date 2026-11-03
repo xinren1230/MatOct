@@ -2,6 +2,21 @@
 
 All notable changes to MatOct. Detailed notes (Chinese) live in `docs/phaseN.md`.
 
+## [0.22.0] - 2026-11-03
+
+MatOct is a MATLAB-style IDE for GNU Octave, written in C#.
+
+### Changed
+- Octave test suite: 10159/10354 core (98.1 %), 10096/10400 with Octave's m-file library (97.1 %).
+- `onCleanup` is now a builtin whose task runs when the variable is cleared or goes out of scope.
+- `fill` uses Octave's implementation (respects `newplot`/hold).
+
+### Fixed
+- `hgsave`/`hgload`/`openfig` read and write Octave-compatible `.ofig` text files.
+- `ishold` no longer creates axes and accepts figure/axes handles; `clf(h)` and `clf reset`.
+- Axes `colororder` and `linestyleorder` are honored by `plot`.
+- `patch` accepts long color names; `currentpoint` is settable; `print_usage` message punctuation.
+
 ## [0.21.0] - 2026-11-03
 
 MatOct is a MATLAB-style IDE for GNU Octave, written in C#.
