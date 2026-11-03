@@ -148,9 +148,17 @@ public static partial class BuiltinLibrary
         Reg("structfun", (it, a, n) =>
         {
             var s = (StructValue)a[1];
-            var cell = CellValue.ColOf(s.Fields.Select(f => s.Elems[0][f]));
+            Value cell = s.Numel == 1 ? CellValue.ColOf(s.Fields.Select(f => s.Elems[0][f])) : it.CallFunction("struct2cell", new Value[] { s }, 1)[0];
             var args = new List<Value> { a[0], cell }; args.AddRange(a.Skip(2));
-            return CellFun(it, args.ToArray(), n, true);
+            bool uni = true;
+            for (int k = 2; k + 1 < a.Length; k++) if (IsString(a[k]) && S(a[k], "structfun").Equals("UniformOutput", StringComparison.OrdinalIgnoreCase)) uni = Ops.IsTrue(a[k + 1]);
+            var res = CellFun(it, args.ToArray(), n, true);
+            if (!uni)
+            {
+                var fns = CellValue.ColOf(s.Fields.Select(f => (Value)MatrixValue.Str(f)));
+                for (int k = 0; k < res.Length; k++) if (res[k] is CellValue rc) res[k] = it.CallFunction("reshape", new Value[] { it.CallFunction("cell2struct", new Value[] { rc, fns, MatrixValue.Scalar(1) }, 1)[0], it.CallFunction("size", new Value[] { s }, 1)[0] }, 1)[0];
+            }
+            return n == 0 ? Array.Empty<Value>() : res;
         });
         Reg("deal", (it, a, n) =>
         {
@@ -187,7 +195,7 @@ public static partial class BuiltinLibrary
                 "isempty" => v => v.Numel == 0 ? 1 : 0,
                 "length" => v => v.Numel == 0 ? 0 : Math.Max(v.Rows, v.Cols),
                 "numel" or "prodofsize" => v => v.Numel,
-                "ndims" => v => 2,
+                "ndims" => v => v.Dims.Length,
                 "isreal" => v => v is MatrixValue m && !m.IsComplex ? 1 : 0,
                 "islogical" => v => v is MatrixValue m && m.IsLogical ? 1 : 0,
                 _ => null

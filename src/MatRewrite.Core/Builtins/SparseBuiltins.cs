@@ -126,6 +126,7 @@ public static partial class BuiltinLibrary
             if (sym) { r = c = NonNeg(a[0], "N"); dens = D(a[1], fn); }
             else { r = NonNeg(a[0], "M"); c = NonNeg(a[1], "N"); dens = D(a[2], fn); }
             if (dens < 0 || dens > 1) throw new OctaveException($"{fn}: density D must be between 0 and 1");
+            if (!sym && a.Length == 4 && M(a[3], fn) is var rcm && rcm.R > 1 && rcm.C > 1) throw new OctaveException($"{fn}: RC must be a scalar or vector");
             if (!sym && a.Length == 4) return RandCond(it, r, c, dens, M(a[3], fn).Re, fn);
             long total = (long)r * c;
             int k = (int)Math.Round(dens * total);
@@ -152,8 +153,7 @@ public static partial class BuiltinLibrary
             }
             else
             {
-                if (rc.Length > k) throw new OctaveException($"{fn}: RC must be a scalar or vector of length min (M, N)");
-                for (int i = 0; i < rc.Length; i++) sv[i] = rc[i];
+                for (int i = 0; i < Math.Min(rc.Length, k); i++) sv[i] = rc[i];
             }
             var A = new double[r, c];
             for (int i = 0; i < k; i++) A[i, i] = sv[i];

@@ -2,6 +2,21 @@
 
 All notable changes to MatOct. Detailed notes (Chinese) live in `docs/phaseN.md`.
 
+## [0.21.0] - 2026-11-03
+
+MatOct is a MATLAB-style IDE for GNU Octave, written in C#.
+
+### Changed
+- Octave test suite: 10147/10354 core blocks pass (98.0%, up from 97.1%); 10090/10400 with Octave's own library (97.0%).
+- `colormap` returns the stored map unchanged (e.g. `gray(16)` stays 16x3).
+
+### Fixed
+- subplot "position" mode and Octave's default subplot positions; overlapping axes are deleted properly.
+- `cla` with axes handle and "reset"; `isfigure` element-wise; `colororderindex`; mesh surface default properties.
+- Log axes with negative data (limits and ticks); legend titles; closerequestfcn handling.
+- `isobject`/`isprop`/`__fieldnames__` for containers.Map; `structfun`, `gammaln`, `sprand`, `logical` on complex, `isindex` with Inf.
+- `double` of a cell array raises "invalid conversion"; lexer escapes `\v` and `\f`.
+
 ## [0.20.0] - 2026-11-03
 
 MatOct is a MATLAB-style IDE for GNU Octave, written in C#.

@@ -220,7 +220,7 @@ public static partial class BuiltinLibrary
         {
             if (a.Length == 1 && a[0] is MatrixValue m) { var r = m.Copy(); r.Kind = NumKind.Char; r.Im = null; return r; }
             var rows = new List<string>();
-            foreach (var v in a) rows.AddRange(StrList(v is MatrixValue mm && !mm.IsChar ? new Func<Value>(() => { var c = mm.Copy(); c.Kind = NumKind.Char; return c; })() : v, "char"));
+            foreach (var v in a) if (v is CellValue cv0) { foreach (var x in cv0.Data) rows.AddRange(x is MatrixValue xm && xm.R > 1 ? StrList(xm, "char") : new List<string> { S(x, "char") }); } else rows.AddRange(StrList(v is MatrixValue mm && !mm.IsChar ? new Func<Value>(() => { var c = mm.Copy(); c.Kind = NumKind.Char; return c; })() : v, "char"));
             return CharMatrix(rows);
         });
         Reg1("strvcat", a => CharMatrix(a.SelectMany(v => StrList(v, "strvcat")).Where(s => s.Length > 0).ToList()));

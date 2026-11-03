@@ -23,7 +23,7 @@ public static class SparseBridge
         "sinh", "tanh", "asinh", "atanh", "expm1", "log1p", "sum", "prod", "cumsum", "max", "min", "diag", "tril", "triu",
         "reshape", "repmat", "kron", "fliplr", "flipud", "circshift", "logical", "double", "not", "and", "or", "xor",
         "uminus", "uplus", "inv", "power", "rdivide", "spfun", "cat", "horzcat", "vertcat", "permute", "rot90", "any", "all",
-        "transpose", "ctranspose", "sort", "nth_element", "ipermute", "squeeze", "flip", "cummax", "cummin", "cumprod", "eq", "ne", "lt", "le", "gt", "ge", "isnan", "isinf",
+        "transpose", "ctranspose", "sort", "nth_element", "ipermute", "squeeze", "flip", "cummax", "cummin", "cumprod", "hsv2rgb", "rgb2hsv", "eq", "ne", "lt", "le", "gt", "ge", "isnan", "isinf",
     };
 
     public static Value[] Call(string name, Value[] args, Func<Value[], Value[]> invoke)

@@ -220,7 +220,7 @@ public static partial class BuiltinLibrary
             if (a[0] is not MatrixValue m) return Bool(false);
             if (m.IsLogical) return Bool(m.Numel == 0 || !(max < double.PositiveInfinity) || LastTrue(m) <= max);
             if (m.IsComplex) return Bool(false);
-            foreach (var v in m.Re) if (!(v >= 1 && v == Math.Floor(v) && v <= max)) return Bool(false);
+            foreach (var v in m.Re) if (!(v >= 1 && !double.IsInfinity(v) && v == Math.Floor(v) && v <= max)) return Bool(false);
             return Bool(true);
             static int LastTrue(MatrixValue m) { for (int k = m.Numel - 1; k >= 0; k--) if (m.Re[k] != 0) return k + 1; return 0; }
         });

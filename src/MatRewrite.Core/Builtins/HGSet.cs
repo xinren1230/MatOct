@@ -33,6 +33,17 @@ namespace MatRewrite.Core.Builtins
             if (p == "parent") { Reparent(it, o, v, fn); return true; }
             if (p is "children" or "type") return true;
             if (o is GenericObject && BaselineSet(it, o, p, v, fn)) return true;
+            if (o is Axes tax)
+            {
+                if (p is "xtick" or "ytick" or "ztick" or "xticklabel" or "yticklabel" or "zticklabel" or "cameraposition" or "cameratarget" or "cameraupvector" or "cameraviewangle")
+                    tax.Props[p + "mode"] = Str("manual");
+                else if (p is "xtickmode" or "ytickmode" or "ztickmode" or "xticklabelmode" or "yticklabelmode" or "zticklabelmode" or "camerapositionmode" or "cameratargetmode" or "cameraupvectormode" or "cameraviewanglemode")
+                {
+                    var mv = IsString(v) ? S(v, fn).ToLowerInvariant() : "";
+                    if (mv is not ("auto" or "manual")) throw new OctaveException($"set: invalid value for radio property \"{p}\"");
+                    if (mv == "auto") tax.Props.Remove(p.Substring(0, p.Length - 4));
+                }
+            }
             switch (o, p)
             {
                 case (ContourSeries cs, "levellist"):
@@ -81,7 +92,7 @@ namespace MatRewrite.Core.Builtins
                 case (Axes ax, "visible"): ax.Visible = OnOff(v, fn); return true;
                 case (Axes ax, "xgrid" or "ygrid" or "zgrid"): ax.Grid = OnOff(v, fn); return true;
                 case (Axes ax, "colormap"): it.CallFunction("colormap", new Value[] { Num(ax.Handle), v }, 0); return true;
-                case (LabelObject l, "string"): l.Text = LabelString(v, fn); return true;
+                case (LabelObject l, "string"): l.Text = LabelString(v, fn); l.Raw = v is CellValue ? v : null; return true;
                 case (TextSeries t, "position"): { var w = Vec(v, fn); if (w.Length >= 2) { t.X = w[0]; t.Y = w[1]; t.Z = w.Length > 2 ? w[2] : null; } return true; }
                 case (TextSeries t, "string"): t.Text = LabelString(v, fn); if (v is CellValue || v is MatrixValue { R: > 1 }) t.Props["__string"] = v; else t.Props.Remove("__string"); return true;
                 case (ImageSeries im, "cdata"): { var m = M(v, fn); im.C = ToGrid(m); return true; }
@@ -234,8 +245,8 @@ namespace MatRewrite.Core.Builtins
 
         static void CloseFigure(Interpreter it, Figure f, bool force)
         {
-            if (!force && f.Props.TryGetValue("closerequestfcn", out var cb) && !(IsString(cb) && S(cb, "close") == "closereq") && !(cb is MatrixValue em && em.IsEmpty && !em.IsChar))
-            { RunCallback(it, f, cb); return; }
+            if (!force && f.Props.TryGetValue("closerequestfcn", out var cb) && !(IsString(cb) && S(cb, "close") == "closereq") )
+            { if (cb is MatrixValue em && em.IsEmpty) return; RunCallback(it, f, cb); return; }
             DeleteObject(it, f);
         }
 

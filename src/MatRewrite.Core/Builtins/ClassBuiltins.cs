@@ -14,7 +14,13 @@ public static partial class BuiltinLibrary
 
     static void RegisterClasses()
     {
-        Reg1("isobject", a => Bool(a[0] is ObjectValue || a[0] is ObjectArrayValue));
+        Reg1("isobject", a => Bool(a[0] is ObjectValue || a[0] is ObjectArrayValue || a[0] is MapValue));
+        Reg("__fieldnames__", (it, a, n) =>
+        {
+            if (a.Length == 1 && a[0] is MapValue)
+                return new Value[] { new CellValue(3, 1, new Value[] { MatrixValue.Str("Count"), MatrixValue.Str("KeyType"), MatrixValue.Str("ValueType") }) };
+            return it.CallFunction("fieldnames", a, 1);
+        });
         Reg("addlistener", (it, a, n) =>
         {
             if (a.Length < 3 || a[0] is not ObjectValue src) throw new OctaveException("addlistener: usage addlistener(obj, 'Event', callback)");

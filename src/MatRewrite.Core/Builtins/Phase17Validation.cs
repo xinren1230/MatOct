@@ -26,6 +26,7 @@ public static partial class BuiltinLibrary
 
     static void RegisterValidation()
     {
+        RegisterPhase18();
         foreach (var bn in new[] { "bitand", "bitor", "bitxor", "bitshift" })
             if (cur!.Builtins.TryGetValue(bn, out var bf))
                 cur!.Builtins[bn] = (it, a, n) =>
@@ -192,6 +193,8 @@ public static partial class BuiltinLibrary
         if (cur!.Builtins.TryGetValue("isprop", out var ip0))
             cur!.Builtins["isprop"] = (it, a, n) =>
             {
+                if (a.Length == 2 && a[0] is MapValue && IsString(a[1]))
+                    return new Value[] { Bool(S(a[1], "isprop") is "Count" or "KeyType" or "ValueType") };
                 if (a.Length == 2 && a[0] is MatrixValue hm && !hm.IsChar && IsString(a[1]))
                 {
                     var r = new MatrixValue(hm.R, hm.C) { Kind = NumKind.Logical };

@@ -289,6 +289,8 @@ public sealed class Lexer
                     case 't': sb.Append('\t'); break;
                     case 'r': sb.Append('\r'); break;
                     case 'a': sb.Append('\a'); break;
+                    case 'v': sb.Append('\v'); break;
+                    case 'f': sb.Append('\f'); break;
                     case '0': sb.Append('\0'); break;
                     case '\\': sb.Append('\\'); break;
                     case '"': sb.Append('"'); break;

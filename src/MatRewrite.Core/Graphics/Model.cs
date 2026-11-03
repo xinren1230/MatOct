@@ -43,6 +43,7 @@ public sealed class LabelObject : GObject
 {
     public Axes Axes = null!;
     public string Which = "title";
+    public MatRewrite.Core.Runtime.Value? Raw;
     public string Text
     {
         get => Which switch { "title" => Axes.Title, "xlabel" => Axes.XLabel, "ylabel" => Axes.YLabel, _ => Axes.ZLabel };

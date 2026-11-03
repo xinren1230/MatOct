@@ -163,7 +163,7 @@ public sealed class GraphicsState
         if (a == null)
         {
             // remove axes that overlap the new one
-            f.Axes.RemoveAll(x => x.Rows != rows || x.Cols != cols ? Overlaps(x, rows, cols, cells) : x.Cells.Intersect(cells).Any());
+            foreach (var x in f.Axes.Where(x => !x.Props.ContainsKey("position") && !x.Props.ContainsKey("outerposition")).Where(x => x.Rows != rows || x.Cols != cols ? Overlaps(x, rows, cols, cells) : x.Cells.Intersect(cells).Any()).ToList()) Delete(x);
             a = Register(new Axes { Figure = f, Rows = rows, Cols = cols, Cells = cells });
             f.Axes.Add(a);
         }

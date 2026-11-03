@@ -296,10 +296,22 @@ namespace MatRewrite.Core.Builtins
                 {
                     if (a.Length == 0) throw new OctaveException($"Invalid call to {which}");
                     int k = 0; Axes ax;
+                    if (which == "title" && a[0] is MatrixValue lm && !lm.IsChar && lm.Numel == 1 && a.Length > 1 && it.Graphics.Lookup(lm.Re[0]) is GenericObject { Type: "legend" } lg)
+                    {
+                        if (!(lg.Props.TryGetValue("title", out var tv) && tv is MatrixValue tm && it.Graphics.Lookup(tm.Re[0]) is GenericObject { Deleted: false } tobj))
+                        {
+                            tobj = it.Graphics.Register(new GenericObject { Type = "text", Owner = lg, Parent = lg.Parent });
+                            lg.Props["title"] = Num(tobj.Handle);
+                        }
+                        tobj.Props["string"] = a[1];
+                        var rest0 = a.Skip(2).ToArray();
+                        for (int q = 0; q + 1 < rest0.Length; q += 2) it.CallFunction("set", new[] { Num(tobj.Handle), rest0[q], rest0[q + 1] }, 0);
+                        return n > 0 ? Out(Num(tobj.Handle)) : Array.Empty<Value>();
+                    }
                     if (a[0] is MatrixValue hm && !hm.IsChar && hm.Numel == 1 && a.Length > 1 && it.Graphics.Lookup(hm.Re[0]) is Axes hax) { ax = hax; k = 1; }
                     else ax = it.Graphics.Gca();
                     var lbl = it.Graphics.Label(ax, which);
-                    lbl.Text = LabelString(a[k], which);
+                    lbl.Text = LabelString(a[k], which); lbl.Raw = a[k] is CellValue ? a[k] : null;
                     var rest = a.Skip(k + 1).ToArray();
                     if (rest.Length > 0) ApplyPairs(it, lbl, rest, which);
                     it.Graphics.Touch(ax.Figure);

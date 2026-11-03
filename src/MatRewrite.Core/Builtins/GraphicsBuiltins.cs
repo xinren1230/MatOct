@@ -64,7 +64,12 @@ namespace MatRewrite.Core.Builtins
                 f.Axes.Clear(); f.CurrentAxes = null; f.Annotations.Clear(); it.Graphics.Touch(f);
                 return n > 0 ? Out(H(f)) : Array.Empty<Value>();
             });
-            RegG("cla", (it, a, n) => { var ax = it.Graphics.Gca(); ax.Reset(); ax.Title = ax.XLabel = ax.YLabel = ax.ZLabel = ""; it.Graphics.Touch(ax.Figure); return Array.Empty<Value>(); });
+            RegG("cla", (it, a, n) => { var ax = it.Graphics.Gca(); bool rst = false;
+                foreach (var v in a) { if (v is MatrixValue hv && !hv.IsChar && hv.Numel == 1 && it.Graphics.Lookup(hv.Re[0]) is Axes ha) ax = ha; else if (IsString(v) && S(v, "cla").ToLowerInvariant() == "reset") rst = true; }
+                if (rst) { foreach (var c in ax.Children.ToList()) it.Graphics.Delete(c); it.CallFunction("reset", new Value[] { Num(ax.Handle) }, 0); }
+                var keep = ax.Children.Where(c => c.Props.TryGetValue("handlevisibility", out var hv) && IsString(hv) && S(hv, "cla") == "off").ToList();
+                foreach (var c in ax.Children.Except(keep).ToList()) it.Graphics.Delete(c);
+                ax.Reset(); ax.Children.AddRange(keep); ax.Props.Remove("colororderindex"); ax.Title = ax.XLabel = ax.YLabel = ax.ZLabel = ""; it.Graphics.Touch(ax.Figure); return Array.Empty<Value>(); });
             RegG("close", (it, a, n) =>
             {
                 var g = it.Graphics;
@@ -89,7 +94,14 @@ namespace MatRewrite.Core.Builtins
                 for (int i = 0; i < m.Numel; i++) r.Re[i] = it.Graphics.Lookup(m.Re[i]) != null ? 1 : 0;
                 return Out(r);
             });
-            RegG("isfigure", (it, a, n) => Out(Bool(a[0] is MatrixValue m && m.Numel == 1 && it.Graphics.Lookup(m.Re[0]) is Figure)));
+            RegG("isfigure", (it, a, n) =>
+            {
+                if (a.Length != 1) throw new OctaveException("Invalid call to isfigure");
+                if (a[0] is not MatrixValue m || m.IsChar) return Out(Bool(false));
+                var d = new double[m.Numel];
+                for (int i = 0; i < m.Numel; i++) d[i] = it.Graphics.Lookup(m.Re[i]) is Figure ? 1 : 0;
+                return Out(new MatrixValue(m.R, m.C, d, null, NumKind.Logical));
+            });
 
             RegG("hold", (it, a, n) =>
             {
@@ -238,13 +250,27 @@ namespace MatRewrite.Core.Builtins
             RegG("colormap", (it, a, n) =>
             {
                 if (a.Length > 2) throw new OctaveException("Invalid call to colormap", "Octave:invalid-fun-call");
+                object? tgt = null; bool stored = false;
                 if (a.Length >= 1 && a[0] is MatrixValue h0 && !h0.IsChar && h0.Numel == 1)
                 {
-                    var tgt = it.Graphics.Lookup(h0.Re[0]);
+                    tgt = it.Graphics.Lookup(h0.Re[0]);
                     if (tgt is not (Figure or Axes)) throw new OctaveException("colormap: target argument must be a figure or axes handle");
                     a = a.Skip(1).ToArray();
                 }
-                var f = it.Graphics.Gcf();
+                var f = tgt is Figure tf ? tf : tgt is Axes ta ? ta.Figure : it.Graphics.Gcf();
+                tgt ??= f;
+                if (a.Length == 0 && StoredCmap(tgt) is { } sm0) return Out(sm0);
+                if (a.Length > 0 && a[^1] is MatrixValue smv && !smv.IsChar && !smv.IsComplex && smv.NDims == 2 && smv.C == 3)
+                {
+                    CmapStore.AddOrUpdate(tgt, smv.Copy());
+                    if (tgt is Figure tf2) foreach (var ax2 in tf2.Axes) CmapStore.Remove(ax2);
+                    if (tgt is Axes) return n > 0 ? Out(smv) : Array.Empty<Value>();
+                }
+                else if (a.Length > 0 && IsString(a[^1]))
+                {
+                    var nm0 = S(a[^1], "colormap").ToLowerInvariant(); if (nm0 == "default") nm0 = "parula";
+                    try { var mv = it.CallFunction(nm0, new Value[] { Num(256) }, 1)[0]; CmapStore.AddOrUpdate(tgt, mv); stored = true; if (tgt is Figure tf3) foreach (var ax3 in tf3.Axes) CmapStore.Remove(ax3); if (tgt is Axes) return n > 0 ? Out(mv) : Array.Empty<Value>(); } catch (OctaveException) { }
+                }
                 if (a.Length > 0)
                 {
                     if (a[^1] is MatrixValue cv && !cv.IsChar && (cv.IsComplex || cv.NDims > 2 || cv.C != 3))
@@ -253,10 +279,11 @@ namespace MatRewrite.Core.Builtins
                         : a[^1] is MatrixValue cm ? (NamedMapFor(cm) ?? CustomMapName(cm))
                         : throw new OctaveException("colormap: MAP must be a real-valued N x 3 ([0-1]) matrix");
                     if (!(name is "default" or "viridis" or "parula" or "jet" or "gray" or "hot" or "cool" or "turbo" or "magma" or "inferno" or "plasma") && CustomColormaps.Get(name) == null)
-                        throw new OctaveException($"colormap: failed to set MAP '{name}'");
+                        if (stored) return n > 0 ? Out(StoredCmap(f)!) : Array.Empty<Value>(); else throw new OctaveException($"colormap: failed to set MAP '{name}'");
                     f.Colormap = name == "default" ? "parula" : name;
                     it.Graphics.Touch(f);
                 }
+                if (StoredCmap(f) is { } sm1 && (n > 0 || a.Length == 0)) return Out(sm1);
                 if (CustomColormaps.Get(f.Colormap) is { } cmap)
                     return n > 0 || a.Length == 0 ? Out(MapMatrix(f.Colormap, cmap.Length)) : Array.Empty<Value>();
                 return n > 0 || a.Length == 0 ? Out(it.CallFunction(f.Colormap, new Value[] { Num(64) }, 1)[0]) : Array.Empty<Value>();
@@ -327,6 +354,28 @@ namespace MatRewrite.Core.Builtins
             RegG("subplot", (it, a, n) =>
             {
                 int rows, cols; int[] cells;
+                if (a.Length >= 2 && IsString(a[0]) && S(a[0], "subplot").ToLowerInvariant() == "position")
+                {
+                    var pos = M(a[1], "subplot").Re;
+                    var fig = it.Graphics.Gcf();
+                    Axes? hit = null;
+                    foreach (var x in fig.Axes.ToList())
+                    {
+                        var xp = ((MatrixValue)it.CallFunction("get", new Value[] { H(x), Str("position") }, 1)[0]).Re;
+                        if (xp.Length == 4 && pos.Length == 4 && Enumerable.Range(0, 4).All(i => Math.Abs(xp[i] - pos[i]) < 1e-9)) { hit = x; break; }
+                        if (xp.Length == 4 && pos.Length == 4)
+                        {
+                            bool ov = xp[0] < pos[0] + pos[2] - 1e-9 && pos[0] < xp[0] + xp[2] - 1e-9 && xp[1] < pos[1] + pos[3] - 1e-9 && pos[1] < xp[1] + xp[3] - 1e-9;
+                            if (ov) it.Graphics.Delete(x);
+                        }
+                    }
+                    Value hv;
+                    if (hit != null) { it.CallFunction("axes", new Value[] { H(hit) }, 0); hv = H(hit); }
+                    else hv = it.CallFunction("axes", new Value[] { Str("position"), a[1] }, 1)[0];
+                    var rest2 = a.Skip(2).ToArray();
+                    for (int q = 0; q + 1 < rest2.Length; q += 2) it.CallFunction("set", new[] { hv, rest2[q], rest2[q + 1] }, 0);
+                    return n > 0 ? Out(hv) : Array.Empty<Value>();
+                }
                 if (a.Length == 1)
                 {
                     int code = I(a[0], "subplot");
@@ -556,10 +605,13 @@ namespace MatRewrite.Core.Builtins
         public static (double[] x, double[] y) Limits(Axes ax)
         {
             double x0 = double.PositiveInfinity, x1 = double.NegativeInfinity, y0 = x0, y1 = x1;
+            bool xPos = false, xNeg = false, yPos = false, yNeg = false;
             void Acc(IEnumerable<double> xs, IEnumerable<double> ys)
             {
-                if (ax.XLog) xs = xs.Where(v => v > 0).Select(Math.Log10);
-                if (ax.YLog) ys = ys.Where(v => v > 0).Select(Math.Log10);
+                if (ax.XLog) { var l = xs.ToList(); xPos |= l.Any(v => v > 0); xNeg |= l.Any(v => v < 0); xs = l; }
+                if (ax.YLog) { var l = ys.ToList(); yPos |= l.Any(v => v > 0); yNeg |= l.Any(v => v < 0); ys = l; }
+                if (ax.XLog) xs = xs.Where(v => v != 0).Select(v => Math.Log10(Math.Abs(v)));
+                if (ax.YLog) ys = ys.Where(v => v != 0).Select(v => Math.Log10(Math.Abs(v)));
                 foreach (var v in xs.Where(double.IsFinite)) { x0 = Math.Min(x0, v); x1 = Math.Max(x1, v); }
                 foreach (var v in ys.Where(double.IsFinite)) { y0 = Math.Min(y0, v); y1 = Math.Max(y1, v); }
             }
@@ -591,8 +643,8 @@ namespace MatRewrite.Core.Builtins
                 (x0, x1) = ax.XLog ? (Math.Floor(x0), Math.Ceiling(x1)) : Nice(x0, x1);
                 (y0, y1) = ax.YLog ? (Math.Floor(y0), Math.Ceiling(y1)) : Nice(y0, y1);
             }
-            if (ax.XLog) { x0 = Math.Pow(10, x0); x1 = Math.Pow(10, x1); }
-            if (ax.YLog) { y0 = Math.Pow(10, y0); y1 = Math.Pow(10, y1); }
+            if (ax.XLog) { x0 = Math.Pow(10, x0); x1 = Math.Pow(10, x1); if (xNeg && !xPos) (x0, x1) = (-x1, -x0); }
+            if (ax.YLog) { y0 = Math.Pow(10, y0); y1 = Math.Pow(10, y1); if (yNeg && !yPos) (y0, y1) = (-y1, -y0); }
             return (ax.XLim ?? new[] { x0, x1 }, ax.YLim ?? new[] { y0, y1 });
         }
 
@@ -653,12 +705,13 @@ namespace MatRewrite.Core.Builtins
             var made = new List<LineSeries>();
             while (k < a.Length)
             {
-                if (IsString(a[k]) && LineProps.Contains(S(a[k], fn))) break;
+                bool IsPropAt(int j) => IsString(a[j]) && (LineProps.Contains(S(a[j], fn)) || j + 1 < a.Length && !ParseFmt(System.Text.RegularExpressions.Regex.Replace(S(a[j], fn), ";[^;]*;?$", ""), out _, out _, out _) && S(a[j], fn).Length > 2 && char.IsLetter(S(a[j], fn)[0]));
+                if (IsPropAt(k)) break;
                 var first = M(a[k], fn); k++;
                 MatrixValue? second = null;
                 if (k < a.Length && !IsString(a[k])) { second = M(a[k], fn); k++; }
                 string? spec = null;
-                if (k < a.Length && IsString(a[k]) && !LineProps.Contains(S(a[k], fn))) { spec = S(a[k], fn); k++; }
+                if (k < a.Length && IsString(a[k]) && !IsPropAt(k)) { spec = S(a[k], fn); k++; }
                 LineStyle? st = null; Marker? mk = null; Rgb? col = null; string? keyLbl = null;
                 if (spec != null) { var mm = System.Text.RegularExpressions.Regex.Match(spec, ";([^;]*);?$"); if (mm.Success) { keyLbl = mm.Groups[1].Value; spec = spec[..mm.Index]; } }
                 if (spec != null && !ParseFmt(spec, out st, out mk, out col)) throw new OctaveException($"{fn}: invalid line specification '{spec}'");
@@ -938,6 +991,8 @@ namespace MatRewrite.Core.Builtins
         return MatrixValue.Row(new[] { Math.Cos(el) * Math.Cos(az), Math.Cos(el) * Math.Sin(az), Math.Sin(el) });
     }
 
+    internal static readonly System.Runtime.CompilerServices.ConditionalWeakTable<object, Value> CmapStore = new();
+    internal static Value? StoredCmap(object o) => CmapStore.TryGetValue(o, out var v) ? v : null;
     static string CustomMapName(MatrixValue cm)
     {
         if (cm.C != 3 || cm.R < 1) throw new OctaveException("colormap: MAP must be a real-valued N x 3 ([0-1]) matrix");

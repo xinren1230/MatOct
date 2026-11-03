@@ -72,7 +72,7 @@ namespace MatRewrite.Core.Builtins
                 ("ticklabelinterpreter", S_("tex")), ("xtick", E), ("ytick", E), ("xlim", R_(0, 1)), ("ylim", R_(0, 1)), ("zlim", R_(0, 1)), ("clim", R_(0, 1)),
                 ("view", R_(0, 90)), ("xscale", S_("linear")), ("yscale", S_("linear")), ("nextplot", S_("replace")), ("xgrid", S_("off")), ("ygrid", S_("off")),
                 ("box", () => Str(Graphics.FigStyle.Current.Box ? "on" : "off")), ("xdir", S_("normal")), ("ydir", S_("normal")), ("colororder", E), ("title", E), ("xlabel", E), ("ylabel", E), ("zlabel", E),
-                ("colormap", E), ("nextseriesindex", N_(1)), ("fontsmoothing", S_("on")));
+                ("colormap", E), ("nextseriesindex", N_(1)), ("fontsmoothing", S_("on")), ("__autopos_tag__", S_("none")));
             var text = D_(
                 ("string", S_("")), ("position", R_(0, 0, 0)), ("units", S_("data")), ("fontsize", N_(10)), ("fontname", S_("*")),
                 ("fontweight", S_("normal")), ("fontangle", S_("normal")), ("fontunits", S_("points")), ("horizontalalignment", S_("left")),

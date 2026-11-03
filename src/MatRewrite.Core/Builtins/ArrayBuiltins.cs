@@ -511,7 +511,7 @@ public static partial class BuiltinLibrary
         });
 
         // types
-        Reg1("double", a => M(a[0], "double").CastTo(NumKind.Double));
+        Reg1("double", a => a[0] is CellValue ? throw new OctaveException("invalid conversion from cell array") : M(a[0], "double").CastTo(NumKind.Double));
         Reg1("single", a => M(a[0], "single").CastTo(NumKind.Single));
         foreach (var iname in new[] { "int8", "uint8", "int16", "uint16", "int32", "uint32", "int64", "uint64" })
         {
@@ -553,7 +553,7 @@ public static partial class BuiltinLibrary
         {
             var m = M(a[0], "logical");
             if (m.Re.Any(double.IsNaN)) throw new OctaveException("logical: NaN can't be converted to logical value");
-            var r = new MatrixValue(m.R, m.C, NumKind.Logical) { ND = m.ND }; for (int k = 0; k < m.Numel; k++) r.Re[k] = m.Re[k] != 0 ? 1 : 0; return r;
+            var r = new MatrixValue(m.R, m.C, NumKind.Logical) { ND = m.ND }; for (int k = 0; k < m.Numel; k++) r.Re[k] = m.Re[k] != 0 || (m.Im != null && m.Im[k] != 0) ? 1 : 0; return r;
         });
         Reg1("class", a => Str(a[0].ClassName));
         Reg1("isa", a =>
